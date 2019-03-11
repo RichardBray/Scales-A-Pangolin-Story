@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed ("Pangolin", null, 1920, 1080);
+		lime.system.System.embed ("Pangolin", null, 1280, 720);
 		#end
 		#else
 		create (null);
@@ -39,7 +39,7 @@ import haxe.macro.Expr;
 		
 		ManifestResources.init (config);
 		
-		app.meta["build"] = "15";
+		app.meta["build"] = "1";
 		app.meta["company"] = "HaxeFlixel";
 		app.meta["file"] = "Pangolin";
 		app.meta["name"] = "Pangolin";
@@ -59,14 +59,14 @@ import haxe.macro.Expr;
 			element: null,
 			frameRate: 60,
 			#if !web fullscreen: false, #end
-			height: 1080,
+			height: 720,
 			hidden: #if munit true #else false #end,
 			maximized: false,
 			minimized: false,
 			parameters: {},
 			resizable: true,
 			title: "Pangolin",
-			width: 1920,
+			width: 1280,
 			x: null,
 			y: null,
 			
