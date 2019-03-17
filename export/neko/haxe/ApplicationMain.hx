@@ -39,7 +39,7 @@ import haxe.macro.Expr;
 		
 		ManifestResources.init (config);
 		
-		app.meta["build"] = "3";
+		app.meta["build"] = "4";
 		app.meta["company"] = "HaxeFlixel";
 		app.meta["file"] = "Pangolin";
 		app.meta["name"] = "Pangolin";
@@ -75,7 +75,7 @@ import haxe.macro.Expr;
 		attributes.context = {
 			
 			antialiasing: 0,
-			background: 16777215,
+			background: 0,
 			colorDepth: 32,
 			depth: true,
 			hardware: true,
@@ -115,7 +115,7 @@ import haxe.macro.Expr;
 		
 		#elseif !air
 		
-		app.window.context.attributes.background = 16777215;
+		app.window.context.attributes.background = 0;
 		app.window.frameRate = 60;
 		
 		#end
