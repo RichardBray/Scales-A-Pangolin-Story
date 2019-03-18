@@ -2,14 +2,18 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
+import flixel.group.FlxGroup;
 
 // import flixel.util.FlxColor;
 class PlayState extends FlxState {
 	var _txtTitle:FlxText;
 	var _player:Player;
 	var _level:FlxTilemap;
+	var _bugs:FlxGroup;
 
 	override public function create():Void {
 		FlxG.mouse.visible = false;
@@ -33,6 +37,11 @@ class PlayState extends FlxState {
 		FlxG.worldBounds.set(0, 0, _level.width, _level.height); 
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height); 
 
+		// Add bugs
+		_bugs = new FlxGroup();	
+		createBug(20, 460);
+		add(_bugs);
+
 		// Add Player
 		_player = new Player(20, 460);
 		add(_player);
@@ -45,6 +54,21 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
+
+		// collisions
 		FlxG.collide(_player, _level);
+		FlxG.overlap(_bugs, _player, getBug);
 	}
+
+	function createBug(X:Int,Y:Int):Void
+	{
+		var bug:FlxSprite = new FlxSprite(X * 8 + 3, Y * 8 + 2);
+		bug.makeGraphic(2, 4, 0xffffff00);
+		_bugs.add(bug);
+	}
+
+	function getBug(Bug:FlxObject, Player:FlxObject):Void {
+		Bug.kill();
+	}
+
 }
