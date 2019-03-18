@@ -26,8 +26,15 @@ class PlayState extends FlxState {
 		_level.loadMapFromCSV("assets/data/test-res-64.csv", "assets/images/debug2.png", 20, 20);
 		add(_level);
 
+		/**
+		* By default flixel only processes what it initally sees, so collisions won't 
+		* work unit it can process the whole level.
+		*/
+		FlxG.worldBounds.set(0, 0, _level.width, _level.height); 
+		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height); 
+
 		// Add Player
-		_player = new Player(10, 10);
+		_player = new Player(20, 460);
 		add(_player);
 
 		// Player Camera
@@ -38,6 +45,6 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		FlxG.collide(_level, _player);
+		FlxG.collide(_player, _level);
 	}
 }

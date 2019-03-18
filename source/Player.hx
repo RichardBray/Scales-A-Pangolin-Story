@@ -2,9 +2,10 @@ package;
 
 import flixel.FlxSprite;
 import flixel.FlxG;
+import flixel.FlxObject;
 
 class Player extends FlxSprite {
-	public static var GRAVITY:Float = 800;
+	public static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -31,7 +32,7 @@ class Player extends FlxSprite {
 			acceleration.x = left ? -SPEED : SPEED;
 		if (left && right)
 			acceleration.x = 0;
-		if (jump)
-			velocity.y = -GRAVITY / 2; // -maxVelocity.y / 2;
+		if (jump && isTouching(FlxObject.FLOOR))
+			velocity.y = -600;
 	}
 }
