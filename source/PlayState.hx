@@ -17,7 +17,7 @@ class PlayState extends FlxState {
 
 	override public function create():Void {
 		FlxG.mouse.visible = false;
-		
+
 		bgColor = 0xffc7e4db; // Game background color
 		// Test text
 		_txtTitle = new FlxText(0, 0, 0, "Test game here", 12);
@@ -31,15 +31,16 @@ class PlayState extends FlxState {
 		add(_level);
 
 		/**
-		* By default flixel only processes what it initally sees, so collisions won't 
-		* work unit it can process the whole level.
-		*/
-		FlxG.worldBounds.set(0, 0, _level.width, _level.height); 
-		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height); 
+		 * By default flixel only processes what it initally sees, so collisions won't
+		 * work unit it can process the whole level.
+		 */
+		FlxG.worldBounds.set(0, 0, _level.width, _level.height);
+		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
 
 		// Add bugs
-		_bugs = new FlxGroup();	
-		createBug(20, 460);
+		_bugs = new FlxGroup();
+		createBug(200, 80);
+		createBug(600, 80);
 		add(_bugs);
 
 		// Add Player
@@ -60,15 +61,13 @@ class PlayState extends FlxState {
 		FlxG.overlap(_bugs, _player, getBug);
 	}
 
-	function createBug(X:Int,Y:Int):Void
-	{
-		var bug:FlxSprite = new FlxSprite(X * 8 + 3, Y * 8 + 2);
-		bug.makeGraphic(2, 4, 0xffffff00);
+	function createBug(X:Int, Y:Int):Void {
+		var bug:FlxSprite = new FlxSprite(X, Y);
+		bug.makeGraphic(20, 20, 0xff000000);
 		_bugs.add(bug);
 	}
 
 	function getBug(Bug:FlxObject, Player:FlxObject):Void {
 		Bug.kill();
 	}
-
 }

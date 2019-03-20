@@ -2,15 +2,28 @@
 
 ## Run the game
 
+This games uses Lime by Openfl to run.
+Command documentaiton is here https://lime.software/docs/command-line-tools/basic-commands/
+
+### Run the latest build
 ```bash
-lime test neko
+lime run html5
 ```
 
-or
+### Run for development
 
+In one terminal tab/pane
 ```bash
-lime test neko -debug
+http-server export/html5/bin
 ```
+To run the server for html5.
+
+In another one
+```bash
+watchman-make -p '**/*.hx' -r 'sh watcher.sh'
+```
+To rebuild the game when a .hx file has been changed.
+
 
 ## Notes
 
