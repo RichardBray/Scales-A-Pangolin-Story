@@ -8,19 +8,19 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.group.FlxGroup;
 
+
 // import flixel.util.FlxColor;
 class PlayState extends FlxState {
 	var _txtScore:FlxText;
-	var _score:Int;
+	var _score:Int = 0;
 	var _player:Player;
 	var _level:FlxTilemap;
 	var _bugs:FlxGroup;
 
 	override public function create():Void {
 		FlxG.mouse.visible = false;
-
 		bgColor = 0xffc7e4db; // Game background color
-		_score = 0;
+
 		// add envirionment
 		_level = new FlxTilemap();
 		_level.loadMapFromCSV("assets/data/test-res-64.csv", "assets/images/debug2.png", 20, 20);
@@ -45,12 +45,12 @@ class PlayState extends FlxState {
 		add(_bugs);
 
 		// Show score text
-		_txtScore = new FlxText(100, 500, 0, updateScore(), 24);
-		_txtScore.setFormat(null, 24, 0xFF194869);
+		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore());
+		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
+		_txtScore.scrollFactor.set(0, 0);
 		add(_txtScore);
-
 		// Add Player
-		_player = new Player(20, 460);
+		_player = new Player(20, 400);
 		add(_player);
 
 		// Player Camera
@@ -61,7 +61,6 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-		trace(_score);
 		// collisions
 		FlxG.collide(_player, _level);
 		FlxG.overlap(_bugs, _player, getBug);
@@ -78,7 +77,8 @@ class PlayState extends FlxState {
 	}
 
 	function getBug(Bug:FlxObject, Player:FlxObject):Void {
-		_score = 1;
+		_score++;
+		_txtScore.text = updateScore();
 		Bug.kill();
 	}
 }
