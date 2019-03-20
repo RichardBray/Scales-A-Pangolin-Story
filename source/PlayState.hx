@@ -10,7 +10,8 @@ import flixel.group.FlxGroup;
 
 // import flixel.util.FlxColor;
 class PlayState extends FlxState {
-	var _txtTitle:FlxText;
+	var _txtScore:FlxText;
+	var _score:Int;
 	var _player:Player;
 	var _level:FlxTilemap;
 	var _bugs:FlxGroup;
@@ -19,12 +20,7 @@ class PlayState extends FlxState {
 		FlxG.mouse.visible = false;
 
 		bgColor = 0xffc7e4db; // Game background color
-		// Test text
-		_txtTitle = new FlxText(0, 0, 0, "Test game here", 12);
-		_txtTitle.setFormat(null, 12, 0xFF194869);
-		_txtTitle.screenCenter();
-		// add(_txtTitle);
-
+		_score = 0;
 		// add envirionment
 		_level = new FlxTilemap();
 		_level.loadMapFromCSV("assets/data/test-res-64.csv", "assets/images/debug2.png", 20, 20);
@@ -39,9 +35,19 @@ class PlayState extends FlxState {
 
 		// Add bugs
 		_bugs = new FlxGroup();
-		createBug(200, 80);
-		createBug(600, 80);
+		// top left
+		createBug(150, 490);
+		// middle
+		createBug(600, 890);
+		// bottom left
+		createBug(100, 790);
+		createBug(300, 790);
 		add(_bugs);
+
+		// Show score text
+		_txtScore = new FlxText(100, 500, 0, updateScore(), 24);
+		_txtScore.setFormat(null, 24, 0xFF194869);
+		add(_txtScore);
 
 		// Add Player
 		_player = new Player(20, 460);
@@ -55,7 +61,7 @@ class PlayState extends FlxState {
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
-
+		trace(_score);
 		// collisions
 		FlxG.collide(_player, _level);
 		FlxG.overlap(_bugs, _player, getBug);
@@ -63,11 +69,16 @@ class PlayState extends FlxState {
 
 	function createBug(X:Int, Y:Int):Void {
 		var bug:FlxSprite = new FlxSprite(X, Y);
-		bug.makeGraphic(20, 20, 0xff000000);
+		bug.makeGraphic(10, 10, 0xffbf1ebf);
 		_bugs.add(bug);
 	}
 
+	function updateScore():String {
+		return "Score:" + _score;
+	}
+
 	function getBug(Bug:FlxObject, Player:FlxObject):Void {
+		_score = 1;
 		Bug.kill();
 	}
 }
