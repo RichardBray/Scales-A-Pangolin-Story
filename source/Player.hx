@@ -5,15 +5,19 @@ import flixel.FlxG;
 import flixel.FlxObject;
 
 class Player extends FlxSprite {
-	public static var GRAVITY:Float = 1500;
+	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
-		acceleration.y = GRAVITY;
-		loadGraphic("assets/images/pangolin-run.png", true, 280, 94);
+		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
 
-		animation.add("idle", [0], 20, false);
-		animation.add("run", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 20, false);
+		loadGraphic("assets/images/pangolin-run.png", true, 290, 98);
+		scale.set(0.4, 0.4); // scales character smaller
+		// offset.set(.1, .1);
+		updateHitbox();
+		setFacingFlip(FlxObject.LEFT, true, false);
+		setFacingFlip(FlxObject.RIGHT, false, false);
+		animation.add("run", [for (i in 0...12) i], 12, false);
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -23,21 +27,22 @@ class Player extends FlxSprite {
 
 	function playerMovement() {
 		var SPEED:Int = 900;
-		var left = FlxG.keys.anyPressed([LEFT, A]);
-		var right = FlxG.keys.anyPressed([RIGHT, D]);
-		var jump = FlxG.keys.anyJustPressed([SPACE, UP, W]);
+		var _left = FlxG.keys.anyPressed([LEFT, A]);
+		var _right = FlxG.keys.anyPressed([RIGHT, D]);
+		var _jump = FlxG.keys.anyJustPressed([SPACE, UP, W]);
 
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
 		drag.x = maxVelocity.x * 4; // Deceleration applied when acceleration is not affecting the sprite.
 
-		if (left || right) {
-			acceleration.x = left ? -SPEED : SPEED;
+		if (_left || _right) {
+			acceleration.x = _left ? -SPEED : SPEED;
+			facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 			animation.play("run");
 		}
-		if (left && right)
+		if (_left && _right)
 			acceleration.x = 0;
-		if (jump && isTouching(FlxObject.FLOOR))
+		if (_jump && isTouching(FlxObject.FLOOR))
 			velocity.y = -600;
 	}
 }

@@ -7,6 +7,7 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup;
 
 
 // import flixel.util.FlxColor;
@@ -16,6 +17,9 @@ class PlayState extends FlxState {
 	var _player:Player;
 	var _level:FlxTilemap;
 	var _bugs:FlxGroup;
+	var _health:FlxSprite;
+	var _healthNumber:Int = 3;
+	var _justDied:Bool = false;
 
 	override public function create():Void {
 		FlxG.mouse.visible = false;
@@ -34,6 +38,7 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
 
 		// Add bugs
+		// @todo change this to array of bugs
 		_bugs = new FlxGroup();
 		// top left
 		createBug(150, 490);
@@ -44,11 +49,27 @@ class PlayState extends FlxState {
 		createBug(300, 790);
 		add(_bugs);
 
+		// Add test enemy
+
+		/** 
+		 * @todo Add `_hud` FlxSpriteGroup
+		 */
 		// Show score text
 		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore());
 		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
 		_txtScore.scrollFactor.set(0, 0);
 		add(_txtScore);
+
+		// Hearts
+		// _health = new FlxSpriteGroup();
+		// createHearts();
+		for (i in 0..._healthNumber) {
+			_health = new FlxSprite((i * 80), 30).loadGraphic("assets/images/heart.png", false, 60, 60);
+			_health.scrollFactor.set(0, 0);
+			add(_health);
+		}
+		
+
 		// Add Player
 		_player = new Player(20, 400);
 		add(_player);
@@ -60,6 +81,12 @@ class PlayState extends FlxState {
 	}
 
 	override public function update(elapsed:Float):Void {
+		// Reset the game if the player goes higher than the map
+		if (_player.y > _level.height) {
+			_justDied = true;
+			FlxG.resetState();
+		}
+
 		super.update(elapsed);
 		// collisions
 		FlxG.collide(_player, _level);
@@ -70,6 +97,12 @@ class PlayState extends FlxState {
 		var bug:FlxSprite = new FlxSprite(X, Y);
 		bug.makeGraphic(10, 10, 0xffbf1ebf);
 		_bugs.add(bug);
+	}
+
+	function createHearts():Void {
+		for (i in 0..._healthNumber) {
+		//	_health.add(new FlxSprite(80, 80).loadGraphic("assets/images/heart.png", false, 254, 254));
+		}
 	}
 
 	function updateScore():String {
