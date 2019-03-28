@@ -10,7 +10,7 @@ class Player extends FlxSprite {
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
 		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
-
+		health = 3; // Health player starts off with
 		loadGraphic("assets/images/pangolin-run.png", true, 290, 98);
 		scale.set(0.4, 0.4); // scales character smaller
 		// offset.set(.1, .1);

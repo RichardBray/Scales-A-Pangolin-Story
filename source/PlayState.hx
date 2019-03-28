@@ -7,7 +7,8 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.group.FlxGroup;
-import flixel.group.FlxSpriteGroup;
+import flixel.tweens.FlxTween;
+import flixel.effects.FlxFlicker;
 
 
 // import flixel.util.FlxColor;
@@ -18,11 +19,11 @@ class PlayState extends FlxState {
 	var _level:FlxTilemap;
 	var _bugs:FlxGroup;
 	var _health:FlxSprite;
-	var _healthNumber:Int = 3;
 	var _justDied:Bool = false;
+	var _enemy:FlxSprite;
 
 	override public function create():Void {
-		FlxG.mouse.visible = false;
+		FlxG.mouse.visible = false; // Hide the mouse cursor
 		bgColor = 0xffc7e4db; // Game background color
 
 		// add envirionment
@@ -49,7 +50,9 @@ class PlayState extends FlxState {
 		createBug(300, 790);
 		add(_bugs);
 
-		// Add test enemy
+		// Test enemy
+		_enemy= new FlxSprite(800, 850).makeGraphic(50, 50, 0xffff0000);
+		add(_enemy);		
 
 		/** 
 		 * @todo Add `_hud` FlxSpriteGroup
@@ -60,19 +63,12 @@ class PlayState extends FlxState {
 		_txtScore.scrollFactor.set(0, 0);
 		add(_txtScore);
 
-		// Hearts
-		// _health = new FlxSpriteGroup();
-		// createHearts();
-		for (i in 0..._healthNumber) {
-			_health = new FlxSprite((i * 80), 30).loadGraphic("assets/images/heart.png", false, 60, 60);
-			_health.scrollFactor.set(0, 0);
-			add(_health);
-		}
-		
-
 		// Add Player
 		_player = new Player(20, 400);
 		add(_player);
+
+		// Hearts
+		createHearts();
 
 		// Player Camera
 		FlxG.camera.follow(_player, PLATFORMER, 1);
@@ -90,6 +86,7 @@ class PlayState extends FlxState {
 		super.update(elapsed);
 		// collisions
 		FlxG.collide(_player, _level);
+		FlxG.overlap(_player, _enemy, hitEnemy);
 		FlxG.overlap(_bugs, _player, getBug);
 	}
 
@@ -99,9 +96,15 @@ class PlayState extends FlxState {
 		_bugs.add(bug);
 	}
 
+	/**
+	 * Std.int converts float to int
+	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
+	 */
 	function createHearts():Void {
-		for (i in 0..._healthNumber) {
-		//	_health.add(new FlxSprite(80, 80).loadGraphic("assets/images/heart.png", false, 254, 254));
+		for (i in 0...Std.int(_player.health)) {
+			_health = new FlxSprite((i * 80), 30).loadGraphic("assets/images/heart.png", false, 60, 60);
+			_health.scrollFactor.set(0, 0);
+			add(_health);
 		}
 	}
 
@@ -114,4 +117,25 @@ class PlayState extends FlxState {
 		_txtScore.text = updateScore();
 		Bug.kill();
 	}
+
+	function hitEnemy(Player:FlxObject, Enemy:FlxObject):Void {
+		// Remove 1 player health if hit by enemy
+		if (Player.alive) {
+			js.Browser.console.log("Hit by enemy");
+			Player.hurt(1);
+			// if facing left
+			// Move player after they've been hit
+			FlxTween.tween(Player, {x: (Player.x -150), y: (Player.y -20)}, 0.1);
+			FlxFlicker.flicker(Player);
+			_health.alpha = 0.2;
+			createHearts();
+			js.Browser.console.log("Health", _health);
+			
+			js.Browser.console.log("Health", Player.health);
+		} else {
+			js.Browser.console.log("You Died!!");
+			// Player.kill();
+		}
+	}
+	
 }

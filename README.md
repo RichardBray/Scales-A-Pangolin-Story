@@ -34,3 +34,6 @@ AARRGGBB
 Hex is  =  RRGGBB
 AA for transparency
 0x prefix indicates it's a hexidecimal number
+
+### Debugging
+https://haxe.org/manual/debugging-javascript.html
