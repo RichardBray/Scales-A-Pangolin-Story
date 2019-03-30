@@ -12,12 +12,13 @@ class Player extends FlxSprite {
 		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
 		health = 3; // Health player starts off with
 		loadGraphic("assets/images/pangolin-run.png", true, 290, 98);
-		scale.set(0.4, 0.4); // scales character smaller
-		// offset.set(.1, .1);
+		setGraphicSize(73, 49);
 		updateHitbox();
+		offset.set(145,25);
+		scale.set(0.5, 0.5);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
-		animation.add("run", [for (i in 0...12) i], 12, false);
+		animation.add("run", [for (i in 0...12) i], 24, false);
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -37,6 +38,7 @@ class Player extends FlxSprite {
 
 		if (_left || _right) {
 			acceleration.x = _left ? -SPEED : SPEED;
+			offset.x = _left ? 73 : 145;
 			facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 			animation.play("run");
 		}
