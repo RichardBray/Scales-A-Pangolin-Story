@@ -6,10 +6,13 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
+import flixel.addons.editors.tiled.TiledMap;
+import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxSpriteGroup;
+import flixel.tile.FlxBaseTilemap;
 
 // import flixel.util.FlxColor;
 class PlayState extends FlxState {
@@ -22,6 +25,7 @@ class PlayState extends FlxState {
 	var _hearts:FlxSpriteGroup;
 	var _justDied:Bool = false;
 	var _enemy:FlxSprite;
+	var _map:TiledMap;
 
 	override public function create():Void {
 		FlxG.mouse.visible = false; // Hide the mouse cursor
@@ -29,7 +33,16 @@ class PlayState extends FlxState {
 
 		// add envirionment
 		_level = new FlxTilemap();
-		_level.loadMapFromCSV("assets/data/test-res-64.csv", "assets/images/debug2.png", 20, 20);
+		// _level.loadMapFromCSV("assets/data/test-res-64.csv", "assets/images/debug2.png", 20, 20);
+		// add(_level);
+
+		_map = new TiledMap("assets/data/test-level-1.tmx");
+		// _map = new TiledMap(AssetPaths.room_001__tmx) _mWalls = new FlxTilemap();
+		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, "assets/images/ground-map.png",
+			_map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+		_level.follow(); // lock camera to map's edges
+		_level.setTileProperties(1, FlxObject.ANY);
+		// _level.setTileProperties(2, FlxObject.ANY);
 		add(_level);
 
 		/**
@@ -132,12 +145,11 @@ class PlayState extends FlxState {
 			FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 20)}, 0.1);
 			FlxFlicker.flicker(Player);
 			_hearts.forEach((s:FlxSprite) -> {
-				if(index == Player.health) {
+				if (index == Player.health) {
 					s.alpha = 0.2;
 				}
 				index++;
 			});
-
 		} else {
 			js.Browser.console.log("You Died!!");
 			// Player.kill();
