@@ -5,14 +5,17 @@ import flixel.FlxState;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-import flixel.tile.FlxTilemap;
-import flixel.addons.editors.tiled.TiledMap;
-import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxSpriteGroup;
+// Imports for map
+import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
+// - addons
+import flixel.addons.editors.tiled.TiledMap; // Ignore the error VScode gives here
+import flixel.addons.editors.tiled.TiledTileLayer;
+import flixel.addons.editors.tiled.TiledObjectLayer;
 
 // import flixel.util.FlxColor;
 class PlayState extends FlxState {
@@ -26,23 +29,25 @@ class PlayState extends FlxState {
 	var _justDied:Bool = false;
 	var _enemy:FlxSprite;
 	var _map:TiledMap;
+	var _mapImages:TiledObjectLayer;
 
 	override public function create():Void {
-		FlxG.mouse.visible = false; // Hide the mouse cursor
+		FlxG.mouse.visible = true; // Hide the mouse cursor
 		bgColor = 0xffc7e4db; // Game background color
 
 		// add envirionment
 		_level = new FlxTilemap();
-		// _level.loadMapFromCSV("assets/data/test-res-64.csv", "assets/images/debug2.png", 20, 20);
-		// add(_level);
-
 		_map = new TiledMap("assets/data/test-level-1.tmx");
-		// _map = new TiledMap(AssetPaths.room_001__tmx) _mWalls = new FlxTilemap();
 		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, "assets/images/ground-map.png",
 			_map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
 		_level.follow(); // lock camera to map's edges
 		_level.setTileProperties(1, FlxObject.ANY);
 		// _level.setTileProperties(2, FlxObject.ANY);
+		_mapImages = cast _map.getLayer("rocks");
+		for (e in _mapImages.objects) {
+			js.Browser.console.log(e, 'rocky');
+			placeEntities(e.type, e.xmlData.x);
+		}
 		add(_level);
 
 		/**
@@ -154,5 +159,15 @@ class PlayState extends FlxState {
 			js.Browser.console.log("You Died!!");
 			// Player.kill();
 		}
+	}
+
+	function placeEntities(entityName:String, entityData:Xml):Void {
+		js.Browser.console.log(entityName);
+		var x:Int = Std.parseInt(entityData.get("x")); // Parse string to int
+		var y:Int = Std.parseInt(entityData.get("y"));
+	}
+
+	function createRock(X:Int, Y:Int, width:Int, height:Int):Void {
+		// _health = new FlxSprite(X, Y).loadGraphic("assets/images/rock-1.png", false, width, height);
 	}
 }
