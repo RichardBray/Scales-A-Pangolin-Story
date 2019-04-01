@@ -9,7 +9,7 @@ import flixel.tile.FlxTilemap;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.effects.FlxFlicker;
-import flixel.util.FlxSpriteUtil;
+import flixel.group.FlxSpriteGroup;
 
 // import flixel.util.FlxColor;
 class PlayState extends FlxState {
@@ -19,6 +19,7 @@ class PlayState extends FlxState {
 	var _level:FlxTilemap;
 	var _bugs:FlxGroup;
 	var _health:FlxSprite;
+	var _hearts:FlxSpriteGroup;
 	var _justDied:Bool = false;
 	var _enemy:FlxSprite;
 
@@ -51,8 +52,8 @@ class PlayState extends FlxState {
 		add(_bugs);
 
 		// Test enemy
-		_enemy= new FlxSprite(800, 850).makeGraphic(50, 50, 0xffff0000);
-		add(_enemy);		
+		_enemy = new FlxSprite(800, 850).makeGraphic(50, 50, 0xffff0000);
+		add(_enemy);
 
 		/** 
 		 * @todo Add `_hud` FlxSpriteGroup
@@ -68,7 +69,10 @@ class PlayState extends FlxState {
 		add(_player);
 
 		// Hearts
+		_hearts = new FlxSpriteGroup();
+		_hearts.scrollFactor.set(0, 0);
 		createHearts();
+		add(_hearts);
 
 		// Player Camera
 		FlxG.camera.follow(_player, PLATFORMER, 1);
@@ -103,8 +107,7 @@ class PlayState extends FlxState {
 	function createHearts():Void {
 		for (i in 0...Std.int(_player.health)) {
 			_health = new FlxSprite((i * 80), 30).loadGraphic("assets/images/heart.png", false, 60, 60);
-			_health.scrollFactor.set(0, 0);
-			add(_health);
+			_hearts.add(_health);
 		}
 	}
 
@@ -119,23 +122,25 @@ class PlayState extends FlxState {
 	}
 
 	function hitEnemy(Player:FlxObject, Enemy:FlxObject):Void {
+		var index:Int = 0;
 		// Remove 1 player health if hit by enemy
 		if (Player.alive) {
 			js.Browser.console.log("Hit by enemy");
 			Player.hurt(1);
 			// if facing left
 			// Move player after they've been hit
-			FlxTween.tween(Player, {x: (Player.x -150), y: (Player.y -20)}, 0.1);
+			FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 20)}, 0.1);
 			FlxFlicker.flicker(Player);
-			_health.alpha = 0.2;
-			createHearts();
-			js.Browser.console.log("Health", _health);
-			
-			js.Browser.console.log("Health", Player.health);
+			_hearts.forEach((s:FlxSprite) -> {
+				if(index == Player.health) {
+					s.alpha = 0.2;
+				}
+				index++;
+			});
+
 		} else {
 			js.Browser.console.log("You Died!!");
 			// Player.kill();
 		}
 	}
-	
 }
