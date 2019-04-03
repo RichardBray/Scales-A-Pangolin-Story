@@ -4,7 +4,9 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
 
-class Player extends FlxSprite {
+import flixel.addons.nape.FlxNapeSprite;
+
+class Player extends FlxNapeSprite {
 	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {

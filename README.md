@@ -37,3 +37,8 @@ AA for transparency
 
 ### Debugging
 https://haxe.org/manual/debugging-javascript.html
+
+### Probems
+- slope collision
+- moving sprite hitbox position
+- neko on mac
