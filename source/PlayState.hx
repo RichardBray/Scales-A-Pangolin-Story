@@ -10,14 +10,6 @@ import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxSpriteUtil;
 // Imports for map
-// - Nape
-import flixel.addons.nape.FlxNapeSpace;
-import nape.geom.Vec2;
-import nape.callbacks.CbEvent;
-import nape.callbacks.InteractionType;
-import nape.callbacks.InteractionListener;
-import nape.callbacks.CbType;
-import nape.shape.Polygon;
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap; // Ignore the error VScode gives here
 import flixel.addons.editors.tiled.TiledTileLayer;
@@ -44,23 +36,9 @@ class PlayState extends FlxState {
 	var _mapImages:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
 
-	var _colType:CbType = new CbType();
-
 	override public function create():Void {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
-		bgColor = 0xffc7e4db; // Game background color
-
-		// messing around with Nape
-		FlxNapeSpace.init(); // Create space for nape simulations
-		FlxNapeSpace.space.gravity.setxy(0, 500);
-		FlxNapeSpace.createWalls();
-
-		FlxNapeSpace.space.listeners.add(new InteractionListener(
-			CbEvent.BEGIN, 
-			InteractionType.COLLISION, 
-			_colType,
-			_colType,
-			onCollide));		
+		bgColor = 0xffc7e4db; // Game background color		
 
 		// Map objects initiated here.
 		_mapEntities = new FlxSpriteGroup();		
@@ -80,7 +58,7 @@ class PlayState extends FlxState {
 		add(_level);
 
 		// Map objects added here.
-		_mapEntities.y = -115; // Fos some reason this fixes the images being too low.
+		_mapEntities.y = -115; // For some reason this fixes the images being too low.
 		add(_mapEntities);
 
 		/**
@@ -212,12 +190,5 @@ class PlayState extends FlxState {
 		_object.immovable = true;
 		js.Browser.console.log(_object);
 		_mapEntities.add(_object);
-	}
-
-	function collisionType():Void {
-		_player.body.cbTypes.add(_colType);
-	}
-	function onCollide():Void {
-		js.Browser.console.log('collisiosn');
 	}
 }
