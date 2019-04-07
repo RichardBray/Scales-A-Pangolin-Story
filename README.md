@@ -42,3 +42,7 @@ https://haxe.org/manual/debugging-javascript.html
 - slope collision
 - moving sprite hitbox position
 - neko on mac
+
+### Haxe
+cast
+using
