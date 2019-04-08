@@ -35,7 +35,7 @@ class PlayState extends FlxState {
 	var _level:FlxTilemap;
 	var _levelCollisions:FlxTilemapExt;
 	var _map:TiledMap;
-	var _mapRocks:TiledObjectLayer;
+	var _mapObjects:TiledObjectLayer;
 	var _mapTrees:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
 
@@ -52,29 +52,33 @@ class PlayState extends FlxState {
 		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
 			"assets/images/ground-collisions.png", _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
 		// _levelCollisions.follow(); // lock camera to map's edges
-		// slopes
+		// set slopes
 		_levelCollisions.setSlopes([9, 10]);
 		_levelCollisions.setGentle([10], [9]);
 
+		// set cloud/special tiles
+		_levelCollisions.setTileProperties(1, FlxObject.NONE, fallInClouds);
+
 		add(_levelCollisions);
+
+		// Add bugs group
+		_bugs = new FlxGroup();
 
 		// Add envirionment
 		_level = new FlxTilemap();
 		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, "assets/images/ground-collisions.png",
 			_map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
-		_mapRocks = cast _map.getLayer("rocks");
-		for (e in _mapRocks.objects) {
-			placeEntities(e.xmlData.x, _mapRocks.name);
+		_mapObjects = cast _map.getLayer("objects");
+		for (e in _mapObjects.objects) {
+			placeEntities(e.xmlData.x, e.gid);
 		}
-		_mapTrees = cast _map.getLayer("trees");
-		for (e in _mapTrees.objects) {
-			placeEntities(e.xmlData.x, _mapTrees.name);
-		}		
 		add(_level);
 
 		// Map objects added here.
-		_mapEntities.y = -115; // For some reason this fixes the images being too low -115.
+		_mapEntities.y = 0; // For some reason this fixes the images being too low -115.
 		add(_mapEntities);
+
+		add(_bugs);
 
 		/**
 		 * By default flixel only processes what it initally sees, so collisions won't
@@ -83,20 +87,8 @@ class PlayState extends FlxState {
 		FlxG.worldBounds.set(0, 0, _level.width, _level.height);
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
 
-		// Add bugs
-		// @todo change this to array of bugs
-		_bugs = new FlxGroup();
-		// top left
-		createBug(150, 490);
-		// middle
-		createBug(600, 890);
-		// bottom left
-		createBug(100, 790);
-		createBug(300, 790);
-		add(_bugs);
-
 		// Add enemy
-		_enemy = new FlxSprite(800, 850).makeGraphic(50, 50, 0xffff0000);
+		_enemy = new FlxSprite(1570, 600).makeGraphic(50, 50, 0xffff0000);
 		add(_enemy);
 
 		_player = new Player(60, 600);
@@ -137,12 +129,6 @@ class PlayState extends FlxState {
 		FlxG.overlap(_bugs, _player, getBug);
 	}
 
-	private function createBug(X:Int, Y:Int):Void {
-		var bug:FlxSprite = new FlxSprite(X, Y);
-		bug.makeGraphic(10, 10, 0xffbf1ebf);
-		_bugs.add(bug);
-	}
-
 	/**
 	 * Std.int converts float to int
 	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
@@ -164,15 +150,22 @@ class PlayState extends FlxState {
 		Bug.kill();
 	}
 
-	private function hitEnemy(Player:FlxObject, Enemy:FlxObject):Void {
+	private function hitEnemy(Player:FlxSprite, Enemy:FlxObject):Void {
 		var index:Int = 0;
 		// Remove 1 player health if hit by enemy
 		if (Player.alive) {
-			js.Browser.console.log("Hit by enemy");
+			js.Browser.console.log(Player, "Hit by enemy");
 			Player.hurt(1);
 			// if facing left
-			// Move player after they've been hit
-			FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 20)}, 0.1);
+			if (Player.flipX) {
+				FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
+			} else {
+				FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
+			}
+
+			if (!Player.isTouching(FlxObject.FLOOR)) {
+				Enemy.kill();
+			}
 			FlxSpriteUtil.flicker(Player);
 			_hearts.forEach((s:FlxSprite) -> {
 				if (index == Player.health) {
@@ -186,32 +179,46 @@ class PlayState extends FlxState {
 	/**
 	 * Place entities from Tilemap. This method just converts strings to integers.
 	 */
-	private function placeEntities(entityData:Xml, layerName:String):Void {
+	private function placeEntities(entityData:Xml, objectId:Int):Void {
 		var x:Int = Std.parseInt(entityData.get("x")); // Parse string to int
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var width:Int = Std.parseInt(entityData.get("width"));
 		var height:Int = Std.parseInt(entityData.get("height"));
-		createEntity(x, y, width, height, layerName);
+		createEntity(x, y, width, height, objectId);
 	}
 
 	/**
 	 * Makes object to colider with `Player` in level.
 	 */
-	private function createEntity(X:Int, Y:Int, width:Int, height:Int, layerName:String):Void {
+	private function createEntity(X:Int, Y:Int, width:Int, height:Int, objectId:Int):Void {
 		// @see https://code.haxe.org/category/beginner/maps.html
-		var layerImage = new Map<String, String>();
+		var layerImage = new Map<Int, String>();
 		layerImage = [
-			"rocks" => "assets/images/rock-1.png",
-			"trees" => "assets/images/tree-1.png",
-			"tree2" => "assets/images/tree-2.png",
-			"bugs" => "assets/images/purp-bug.png"
+			226 => "assets/images/rock-1.png",
+			227 => "assets/images/tree-1.png",
+			228 => "assets/images/tree-2.png",
+			229 => "assets/images/purp-bug.png"
 		];
-		if(layerName == "rocks") {
-			js.Browser.console.log([X, Y], "tree coordinates");
-		} 
+		if (objectId == 229) {
+			createBug(X, (Y - height), width, height);
+		} else {
+			var _object:FlxSprite = new FlxSprite(X, (Y - height)).loadGraphic(layerImage[objectId], false, width, height);
+			_object.immovable = true;
+			_mapEntities.add(_object);
+		}
+	}
 
-		var _object:FlxSprite = new FlxSprite(X, Y).loadGraphic(layerImage[layerName], false, width, height);
-		_object.immovable = true;
-		_mapEntities.add(_object);
+	private function createBug(X:Int, Y:Int, width:Int, height:Int):Void {
+		var bug:FlxSprite = new FlxSprite(X, Y).loadGraphic("assets/images/purp-bug.png", false, width, height);
+		_bugs.add(bug);
+	}
+
+	/** Special tiles **/
+	private function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
+		if (FlxG.keys.anyPressed([DOWN, S])) {
+			Tile.allowCollisions = FlxObject.NONE;
+		} else if (Object.y >= Tile.y) {
+			Tile.allowCollisions = FlxObject.CEILING;
+		}
 	}
 }
