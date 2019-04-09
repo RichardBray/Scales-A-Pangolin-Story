@@ -57,7 +57,7 @@ class PlayState extends FlxState {
 		_levelCollisions.setGentle([10], [9]);
 
 		// set cloud/special tiles
-		_levelCollisions.setTileProperties(1, FlxObject.NONE, fallInClouds);
+		_levelCollisions.setTileProperties(4, FlxObject.ANY, fallInClouds);
 
 		add(_levelCollisions);
 
@@ -152,28 +152,34 @@ class PlayState extends FlxState {
 
 	private function hitEnemy(Player:FlxSprite, Enemy:FlxObject):Void {
 		var index:Int = 0;
-		// Remove 1 player health if hit by enemy
-		if (Player.alive) {
-			js.Browser.console.log(Player, "Hit by enemy");
+
+		if (Player.isTouching(FlxObject.FLOOR)) {
 			Player.hurt(1);
-			// if facing left
-			if (Player.flipX) {
+			FlxSpriteUtil.flicker(Player);
+
+			if (Player.flipX) { // if facing left
 				FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
 			} else {
 				FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
 			}
+		} else {
+			// Player bounce
+			Player.velocity.y = -450;
 
-			if (!Player.isTouching(FlxObject.FLOOR)) {
+			if (Player.animation.curAnim.name != 'run') { // needs to be jump ot jumpLoop
 				Enemy.kill();
+			} else {
+				Player.hurt(1);
+				FlxSpriteUtil.flicker(Player);
 			}
-			FlxSpriteUtil.flicker(Player);
-			_hearts.forEach((s:FlxSprite) -> {
-				if (index == Player.health) {
-					s.alpha = 0.2;
-				}
-				index++;
-			});
 		}
+
+		_hearts.forEach((s:FlxSprite) -> {
+			if (index == Player.health) {
+				s.alpha = 0.2;
+			}
+			index++;
+		});
 	}
 
 	/**
@@ -215,6 +221,7 @@ class PlayState extends FlxState {
 
 	/** Special tiles **/
 	private function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
+		js.Browser.console.log(Tile, 'tile');
 		if (FlxG.keys.anyPressed([DOWN, S])) {
 			Tile.allowCollisions = FlxObject.NONE;
 		} else if (Object.y >= Tile.y) {

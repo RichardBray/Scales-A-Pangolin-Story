@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 
 class Player extends FlxSprite {
+	public var isJumping:Bool;
 	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
@@ -21,6 +22,7 @@ class Player extends FlxSprite {
 		animation.add("idle", [4], false);
 		animation.add("run", [for (i in 0...11) i], 24, false);
 		animation.add("jump", [for (i in 13...24) i], 12, false);
+		animation.add("jumpLoop", [16, 17, 18], 12, true);
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -54,6 +56,8 @@ class Player extends FlxSprite {
 		if (_jump && isTouching(FlxObject.FLOOR)) {
 			velocity.y = -600;
 			animation.play("jump");
+			animation.play("jumpLoop");
+			isJumping = true;
 		}	
 	}
 }
