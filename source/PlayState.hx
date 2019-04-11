@@ -150,6 +150,9 @@ class PlayState extends FlxState {
 		Bug.kill();
 	}
 
+	/**
+	 * What happens when the player and the enemy collide
+	 */
 	private function hitEnemy(Player:FlxSprite, Enemy:FlxObject):Void {
 		var index:Int = 0;
 
@@ -159,16 +162,18 @@ class PlayState extends FlxState {
 
 			if (Player.flipX) { // if facing left
 				FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
-			} else {
+			} else { // facing right
 				FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
 			}
 		} else {
 			// Player bounce
-			Player.velocity.y = -450;
+			Player.velocity.y = -600;
 
-			if (Player.animation.curAnim.name != 'run') { // needs to be jump ot jumpLoop
+			// from the top
+			// when rolling animation is playing
+			if (Player.animation.curAnim.name != 'run') { 
 				Enemy.kill();
-			} else {
+			} else { // when rolling animation is NOT playing
 				Player.hurt(1);
 				FlxSpriteUtil.flicker(Player);
 			}
@@ -202,10 +207,9 @@ class PlayState extends FlxState {
 		layerImage = [
 			226 => "assets/images/rock-1.png",
 			227 => "assets/images/tree-1.png",
-			228 => "assets/images/tree-2.png",
-			229 => "assets/images/purp-bug.png"
+			228 => "assets/images/tree-2.png"
 		];
-		if (objectId == 229) {
+		if (objectId == 229) { // 229 means it's a bug/collectable
 			createBug(X, (Y - height), width, height);
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, (Y - height)).loadGraphic(layerImage[objectId], false, width, height);
