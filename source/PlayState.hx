@@ -26,8 +26,10 @@ class PlayState extends FlxState {
 	var _score:Int = 0;
 	var _player:Player;
 	var _grpBugs:FlxTypedGroup<CollectableBug>;
-	var _justDied:Bool = false;
+	var _justDied:Bool = false; // Will be used later
 	var _enemy:Enemy;
+	// Vars for NPC
+	var _grpSpeech:FlxTypedGroup<FlxSprite>;
 	var _friend:FlxSprite;
 	// Vars for health
 	var _health:FlxSprite;
@@ -44,11 +46,22 @@ class PlayState extends FlxState {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
 		bgColor = 0xffc7e4db; // Game background color
 
+
 		// Add friend
 		// Want the friend behind the rocks
 		_friend = new FlxSprite(870, 510).makeGraphic(150, 50, 0xff205ab7);
 		add(_friend);
 
+		// Speech bubble
+		_grpSpeech = new FlxTypedGroup<FlxSprite>();
+		var _speechArrow:FlxSprite = new FlxSprite(870 + (150 / 2), 440).makeGraphic(50, 50, 0xff205ab7);
+		_speechArrow.angle = 45;
+		_speechArrow.alpha = 0;
+		var _speechBox:FlxSprite = new FlxSprite(870 + (90 / 2), 420).makeGraphic(100, 50, 0xff205ab7);
+		_speechBox.alpha = 0;
+		_grpSpeech.add(_speechArrow);
+		_grpSpeech.add(_speechBox);
+		add(_grpSpeech);
 		/**
 		 * Code for adding the environment and collisions
 		 */
@@ -69,7 +82,6 @@ class PlayState extends FlxState {
 		for (e in _mapObjects.objects) {
 			placeEntities(e.xmlData.x, e.gid);
 		}
-
 		add(_level);
 
 		// Map objects added here.
@@ -142,8 +154,13 @@ class PlayState extends FlxState {
 
 		// Overlaps
 		FlxG.overlap(_player, _enemy, hitEnemy);
-		FlxG.overlap(_player, _friend, initConvo);
 		FlxG.overlap(_grpBugs, _player, getBug);
+	
+		if(!FlxG.overlap(_player, _friend, initConvo)) {
+			_grpSpeech.forEach((member:FlxSprite) -> {
+				FlxTween.tween(member, {alpha: 0}, .1);
+			});
+		};		
 	}
 
 	/**
@@ -179,10 +196,9 @@ class PlayState extends FlxState {
 		} else {
 			// Player bounce
 			Player.velocity.y = -600;
-
 			// from the top
 			// when rolling animation is playing
-			if (Player.animation.curAnim.name != 'run') {
+			if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
 				Enemy.kill();
 			} else { // when rolling animation is NOT playing
 				Player.hurt(1);
@@ -199,14 +215,31 @@ class PlayState extends FlxState {
 	}
 
 	private function initConvo(Player:Player, Friend:FlxSprite):Void {
-		js.Browser.console.log('Hey Pango!');
-		Player.preventMovement = true;
+		if (Player.isTouching(FlxObject.FLOOR)) {
+			// show press e prompt
+			_grpSpeech.forEach((member:FlxSprite) -> {
+				FlxTween.tween(member, {alpha: 1}, .1);
+			});
+	
+			if (FlxG.keys.anyJustPressed([E])) {
+				// start the converstation
+				// hide prompt
+				// zoom camera
+				FlxTween.tween(FlxG.camera, { zoom: 1.05 }, 0.2);
+				// toggle popup shown variable
+				js.Browser.console.log('Hey Pango!');
+				Player.preventMovement = true;
+				// if (FlxG.keys.anyJustPressed([E])) {
+				// 	FlxTween.tween(FlxG.camera, { zoom: 1 }, 0.2);
+				// 	Player.preventMovement = false;
+				// }
+			}
+		}
 	}
 
 	private function getBug(Bug:FlxObject, Player:FlxObject):Void {
 		if (Bug.alive && Bug.exists) {
 			_score = _score + 1;
-			js.Browser.console.log(_score);
 			_txtScore.text = updateScore();
 			Bug.kill();
 		}
