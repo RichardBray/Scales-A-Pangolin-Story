@@ -6,9 +6,9 @@ import flixel.FlxState;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSpriteUtil;
 // Imports for map
 // - Tiled
@@ -25,9 +25,10 @@ class PlayState extends FlxState {
 	var _txtScore:FlxText;
 	var _score:Int = 0;
 	var _player:Player;
-	var _bugs:FlxGroup;
+	var _grpBugs:FlxTypedGroup<CollectableBug>;
 	var _justDied:Bool = false;
-	var _enemy:FlxSprite;
+	var _enemy:Enemy;
+	var _friend:FlxSprite;
 	// Vars for health
 	var _health:FlxSprite;
 	var _hearts:FlxSpriteGroup;
@@ -43,28 +44,24 @@ class PlayState extends FlxState {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
 		bgColor = 0xffc7e4db; // Game background color
 
+		// Add friend
+		// Want the friend behind the rocks
+		_friend = new FlxSprite(870, 510).makeGraphic(150, 50, 0xff205ab7);
+		add(_friend);
+
+		/**
+		 * Code for adding the environment and collisions
+		 */
+
+		// Load custom tilemap
+		_map = new TiledMap("assets/data/level-1-2.tmx");
+
 		// Map objects initiated here.
 		_mapEntities = new FlxSpriteGroup();
 
-		// Add envirionment collisions
-		_levelCollisions = new FlxTilemapExt();
-		_map = new TiledMap("assets/data/level-1-2.tmx");
-		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
-			"assets/images/ground-collisions.png", _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
-		// _levelCollisions.follow(); // lock camera to map's edges
-		// set slopes
-		_levelCollisions.setSlopes([9, 10]);
-		_levelCollisions.setGentle([10], [9]);
-
-		// set cloud/special tiles
-		_levelCollisions.setTileProperties(4, FlxObject.ANY, fallInClouds);
-
-		add(_levelCollisions);
-
 		// Add bugs group
-		_bugs = new FlxGroup();
+		_grpBugs = new FlxTypedGroup<CollectableBug>();
 
-		// Add envirionment
 		_level = new FlxTilemap();
 		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, "assets/images/ground-collisions.png",
 			_map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
@@ -72,13 +69,28 @@ class PlayState extends FlxState {
 		for (e in _mapObjects.objects) {
 			placeEntities(e.xmlData.x, e.gid);
 		}
+
 		add(_level);
 
 		// Map objects added here.
 		_mapEntities.y = 0; // For some reason this fixes the images being too low -115.
 		add(_mapEntities);
 
-		add(_bugs);
+		add(_grpBugs);
+
+		// Add envirionment collisions
+		_levelCollisions = new FlxTilemapExt();
+		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
+			"assets/images/ground-collisions.png", _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+		// _levelCollisions.follow(); // lock camera to map's edges
+		// set slopes
+		_levelCollisions.setSlopes([10, 11]);
+		_levelCollisions.setGentle([11], [10]);
+
+		// set cloud/special tiles
+		_levelCollisions.setTileProperties(5, FlxObject.NONE, fallInClouds);
+		_levelCollisions.alpha = 0;
+		add(_levelCollisions);
 
 		/**
 		 * By default flixel only processes what it initally sees, so collisions won't
@@ -88,9 +100,10 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
 
 		// Add enemy
-		_enemy = new FlxSprite(1570, 600).makeGraphic(50, 50, 0xffff0000);
+		_enemy = new Enemy(1570, 600);
 		add(_enemy);
 
+		// Add player
 		_player = new Player(60, 600);
 		add(_player);
 
@@ -123,10 +136,14 @@ class PlayState extends FlxState {
 		}
 
 		super.update(elapsed);
+
 		// Collisions
 		FlxG.collide(_player, _levelCollisions);
+
+		// Overlaps
 		FlxG.overlap(_player, _enemy, hitEnemy);
-		FlxG.overlap(_bugs, _player, getBug);
+		FlxG.overlap(_player, _friend, initConvo);
+		FlxG.overlap(_grpBugs, _player, getBug);
 	}
 
 	/**
@@ -142,12 +159,6 @@ class PlayState extends FlxState {
 
 	private function updateScore():String {
 		return "Score:" + _score;
-	}
-
-	private function getBug(Bug:FlxObject, Player:FlxObject):Void {
-		_score++;
-		_txtScore.text = updateScore();
-		Bug.kill();
 	}
 
 	/**
@@ -171,7 +182,7 @@ class PlayState extends FlxState {
 
 			// from the top
 			// when rolling animation is playing
-			if (Player.animation.curAnim.name != 'run') { 
+			if (Player.animation.curAnim.name != 'run') {
 				Enemy.kill();
 			} else { // when rolling animation is NOT playing
 				Player.hurt(1);
@@ -185,6 +196,20 @@ class PlayState extends FlxState {
 			}
 			index++;
 		});
+	}
+
+	private function initConvo(Player:Player, Friend:FlxSprite):Void {
+		js.Browser.console.log('Hey Pango!');
+		Player.preventMovement = true;
+	}
+
+	private function getBug(Bug:FlxObject, Player:FlxObject):Void {
+		if (Bug.alive && Bug.exists) {
+			_score = _score + 1;
+			js.Browser.console.log(_score);
+			_txtScore.text = updateScore();
+			Bug.kill();
+		}
 	}
 
 	/**
@@ -210,7 +235,9 @@ class PlayState extends FlxState {
 			228 => "assets/images/tree-2.png"
 		];
 		if (objectId == 229) { // 229 means it's a bug/collectable
-			createBug(X, (Y - height), width, height);
+			// createBug(X, (Y - height), width, height);
+			var bug:CollectableBug = new CollectableBug(X, (Y - height), width, height);
+			_grpBugs.add(bug);
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, (Y - height)).loadGraphic(layerImage[objectId], false, width, height);
 			_object.immovable = true;
@@ -218,14 +245,8 @@ class PlayState extends FlxState {
 		}
 	}
 
-	private function createBug(X:Int, Y:Int, width:Int, height:Int):Void {
-		var bug:FlxSprite = new FlxSprite(X, Y).loadGraphic("assets/images/purp-bug.png", false, width, height);
-		_bugs.add(bug);
-	}
-
 	/** Special tiles **/
 	private function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
-		js.Browser.console.log(Tile, 'tile');
 		if (FlxG.keys.anyPressed([DOWN, S])) {
 			Tile.allowCollisions = FlxObject.NONE;
 		} else if (Object.y >= Tile.y) {

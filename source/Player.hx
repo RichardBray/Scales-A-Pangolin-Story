@@ -6,11 +6,13 @@ import flixel.FlxObject;
 
 class Player extends FlxSprite {
 	public var isJumping:Bool;
+	public var preventMovement:Bool;
 	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
 		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
+		preventMovement = false;
 		health = 3; // Health player starts off with
 		loadGraphic("assets/images/pangolin-sprite_v2.png", true, 290, 114); // height 113.5
 		setGraphicSize(73, 49);
@@ -40,24 +42,26 @@ class Player extends FlxSprite {
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
 		drag.x = maxVelocity.x * 4; // Deceleration applied when acceleration is not affecting the sprite.
 
-		if (_left || _right) {
-			acceleration.x = _left ? -SPEED : SPEED;
-			offset.x = _left ? 73 : 145;
-			facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
-			if (isTouching(FlxObject.FLOOR)) {
-				animation.play("run");
+		if (!preventMovement) {
+			if (_left || _right) {
+				acceleration.x = _left ? -SPEED : SPEED;
+				offset.x = _left ? 73 : 145;
+				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
+				if (isTouching(FlxObject.FLOOR)) {
+					animation.play("run");
+				}
+			} else if (isTouching(FlxObject.FLOOR)) {
+				animation.play("idle");
 			}
-		} else if(isTouching(FlxObject.FLOOR)) {
-			animation.play("idle");	
+			if (_left && _right) {
+				acceleration.x = 0;
+			}
+			if (_jump && isTouching(FlxObject.FLOOR)) {
+				velocity.y = -600;
+				animation.play("jump");
+				animation.play("jumpLoop");
+				isJumping = true;
+			}
 		}
-		if (_left && _right) {
-			acceleration.x = 0;
-		}
-		if (_jump && isTouching(FlxObject.FLOOR)) {
-			velocity.y = -600;
-			animation.play("jump");
-			animation.play("jumpLoop");
-			isJumping = true;
-		}	
 	}
 }
