@@ -41,6 +41,7 @@ class PlayState extends FlxState {
 	var _mapObjects:TiledObjectLayer;
 	var _mapTrees:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
+	var startingConvo: Bool = false;
 
 	override public function create():Void {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
@@ -221,18 +222,21 @@ class PlayState extends FlxState {
 				FlxTween.tween(member, {alpha: 1}, .1);
 			});
 	
-			if (FlxG.keys.anyJustPressed([E])) {
-				// start the converstation
-				// hide prompt
-				// zoom camera
-				FlxTween.tween(FlxG.camera, { zoom: 1.05 }, 0.2);
-				// toggle popup shown variable
-				js.Browser.console.log('Hey Pango!');
-				Player.preventMovement = true;
-				// if (FlxG.keys.anyJustPressed([E])) {
-				// 	FlxTween.tween(FlxG.camera, { zoom: 1 }, 0.2);
-				// 	Player.preventMovement = false;
-				// }
+			if (FlxG.keys.anyPressed([E])) {	
+				if (!startingConvo) {			
+					// start the converstation
+					haxe.Timer.delay(() -> startingConvo = true, 500);
+					// hide prompt
+					// zoom camera
+					FlxTween.tween(FlxG.camera, { zoom: 1.05 }, 0.2);
+					// toggle popup shown variable
+					Player.preventMovement = true;
+				} else {
+					// show prompt
+					haxe.Timer.delay(() -> startingConvo = false, 500);
+					FlxTween.tween(FlxG.camera, { zoom: 1 }, 0.2);
+					Player.preventMovement = false;
+				}
 			}
 		}
 	}
