@@ -98,7 +98,7 @@ class PlayState extends FlxState {
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
 
 		// CHARACRERS!!!
-	
+
 		// Add friend
 		// Want the friend behind the rocks
 		_friend = new FlxSprite(820, 510).makeGraphic(150, 50, 0xff205ab7);
@@ -106,8 +106,8 @@ class PlayState extends FlxState {
 
 		// Friend Dialogue
 		_grpDialogue = new FlxTypedGroup<FlxSprite>();
-		var dialogueSize: Int = 150;
-		var dialogePos: Float = (820 + (150 / 2) - (dialogueSize / 2));
+		var dialogueSize:Int = 120;
+		var dialogePos:Float = (820 + (150 / 2) - (dialogueSize / 2));
 		var _dialogueBox:FlxSprite = new FlxSprite(dialogePos, 390);
 		_dialogueBox.makeGraphic(dialogueSize, Std.int(dialogueSize / 4 * 3), FlxColor.TRANSPARENT);
 		var vertices = new Array<FlxPoint>();
@@ -115,17 +115,19 @@ class PlayState extends FlxState {
 		var h:Float = _dialogueBox.height;
 		vertices[0] = new FlxPoint(0, 0);
 		vertices[1] = new FlxPoint(w, 0);
-		vertices[2] = new FlxPoint(w, w/2);
-		vertices[3] = new FlxPoint(h, w/2);
-		vertices[4] = new FlxPoint(w/2, h);
-		vertices[5] = new FlxPoint(w/4, w/2);
-		vertices[6] = new FlxPoint(0, w/2);
+		vertices[2] = new FlxPoint(w, w / 2);
+		vertices[3] = new FlxPoint(h, w / 2);
+		vertices[4] = new FlxPoint(w / 2, h);
+		vertices[5] = new FlxPoint(w / 4, w / 2);
+		vertices[6] = new FlxPoint(0, w / 2);
 		FlxSpriteUtil.drawPolygon(_dialogueBox, vertices, 0xff205ab7);
 		_dialogueBox.alpha = 0;
 		_grpDialogue.add(_dialogueBox);
+
 		var _dialogueText = new FlxText(dialogePos, 500, dialogueSize);
 		_dialogueText.text = "Press [E]";
 		_dialogueText.setFormat(null, 20, FlxColor.WHITE, CENTER);
+		_dialogueText.alpha = 0;
 		_grpDialogue.add(_dialogueText);
 
 		add(_grpDialogue);
@@ -177,7 +179,7 @@ class PlayState extends FlxState {
 
 		if (!FlxG.overlap(_player, _friend, initConvo)) {
 			_grpDialogue.forEach((member:FlxSprite) -> {
-				FlxTween.tween(member, {alpha: 0, y: 390 }, .1);
+				FlxTween.tween(member, {alpha: 0, y: 390}, .1);
 			});
 		};
 	}
