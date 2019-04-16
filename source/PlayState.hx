@@ -1,6 +1,5 @@
 package;
 
-import openfl.utils.Dictionary;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.FlxObject;
@@ -10,6 +9,9 @@ import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSpriteUtil;
+// Dialogue box
+import flixel.math.FlxPoint;
+import flixel.util.FlxColor;
 // Imports for map
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
@@ -20,7 +22,6 @@ import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.addons.tile.FlxTilemapExt;
 
-// import flixel.util.FlxColor;
 class PlayState extends FlxState {
 	var _txtScore:FlxText;
 	var _score:Int = 0;
@@ -29,7 +30,7 @@ class PlayState extends FlxState {
 	var _justDied:Bool = false; // Will be used later
 	var _enemy:Enemy;
 	// Vars for NPC
-	var _grpSpeech:FlxTypedGroup<FlxSprite>;
+	var _grpDialogue:FlxTypedGroup<FlxSprite>;
 	var _friend:FlxSprite;
 	// Vars for health
 	var _health:FlxSprite;
@@ -41,28 +42,12 @@ class PlayState extends FlxState {
 	var _mapObjects:TiledObjectLayer;
 	var _mapTrees:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
-	var startingConvo: Bool = false;
+	var startingConvo:Bool = false;
 
 	override public function create():Void {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
 		bgColor = 0xffc7e4db; // Game background color
 
-
-		// Add friend
-		// Want the friend behind the rocks
-		_friend = new FlxSprite(870, 510).makeGraphic(150, 50, 0xff205ab7);
-		add(_friend);
-
-		// Speech bubble
-		_grpSpeech = new FlxTypedGroup<FlxSprite>();
-		var _speechArrow:FlxSprite = new FlxSprite(870 + (150 / 2), 440).makeGraphic(50, 50, 0xff205ab7);
-		_speechArrow.angle = 45;
-		_speechArrow.alpha = 0;
-		var _speechBox:FlxSprite = new FlxSprite(870 + (90 / 2), 420).makeGraphic(100, 50, 0xff205ab7);
-		_speechBox.alpha = 0;
-		_grpSpeech.add(_speechArrow);
-		_grpSpeech.add(_speechBox);
-		add(_grpSpeech);
 		/**
 		 * Code for adding the environment and collisions
 		 */
@@ -112,6 +97,39 @@ class PlayState extends FlxState {
 		FlxG.worldBounds.set(0, 0, _level.width, _level.height);
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
 
+		// CHARACRERS!!!
+	
+		// Add friend
+		// Want the friend behind the rocks
+		_friend = new FlxSprite(820, 510).makeGraphic(150, 50, 0xff205ab7);
+		add(_friend);
+
+		// Friend Dialogue
+		_grpDialogue = new FlxTypedGroup<FlxSprite>();
+		var dialogueSize: Int = 150;
+		var dialogePos: Float = (820 + (150 / 2) - (dialogueSize / 2));
+		var _dialogueBox:FlxSprite = new FlxSprite(dialogePos, 390);
+		_dialogueBox.makeGraphic(dialogueSize, Std.int(dialogueSize / 4 * 3), FlxColor.TRANSPARENT);
+		var vertices = new Array<FlxPoint>();
+		var w:Float = _dialogueBox.width;
+		var h:Float = _dialogueBox.height;
+		vertices[0] = new FlxPoint(0, 0);
+		vertices[1] = new FlxPoint(w, 0);
+		vertices[2] = new FlxPoint(w, w/2);
+		vertices[3] = new FlxPoint(h, w/2);
+		vertices[4] = new FlxPoint(w/2, h);
+		vertices[5] = new FlxPoint(w/4, w/2);
+		vertices[6] = new FlxPoint(0, w/2);
+		FlxSpriteUtil.drawPolygon(_dialogueBox, vertices, 0xff205ab7);
+		_dialogueBox.alpha = 0;
+		_grpDialogue.add(_dialogueBox);
+		var _dialogueText = new FlxText(dialogePos, 500, dialogueSize);
+		_dialogueText.text = "Press [E]";
+		_dialogueText.setFormat(null, 20, FlxColor.WHITE, CENTER);
+		_grpDialogue.add(_dialogueText);
+
+		add(_grpDialogue);
+
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
 		add(_enemy);
@@ -156,12 +174,12 @@ class PlayState extends FlxState {
 		// Overlaps
 		FlxG.overlap(_player, _enemy, hitEnemy);
 		FlxG.overlap(_grpBugs, _player, getBug);
-	
-		if(!FlxG.overlap(_player, _friend, initConvo)) {
-			_grpSpeech.forEach((member:FlxSprite) -> {
-				FlxTween.tween(member, {alpha: 0}, .1);
+
+		if (!FlxG.overlap(_player, _friend, initConvo)) {
+			_grpDialogue.forEach((member:FlxSprite) -> {
+				FlxTween.tween(member, {alpha: 0, y: 390 }, .1);
 			});
-		};		
+		};
 	}
 
 	/**
@@ -218,23 +236,20 @@ class PlayState extends FlxState {
 	private function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			// show press e prompt
-			_grpSpeech.forEach((member:FlxSprite) -> {
-				FlxTween.tween(member, {alpha: 1}, .1);
+			_grpDialogue.forEach((member:FlxSprite) -> {
+				FlxTween.tween(member, {alpha: 1, y: 380}, .1);
 			});
-	
-			if (FlxG.keys.anyPressed([E])) {	
-				if (!startingConvo) {			
-					// start the converstation
-					haxe.Timer.delay(() -> startingConvo = true, 500);
+
+			if (FlxG.keys.anyPressed([E])) {
+				if (!startingConvo) {
 					// hide prompt
 					// zoom camera
-					FlxTween.tween(FlxG.camera, { zoom: 1.05 }, 0.2);
+					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {onComplete: (_) -> startingConvo = true});
 					// toggle popup shown variable
 					Player.preventMovement = true;
 				} else {
 					// show prompt
-					haxe.Timer.delay(() -> startingConvo = false, 500);
-					FlxTween.tween(FlxG.camera, { zoom: 1 }, 0.2);
+					FlxTween.tween(FlxG.camera, {zoom: 1}, 0.2, {onComplete: (_) -> startingConvo = false});
 					Player.preventMovement = false;
 				}
 			}
