@@ -21,6 +21,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.tile.FlxTilemap;
 import flixel.tile.FlxBaseTilemap;
 import flixel.addons.tile.FlxTilemapExt;
+import flixel.graphics.frames.FlxTileFrames;
 
 class PlayState extends FlxState {
 	var _txtScore:FlxText;
@@ -29,8 +30,10 @@ class PlayState extends FlxState {
 	var _grpBugs:FlxTypedGroup<CollectableBug>;
 	var _justDied:Bool = false; // Will be used later
 	var _enemy:Enemy;
+	var _grpHud:FlxTypedGroup<FlxSprite>;
 	// Vars for NPC
-	var _grpDialogue:FlxTypedGroup<FlxSprite>;
+	var _grpDialoguePopup:DialoguePrompt;
+	var _grpDialogueBox:FlxTypedGroup<FlxSprite>;
 	var _friend:FlxSprite;
 	// Vars for health
 	var _health:FlxSprite;
@@ -43,6 +46,7 @@ class PlayState extends FlxState {
 	var _mapTrees:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
 	var startingConvo:Bool = false;
+	var ePressed:Bool = false;
 
 	override public function create():Void {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
@@ -64,6 +68,12 @@ class PlayState extends FlxState {
 		_level = new FlxTilemap();
 		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, "assets/images/ground-collisions.png",
 			_map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+
+		// tile tearing problem fix on Mac
+		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/PlayState.hx#L48
+		var levelTiles = FlxTileFrames
+			.fromBitmapAddSpacesAndBorders("assets/images/ground-collisions.png", new FlxPoint(10, 10), new FlxPoint(2, 2), new FlxPoint(2, 2));
+		_level.frames = levelTiles;
 		_mapObjects = cast _map.getLayer("objects");
 		for (e in _mapObjects.objects) {
 			placeEntities(e.xmlData.x, e.gid);
@@ -80,7 +90,8 @@ class PlayState extends FlxState {
 		_levelCollisions = new FlxTilemapExt();
 		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
 			"assets/images/ground-collisions.png", _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
-		// _levelCollisions.follow(); // lock camera to map's edges
+		_levelCollisions.follow(); // lock camera to map's edges
+
 		// set slopes
 		_levelCollisions.setSlopes([10, 11]);
 		_levelCollisions.setGentle([11], [10]);
@@ -96,6 +107,7 @@ class PlayState extends FlxState {
 		 */
 		FlxG.worldBounds.set(0, 0, _level.width, _level.height);
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
+		FlxG.camera.antialiasing = true;
 
 		// CHARACRERS!!!
 
@@ -104,33 +116,28 @@ class PlayState extends FlxState {
 		_friend = new FlxSprite(820, 510).makeGraphic(150, 50, 0xff205ab7);
 		add(_friend);
 
-		// Friend Dialogue
-		_grpDialogue = new FlxTypedGroup<FlxSprite>();
-		var dialogueSize:Int = 120;
-		var dialogePos:Float = (820 + (150 / 2) - (dialogueSize / 2));
-		var _dialogueBox:FlxSprite = new FlxSprite(dialogePos, 390);
-		_dialogueBox.makeGraphic(dialogueSize, Std.int(dialogueSize / 4 * 3), FlxColor.TRANSPARENT);
-		var vertices = new Array<FlxPoint>();
-		var w:Float = _dialogueBox.width;
-		var h:Float = _dialogueBox.height;
-		vertices[0] = new FlxPoint(0, 0);
-		vertices[1] = new FlxPoint(w, 0);
-		vertices[2] = new FlxPoint(w, w / 2);
-		vertices[3] = new FlxPoint(h, w / 2);
-		vertices[4] = new FlxPoint(w / 2, h);
-		vertices[5] = new FlxPoint(w / 4, w / 2);
-		vertices[6] = new FlxPoint(0, w / 2);
-		FlxSpriteUtil.drawPolygon(_dialogueBox, vertices, 0xff205ab7);
+		// Friend Dialogue Bubble
+		_grpDialoguePopup = new DialoguePrompt(120, 820 + (150 / 2), 390, "Press [E]");
+		add(_grpDialoguePopup);
+
+		// Friend dialogue box
+		_grpDialogueBox = new FlxTypedGroup<FlxSprite>();
+
+		var _dialogueBox:FlxSprite = new FlxSprite(0, FlxG.height - 200).makeGraphic(FlxG.width, 200, 0xff205ab7);
+		_dialogueBox.scrollFactor.set(0, 0);
 		_dialogueBox.alpha = 0;
-		_grpDialogue.add(_dialogueBox);
+		_grpDialogueBox.add(_dialogueBox);
 
-		var _dialogueText = new FlxText(dialogePos, 500, dialogueSize);
-		_dialogueText.text = "Press [E]";
-		_dialogueText.setFormat(null, 20, FlxColor.WHITE, CENTER);
-		_dialogueText.alpha = 0;
-		_grpDialogue.add(_dialogueText);
+		var _dialogueBoxText = new FlxText(120, FlxG.height - 180, FlxG.width);
+		_dialogueBoxText.text = "Hey friend slow down!";
+		// Wow, I've never seen a Pangolin run so fast before.
+		// Maybe you could do me a favour?
+		_dialogueBoxText.scrollFactor.set(0, 0);
+		_dialogueBoxText.alpha = 0;
+		_dialogueBoxText.setFormat(null, 20, FlxColor.WHITE, LEFT);
+		_grpDialogueBox.add(_dialogueBoxText);
 
-		add(_grpDialogue);
+		add(_grpDialogueBox);
 
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
@@ -140,20 +147,22 @@ class PlayState extends FlxState {
 		_player = new Player(60, 600);
 		add(_player);
 
-		/** 
-		 * @todo Add `_hud` FlxSpriteGroup
-		 */
+		// HUD!!!
 		// Show score text
+		_grpHud = new FlxTypedGroup<FlxSprite>();
 		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore());
 		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
 		_txtScore.scrollFactor.set(0, 0);
-		add(_txtScore);
+		_grpHud.add(_txtScore);
 
 		// Hearts
 		_hearts = new FlxSpriteGroup();
 		_hearts.scrollFactor.set(0, 0);
 		createHearts();
-		add(_hearts);
+		_grpHud.add(_hearts);
+
+		// Add Hud
+		add(_grpHud);
 
 		// Player Camera
 		FlxG.camera.follow(_player, PLATFORMER, 1);
@@ -178,7 +187,8 @@ class PlayState extends FlxState {
 		FlxG.overlap(_grpBugs, _player, getBug);
 
 		if (!FlxG.overlap(_player, _friend, initConvo)) {
-			_grpDialogue.forEach((member:FlxSprite) -> {
+			ePressed = false;
+			_grpDialoguePopup.forEach((member:FlxSprite) -> {
 				FlxTween.tween(member, {alpha: 0, y: 390}, .1);
 			});
 		};
@@ -237,22 +247,49 @@ class PlayState extends FlxState {
 
 	private function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
-			// show press e prompt
-			_grpDialogue.forEach((member:FlxSprite) -> {
-				FlxTween.tween(member, {alpha: 1, y: 380}, .1);
-			});
+			if (!ePressed) {
+				// show press e prompt
+				_grpDialoguePopup.showPrompt();
+			}
 
 			if (FlxG.keys.anyPressed([E])) {
+				ePressed = true;
 				if (!startingConvo) {
-					// hide prompt
+					// hide dialogue bubble
+					_grpDialoguePopup.hidePrompt();
 					// zoom camera
-					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {onComplete: (_) -> startingConvo = true});
-					// toggle popup shown variable
+					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {
+						onComplete: (_) -> {
+							startingConvo = true;
+							// show dialogue box
+							_grpDialogueBox.forEach((member:FlxSprite) -> {
+								FlxTween.tween(member, {alpha: 1}, .1);
+							});
+						}
+					});
+					// prevent character movement
 					Player.preventMovement = true;
+
+					// hide HUD
+					_grpHud.forEach((member:FlxSprite) -> {
+						member.alpha = 0;
+					});
 				} else {
-					// show prompt
-					FlxTween.tween(FlxG.camera, {zoom: 1}, 0.2, {onComplete: (_) -> startingConvo = false});
+					// show dialogue bubble
+					FlxTween.tween(FlxG.camera, {zoom: 1}, 0.2, {
+						onComplete: (_) -> startingConvo = false
+					});
+					// hide dialogue box
+					_grpDialogueBox.forEach((member:FlxSprite) -> {
+						member.alpha = 0;
+					});
+
+					// prevent character movement
 					Player.preventMovement = false;
+					// show HUD
+					_grpHud.forEach((member:FlxSprite) -> {
+						member.alpha = 1;
+					});
 				}
 			}
 		}

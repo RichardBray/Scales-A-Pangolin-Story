@@ -4,5 +4,5 @@
 		"export/**/*.hx": true
 	},
 	"lime.defaultBuildConfiguration": "Debug",
-	"lime.defaultTarget": "Neko"
+	"lime.defaultTarget": "HTML5"
 }
