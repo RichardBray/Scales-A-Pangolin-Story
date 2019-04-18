@@ -9,9 +9,7 @@ import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSpriteUtil;
-// Dialogue box
 import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
 // Imports for map
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
@@ -32,8 +30,8 @@ class PlayState extends FlxState {
 	var _enemy:Enemy;
 	var _grpHud:FlxTypedGroup<FlxSprite>;
 	// Vars for NPC
-	var _grpDialoguePopup:DialoguePrompt;
-	var _grpDialogueBox:FlxTypedGroup<FlxSprite>;
+	var _dialoguePrompt:DialoguePrompt;
+	var _grpDialogueBox:DialogueBox;
 	var _friend:FlxSprite;
 	// Vars for health
 	var _health:FlxSprite;
@@ -117,26 +115,16 @@ class PlayState extends FlxState {
 		add(_friend);
 
 		// Friend Dialogue Bubble
-		_grpDialoguePopup = new DialoguePrompt(120, 820 + (150 / 2), 390, "Press [E]");
-		add(_grpDialoguePopup);
+		_dialoguePrompt = new DialoguePrompt(120, 820 + (150 / 2), 390, "Press Z");
+		add(_dialoguePrompt);
 
 		// Friend dialogue box
-		_grpDialogueBox = new FlxTypedGroup<FlxSprite>();
-
-		var _dialogueBox:FlxSprite = new FlxSprite(0, FlxG.height - 200).makeGraphic(FlxG.width, 200, 0xff205ab7);
-		_dialogueBox.scrollFactor.set(0, 0);
-		_dialogueBox.alpha = 0;
-		_grpDialogueBox.add(_dialogueBox);
-
-		var _dialogueBoxText = new FlxText(120, FlxG.height - 180, FlxG.width);
-		_dialogueBoxText.text = "Hey friend slow down!";
-		// Wow, I've never seen a Pangolin run so fast before.
-		// Maybe you could do me a favour?
-		_dialogueBoxText.scrollFactor.set(0, 0);
-		_dialogueBoxText.alpha = 0;
-		_dialogueBoxText.setFormat(null, 20, FlxColor.WHITE, LEFT);
-		_grpDialogueBox.add(_dialogueBoxText);
-
+		var testText:Array<String> = [
+			'Hey friend slow down!',
+			'Wow, I"ve never seen a Pangolin run so fast before.',
+			'Maybe you could do me a favour?'
+		];
+		_grpDialogueBox = new DialogueBox(testText);
 		add(_grpDialogueBox);
 
 		// Add enemy
@@ -171,15 +159,17 @@ class PlayState extends FlxState {
 	}
 
 	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+
 		// Reset the game if the player goes higher/lower than the map
 		if (_player.y > _level.height) {
 			_justDied = true;
 			FlxG.resetState();
 		}
 
-		super.update(elapsed);
-
+		// _grpDialogueBox.dialogueControls();
 		// Collisions
+
 		FlxG.collide(_player, _levelCollisions);
 
 		// Overlaps
@@ -188,9 +178,7 @@ class PlayState extends FlxState {
 
 		if (!FlxG.overlap(_player, _friend, initConvo)) {
 			ePressed = false;
-			_grpDialoguePopup.forEach((member:FlxSprite) -> {
-				FlxTween.tween(member, {alpha: 0, y: 390}, .1);
-			});
+			_dialoguePrompt.hidePrompt();
 		};
 	}
 
@@ -249,22 +237,20 @@ class PlayState extends FlxState {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			if (!ePressed) {
 				// show press e prompt
-				_grpDialoguePopup.showPrompt();
+				_dialoguePrompt.showPrompt();
 			}
 
-			if (FlxG.keys.anyPressed([E])) {
+			if (FlxG.keys.anyPressed([Z])) {
 				ePressed = true;
 				if (!startingConvo) {
 					// hide dialogue bubble
-					_grpDialoguePopup.hidePrompt();
+					_dialoguePrompt.hidePrompt(true);
 					// zoom camera
 					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {
 						onComplete: (_) -> {
 							startingConvo = true;
 							// show dialogue box
-							_grpDialogueBox.forEach((member:FlxSprite) -> {
-								FlxTween.tween(member, {alpha: 1}, .1);
-							});
+							_grpDialogueBox.showBox();
 						}
 					});
 					// prevent character movement
@@ -280,9 +266,7 @@ class PlayState extends FlxState {
 						onComplete: (_) -> startingConvo = false
 					});
 					// hide dialogue box
-					_grpDialogueBox.forEach((member:FlxSprite) -> {
-						member.alpha = 0;
-					});
+					_grpDialogueBox.hideBox();
 
 					// prevent character movement
 					Player.preventMovement = false;

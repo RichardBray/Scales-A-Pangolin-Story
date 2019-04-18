@@ -3,7 +3,7 @@ package;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 
-class Hud extends FlxSpriteGroup {
+class HUD extends FlxSpriteGroup {
 	var _health:FlxSprite;
 
 	public function new(_playerHealth:Int) {

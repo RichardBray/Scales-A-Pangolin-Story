@@ -20,12 +20,13 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 
 	/**
 	 * Created the box and text elements for a dialogue prompt.
-	 * @param DialogueWidth Width of the whole dialogue box.
-	 * @param X X positions.
-	 * @param Y Y position.
-	 * @param DialogueText Text that will go in the box, this will change to an image.
+	 *
+	 * @param		DialogueWidth		Width of the whole dialogue box.
+	 * @param		X								X positions.
+	 * @param		Y								Y position.
+	 * @param		DialogueText 		Text that will go in the box, this will change to string for image.
 	 */
-	public function new(DialogueWidth:Int, X:Float = 0, Y:Float = 0, DialogueText:String) {
+	public function new(DialogueWidth:Int, X:Float = 0, Y:Float = 0, DialogueText:String):Void {
 		super();
 
 		_dialogueXPos = X - (DialogueWidth / 2);
@@ -59,18 +60,21 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 		add(_dialogueText);
 
 		// Hide the members
-		this.forEach((member:FlxSprite) -> member.alpha = 0);
+		this.forEach((_member:FlxSprite) -> _member.alpha = 0);
 	}
 
 	public function showPrompt():Void {
-		this.forEach((member:FlxSprite) -> {
-			FlxTween.tween(member, {alpha: 1, y: _dialogueYPosLow}, .1);
+		this.forEach((_member:FlxSprite) -> {
+			FlxTween.tween(_member, {alpha: 1, y: _dialogueYPosLow}, .1);
 		});
 	}
 
-	public function hidePrompt():Void {
-		this.forEach((member:FlxSprite) -> {
-			FlxTween.tween(member, {alpha: 0, y: _dialogueYPos}, .1, {onComplete: (_) -> member.alpha = 0});
+	/**
+	 * @param UseOnComplete Detemines if members should hide on tween complete.
+	 */
+	public function hidePrompt(UseOnComplete:Bool = false):Void {
+		this.forEach((_member:FlxSprite) -> {
+			FlxTween.tween(_member, {alpha: 0, y: _dialogueYPos}, .1, UseOnComplete ? {onComplete: (_) -> _member.alpha = 0} : null);
 		});
 	}
 }
