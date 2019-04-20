@@ -70,7 +70,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	}
 
 	/**
-	 * @param UseOnComplete Detemines if members should hide on tween complete.
+	 * @param UseOnComplete Detemines if members should use tween onComplete option.
 	 */
 	public function hidePrompt(UseOnComplete:Bool = false):Void {
 		this.forEach((_member:FlxSprite) -> {

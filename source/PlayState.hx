@@ -24,18 +24,16 @@ import flixel.graphics.frames.FlxTileFrames;
 class PlayState extends FlxState {
 	var _txtScore:FlxText;
 	var _score:Int = 0;
-	var _player:Player;
 	var _grpBugs:FlxTypedGroup<CollectableBug>;
 	var _justDied:Bool = false; // Will be used later
 	var _enemy:Enemy;
-	var _grpHud:FlxTypedGroup<FlxSprite>;
+
+	public var grpHud:HUD;
+
 	// Vars for NPC
 	var _dialoguePrompt:DialoguePrompt;
 	var _grpDialogueBox:DialogueBox;
 	var _friend:FlxSprite;
-	// Vars for health
-	var _health:FlxSprite;
-	var _hearts:FlxSpriteGroup;
 	// Vars for map
 	var _level:FlxTilemap;
 	var _levelCollisions:FlxTilemapExt;
@@ -43,8 +41,10 @@ class PlayState extends FlxState {
 	var _mapObjects:TiledObjectLayer;
 	var _mapTrees:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
-	var startingConvo:Bool = false;
-	var ePressed:Bool = false;
+	var actionPressed:Bool = false;
+
+	public var startingConvo:Bool = false;
+	public var player:Player;
 
 	override public function create():Void {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
@@ -120,11 +120,12 @@ class PlayState extends FlxState {
 
 		// Friend dialogue box
 		var testText:Array<String> = [
-			'Hey friend slow down!',
-			'Wow, I"ve never seen a Pangolin run so fast before.',
-			'Maybe you could do me a favour?'
+			"Hey friend slow down!",
+			"Wow, I've never seen a Pangolin run and jump as fast as you before.",
+			"Say–maybe you could do me a favour?",
+			"If you bring me 14 tasty bugs, I could give you some interesintg things I've found around the jungle."
 		];
-		_grpDialogueBox = new DialogueBox(testText);
+		_grpDialogueBox = new DialogueBox(testText, this);
 		add(_grpDialogueBox);
 
 		// Add enemy
@@ -132,28 +133,15 @@ class PlayState extends FlxState {
 		add(_enemy);
 
 		// Add player
-		_player = new Player(60, 600);
-		add(_player);
-
-		// HUD!!!
-		// Show score text
-		_grpHud = new FlxTypedGroup<FlxSprite>();
-		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore());
-		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
-		_txtScore.scrollFactor.set(0, 0);
-		_grpHud.add(_txtScore);
-
-		// Hearts
-		_hearts = new FlxSpriteGroup();
-		_hearts.scrollFactor.set(0, 0);
-		createHearts();
-		_grpHud.add(_hearts);
+		player = new Player(60, 600);
+		add(player);
 
 		// Add Hud
-		add(_grpHud);
+		grpHud = new HUD(this);
+		add(grpHud);
 
 		// Player Camera
-		FlxG.camera.follow(_player, PLATFORMER, 1);
+		FlxG.camera.follow(player, PLATFORMER, 1);
 
 		super.create();
 	}
@@ -162,7 +150,7 @@ class PlayState extends FlxState {
 		super.update(elapsed);
 
 		// Reset the game if the player goes higher/lower than the map
-		if (_player.y > _level.height) {
+		if (player.y > _level.height) {
 			_justDied = true;
 			FlxG.resetState();
 		}
@@ -170,31 +158,16 @@ class PlayState extends FlxState {
 		// _grpDialogueBox.dialogueControls();
 		// Collisions
 
-		FlxG.collide(_player, _levelCollisions);
+		FlxG.collide(player, _levelCollisions);
 
 		// Overlaps
-		FlxG.overlap(_player, _enemy, hitEnemy);
-		FlxG.overlap(_grpBugs, _player, getBug);
+		FlxG.overlap(player, _enemy, hitEnemy);
+		FlxG.overlap(_grpBugs, player, getBug);
 
-		if (!FlxG.overlap(_player, _friend, initConvo)) {
-			ePressed = false;
+		if (!FlxG.overlap(player, _friend, initConvo)) {
+			actionPressed = false;
 			_dialoguePrompt.hidePrompt();
 		};
-	}
-
-	/**
-	 * Std.int converts float to int
-	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
-	 */
-	private function createHearts():Void {
-		for (i in 0...Std.int(_player.health)) {
-			_health = new FlxSprite((i * 80), 30).loadGraphic("assets/images/heart.png", false, 60, 60);
-			_hearts.add(_health);
-		}
-	}
-
-	private function updateScore():String {
-		return "Score:" + _score;
 	}
 
 	/**
@@ -225,23 +198,18 @@ class PlayState extends FlxState {
 			}
 		}
 
-		_hearts.forEach((s:FlxSprite) -> {
-			if (index == Player.health) {
-				s.alpha = 0.2;
-			}
-			index++;
-		});
+		grpHud.decrementHealth();
 	}
 
 	private function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
-			if (!ePressed) {
+			if (!actionPressed) {
 				// show press e prompt
 				_dialoguePrompt.showPrompt();
 			}
 
 			if (FlxG.keys.anyPressed([Z])) {
-				ePressed = true;
+				actionPressed = true;
 				if (!startingConvo) {
 					// hide dialogue bubble
 					_dialoguePrompt.hidePrompt(true);
@@ -257,23 +225,19 @@ class PlayState extends FlxState {
 					Player.preventMovement = true;
 
 					// hide HUD
-					_grpHud.forEach((member:FlxSprite) -> {
-						member.alpha = 0;
-					});
+					grpHud.toggleHUD(0);
 				} else {
-					// show dialogue bubble
+					// unzoom camera
 					FlxTween.tween(FlxG.camera, {zoom: 1}, 0.2, {
 						onComplete: (_) -> startingConvo = false
 					});
 					// hide dialogue box
 					_grpDialogueBox.hideBox();
 
-					// prevent character movement
+					// allow character movement
 					Player.preventMovement = false;
 					// show HUD
-					_grpHud.forEach((member:FlxSprite) -> {
-						member.alpha = 1;
-					});
+					grpHud.toggleHUD(1);
 				}
 			}
 		}
@@ -281,8 +245,7 @@ class PlayState extends FlxState {
 
 	private function getBug(Bug:FlxObject, Player:FlxObject):Void {
 		if (Bug.alive && Bug.exists) {
-			_score = _score + 1;
-			_txtScore.text = updateScore();
+			grpHud.incrementScore();
 			Bug.kill();
 		}
 	}
