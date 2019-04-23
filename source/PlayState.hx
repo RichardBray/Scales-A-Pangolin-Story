@@ -41,7 +41,8 @@ class PlayState extends FlxState {
 	var _mapObjects:TiledObjectLayer;
 	var _mapTrees:TiledObjectLayer;
 	var _mapEntities:FlxSpriteGroup;
-	var actionPressed:Bool = false;
+	var _actionPressed:Bool = false;
+	var _mountains:FlxSprite;
 
 	public var startingConvo:Bool = false;
 	public var player:Player;
@@ -54,6 +55,12 @@ class PlayState extends FlxState {
 		/**
 		 * Code for adding the environment and collisions
 		 */
+
+		_mountains = new FlxSprite(0, 350, "assets/images/mountains.png");
+		_mountains.scale.set(4.5, 4.5);
+		_mountains.alpha = 0.75;
+		_mountains.scrollFactor.set(.2, 0);
+		add(_mountains);
 
 		// Load custom tilemap
 		_map = new TiledMap("assets/data/level-1-2.tmx");
@@ -169,7 +176,7 @@ class PlayState extends FlxState {
 		FlxG.overlap(_grpBugs, player, getBug);
 
 		if (!FlxG.overlap(player, _npcBoundary, initConvo)) {
-			actionPressed = false;
+			_actionPressed = false;
 			_dialoguePrompt.hidePrompt();
 		};
 	}
@@ -207,13 +214,13 @@ class PlayState extends FlxState {
 
 	private function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
-			if (!actionPressed) {
+			if (!_actionPressed) {
 				// show press e prompt
 				_dialoguePrompt.showPrompt();
 			}
 
 			if (FlxG.keys.anyPressed([Z])) {
-				actionPressed = true;
+				_actionPressed = true;
 				if (!startingConvo) {
 					// hide dialogue bubble
 					_dialoguePrompt.hidePrompt(true);
