@@ -10,6 +10,8 @@ import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSpriteUtil;
 import flixel.math.FlxPoint;
+// NPC
+import flixel.util.FlxColor;
 // Imports for map
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
@@ -27,13 +29,11 @@ class PlayState extends FlxState {
 	var _grpBugs:FlxTypedGroup<CollectableBug>;
 	var _justDied:Bool = false; // Will be used later
 	var _enemy:Enemy;
-
-	public var grpHud:HUD;
-
 	// Vars for NPC
 	var _dialoguePrompt:DialoguePrompt;
 	var _grpDialogueBox:DialogueBox;
-	var _friend:FlxSprite;
+	var _npcBoundary:FlxSprite;
+	var _npc:FlxSprite;
 	// Vars for map
 	var _level:FlxTilemap;
 	var _levelCollisions:FlxTilemapExt;
@@ -45,6 +45,7 @@ class PlayState extends FlxState {
 
 	public var startingConvo:Bool = false;
 	public var player:Player;
+	public var grpHud:HUD;
 
 	override public function create():Void {
 		FlxG.mouse.visible = true; // Hide the mouse cursor
@@ -109,10 +110,12 @@ class PlayState extends FlxState {
 
 		// CHARACRERS!!!
 
-		// Add friend
-		// Want the friend behind the rocks
-		_friend = new FlxSprite(820, 510).makeGraphic(150, 50, 0xff205ab7);
-		add(_friend);
+		// NPC start
+		// Want the npc behind the rocks
+		_npcBoundary = new FlxSprite(820, 510).makeGraphic(150, 50, FlxColor.TRANSPARENT);
+		add(_npcBoundary);
+		_npc = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
+		add(_npc);
 
 		// Friend Dialogue Bubble
 		_dialoguePrompt = new DialoguePrompt(120, 820 + (150 / 2), 390, "Press Z");
@@ -123,10 +126,11 @@ class PlayState extends FlxState {
 			"Hey friend slow down!",
 			"Wow, I've never seen a Pangolin run and jump as fast as you before.",
 			"Say–maybe you could do me a favour?",
-			"If you bring me 14 tasty bugs, I could give you some interesintg things I've found around the jungle."
+			"If you bring me <pt>14 tasty bugs<pt>, I could give you some interesintg things I've found around the jungle."
 		];
 		_grpDialogueBox = new DialogueBox(testText, this);
 		add(_grpDialogueBox);
+		// NPC end
 
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
@@ -164,7 +168,7 @@ class PlayState extends FlxState {
 		FlxG.overlap(player, _enemy, hitEnemy);
 		FlxG.overlap(_grpBugs, player, getBug);
 
-		if (!FlxG.overlap(player, _friend, initConvo)) {
+		if (!FlxG.overlap(player, _npcBoundary, initConvo)) {
 			actionPressed = false;
 			_dialoguePrompt.hidePrompt();
 		};
