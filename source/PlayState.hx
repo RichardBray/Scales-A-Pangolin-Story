@@ -43,6 +43,8 @@ class PlayState extends FlxState {
 	var _mapEntities:FlxSpriteGroup;
 	var _actionPressed:Bool = false;
 	var _mountains:FlxSprite;
+	// Pause menue
+	var _pauseMenu:PauseMenu;
 
 	public var startingConvo:Bool = false;
 	public var player:Player;
@@ -56,10 +58,10 @@ class PlayState extends FlxState {
 		 * Code for adding the environment and collisions
 		 */
 
-		_mountains = new FlxSprite(0, 350, "assets/images/mountains.png");
+		_mountains = new FlxSprite(0, 400, "assets/images/mountains.png");
 		_mountains.scale.set(4.5, 4.5);
 		_mountains.alpha = 0.75;
-		_mountains.scrollFactor.set(.2, 0);
+		_mountains.scrollFactor.set(.2, 1);
 		add(_mountains);
 
 		// Load custom tilemap
@@ -151,6 +153,10 @@ class PlayState extends FlxState {
 		grpHud = new HUD(this);
 		add(grpHud);
 
+		// Add pause menu
+		_pauseMenu = new PauseMenu();
+		add(_pauseMenu);
+
 		// Player Camera
 		FlxG.camera.follow(player, PLATFORMER, 1);
 
@@ -166,9 +172,12 @@ class PlayState extends FlxState {
 			FlxG.resetState();
 		}
 
-		// _grpDialogueBox.dialogueControls();
+		// Pause button
+		if (FlxG.keys.anyJustReleased([ESCAPE])) {
+			_pauseMenu.gamePaused ? _pauseMenu.toggle(0) : _pauseMenu.toggle(1);
+			js.Browser.console.log('Pause menu');
+		}
 		// Collisions
-
 		FlxG.collide(player, _levelCollisions);
 
 		// Overlaps
