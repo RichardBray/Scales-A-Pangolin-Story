@@ -43,9 +43,8 @@ class PlayState extends FlxState {
 	var _mapEntities:FlxSpriteGroup;
 	var _actionPressed:Bool = false;
 	var _mountains:FlxSprite;
-	// Pause menue
-	var _pauseMenu:PauseMenu;
 
+	// Pause menue
 	public var startingConvo:Bool = false;
 	public var player:Player;
 	public var grpHud:HUD;
@@ -153,10 +152,6 @@ class PlayState extends FlxState {
 		grpHud = new HUD(this);
 		add(grpHud);
 
-		// Add pause menu
-		_pauseMenu = new PauseMenu();
-		add(_pauseMenu);
-
 		// Player Camera
 		FlxG.camera.follow(player, PLATFORMER, 1);
 
@@ -171,11 +166,12 @@ class PlayState extends FlxState {
 			_justDied = true;
 			FlxG.resetState();
 		}
-
-		// Pause button
+		// Paused game state
 		if (FlxG.keys.anyJustReleased([ESCAPE])) {
-			_pauseMenu.gamePaused ? _pauseMenu.toggle(0) : _pauseMenu.toggle(1);
-			js.Browser.console.log('Pause menu');
+			// SubState needs to be recreated here as it will be destroyed
+			var _pauseMenu:PauseMenu = new PauseMenu();
+			openSubState(_pauseMenu);
+			// closeSubState();
 		}
 		// Collisions
 		FlxG.collide(player, _levelCollisions);
