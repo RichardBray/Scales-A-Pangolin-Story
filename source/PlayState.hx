@@ -50,6 +50,7 @@ class PlayState extends FlxState {
 	public var grpHud:HUD;
 
 	override public function create():Void {
+		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		FlxG.mouse.visible = true; // Hide the mouse cursor
 		bgColor = 0xffc7e4db; // Game background color
 
@@ -57,10 +58,11 @@ class PlayState extends FlxState {
 		 * Code for adding the environment and collisions
 		 */
 
+		// Code for parallax background
 		_mountains = new FlxSprite(0, 400, "assets/images/mountains.png");
 		_mountains.scale.set(4.5, 4.5);
 		_mountains.alpha = 0.75;
-		_mountains.scrollFactor.set(.2, 1);
+		_mountains.scrollFactor.set(0.3, 1);
 		add(_mountains);
 
 		// Load custom tilemap
@@ -164,14 +166,15 @@ class PlayState extends FlxState {
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _level.height) {
 			_justDied = true;
-			FlxG.resetState();
+			// TODO refactor this!!!
+			var _pauseMenu:PauseMenu = new PauseMenu(true);
+			openSubState(_pauseMenu);
 		}
 		// Paused game state
-		if (FlxG.keys.anyJustReleased([ESCAPE])) {
+		if (FlxG.keys.anyJustPressed([ESCAPE])) {
 			// SubState needs to be recreated here as it will be destroyed
 			var _pauseMenu:PauseMenu = new PauseMenu();
 			openSubState(_pauseMenu);
-			// closeSubState();
 		}
 		// Collisions
 		FlxG.collide(player, _levelCollisions);

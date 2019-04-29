@@ -13,11 +13,17 @@ class PauseMenu extends FlxSubState {
 	var _menuTitle:FlxText;
 	var _menuWidth:Int = 500;
 	var _menuHeight:Int = 600;
+	var _selected:Int = 0;
+	var _pointer:FlxSprite;
+	var _choices:Array<FlxText>;
+	var _titleText:String;
+	var _playerDied:Bool;
 
 	public var gamePaused:Bool = false;
 
-	public function new():Void {
+	public function new(PlayerDied:Bool = false):Void {
 		super();
+		_playerDied = PlayerDied;
 		_grpMenuItems = new FlxSpriteGroup();
 		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
 		_grpMenuItems.add(_gameOverlay);
@@ -26,32 +32,59 @@ class PauseMenu extends FlxSubState {
 		_boundingBox.makeGraphic(_menuWidth, _menuHeight, 0xff205ab7);
 		_grpMenuItems.add(_boundingBox);
 
-		_menuTitle = new FlxText(20, 100, 0, "Game Paused", 22);
+		_titleText = _playerDied ? "GAME OVER" : "GAME PAUSED";
+		_menuTitle = new FlxText(20, 110, 0, _titleText, 30);
 		_menuTitle.alignment = CENTER;
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
 
+		_pointer = new FlxSprite(_menuTitle.x, _menuTitle.y + 200);
+		_pointer.makeGraphic(_menuWidth, 60, 0xffdc2de4);
+		_grpMenuItems.add(_pointer);
+
 		/**
-		 * GAME PAUSED
-		 * Restart Level
-		 * Load latest checkpoint
+		 * Text for paused screen.
+		 *
+		 * Restart
 		 * Settings
 		 * Quit
 		 */
+		_choices = new Array<FlxText>();
+		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 200, 0, "Restart", 22));
+		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 250, 0, "Quit", 22));
 
-		// Hide and fix the members to the screen
+		// Fix members to the screen
 		_grpMenuItems.forEach((_member:FlxSprite) -> {
-			// _member.alpha = 0;
 			_member.scrollFactor.set(0, 0);
 		});
 
 		add(_grpMenuItems);
+		//
+		_choices.map((_choice:FlxText) -> {
+			_choice.screenCenter(X);
+			_choice.scrollFactor.set(0, 0);
+			add(_choice);
+		});
 	}
 
 	override public function update(elapsed:Float):Void {
-		if (FlxG.keys.anyJustReleased([ESCAPE])) {
+		if (FlxG.keys.anyJustPressed([ESCAPE])) {
 			close();
 		}
+
+		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
+			switch _selected {
+				case 0:
+					// Restarts the game / level
+					FlxG.resetState();
+				case 1:
+					// Should go back to main menu
+					js.Browser.console.log('Quit game');
+				default:
+					js.Browser.console.log('Quit game');
+			}
+		}
+
 		super.update(elapsed);
 	}
 
