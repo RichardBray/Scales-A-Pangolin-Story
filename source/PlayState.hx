@@ -43,8 +43,8 @@ class PlayState extends FlxState {
 	var _mapEntities:FlxSpriteGroup;
 	var _actionPressed:Bool = false;
 	var _mountains:FlxSprite;
+	var _levelExit:FlxSprite;
 
-	// Pause menue
 	public var startingConvo:Bool = false;
 	public var player:Player;
 	public var grpHud:HUD;
@@ -142,6 +142,10 @@ class PlayState extends FlxState {
 		add(_grpDialogueBox);
 		// NPC end
 
+		// Level exit
+		_levelExit = new FlxSprite((_level.width - 150), 650).makeGraphic(100, 100, FlxColor.WHITE);
+		add(_levelExit);
+
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
 		add(_enemy);
@@ -181,6 +185,7 @@ class PlayState extends FlxState {
 		// Overlaps
 		FlxG.overlap(player, _enemy, hitEnemy);
 		FlxG.overlap(_grpBugs, player, getBug);
+		FlxG.overlap(_levelExit, player, changeState);
 
 		if (!FlxG.overlap(player, _npcBoundary, initConvo)) {
 			_actionPressed = false;
@@ -312,5 +317,9 @@ class PlayState extends FlxState {
 		} else if (Object.y >= Tile.y) {
 			Tile.allowCollisions = FlxObject.CEILING;
 		}
+	}
+
+	function changeState(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.switchState(new NextLevel());
 	}
 }
