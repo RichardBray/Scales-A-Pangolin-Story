@@ -43,12 +43,9 @@ class PauseMenu extends FlxSubState {
 
 		/**
 		 * Text for paused screen.
-		 *
-		 * Restart
-		 * Settings
-		 * Quit
 		 */
 		_choices = new Array<FlxText>();
+		// Add resume
 		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 200, 0, "Restart", 22));
 		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 250, 0, "Quit", 22));
 

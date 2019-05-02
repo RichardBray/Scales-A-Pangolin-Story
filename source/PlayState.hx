@@ -166,7 +166,6 @@ class PlayState extends FlxState {
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _level.height) {
 			_justDied = true;
-			// TODO refactor this!!!
 			var _pauseMenu:PauseMenu = new PauseMenu(true);
 			openSubState(_pauseMenu);
 		}
@@ -192,35 +191,39 @@ class PlayState extends FlxState {
 	/**
 	 * What happens when the player and the enemy collide
 	 */
-	private function hitEnemy(Player:FlxSprite, Enemy:FlxObject):Void {
-		var index:Int = 0;
-
-		if (Player.isTouching(FlxObject.FLOOR)) {
-			Player.hurt(1);
-			FlxSpriteUtil.flicker(Player);
-
-			if (Player.flipX) { // if facing left
-				FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
-			} else { // facing right
-				FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
-			}
-		} else {
-			// Player bounce
-			Player.velocity.y = -600;
-			// from the top
-			// when rolling animation is playing
-			if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
-				Enemy.kill();
-			} else { // when rolling animation is NOT playing
+	function hitEnemy(Player:FlxSprite, Enemy:FlxObject):Void {
+		if (Player.health > 1) {
+			if (Player.isTouching(FlxObject.FLOOR)) {
 				Player.hurt(1);
 				FlxSpriteUtil.flicker(Player);
+
+				if (Player.flipX) { // if facing left
+					FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
+				} else { // facing right
+					FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
+				}
+			} else {
+				// Player bounce
+				Player.velocity.y = -600;
+				// from the top
+				// when rolling animation is playing
+				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
+					Enemy.kill();
+				} else { // when rolling animation is NOT playing
+					Player.hurt(1);
+					FlxSpriteUtil.flicker(Player);
+				}
 			}
+		} else {
+			// @todo play death animation
+			var _pauseMenu:PauseMenu = new PauseMenu(true);
+			openSubState(_pauseMenu);
 		}
 
 		grpHud.decrementHealth();
 	}
 
-	private function initConvo(Player:Player, Friend:FlxSprite):Void {
+	function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			if (!_actionPressed) {
 				// show press e prompt
@@ -262,7 +265,7 @@ class PlayState extends FlxState {
 		}
 	}
 
-	private function getBug(Bug:FlxObject, Player:FlxObject):Void {
+	function getBug(Bug:FlxObject, Player:FlxObject):Void {
 		if (Bug.alive && Bug.exists) {
 			grpHud.incrementScore();
 			Bug.kill();
@@ -272,7 +275,7 @@ class PlayState extends FlxState {
 	/**
 	 * Place entities from Tilemap. This method just converts strings to integers.
 	 */
-	private function placeEntities(entityData:Xml, objectId:Int):Void {
+	function placeEntities(entityData:Xml, objectId:Int):Void {
 		var x:Int = Std.parseInt(entityData.get("x")); // Parse string to int
 		var y:Int = Std.parseInt(entityData.get("y"));
 		var width:Int = Std.parseInt(entityData.get("width"));
@@ -283,7 +286,7 @@ class PlayState extends FlxState {
 	/**
 	 * Makes object to colider with `Player` in level.
 	 */
-	private function createEntity(X:Int, Y:Int, width:Int, height:Int, objectId:Int):Void {
+	function createEntity(X:Int, Y:Int, width:Int, height:Int, objectId:Int):Void {
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage = new Map<Int, String>();
 		layerImage = [
@@ -303,7 +306,7 @@ class PlayState extends FlxState {
 	}
 
 	/** Special tiles **/
-	private function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
+	function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
 		if (FlxG.keys.anyPressed([DOWN, S])) {
 			Tile.allowCollisions = FlxObject.NONE;
 		} else if (Object.y >= Tile.y) {
