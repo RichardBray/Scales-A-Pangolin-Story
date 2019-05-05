@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="left-up" width="200" height="80" tilewidth="10" tileheight="10" infinite="0" nextlayerid="4" nextobjectid="15">
+ <tileset firstgid="1" source="ground-collisions.tsx"/>
+ <tileset firstgid="226" source="Images.tsx"/>
+ <layer id="1" name="ground" width="200" height="80">
+  <data encoding="base64" compression="zlib">
+   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
+  </data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="1" gid="227" x="903.939" y="637.333" width="380" height="608"/>
+  <object id="2" gid="228" x="265.97" y="634" width="462" height="669"/>
+  <object id="3" gid="226" x="266.515" y="627.121" width="138" height="111"/>
+  <object id="4" gid="229" x="82" y="531.182" width="36" height="27"/>
+  <object id="5" gid="229" x="193.636" y="443.061" width="36" height="27"/>
+  <object id="6" gid="229" x="572.667" y="299.667" width="36" height="27"/>
+  <object id="7" gid="229" x="450" y="338.333" width="36" height="27"/>
+  <object id="8" gid="229" x="744.667" y="351.667" width="36" height="27"/>
+  <object id="9" gid="229" x="812.667" y="399.667" width="36" height="27"/>
+  <object id="10" gid="229" x="983.333" y="454.333" width="36" height="27"/>
+  <object id="11" gid="229" x="1147.33" y="361" width="36" height="27"/>
+  <object id="12" gid="229" x="1274" y="537" width="36" height="27"/>
+  <object id="13" gid="229" x="1756.67" y="359.667" width="36" height="27"/>
+  <object id="14" gid="229" x="1646" y="307.667" width="36" height="27"/>
+ </objectgroup>
+ <layer id="3" name="collisions" width="200" height="80" opacity="0.6">
+  <data encoding="base64" compression="zlib">
+   eJzt20sKwkAQRdEgONH971cnPVEe+RUhqZwDvYGqXJG0ThMAAAAAAAAAAAAAAAAAAAAAAAAALPNceQAAAAAAAID7cZfIY+fhPPRczzMOmT4gu0sfvm/885vNeXfpA7bQB2T6gEwfdLb3/kIfdOb5hkwfkOkDMn1Apg/cf2f6gEwfdOf+AjLPOGT6qPX6nvdkrl3YY43RxWCuPdjjPr9dDOaaXeldsD1uk7oYzLUHe1xnrovBXK/BO9o6a2ZlrtdgT3X00Y891dFHP/ZURx/92FMdffRjT8tVvsuo+G++c8xhGbOiE58lAAAAAAAAAAAAAACcwQdUYAN9
+  </data>
+ </layer>
+</map>

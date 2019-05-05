@@ -1,5 +1,15 @@
 # Pangolin game
 
+## Dependencies
+
+- Haxe
+- HaxeFlixel
+- OpenFl
+- Lime
+- Facebook Watchman (https://facebook.github.io/watchman/docs/install.html)
+- Node
+- http-server (https://www.npmjs.com/package/http-server)
+
 ## Run the game
 
 This games uses Lime by Openfl to run.
