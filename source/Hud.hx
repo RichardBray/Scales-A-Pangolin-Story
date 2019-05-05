@@ -1,18 +1,23 @@
 package;
 
+import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
+
+interface Levelish extends FlxState {
+    public function toString():String;
+}
 
 class HUD extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
 	var _txtScore:FlxText;
 	var _health:FlxSprite;
 	var _score:Int = 0;
-	var _parentState:PlayState;
+	var _parentState:Levelish;
 
-	public function new(ParentState:PlayState) {
+	public function new(ParentState:Levelish) {
 		super();
 
 		_parentState = ParentState;

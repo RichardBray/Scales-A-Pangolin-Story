@@ -23,6 +23,7 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.addons.tile.FlxTilemapExt;
 import flixel.graphics.frames.FlxTileFrames;
 
+
 class PlayState extends FlxState {
 	var _txtScore:FlxText;
 	var _score:Int = 0;
