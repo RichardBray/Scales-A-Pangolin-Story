@@ -1,28 +1,24 @@
 package;
 
-import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 
-interface Levelish extends FlxState {
-    public function toString():String;
-}
-
 class HUD extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
 	var _txtScore:FlxText;
 	var _health:FlxSprite;
-	var _score:Int = 0;
-	var _parentState:Levelish;
+	var _gameScore:Int;
+	var _playerHealth:Int;
 
-	public function new(ParentState:Levelish) {
+	public function new(Score:Int, Health:Int) {
 		super();
 
-		_parentState = ParentState;
+		_gameScore = Score;
+		_playerHealth = Health;
 		// Socre text
-		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore());
+		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore(_gameScore));
 		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
 		add(_txtScore);
 
@@ -46,22 +42,22 @@ class HUD extends FlxSpriteGroup {
 	}
 
 	public function incrementScore():Void {
-		_score = _score + 1;
-		_txtScore.text = updateScore();
+		_gameScore = _gameScore + 1;
+		_txtScore.text = updateScore(_gameScore);
 	}
 
 	public function decrementHealth() {
 		var index:Int = 0;
 		_hearts.forEach((s:FlxSprite) -> {
-			if (index == _parentState.player.health) {
+			if (index == _playerHealth) {
 				s.alpha = 0.2;
 			}
 			index++;
 		});
 	}
 
-	function updateScore():String {
-		return "Score:" + _score;
+	function updateScore(Score:Int):String {
+		return "Score:" + Score;
 	}
 
 	/**
@@ -69,7 +65,7 @@ class HUD extends FlxSpriteGroup {
 	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
 	 */
 	function createHearts():Void {
-		for (i in 0...Std.int(_parentState.player.health)) {
+		for (i in 0...Std.int(_playerHealth)) {
 			_health = new FlxSprite((i * 80), 10).loadGraphic("assets/images/heart.png", false, 60, 60);
 			_hearts.add(_health);
 		}

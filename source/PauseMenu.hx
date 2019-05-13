@@ -75,9 +75,8 @@ class PauseMenu extends FlxSubState {
 					FlxG.resetState();
 				case 1:
 					// Should go back to main menu
-					js.Browser.console.log('Quit game');
 				default:
-					js.Browser.console.log('Quit game');
+					
 			}
 		}
 
