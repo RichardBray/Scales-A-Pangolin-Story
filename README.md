@@ -30,7 +30,7 @@ To run the server for html5.
 
 In another one
 ```bash
-watchman-make -p '**/*.hx' -r 'sh watcher.sh'
+watchman-make -p 'source/*.hx' -r 'sh watcher.sh'
 ```
 To rebuild the game when a .hx file has been changed.
 

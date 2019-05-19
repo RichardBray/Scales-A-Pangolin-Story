@@ -25,14 +25,13 @@ class GameLevel extends FlxState {
     var _mapEntities:FlxSpriteGroup;
     var _grpCollectables:FlxTypedGroup<CollectableBug>;
     var _levelCollisions:FlxTilemapExt;
-    var _levelExit:FlxSprite;
     var _map:TiledMap;
     var _mapObjects:TiledObjectLayer;
     var _collisionImg:String;
 
     public var grpHud:HUD;
     public var player:Player; // used by HUD for health
-    public var overallScore:Int; 
+	public var levelExit:FlxSprite;
 
     override public function create():Void {
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
@@ -73,8 +72,17 @@ class GameLevel extends FlxState {
         FlxG.overlap(_grpCollectables, player, getCollectable);
     }
 
-    public function createLevel(MapFile:String, Background:String):Void {
+	/**
+	 *
+	 *
+	 * @param 	MapFile 	Comtains the name of the tmx data file used for the map.
+	 * @param 	Background 	Parallax background image name.
+	 * @param 	LevelStart	If the level should have a start, opposite to level exit.
+	 */
+    public function createLevel(MapFile:String, Background:String, LevelStart:Bool = false):Void {
         _collisionImg = "assets/images/ground-collisions.png";
+
+		if (LevelStart) var levelStart;
         /**
         * Code for adding the environment and collisions
         */
@@ -118,7 +126,8 @@ class GameLevel extends FlxState {
         _mapEntities.y = 0; // For some reason this fixes the images being too low -115.     
 
 		// Add envirionment collisions
-		_levelCollisions = new FlxTilemapExt();                         		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
+		_levelCollisions = new FlxTilemapExt();                         		
+		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
 			_collisionImg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
 		_levelCollisions.follow(); // lock camera to map's edges
 
@@ -132,12 +141,12 @@ class GameLevel extends FlxState {
         add(_levelCollisions);
 
 		// Level exit
-		_levelExit = new FlxSprite((_level.width - 150), 650).makeGraphic(100, 100, FlxColor.WHITE);
-        add(_levelExit);               
+		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, 720, FlxColor.WHITE);
+        add(levelExit);               
 
     } 
 
-    public function createHUD(Score:Int, Health:Int) {
+    public function createHUD(Score:Int, Health:Float) {
 		// Add Hud
 		grpHud = new HUD(Score, Health);
 		add(grpHud);   

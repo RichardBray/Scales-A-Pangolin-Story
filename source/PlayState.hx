@@ -22,7 +22,6 @@ class PlayState extends GameLevel {
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
-		overallScore = 0;
 	
 		createLevel("level-1-2", "mountains");
 
@@ -54,7 +53,7 @@ class PlayState extends GameLevel {
 
 		// Add player
 		createPlayer(60, 600);
-		createHUD(overallScore, 3);
+		createHUD(0, player.health);
 		super.create();
 	}
 
@@ -63,7 +62,7 @@ class PlayState extends GameLevel {
 
 		// Overlaps
 		FlxG.overlap(player, _enemy, hitEnemy);
-		FlxG.overlap(_levelExit, player, changeState);
+		FlxG.overlap(levelExit, player, changeState);
 
 		if (!FlxG.overlap(player, _npcBoundary, initConvo)) {
 			_actionPressed = false;
@@ -103,7 +102,7 @@ class PlayState extends GameLevel {
 			openSubState(_pauseMenu);
 		}
 
-		grpHud.decrementHealth();
+		grpHud.decrementHealth(Player.health);
 	}
 
 	function initConvo(Player:Player, Friend:FlxSprite):Void {
@@ -149,7 +148,6 @@ class PlayState extends GameLevel {
 	}
 
 	function changeState(Player:FlxSprite, Exit:FlxSprite) {
-		js.Browser.console.log(overallScore, 'level score');
-		FlxG.switchState(new NextLevel());
+		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health));
 	}
 }

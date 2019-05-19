@@ -9,22 +9,21 @@ class HUD extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
 	var _txtScore:FlxText;
 	var _health:FlxSprite;
-	var _gameScore:Int;
-	var _playerHealth:Int;
 
-	public function new(Score:Int, Health:Int) {
+	public var gameScore:Int;
+
+	public function new(Score:Int, Health:Float) {
 		super();
 
-		_gameScore = Score;
-		_playerHealth = Health;
+		gameScore = Score;
 		// Socre text
-		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore(_gameScore));
+		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore(gameScore));
 		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
 		add(_txtScore);
 
 		// Hearts
 		_hearts = new FlxSpriteGroup();
-		createHearts();
+		createHearts(Health);
 		add(_hearts);
 
 		this.forEach((_member:FlxSprite) -> _member.scrollFactor.set(0, 0));
@@ -42,14 +41,14 @@ class HUD extends FlxSpriteGroup {
 	}
 
 	public function incrementScore():Void {
-		_gameScore = _gameScore + 1;
-		_txtScore.text = updateScore(_gameScore);
+		gameScore = gameScore + 1;
+		_txtScore.text = updateScore(gameScore);
 	}
 
-	public function decrementHealth() {
+	public function decrementHealth(PlayerHealth:Float) {
 		var index:Int = 0;
 		_hearts.forEach((s:FlxSprite) -> {
-			if (index == _playerHealth) {
+			if (index == PlayerHealth) {
 				s.alpha = 0.2;
 			}
 			index++;
@@ -64,10 +63,14 @@ class HUD extends FlxSpriteGroup {
 	 * Std.int converts float to int
 	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
 	 */
-	function createHearts():Void {
-		for (i in 0...Std.int(_playerHealth)) {
+	function createHearts(PlayerHealth:Float):Void {
+		for (i in 0...Std.int(3)) {
 			_health = new FlxSprite((i * 80), 10).loadGraphic("assets/images/heart.png", false, 60, 60);
 			_hearts.add(_health);
+		}
+		// For keeping health between states
+		if(PlayerHealth < 3) {
+			decrementHealth(PlayerHealth);
 		}
 	}
 }
