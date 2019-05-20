@@ -8,9 +8,11 @@ import flixel.util.FlxSpriteUtil;
 // NPC
 import flixel.util.FlxColor;
 
-
 class PlayState extends GameLevel {
 	var _enemy:Enemy;
+	var _score:Int;
+	var _playerHealth:Float;
+	var _playerReturning:Bool;
 	// Vars for NPC
 	var _dialoguePrompt:DialoguePrompt;
 	var _grpDialogueBox:DialogueBox;
@@ -20,9 +22,23 @@ class PlayState extends GameLevel {
 
 	public var startingConvo:Bool = false;
 
+	/**
+	 * Level 1-0
+	 *
+	 * @param Score player score
+	 * @param Health player health
+	 * @param PlayerReturning player coming from a previous level
+	 */
+	public function new(Score:Int = 0, Health:Float = 3, PlayerReturning = false):Void {
+		super();
+		_score = Score;
+		_playerHealth = Health;
+		_playerReturning = PlayerReturning;
+	}
+
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
-	
+
 		createLevel("level-1-2", "mountains");
 
 		// NPC start
@@ -46,14 +62,16 @@ class PlayState extends GameLevel {
 		add(_grpDialogueBox);
 		// NPC end
 
-
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
 		add(_enemy);
 
 		// Add player
-		createPlayer(60, 600);
-		createHUD(0, player.health);
+		_playerReturning ? createPlayer(Std.int(_level.width - 100), 680, true) : createPlayer(60, 600);
+
+		// Adds Hud
+		// If no socre has been bassed then pass 0
+		createHUD(_score == 0 ? 0 : _score, player.health);
 		super.create();
 	}
 
@@ -62,7 +80,7 @@ class PlayState extends GameLevel {
 
 		// Overlaps
 		FlxG.overlap(player, _enemy, hitEnemy);
-		FlxG.overlap(levelExit, player, changeState);
+		FlxG.overlap(levelExit, player, fadeOut);
 
 		if (!FlxG.overlap(player, _npcBoundary, initConvo)) {
 			_actionPressed = false;
@@ -147,7 +165,11 @@ class PlayState extends GameLevel {
 		}
 	}
 
-	function changeState(Player:FlxSprite, Exit:FlxSprite) {
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}
+
+	function changeState() {
 		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health));
 	}
 }

@@ -10,7 +10,7 @@ class NextLevel extends GameLevel {
 	var _levelEntry:FlxSprite;
 
 	/**
-	 * New level
+	 * Level 1-1
 	 *
 	 * @param Score player score
 	 * @param Health player health
@@ -23,15 +23,18 @@ class NextLevel extends GameLevel {
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
-		createLevel("level-1-3", "mountains", true);
+
+		createLevel("level-1-3", "mountains");
+
+		// Block to take you back to previous level
+		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.WHITE);
+		add(_levelEntry);
 
 		// Add player
 		createPlayer(60, 600);
 
 		// Add HUD
-		js.Browser.console.log(_score, '_score');
-		createHUD(_score, _playerHealth);              
-
+		createHUD(_score, _playerHealth);
 
 		super.create();
 	}
@@ -39,10 +42,19 @@ class NextLevel extends GameLevel {
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 		FlxG.overlap(levelExit, player, goToMainMenu);
+		FlxG.overlap(_levelEntry, player, fadeOut);
 	}
 
 	function goToMainMenu(Player:FlxSprite, Exit:FlxSprite) {
 		// @todo create main menu
-		FlxG.switchState(new MainMenu(grpHud.gameScore, player.health));
-	}	
+		FlxG.switchState(new MainMenu());
+	}
+
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}
+
+	function changeState() {
+		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, true));
+	}
 }

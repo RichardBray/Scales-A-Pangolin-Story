@@ -45,6 +45,7 @@ class PauseMenu extends FlxSubState {
 		 * Text for paused screen.
 		 */
 		_choices = new Array<FlxText>();
+
 		// Add resume
 		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 200, 0, "Restart", 22));
 		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 250, 0, "Quit", 22));
@@ -75,8 +76,8 @@ class PauseMenu extends FlxSubState {
 					FlxG.switchState(new PlayState());
 				case 1:
 					// Should go back to main menu
+					FlxG.switchState(new MainMenu());
 				default:
-					
 			}
 		}
 

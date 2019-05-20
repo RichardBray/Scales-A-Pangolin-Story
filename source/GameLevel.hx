@@ -13,45 +13,45 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
-
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 
 class GameLevel extends FlxState {
-    var _level:FlxTilemap;
-    var _levelBg:FlxSprite;
-    var _mapEntities:FlxSpriteGroup;
-    var _grpCollectables:FlxTypedGroup<CollectableBug>;
-    var _levelCollisions:FlxTilemapExt;
-    var _map:TiledMap;
-    var _mapObjects:TiledObjectLayer;
-    var _collisionImg:String;
+	var _level:FlxTilemap;
+	var _levelBg:FlxSprite;
+	var _mapEntities:FlxSpriteGroup;
+	var _grpCollectables:FlxTypedGroup<CollectableBug>;
+	var _levelCollisions:FlxTilemapExt;
+	var _map:TiledMap;
+	var _mapObjects:TiledObjectLayer;
+	var _collisionImg:String;
 
-    public var grpHud:HUD;
-    public var player:Player; // used by HUD for health
-	public var levelExit:FlxSprite;
+	public var grpHud:HUD;
+	public var player:Player; // used by HUD for health
+	public var levelExit:FlxSprite; // used by PlayState
 
-    override public function create():Void {
+	override public function create():Void {
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
-		FlxG.mouse.visible = true; // Hide the mouse cursor       
+		FlxG.mouse.visible = true; // Hide the mouse cursor
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 
 		/**
 		 * By default flixel only processes what it initally sees, so collisions won't
 		 * work until can process the whole level.
 		 */
 		FlxG.worldBounds.set(0, 0, _level.width, _level.height);
+
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
-		FlxG.camera.antialiasing = true;   
+		FlxG.camera.antialiasing = true;
 
 		// Camera follows Player
-		FlxG.camera.follow(player, PLATFORMER, 1);          
-                  
-    }
+		FlxG.camera.follow(player, PLATFORMER, 1);
+	}
 
-    override public function update(Elapsed:Float):Void {
-        super.update(Elapsed);
+	override public function update(Elapsed:Float):Void {
+		super.update(Elapsed);
 
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _level.height) {
@@ -65,12 +65,12 @@ class GameLevel extends FlxState {
 			openSubState(_pauseMenu);
 		}
 
-        // Collisions
+		// Collisions
 		FlxG.collide(player, _levelCollisions);
 
-        // Overlaps
-        FlxG.overlap(_grpCollectables, player, getCollectable);
-    }
+		// Overlaps
+		FlxG.overlap(_grpCollectables, player, getCollectable);
+	}
 
 	/**
 	 *
@@ -79,56 +79,55 @@ class GameLevel extends FlxState {
 	 * @param 	Background 	Parallax background image name.
 	 * @param 	LevelStart	If the level should have a start, opposite to level exit.
 	 */
-    public function createLevel(MapFile:String, Background:String, LevelStart:Bool = false):Void {
-        _collisionImg = "assets/images/ground-collisions.png";
+	public function createLevel(MapFile:String, Background:String):Void {
+		_collisionImg = "assets/images/ground-collisions.png";
 
-		if (LevelStart) var levelStart;
-        /**
-        * Code for adding the environment and collisions
-        */
+		/**
+		 * Code for adding the environment and collisions
+		 */
 
-        // Code for parallax background
-        _levelBg = new FlxSprite(0, 400, 'assets/images/$Background.png');
-        _levelBg.scale.set(4.5, 4.5);
-        _levelBg.alpha = 0.75;
-        _levelBg.scrollFactor.set(0.3, 1);
-        add(_levelBg);
+		// Code for parallax background
+		_levelBg = new FlxSprite(0, 400, 'assets/images/$Background.png');
+
+		_levelBg.scale.set(4.5, 4.5);
+		_levelBg.alpha = 0.75;
+		_levelBg.scrollFactor.set(0.3, 1);
+		add(_levelBg);
 		// Load custom tilemap
-		_map = new TiledMap('assets/data/$MapFile.tmx');   
+		_map = new TiledMap('assets/data/$MapFile.tmx');
 
-        // Map objects initiated here. 
-        _mapEntities = new FlxSpriteGroup();   
+		// Map objects initiated here.
+		_mapEntities = new FlxSpriteGroup();
 
 		// Add bugs group
-		_grpCollectables = new FlxTypedGroup<CollectableBug>(); 
-        add(_grpCollectables);
+		_grpCollectables = new FlxTypedGroup<CollectableBug>();
+		add(_grpCollectables);
 
-        // Flixel level created from Tilemap map
-        _level = new FlxTilemap();  
-        _level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, _collisionImg,
-			_map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
-        add(_level);
+		// Flixel level created from Tilemap map
+		_level = new FlxTilemap();
+		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, _collisionImg, _map.tileWidth,
+			_map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+		add(_level);
 
-        // tile tearing problem fix on Mac
+		// tile tearing problem fix on Mac
 		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/PlayState.hx#L48
-		var levelTiles = FlxTileFrames
-			.fromBitmapAddSpacesAndBorders(_collisionImg, new FlxPoint(10, 10), new FlxPoint(2, 2), new FlxPoint(2, 2));    
-        _level.frames = levelTiles;  
+		var levelTiles = FlxTileFrames.fromBitmapAddSpacesAndBorders(_collisionImg, new FlxPoint(10, 10), new FlxPoint(2, 2), new FlxPoint(2, 2));
+		_level.frames = levelTiles;
 
-        // Looping over `objects` layer
+		// Looping over `objects` layer
 		_mapObjects = cast _map.getLayer("objects");
 		for (e in _mapObjects.objects) {
 			placeEntities(e.xmlData.x, e.gid);
-		} 
+		}
 
-        // Map objects added here 
-        add(_mapEntities);
-        _mapEntities.y = 0; // For some reason this fixes the images being too low -115.     
+		// Map objects added here
+		add(_mapEntities);
+		_mapEntities.y = 0; // For some reason this fixes the images being too low -115.
 
 		// Add envirionment collisions
-		_levelCollisions = new FlxTilemapExt();                         		
-		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height,
-			_collisionImg, _map.tileWidth, _map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+		_levelCollisions = new FlxTilemapExt();
+		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height, _collisionImg, _map.tileWidth,
+			_map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes
@@ -137,35 +136,36 @@ class GameLevel extends FlxState {
 
 		// set cloud/special tiles
 		_levelCollisions.setTileProperties(5, FlxObject.NONE, fallInClouds);
-		_levelCollisions.alpha = 0; // Hide collision objects 
-        add(_levelCollisions);
+		_levelCollisions.alpha = 0; // Hide collision objects
+		add(_levelCollisions);
 
 		// Level exit
 		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, 720, FlxColor.WHITE);
-        add(levelExit);               
+		add(levelExit);
+	}
 
-    } 
-
-    public function createHUD(Score:Int, Health:Float) {
+	public function createHUD(Score:Int, Health:Float) {
 		// Add Hud
 		grpHud = new HUD(Score, Health);
-		add(grpHud);   
-    }
+		add(grpHud);
+	}
 
-    /**
-     * Adds player
-     *
-     * @param X Player X position
-     * @param Y Player Y position
-     */
-    public function createPlayer(X:Int, Y:Int):Void {
+	/**
+	 * Adds player
+	 *
+	 * @param X Player X position
+	 * @param Y Player Y position
+	 */
+	public function createPlayer(X:Int, Y:Int, FacingLeft = false):Void {
 		player = new Player(X, Y);
-		add(player);        
-    }   
+		if (FacingLeft)
+			player.facing = FlxObject.LEFT;
+		add(player);
+	}
 
-    /**
-	 * Place entities from Tilemap. 
-     * This method just converts strings to integers.
+	/**
+	 * Place entities from Tilemap.
+	 * This method just converts strings to integers.
 	 */
 	function placeEntities(EntityData:Xml, ObjectId:Int):Void {
 		var x:Int = Std.parseInt(EntityData.get("x")); // Parse string to int
@@ -195,7 +195,7 @@ class GameLevel extends FlxState {
 			_object.immovable = true;
 			_mapEntities.add(_object);
 		}
-	} 
+	}
 
 	/** Special tiles **/
 	function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
@@ -204,12 +204,12 @@ class GameLevel extends FlxState {
 		} else if (Object.y >= Tile.y) {
 			Tile.allowCollisions = FlxObject.CEILING;
 		}
-	}  
+	}
 
 	function getCollectable(Collectable:FlxObject, Player:FlxObject):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
 			Collectable.kill();
 		}
-	}         
+	}
 }
