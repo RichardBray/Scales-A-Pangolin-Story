@@ -27,12 +27,16 @@ class GameLevel extends FlxState {
 	var _map:TiledMap;
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
+	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by PlayState
+	public var levelName:String; // Give level unique name REQUIRED!!!
+	public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
 
 	override public function create():Void {
+		collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		FlxG.mouse.visible = true; // Hide the mouse cursor
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
@@ -117,7 +121,7 @@ class GameLevel extends FlxState {
 		// Looping over `objects` layer
 		_mapObjects = cast _map.getLayer("objects");
 		for (e in _mapObjects.objects) {
-			placeEntities(e.xmlData.x, e.gid);
+			placeEntities(e.xmlData.x, e.gid, _mapObjectId++);
 		}
 
 		// Map objects added here
@@ -167,18 +171,18 @@ class GameLevel extends FlxState {
 	 * Place entities from Tilemap.
 	 * This method just converts strings to integers.
 	 */
-	function placeEntities(EntityData:Xml, ObjectId:Int):Void {
+	function placeEntities(EntityData:Xml, ObjectId:Int, MapObjId:Int):Void {
 		var x:Int = Std.parseInt(EntityData.get("x")); // Parse string to int
 		var y:Int = Std.parseInt(EntityData.get("y"));
 		var width:Int = Std.parseInt(EntityData.get("width"));
 		var height:Int = Std.parseInt(EntityData.get("height"));
-		createEntity(x, y, width, height, ObjectId);
+		createEntity(x, y, width, height, ObjectId, MapObjId);
 	}
 
 	/**
 	 * Makes object to colider with `Player` in level.
 	 */
-	function createEntity(X:Int, Y:Int, width:Int, height:Int, objectId:Int):Void {
+	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int):Void {
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage = new Map<Int, String>();
 		layerImage = [
@@ -186,12 +190,11 @@ class GameLevel extends FlxState {
 			227 => "assets/images/tree-1.png",
 			228 => "assets/images/tree-2.png"
 		];
-		if (objectId == 229) { // 229 means it's a bug/collectable
-			// createBug(X, (Y - height), width, height);
-			var bug:CollectableBug = new CollectableBug(X, (Y - height), width, height);
+		if (ObjectId == 229) { // 229 means it's a bug/collectable
+			var bug:CollectableBug = new CollectableBug(X, (Y - Height), Width, Height, MapObjId);
 			_grpCollectables.add(bug);
 		} else {
-			var _object:FlxSprite = new FlxSprite(X, (Y - height)).loadGraphic(layerImage[objectId], false, width, height);
+			var _object:FlxSprite = new FlxSprite(X, (Y - Height)).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
 			_mapEntities.add(_object);
 		}
@@ -206,9 +209,11 @@ class GameLevel extends FlxState {
 		}
 	}
 
-	function getCollectable(Collectable:FlxObject, Player:FlxObject):Void {
+	function getCollectable(Collectable:CollectableBug, Player:FlxSprite):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
+			js.Browser.console.log(Collectable, 'Collectable');
+			collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}
 	}

@@ -29,7 +29,7 @@ class PlayState extends GameLevel {
 	 * @param Health player health
 	 * @param PlayerReturning player coming from a previous level
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, PlayerReturning = false):Void {
+	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:Map<String, Array<Int>> = null, PlayerReturning = false):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
@@ -38,6 +38,7 @@ class PlayState extends GameLevel {
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
+		levelName = 'Level-1-0';
 
 		createLevel("level-1-2", "mountains");
 
@@ -170,6 +171,6 @@ class PlayState extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health));
+		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, collectablesMap));
 	}
 }
