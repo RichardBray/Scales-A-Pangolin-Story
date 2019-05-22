@@ -7,6 +7,8 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxSpriteUtil;
 // NPC
 import flixel.util.FlxColor;
+// Typedefs
+import GameLevel.CollMap;
 
 class PlayState extends GameLevel {
 	var _enemy:Enemy;
@@ -29,7 +31,7 @@ class PlayState extends GameLevel {
 	 * @param Health player health
 	 * @param PlayerReturning player coming from a previous level
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:Map<String, Array<Int>> = null, PlayerReturning = false):Void {
+	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:CollMap = null, PlayerReturning = false):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
@@ -40,7 +42,7 @@ class PlayState extends GameLevel {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-0';
 
-		createLevel("level-1-2", "mountains");
+		createLevel("level-1-2", "mountains", null);
 
 		// NPC start
 		_npcBoundary = new FlxSprite(820, 510).makeGraphic(150, 50, FlxColor.TRANSPARENT);

@@ -8,7 +8,7 @@ class NextLevel extends GameLevel {
 	var _score:Int;
 	var _playerHealth:Float;
 	var _levelEntry:FlxSprite;
-	var _collectablesMap:Map<String, Array<Int>>;
+	var _levelCollectablesMap:Map<String, Array<Int>>;
 
 	/**
 	 * Level 1-1
@@ -20,14 +20,14 @@ class NextLevel extends GameLevel {
 		super();
 		_score = Score;
 		_playerHealth = Health;
-		_collectablesMap = CollectablesMap;
+		_levelCollectablesMap = CollectablesMap;
 	}
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-1';
 
-		createLevel("level-1-3", "mountains");
+		createLevel("level-1-3", "mountains", null);
 
 		// Block to take you back to previous level
 		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.WHITE);
@@ -58,6 +58,6 @@ class NextLevel extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _collectablesMap, true));
+		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true));
 	}
 }

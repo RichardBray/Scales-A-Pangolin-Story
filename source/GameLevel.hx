@@ -18,6 +18,8 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 
+typedef CollMap = Map<String, Array<Int>>;
+
 class GameLevel extends FlxState {
 	var _level:FlxTilemap;
 	var _levelBg:FlxSprite;
@@ -28,6 +30,7 @@ class GameLevel extends FlxState {
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
+	var _collectablesMap:CollMap; // Private collectables map for comparison
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -78,13 +81,13 @@ class GameLevel extends FlxState {
 
 	/**
 	 *
-	 *
 	 * @param 	MapFile 	Comtains the name of the tmx data file used for the map.
 	 * @param 	Background 	Parallax background image name.
-	 * @param 	LevelStart	If the level should have a start, opposite to level exit.
+	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
-	public function createLevel(MapFile:String, Background:String):Void {
+	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap):Void {
 		_collisionImg = "assets/images/ground-collisions.png";
+		_collectablesMap = CollectablesMap;
 
 		/**
 		 * Code for adding the environment and collisions
@@ -176,13 +179,15 @@ class GameLevel extends FlxState {
 		var y:Int = Std.parseInt(EntityData.get("y"));
 		var width:Int = Std.parseInt(EntityData.get("width"));
 		var height:Int = Std.parseInt(EntityData.get("height"));
-		createEntity(x, y, width, height, ObjectId, MapObjId);
+		var hideCollectable:Array<Int> = _collectablesMap[levelName].filter(coll -> coll == MapObjId);
+		js.Browser.console.log(hideCollectable, 'hideCollectable');
+		createEntity(x, y, width, height, ObjectId, MapObjId, hideCollectable);
 	}
 
 	/**
 	 * Makes object to colider with `Player` in level.
 	 */
-	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int):Void {
+	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int, HideCollectable:Array<Int>):Void {
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage = new Map<Int, String>();
 		layerImage = [
@@ -190,9 +195,11 @@ class GameLevel extends FlxState {
 			227 => "assets/images/tree-1.png",
 			228 => "assets/images/tree-2.png"
 		];
-		if (ObjectId == 229) { // 229 means it's a bug/collectable
+		if (ObjectId == 229) { // 229 means it's a collectable
+			// if (!HideCollectable) {
 			var bug:CollectableBug = new CollectableBug(X, (Y - Height), Width, Height, MapObjId);
 			_grpCollectables.add(bug);
+			// }
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, (Y - Height)).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;

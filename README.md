@@ -24,7 +24,7 @@ lime run html5
 
 In one terminal tab/pane
 ```bash
-live-server export/html5/bin
+http-server export/html5/bin
 ```
 To run the server for html5.
 
