@@ -15,6 +15,7 @@ class PlayState extends GameLevel {
 	var _score:Int;
 	var _playerHealth:Float;
 	var _playerReturning:Bool;
+	var _levelCollectablesMap:CollMap;
 	// Vars for NPC
 	var _dialoguePrompt:DialoguePrompt;
 	var _grpDialogueBox:DialogueBox;
@@ -36,13 +37,14 @@ class PlayState extends GameLevel {
 		_score = Score;
 		_playerHealth = Health;
 		_playerReturning = PlayerReturning;
+		_levelCollectablesMap = CollectablesMap;
 	}
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-0';
 
-		createLevel("level-1-2", "mountains", null);
+		createLevel("level-1-2", "mountains", _levelCollectablesMap);
 
 		// NPC start
 		_npcBoundary = new FlxSprite(820, 510).makeGraphic(150, 50, FlxColor.TRANSPARENT);
@@ -173,6 +175,6 @@ class PlayState extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, collectablesMap));
+		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, _levelCollectablesMap));
 	}
 }

@@ -3,12 +3,14 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+// Typedefs
+import GameLevel.CollMap;
 
 class NextLevel extends GameLevel {
 	var _score:Int;
 	var _playerHealth:Float;
 	var _levelEntry:FlxSprite;
-	var _levelCollectablesMap:Map<String, Array<Int>>;
+	var _levelCollectablesMap:CollMap;
 
 	/**
 	 * Level 1-1
@@ -16,7 +18,7 @@ class NextLevel extends GameLevel {
 	 * @param Score player score
 	 * @param Health player health
 	 */
-	public function new(Score:Int, Health:Float, CollectablesMap:Map<String, Array<Int>>):Void {
+	public function new(Score:Int, Health:Float, CollectablesMap:CollMap):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
@@ -58,6 +60,7 @@ class NextLevel extends GameLevel {
 	}
 
 	function changeState() {
+		js.Browser.console.log(_levelCollectablesMap);
 		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true));
 	}
 }
