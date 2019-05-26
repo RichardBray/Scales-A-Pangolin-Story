@@ -48,7 +48,7 @@ class HUD extends FlxSpriteGroup {
 	public function decrementHealth(PlayerHealth:Float) {
 		var index:Int = 0;
 		_hearts.forEach((s:FlxSprite) -> {
-			if (index == PlayerHealth) {
+			if (index >= PlayerHealth) {
 				s.alpha = 0.2;
 			}
 			index++;
@@ -64,12 +64,12 @@ class HUD extends FlxSpriteGroup {
 	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
 	 */
 	function createHearts(PlayerHealth:Float):Void {
-		for (i in 0...Std.int(3)) {
+		for (i in 0...Std.int(3)) { // 3 is maxiumum player health, this might change in the future
 			_health = new FlxSprite((i * 80), 10).loadGraphic("assets/images/heart.png", false, 60, 60);
 			_hearts.add(_health);
 		}
 		// For keeping health between states
-		if(PlayerHealth < 3) {
+		if (PlayerHealth < 3) {
 			decrementHealth(PlayerHealth);
 		}
 	}

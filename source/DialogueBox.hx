@@ -18,6 +18,12 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 	static var _heightFromBase:Int = 200;
 
+	/**
+	 * Dialogue Box constructor
+	 *
+	 * @param Dialogue 		Text that the NPC/Player will give.
+	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
+	 */
 	public function new(Dialogue:Array<String>, ParentState:PlayState) {
 		super();
 

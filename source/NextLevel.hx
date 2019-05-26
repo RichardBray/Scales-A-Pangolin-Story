@@ -29,7 +29,7 @@ class NextLevel extends GameLevel {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-1';
 
-		createLevel("level-1-3", "mountains", null);
+		createLevel("level-1-3", "mountains", _levelCollectablesMap);
 
 		// Block to take you back to previous level
 		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.WHITE);
@@ -37,6 +37,8 @@ class NextLevel extends GameLevel {
 
 		// Add player
 		createPlayer(60, 600);
+		// Update the player helth from the previous level
+		player.health = _playerHealth;
 
 		// Add HUD
 		createHUD(_score, _playerHealth);
@@ -60,7 +62,6 @@ class NextLevel extends GameLevel {
 	}
 
 	function changeState() {
-		js.Browser.console.log(_levelCollectablesMap);
 		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true));
 	}
 }

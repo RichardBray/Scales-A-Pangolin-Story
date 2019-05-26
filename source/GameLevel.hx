@@ -36,10 +36,11 @@ class GameLevel extends FlxState {
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by PlayState
 	public var levelName:String; // Give level unique name REQUIRED!!!
-	public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
+
+	// public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
 
 	override public function create():Void {
-		collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
+		// collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		FlxG.mouse.visible = true; // Hide the mouse cursor
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
@@ -122,7 +123,7 @@ class GameLevel extends FlxState {
 		_level.frames = levelTiles;
 
 		// Looping over `objects` layer
-		_mapObjects = cast _map.getLayer("objects");
+		_mapObjects = cast(_map.getLayer("objects"), TiledObjectLayer);
 		for (e in _mapObjects.objects) {
 			placeEntities(e.xmlData.x, e.gid, _mapObjectId++);
 		}
@@ -189,8 +190,7 @@ class GameLevel extends FlxState {
 	 */
 	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int, HideCollectable:Int):Void {
 		// @see https://code.haxe.org/category/beginner/maps.html
-		var layerImage = new Map<Int, String>();
-		layerImage = [
+		var layerImage:Map<Int, String> = [
 			226 => "assets/images/rock-1.png",
 			227 => "assets/images/tree-1.png",
 			228 => "assets/images/tree-2.png"
@@ -219,7 +219,7 @@ class GameLevel extends FlxState {
 	function getCollectable(Collectable:CollectableBug, Player:FlxSprite):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
-			collectablesMap[levelName].push(Collectable.uniqueID);
+			_collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}
 	}

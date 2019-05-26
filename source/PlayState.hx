@@ -35,9 +35,9 @@ class PlayState extends GameLevel {
 	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:CollMap = null, PlayerReturning = false):Void {
 		super();
 		_score = Score;
-		_playerHealth = Health;
+		_playerHealth = (Health != 3) ? Health : 3;
 		_playerReturning = PlayerReturning;
-		_levelCollectablesMap = CollectablesMap;
+		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-1" => []] : CollectablesMap;
 	}
 
 	override public function create():Void {
@@ -72,7 +72,9 @@ class PlayState extends GameLevel {
 		add(_enemy);
 
 		// Add player
-		_playerReturning ? createPlayer(Std.int(_level.width - 100), 680, true) : createPlayer(60, 600);
+		_playerReturning ? createPlayer(Std.int(_level.width - 150), 680, true) : createPlayer(60, 600);
+		// Update the player helth from the previous level
+		player.health = _playerHealth;
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0
