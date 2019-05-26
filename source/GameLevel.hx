@@ -111,13 +111,29 @@ class GameLevel extends FlxState {
 		_grpCollectables = new FlxTypedGroup<CollectableBug>();
 		add(_grpCollectables);
 
+		// Tile tearing problem fix on Mac (part 1)
+		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
+		var _mapSize:FlxPoint = FlxPoint.get(_map.tileWidth, _map.tileHeight);
+		var _tilesetTileFrames:Array<FlxTileFrames> = new Array<FlxTileFrames>();
+		for (_tileset in _map.tilesetArray) {
+			_tilesetTileFrames.push(FlxTileFrames.fromRectangle(_collisionImg, _mapSize));
+		}
+		var _tileSpacing:FlxPoint = FlxPoint.get(0, 0);
+		var _tileBorder:FlxPoint = FlxPoint.get(2, 2);
+
+		var _mergedTileset = FlxTileFrames.combineTileFrames(_tilesetTileFrames, _tileSpacing, _tileBorder);
+
+		_mapSize.put();
+		_tileSpacing.put();
+		_tileBorder.put();
+
 		// Flixel level created from Tilemap map
 		_level = new FlxTilemap();
-		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, _collisionImg, _map.tileWidth,
+		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, _mergedTileset, _map.tileWidth,
 			_map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
 		add(_level);
 
-		// tile tearing problem fix on Mac
+		// Tile tearing problem fix on Mac (part 2)
 		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/PlayState.hx#L48
 		var levelTiles = FlxTileFrames.fromBitmapAddSpacesAndBorders(_collisionImg, new FlxPoint(10, 10), new FlxPoint(2, 2), new FlxPoint(2, 2));
 		_level.frames = levelTiles;
