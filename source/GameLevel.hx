@@ -42,7 +42,9 @@ class GameLevel extends FlxState {
 	override public function create():Void {
 		// collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
-		FlxG.mouse.visible = true; // Hide the mouse cursor
+		#if !debug
+		FlxG.mouse.visible = false; // Hide the mouse cursor
+		#end
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 
 		/**

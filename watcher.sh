@@ -10,7 +10,7 @@ cecho() {
 }
 
 echo "🔨  Building game!!!"
-lime build html5 
+lime build html5 -debug 
 cecho "GREEN" "🎉  Build finished!!!"
 exit 0
 # watchman-make -p '**/*.hx' -r watcher.sh
