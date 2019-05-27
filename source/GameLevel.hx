@@ -64,7 +64,7 @@ class GameLevel extends FlxState {
 		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
 		if (FlxG.sound.music == null) {// don't restart the music if it's already playing
-			FlxG.sound.playMusic("assets/sounds/music.mp3", 1, true);
+			FlxG.sound.playMusic("assets/music/music.mp3", 0.4, true);
 		}		
 	}
 
@@ -251,7 +251,7 @@ class GameLevel extends FlxState {
 	function getCollectable(Collectable:CollectableBug, Player:FlxSprite):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
-			_sndCollect.play();
+			_sndCollect.play(true);
 			_collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}

@@ -26,8 +26,8 @@ class Preloader extends FlxBasePreloader {
 		_text.embedFonts = true;
 		_text.selectable = false;
 		_text.multiline = false;
-		_text.x = _pageWidth - 220;
-		_text.y = _pageHeight - 100;
+		_text.x = _pageWidth - 250;
+		_text.y = _pageHeight - 80;
 		_text.width = 200;
 		_text.text = "Loading";		
 		addChild(_text);
