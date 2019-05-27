@@ -196,8 +196,14 @@ class GameLevel extends FlxState {
 		var y:Int = Std.parseInt(EntityData.get("y"));
 		var width:Int = Std.parseInt(EntityData.get("width"));
 		var height:Int = Std.parseInt(EntityData.get("height"));
-		// Very complicated line of code below I should explain this
-		var hideCollectable:Int = (_collectablesMap[levelName].length != 0) ? _collectablesMap[levelName].filter(coll -> coll == MapObjId)[0] : -1;
+
+		var hideCollectable:Int = -1; // Default collecatlbe ID -1 means no collecatble
+		if(_collectablesMap[levelName].length != 0) { 
+			// The line below checks if the number in the array matches the object ID.
+			// If it does it returns an array with that number, if it doesn't, it returns an empty array.
+			var _hideColVal:Array<Int> = _collectablesMap[levelName].filter(collectable -> collectable == MapObjId);
+			hideCollectable = (_hideColVal.length == 0) ? -1 : _hideColVal[0];
+		}
 		createEntity(x, y, width, height, ObjectId, MapObjId, hideCollectable);
 	}
 
@@ -212,6 +218,7 @@ class GameLevel extends FlxState {
 			228 => "assets/images/tree-2.png"
 		];
 		if (ObjectId == 229) { // 229 means it's a collectable
+			js.Browser.console.log(HideCollectable);
 			if (HideCollectable == -1) {
 				var bug:CollectableBug = new CollectableBug(X, (Y - Height), Width, Height, MapObjId);
 				_grpCollectables.add(bug);
