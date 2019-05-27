@@ -220,7 +220,6 @@ class GameLevel extends FlxState {
 			228 => "assets/images/tree-2.png"
 		];
 		if (ObjectId == 229) { // 229 means it's a collectable
-			js.Browser.console.log(HideCollectable);
 			if (HideCollectable == -1) {
 				var bug:CollectableBug = new CollectableBug(X, (Y - Height), Width, Height, MapObjId);
 				_grpCollectables.add(bug);
