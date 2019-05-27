@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSpriteUtil;
+import flixel.system.FlxSound;
 // NPC
 import flixel.util.FlxColor;
 // Typedefs
@@ -16,6 +17,7 @@ class PlayState extends GameLevel {
 	var _playerHealth:Float;
 	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
+	var _sndHit:FlxSound;
 	// Vars for NPC
 	var _dialoguePrompt:DialoguePrompt;
 	var _grpDialogueBox:DialogueBox;
@@ -79,6 +81,7 @@ class PlayState extends GameLevel {
 		// Adds Hud
 		// If no socre has been bassed then pass 0
 		createHUD(_score == 0 ? 0 : _score, player.health);
+		_sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		super.create();
 	}
 
@@ -102,6 +105,7 @@ class PlayState extends GameLevel {
 		if (Player.health > 1) {
 			if (Player.isTouching(FlxObject.FLOOR)) {
 				Player.hurt(1);
+				_sndHit.play();
 				FlxSpriteUtil.flicker(Player);
 
 				if (Player.flipX) { // if facing left
@@ -118,6 +122,7 @@ class PlayState extends GameLevel {
 					Enemy.kill();
 				} else { // when rolling animation is NOT playing
 					Player.hurt(1);
+					_sndHit.play();
 					FlxSpriteUtil.flicker(Player);
 				}
 			}

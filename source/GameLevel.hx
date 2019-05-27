@@ -13,6 +13,7 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
+import flixel.system.FlxSound;
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
@@ -31,6 +32,8 @@ class GameLevel extends FlxState {
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
+
+	var _sndCollect:FlxSound;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -58,6 +61,11 @@ class GameLevel extends FlxState {
 
 		// Camera follows Player
 		FlxG.camera.follow(player, PLATFORMER, 1);
+		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
+
+		if (FlxG.sound.music == null) {// don't restart the music if it's already playing
+			FlxG.sound.playMusic("assets/sounds/music.mp3", 1, true);
+		}		
 	}
 
 	override public function update(Elapsed:Float):Void {
@@ -243,6 +251,7 @@ class GameLevel extends FlxState {
 	function getCollectable(Collectable:CollectableBug, Player:FlxSprite):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
+			_sndCollect.play();
 			_collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}

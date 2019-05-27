@@ -3,8 +3,11 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.system.FlxSound;
 
 class Player extends FlxSprite {
+	var _sndJump:FlxSound;
+
 	public var isJumping:Bool;
 	public var preventMovement:Bool;
 	private static var GRAVITY:Float = 1500;
@@ -25,6 +28,7 @@ class Player extends FlxSprite {
 		animation.add("run", [for (i in 0...11) i], 24, false);
 		animation.add("jump", [for (i in 13...24) i], 12, false);
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
+		_sndJump = FlxG.sound.load("assets/sounds/jump_sound.wav");
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -57,6 +61,7 @@ class Player extends FlxSprite {
 				acceleration.x = 0;
 			}
 			if (_jump && isTouching(FlxObject.FLOOR)) {
+				_sndJump.play();
 				velocity.y = -600;
 				animation.play("jump");
 				animation.play("jumpLoop");
