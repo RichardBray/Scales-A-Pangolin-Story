@@ -32,7 +32,7 @@ class NextLevel extends GameLevel {
 		createLevel("level-1-3", "mountains", _levelCollectablesMap);
 
 		// Block to take you back to previous level
-		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.WHITE);
+		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.TRANSPARENT);
 		add(_levelEntry);
 
 		// Add player

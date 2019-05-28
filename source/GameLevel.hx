@@ -32,7 +32,6 @@ class GameLevel extends FlxState {
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
-
 	var _sndCollect:FlxSound;
 
 	public var grpHud:HUD;
@@ -43,6 +42,9 @@ class GameLevel extends FlxState {
 	// public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
 
 	override public function create():Void {
+		if (FlxG.sound.music == null) { // don't restart the music if it's already playing
+			FlxG.sound.playMusic("assets/music/music.mp3", 0, true); // 0.4
+		}
 		// collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		#if !debug
@@ -63,9 +65,7 @@ class GameLevel extends FlxState {
 		FlxG.camera.follow(player, PLATFORMER, 1);
 		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
-		if (FlxG.sound.music == null) {// don't restart the music if it's already playing
-			FlxG.sound.playMusic("assets/music/music.mp3", 0.4, true);
-		}		
+		super.create();
 	}
 
 	override public function update(Elapsed:Float):Void {
@@ -174,7 +174,7 @@ class GameLevel extends FlxState {
 		add(_levelCollisions);
 
 		// Level exit
-		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, 720, FlxColor.WHITE);
+		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, 720, FlxColor.TRANSPARENT);
 		add(levelExit);
 	}
 
@@ -208,7 +208,7 @@ class GameLevel extends FlxState {
 		var height:Int = Std.parseInt(EntityData.get("height"));
 
 		var hideCollectable:Int = -1; // Default collecatlbe ID -1 means no collecatble
-		if(_collectablesMap[levelName].length != 0) { 
+		if (_collectablesMap[levelName].length != 0) {
 			// The line below checks if the number in the array matches the object ID.
 			// If it does it returns an array with that number, if it doesn't, it returns an empty array.
 			var _hideColVal:Array<Int> = _collectablesMap[levelName].filter(collectable -> collectable == MapObjId);
