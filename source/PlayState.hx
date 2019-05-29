@@ -43,7 +43,6 @@ class PlayState extends GameLevel {
 	}
 
 	override public function create():Void {
-		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-0';
 
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
@@ -60,10 +59,11 @@ class PlayState extends GameLevel {
 
 		// Friend dialogue box
 		var testText:Array<String> = [
-			"Hey friend slow down!",
-			"Wow, I've never seen a Pangolin run and jump as fast as you before.",
-			"Say–maybe you could do me a favour?",
-			"If you bring me <pt>14 tasty bugs<pt>, I could give you some interesintg things I've found around the jungle."
+			"Hello friend!",
+			"Welcome to a spuer early build of the Pangolin game.",
+			"Nothing is finalised, the art assets, gameplay mechanics, even the sound effects.",
+			"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to have loads more done soon.",
+			"Until then, have fun :)"
 		];
 		_grpDialogueBox = new DialogueBox(testText, this);
 		add(_grpDialogueBox);

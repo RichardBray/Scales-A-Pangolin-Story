@@ -56,7 +56,8 @@ class PauseMenu extends FlxSubState {
 		});
 
 		add(_grpMenuItems);
-		//
+
+		// Adds text to screen
 		_choices.map((_choice:FlxText) -> {
 			_choice.screenCenter(X);
 			_choice.scrollFactor.set(0, 0);

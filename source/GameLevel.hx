@@ -42,6 +42,8 @@ class GameLevel extends FlxState {
 	// public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
 
 	override public function create():Void {
+		bgColor = 0xffc7e4db; // Game background color
+
 		if (FlxG.sound.music == null) { // don't restart the music if it's already playing
 			FlxG.sound.playMusic("assets/music/music.mp3", 0, true); // 0.4
 		}
