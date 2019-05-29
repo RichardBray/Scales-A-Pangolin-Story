@@ -54,7 +54,7 @@ class NextLevel extends GameLevel {
 
 	function goToMainMenu(Player:FlxSprite, Exit:FlxSprite) {
 		// @todo create main menu
-		FlxG.switchState(new MainMenu());
+		FlxG.switchState(new LevelEnd(grpHud.gameScore));
 	}
 
 	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {

@@ -5,10 +5,8 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.FlxSprite;
-// - OpenFL
-import openfl.Lib;
-import flash.system.System;
 
+// - OpenFL
 class MainMenu extends FlxState {
 	var _gameTitle:FlxText;
 	var _choices:Array<FlxText>;
@@ -33,7 +31,7 @@ class MainMenu extends FlxState {
 
 		_choices = new Array<FlxText>();
 		_choices.push(new FlxText(_gameTitle.x, _gameTitle.y + 200, 0, "New Game", 22));
-		_choices.push(new FlxText(_gameTitle.x, _gameTitle.y + 250, 0, "Quit", 22));
+		_choices.push(new FlxText(_gameTitle.x, _gameTitle.y + 250, 0, "Load Game", 22));
 
 		// Adds text to screen
 		_choices.map((_choice:FlxText) -> {
@@ -49,9 +47,8 @@ class MainMenu extends FlxState {
 					// Restarts the game / level
 					FlxG.switchState(new PlayState());
 				case 1:
-					// Closes the game
-					// Lib.close();
-					System.exit(0);
+				// Closes the game
+				// Lib.close();
 				default:
 			}
 		}

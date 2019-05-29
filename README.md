@@ -58,3 +58,13 @@ cast
 using
 
 reload vs code
+
+### Git Tagging commans
+add tag
+`git tag -a v1.4 -m "my version 1.4"`
+
+show tag
+`git show v1.4`
+
+push tag
+`git push origin v1.4`

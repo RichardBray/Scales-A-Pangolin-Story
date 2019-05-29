@@ -18,6 +18,7 @@ class PlayState extends GameLevel {
 	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
 	var _sndHit:FlxSound;
+	var _sndEnemyKill:FlxSound;
 	// Vars for NPC
 	var _dialoguePrompt:DialoguePrompt;
 	var _grpDialogueBox:DialogueBox;
@@ -82,6 +83,7 @@ class PlayState extends GameLevel {
 		// If no socre has been bassed then pass 0
 		createHUD(_score == 0 ? 0 : _score, player.health);
 		_sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
+		_sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");
 		super.create();
 	}
 
@@ -119,6 +121,7 @@ class PlayState extends GameLevel {
 				// from the top
 				// when rolling animation is playing
 				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
+					_sndEnemyKill.play();
 					Enemy.kill();
 				} else { // when rolling animation is NOT playing
 					Player.hurt(1);
