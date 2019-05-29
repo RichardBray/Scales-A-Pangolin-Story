@@ -20,7 +20,7 @@ class LevelEnd extends FlxState {
 
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // State fades in
 
-		_endHeading = new FlxText(10, 10, 300, "Level 1 clear", 32);
+		_endHeading = new FlxText(10, 10, 300, "Level 1 clear!!", 32);
 		add(_endHeading);
 
 		_txtPlayerScore = new FlxText(10, 50, 300, "You scored: " + _playerScore, 16);
