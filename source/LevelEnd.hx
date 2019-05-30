@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.text.FlxText;
@@ -13,15 +14,22 @@ class LevelEnd extends FlxState {
 	var _choices:Array<FlxText>;
 	var _pointer:FlxSprite;
 	var _selected:Int = 0;
+	var _gameMusic:FlxSound;
 
-	public function new(PlayerScore:Int = 0):Void {
+	/**
+	 * @param PlayerScore Show on end screen
+	 * @param GameMusic   End previous level music
+	 */
+	public function new(PlayerScore:Int = 0, GameMusic:FlxSound = null):Void {
 		super();
 		_playerScore = PlayerScore;
+		_gameMusic = GameMusic;
 	}
 
 	override public function create():Void {
 		bgColor = 0xff181818; // Game background color
-
+		js.Browser.console.log(_gameMusic, '_gameMusic');
+		_gameMusic.pause();
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // State fades in
 
 		_endHeading = new FlxText(30, 30, 300, "Level 1 clear!!", 32);
@@ -42,6 +50,7 @@ class LevelEnd extends FlxState {
 		_choices.map((_choice:FlxText) -> {
 			add(_choice);
 		});
+		super.create();
 	}
 
 	override public function update(elapsed:Float):Void {

@@ -59,6 +59,8 @@ using
 
 reload vs code
 
+haxelib install hscript 
+
 ### Git Tagging commans
 add tag
 `git tag -a v1.4 -m "my version 1.4"`

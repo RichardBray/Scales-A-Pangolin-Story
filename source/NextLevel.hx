@@ -28,6 +28,7 @@ class NextLevel extends GameLevel {
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-1';
+		gameMusicPlaying = true;
 
 		createLevel("level-1-3", "mountains", _levelCollectablesMap);
 
@@ -54,7 +55,8 @@ class NextLevel extends GameLevel {
 
 	function goToMainMenu(Player:FlxSprite, Exit:FlxSprite) {
 		// @todo create main menu
-		FlxG.switchState(new LevelEnd(grpHud.gameScore));
+		gameMusic.stop();
+		FlxG.switchState(new LevelEnd(grpHud.gameScore, gameMusic));
 	}
 
 	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {

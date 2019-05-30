@@ -45,7 +45,7 @@ class PlayState extends GameLevel {
 
 	override public function create():Void {
 		levelName = 'Level-1-0';
-
+		gameMusicPlaying = _playerReturning;
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
 
 		// NPC start

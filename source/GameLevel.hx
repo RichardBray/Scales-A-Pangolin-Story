@@ -34,7 +34,8 @@ class GameLevel extends FlxState {
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _sndCollect:FlxSound;
 
-	public var gameMusic:FlxSound;
+	public var gameMusic:FlxSound; // Public for LevelEnd.hx to make music stop
+	public var gameMusicPlaying:Bool = false;
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by PlayState
@@ -69,9 +70,10 @@ class GameLevel extends FlxState {
 		gameMusic = FlxG.sound.load("assets/music/music.mp3");
 		gameMusic.looped = true;
 		gameMusic.persist = true;
-		gameMusic.volume = 0;
-		if (!gameMusic.playing) { // don't restart the music if it's already playing
-			gameMusic.play(false, 0.0, 60000);
+		gameMusic.volume = 0.4;
+
+		if (!gameMusicPlaying) { // don't restart the music if it's already playing
+			gameMusic.play(false, 0, 60000);
 		}
 		super.create();
 	}
