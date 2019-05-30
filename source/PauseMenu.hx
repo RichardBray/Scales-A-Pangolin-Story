@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -17,10 +18,11 @@ class PauseMenu extends FlxSubState {
 	var _pointer:FlxSprite;
 	var _choices:Array<FlxText>;
 	var _titleText:String;
+	var _gameMusic:FlxSound;
 
 	public var gamePaused:Bool = false;
 
-	public function new(PlayerDied:Bool = false):Void {
+	public function new(PlayerDied:Bool = false, GameMusic:FlxSound = null):Void {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -38,8 +40,10 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_menuTitle);
 
 		_pointer = new FlxSprite(_boxXPos, _menuTitle.y + 200);
-		_pointer.makeGraphic(_menuWidth, 60, 0xffdc2de4);
+		_pointer.makeGraphic(_menuWidth, 50, 0xffdc2de4);
 		_grpMenuItems.add(_pointer);
+
+		_gameMusic = GameMusic;
 
 		/**
 		 * Text for paused screen.
@@ -67,6 +71,8 @@ class PauseMenu extends FlxSubState {
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
+			if (_gameMusic != null)
+				_gameMusic.play();
 			close();
 		}
 
@@ -84,14 +90,14 @@ class PauseMenu extends FlxSubState {
 
 		if (FlxG.keys.anyJustPressed([DOWN, S])) {
 			if (_selected != _choices.length - 1) {
-				_pointer.y = _pointer.y + 60;
+				_pointer.y = _pointer.y + 50;
 				_selected++;
 			}
 		}
 
 		if (FlxG.keys.anyJustPressed([UP, W])) {
 			if (_selected != 0) {
-				_pointer.y = _pointer.y - 60;
+				_pointer.y = _pointer.y - 50;
 				_selected--;
 			}
 		}

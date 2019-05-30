@@ -1,8 +1,8 @@
-<?xml version="0.2.1" encoding="utf-8"?>
+<?xml version="0.3.0" encoding="utf-8"?>
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Pangolin" file="Pangolin" main="Main" version="0.2.1" company="Hello Lightbulb" />
+	<app title="Pangolin" file="Pangolin" main="Main" version="0.3.0" company="Hello Lightbulb" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->

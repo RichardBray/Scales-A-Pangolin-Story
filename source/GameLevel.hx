@@ -34,6 +34,7 @@ class GameLevel extends FlxState {
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _sndCollect:FlxSound;
 
+	public var gameMusic:FlxSound;
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by PlayState
@@ -44,9 +45,6 @@ class GameLevel extends FlxState {
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 
-		if (FlxG.sound.music == null) { // don't restart the music if it's already playing
-			FlxG.sound.playMusic("assets/music/music.mp3", 0, true); // 0.4
-		}
 		// collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		#if !debug
@@ -67,6 +65,14 @@ class GameLevel extends FlxState {
 		FlxG.camera.follow(player, PLATFORMER, 1);
 		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
+		// This doesn't need to be a public variable
+		gameMusic = FlxG.sound.load("assets/music/music.mp3");
+		gameMusic.looped = true;
+		gameMusic.persist = true;
+		gameMusic.volume = 0;
+		if (!gameMusic.playing) { // don't restart the music if it's already playing
+			gameMusic.play(false, 0.0, 60000);
+		}
 		super.create();
 	}
 
@@ -81,7 +87,8 @@ class GameLevel extends FlxState {
 		// Paused game state
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
 			// SubState needs to be recreated here as it will be destroyed
-			var _pauseMenu:PauseMenu = new PauseMenu();
+			var _pauseMenu:PauseMenu = new PauseMenu(false, gameMusic);
+			gameMusic.pause();
 			openSubState(_pauseMenu);
 		}
 
