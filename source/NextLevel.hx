@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
@@ -18,11 +19,12 @@ class NextLevel extends GameLevel {
 	 * @param Score player score
 	 * @param Health player health
 	 */
-	public function new(Score:Int, Health:Float, CollectablesMap:CollMap):Void {
+	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, LevelMusic:FlxSound):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
 		_levelCollectablesMap = CollectablesMap;
+		gameMusic = LevelMusic;
 	}
 
 	override public function create():Void {

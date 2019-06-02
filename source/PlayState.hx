@@ -45,7 +45,17 @@ class PlayState extends GameLevel {
 
 	override public function create():Void {
 		levelName = 'Level-1-0';
+
 		gameMusicPlaying = _playerReturning;
+
+		if (!gameMusicPlaying) { // don't restart the music if it's already playing
+			gameMusic = FlxG.sound.load("assets/music/music.mp3");
+			gameMusic.looped = true;
+			gameMusic.persist = true;
+			gameMusic.volume = 0.4;		
+			gameMusic.play(false, 0, 60000);
+		}
+
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
 
 		// NPC start
@@ -185,6 +195,6 @@ class PlayState extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, _levelCollectablesMap));
+		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, _levelCollectablesMap, gameMusic));
 	}
 }

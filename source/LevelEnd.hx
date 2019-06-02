@@ -27,9 +27,8 @@ class LevelEnd extends FlxState {
 	}
 
 	override public function create():Void {
+		super.create();
 		bgColor = 0xff181818; // Game background color
-		js.Browser.console.log(_gameMusic, '_gameMusic');
-		_gameMusic.pause();
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // State fades in
 
 		_endHeading = new FlxText(30, 30, 300, "Level 1 clear!!", 32);
@@ -50,10 +49,11 @@ class LevelEnd extends FlxState {
 		_choices.map((_choice:FlxText) -> {
 			add(_choice);
 		});
-		super.create();
+		_gameMusic.stop();
 	}
 
 	override public function update(elapsed:Float):Void {
+		_gameMusic.stop();
 		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
 			switch _selected {
 				case 0:

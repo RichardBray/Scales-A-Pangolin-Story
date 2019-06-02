@@ -71,8 +71,9 @@ class PauseMenu extends FlxSubState {
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
-			if (_gameMusic != null)
+			if (_gameMusic != null) {
 				_gameMusic.play();
+			}
 			close();
 		}
 

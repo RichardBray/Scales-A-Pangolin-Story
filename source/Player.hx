@@ -28,7 +28,7 @@ class Player extends FlxSprite {
 		animation.add("run", [for (i in 0...11) i], 24, false);
 		animation.add("jump", [for (i in 13...24) i], 12, false);
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
-		_sndJump = FlxG.sound.load("assets/sounds/jump_sound.wav");
+		_sndJump = FlxG.sound.load("assets/sounds/jump.wav");
 	}
 
 	override public function update(elapsed:Float):Void {

@@ -66,15 +66,6 @@ class GameLevel extends FlxState {
 		FlxG.camera.follow(player, PLATFORMER, 1);
 		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
-		// This doesn't need to be a public variable
-		gameMusic = FlxG.sound.load("assets/music/music.mp3");
-		gameMusic.looped = true;
-		gameMusic.persist = true;
-		gameMusic.volume = 0.4;
-
-		if (!gameMusicPlaying) { // don't restart the music if it's already playing
-			gameMusic.play(false, 0, 60000);
-		}
 		super.create();
 	}
 
@@ -89,8 +80,8 @@ class GameLevel extends FlxState {
 		// Paused game state
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
 			// SubState needs to be recreated here as it will be destroyed
-			var _pauseMenu:PauseMenu = new PauseMenu(false, gameMusic);
 			gameMusic.pause();
+			var _pauseMenu:PauseMenu = new PauseMenu(false, gameMusic);
 			openSubState(_pauseMenu);
 		}
 
