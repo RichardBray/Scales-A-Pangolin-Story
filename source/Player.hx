@@ -18,9 +18,9 @@ class Player extends FlxSprite {
 		preventMovement = false;
 		health = 3; // Health player starts off with
 		loadGraphic("assets/images/pangolin-sprite_v2.png", true, 290, 114); // height 113.5
-		setGraphicSize(73, 49);
+		setGraphicSize(70, 50);
 		updateHitbox();
-		offset.set(145, 25);
+		offset.set(152, 30);
 		scale.set(0.5, 0.5);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -62,6 +62,8 @@ class Player extends FlxSprite {
 			}
 			if (_jump && isTouching(FlxObject.FLOOR)) {
 				_sndJump.play();
+				// setGraphicSize(30, 40);
+				// updateHitbox();
 				velocity.y = -600;
 				animation.play("jump");
 				animation.play("jumpLoop");
