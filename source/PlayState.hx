@@ -46,7 +46,7 @@ class PlayState extends GameLevel {
 	override public function create():Void {
 		levelName = 'Level-1-0';
 
-		gameMusic = FlxG.sound.load("assets/music/music.mp3");
+		gameMusic = FlxG.sound.load("assets/music/music.ogg");
 		gameMusic.looped = true;
 		gameMusic.persist = true;
 		gameMusic.volume = 0.4;		
