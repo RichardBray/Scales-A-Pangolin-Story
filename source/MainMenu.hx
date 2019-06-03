@@ -1,6 +1,7 @@
 package;
 
 // - Flixel
+import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
@@ -14,6 +15,7 @@ class MainMenu extends FlxState {
 	var _pointer:FlxSprite;
 	var _selected:Int = 0;
 	var _startText:FlxText;
+	var _gameSave:FlxSave;
 
 	override public function create():Void {
 		FlxG.autoPause = false;
@@ -21,6 +23,11 @@ class MainMenu extends FlxState {
 		FlxG.mouse.visible = false; // Hide the mouse cursor
 		#end
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
+
+		// Save data
+		_gameSave = new FlxSave(); // initialize
+		_gameSave.bind("AutoSave"); // bind to the named save slot
+		// _gameSave.erase();
 
 		var titleWidth:Int = 450; // Worked thous out through trail and error
 		bgColor = 0xff181818; // Game background color
@@ -49,10 +56,13 @@ class MainMenu extends FlxState {
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
-		
-		
+
 		if (FlxG.keys.anyJustPressed([SPACE, ENTER, ANY])) {
-			FlxG.switchState(new PlayState());
+			if (_gameSave.data.levelName == null) {
+				FlxG.switchState(new PlayState(0, 3, null, false, _gameSave));
+			} else {
+				FlxG.switchState(new NextLevel(_gameSave.data.playerScore, 3, _gameSave.data.collectablesMap, null, _gameSave));
+			}
 		}
 
 		if (FlxG.keys.anyJustPressed([DOWN, S])) {

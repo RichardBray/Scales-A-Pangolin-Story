@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSave;
 import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -12,6 +13,7 @@ class NextLevel extends GameLevel {
 	var _playerHealth:Float;
 	var _levelEntry:FlxSprite;
 	var _levelCollectablesMap:CollMap;
+	var _gameSave:FlxSave;
 
 	/**
 	 * Level 1-1
@@ -19,11 +21,13 @@ class NextLevel extends GameLevel {
 	 * @param Score player score
 	 * @param Health player health
 	 */
-	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, LevelMusic:FlxSound):Void {
+	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, LevelMusic:FlxSound = null, GameSave:FlxSave = null):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
 		_levelCollectablesMap = CollectablesMap;
+		_gameSave = GameSave;
+
 		gameMusic = LevelMusic;
 	}
 
@@ -46,6 +50,14 @@ class NextLevel extends GameLevel {
 		// Add HUD
 		createHUD(_score, _playerHealth);
 
+		// Save game, put this in checkpoint
+		_gameSave.data.levelName = levelName;
+		_gameSave.data.playerScore = _score;
+		_gameSave.data.collectablesMap = _levelCollectablesMap;
+		_gameSave.flush();
+		// _gameSave.data = {
+
+		// }
 		super.create();
 	}
 
@@ -66,6 +78,6 @@ class NextLevel extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true));
+		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
 	}
 }

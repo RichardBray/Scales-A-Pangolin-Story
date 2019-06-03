@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -25,6 +26,7 @@ class PlayState extends GameLevel {
 	var _npcBoundary:FlxSprite;
 	var _npc:FlxSprite;
 	var _actionPressed:Bool = false;
+	var _gameSave:FlxSave;
 
 	public var startingConvo:Bool = false;
 
@@ -35,12 +37,13 @@ class PlayState extends GameLevel {
 	 * @param Health player health
 	 * @param PlayerReturning player coming from a previous level
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:CollMap = null, PlayerReturning = false):Void {
+	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:CollMap = null, PlayerReturning = false, GameSave:FlxSave = null):Void {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
 		_playerReturning = PlayerReturning;
 		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-1" => []] : CollectablesMap;
+		_gameSave = GameSave;
 	}
 
 	override public function create():Void {
@@ -49,7 +52,7 @@ class PlayState extends GameLevel {
 		gameMusic = FlxG.sound.load("assets/music/music.ogg");
 		gameMusic.looped = true;
 		gameMusic.persist = true;
-		gameMusic.volume = 0.4;		
+		gameMusic.volume = 0; // @todo remove in release
 		gameMusic.play(false, 0, 60000);
 
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
@@ -191,6 +194,6 @@ class PlayState extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, _levelCollectablesMap, gameMusic));
+		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, _levelCollectablesMap, gameMusic, _gameSave));
 	}
 }

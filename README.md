@@ -66,7 +66,7 @@ add tag
 `git tag -a v1.4 -m "my version 1.4"`
 
 show tag
-`git show v1.4`
+`git show v0.1.0`
 
 push tag
-`git push origin v1.4`
+`git push origin v0.1.0`
