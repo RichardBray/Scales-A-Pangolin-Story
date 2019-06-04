@@ -75,7 +75,7 @@ class MainMenu extends FlxState {
 							// Modal you have no saved games
 							js.Browser.console.log('you have no saved games');
 						} else {
-							var levelNames:Map<String, Class<GameLevel>> = ["Level-1" => LevelOne, "Level-1-A" => LevelOneA];
+							var levelNames:Map<String, Class<GameLevel>> = ["Level-1-0" => LevelOne, "Level-1-A" => LevelOneA];
 							loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
 						}
 					case 1:
