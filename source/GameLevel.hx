@@ -38,7 +38,7 @@ class GameLevel extends FlxState {
 	public var gameMusicPlaying:Bool = false;
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
-	public var levelExit:FlxSprite; // used by PlayState
+	public var levelExit:FlxSprite; // used by LevelOne
 	public var levelName:String; // Give level unique name REQUIRED!!!
 
 	// public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
@@ -46,7 +46,7 @@ class GameLevel extends FlxState {
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 
-		// collectablesMap = ["Level-1-0" => [], "Level-1-1" => []];
+		// collectablesMap = ["Level-1-0" => [], "Level-1-A" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		#if !debug
 		FlxG.mouse.visible = false; // Hide the mouse cursor
@@ -146,7 +146,7 @@ class GameLevel extends FlxState {
 		add(_level);
 
 		// Tile tearing problem fix on Mac (part 2)
-		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/PlayState.hx#L48
+		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/LevelOne.hx#L48
 		var levelTiles = FlxTileFrames.fromBitmapAddSpacesAndBorders(_collisionImg, new FlxPoint(10, 10), new FlxPoint(2, 2), new FlxPoint(2, 2));
 		_level.frames = levelTiles;
 

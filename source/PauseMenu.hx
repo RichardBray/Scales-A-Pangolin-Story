@@ -81,7 +81,7 @@ class PauseMenu extends FlxSubState {
 			switch _selected {
 				case 0:
 					// Restarts the game / level
-					FlxG.switchState(new PlayState());
+					FlxG.switchState(new LevelOne());
 				case 1:
 					// Should go back to main menu
 					FlxG.switchState(new MainMenu());

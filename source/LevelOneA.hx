@@ -8,7 +8,7 @@ import flixel.util.FlxColor;
 // Typedefs
 import GameLevel.CollMap;
 
-class NextLevel extends GameLevel {
+class LevelOneA extends GameLevel {
 	var _score:Int;
 	var _playerHealth:Float;
 	var _levelEntry:FlxSprite;
@@ -33,7 +33,7 @@ class NextLevel extends GameLevel {
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
-		levelName = 'Level-1-1';
+		levelName = 'Level-1-A';
 		gameMusicPlaying = true;
 
 		createLevel("level-1-3", "mountains", _levelCollectablesMap);
@@ -78,6 +78,6 @@ class NextLevel extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
+		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
 	}
 }

@@ -16,6 +16,7 @@ class MainMenu extends FlxState {
 	var _selected:Int = 0;
 	var _startText:FlxText;
 	var _gameSave:FlxSave;
+	var _showChoices:Bool = false;
 
 	override public function create():Void {
 		FlxG.autoPause = false;
@@ -37,31 +38,54 @@ class MainMenu extends FlxState {
 
 		_pointer = new FlxSprite(_gameTitle.x, _gameTitle.y + 200);
 		_pointer.makeGraphic(titleWidth, 40, 0xffdc2de4);
-		// add(_pointer);
+		_pointer.alpha = 0;
+		add(_pointer);
 
 		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press ENTER to start", 22);
 		_startText.screenCenter(X);
 		add(_startText);
 
 		_choices = new Array<FlxText>();
-		_choices.push(new FlxText(0, _gameTitle.y + 200, 0, "New Game", 22));
-		_choices.push(new FlxText(0, _gameTitle.y + 250, 0, "Load Game").setFormat(22, 0x777777));
+		_choices.push(new FlxText(0, _gameTitle.y + 200, 0, "Continue").setFormat(22, 0x777777));
+		_choices.push(new FlxText(0, _gameTitle.y + 250, 0, "New Game", 22));
 
-		// Adds text to screen
-		// _choices.map((_choice:FlxText) -> {
-		// 	_choice.screenCenter(X);
-		// 	add(_choice);
-		// });
+		// Adds options to screen
+		_choices.map((_choice:FlxText) -> {
+			_choice.screenCenter(X);
+			_choice.alpha = 0;
+			add(_choice);
+		});
 	}
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 
 		if (FlxG.keys.anyJustPressed([SPACE, ENTER, ANY])) {
-			if (_gameSave.data.levelName == null) {
-				FlxG.switchState(new PlayState(0, 3, null, false, _gameSave));
+			if (!_showChoices) {
+				_showChoices = true;
+				_startText.alpha = 0;
+				_pointer.alpha = 1;
+				_choices.map((_choice:FlxText) -> {
+					_choice.alpha = 1;
+				});
 			} else {
-				FlxG.switchState(new NextLevel(_gameSave.data.playerScore, 3, _gameSave.data.collectablesMap, null, _gameSave));
+				switch _selected {
+					case 0:
+						if (_gameSave.data.levelName == null) { // No saved game
+							// Modal you have no saved games
+							js.Browser.console.log('you have no saved games');
+						} else {
+							var levelNames:Map<String, Class<GameLevel>> = ["Level-1" => LevelOne, "Level-1-A" => LevelOneA];
+							loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
+						}
+					case 1:
+						if (_gameSave.data.levelName == null) { // No saved game
+							FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+						} else {
+							// Modal this will erase your saved data
+							js.Browser.console.log('this will erase your saved datas');
+						}
+				}
 			}
 		}
 
@@ -78,5 +102,9 @@ class MainMenu extends FlxState {
 				_selected--;
 			}
 		}
+	}
+
+	function loadLevel(GameSave:FlxSave, Level:Class<GameLevel>) {
+		FlxG.switchState(Type.createInstance(Level, [GameSave.data.playerScore, 3, GameSave.data.collectablesMap, null, GameSave]));
 	}
 }

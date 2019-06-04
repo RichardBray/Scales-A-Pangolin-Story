@@ -12,7 +12,7 @@ import flixel.util.FlxColor;
 // Typedefs
 import GameLevel.CollMap;
 
-class PlayState extends GameLevel {
+class LevelOne extends GameLevel {
 	var _enemy:Enemy;
 	var _score:Int;
 	var _playerHealth:Float;
@@ -42,7 +42,7 @@ class PlayState extends GameLevel {
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
 		_playerReturning = PlayerReturning;
-		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-1" => []] : CollectablesMap;
+		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-A" => []] : CollectablesMap;
 		_gameSave = GameSave;
 	}
 
@@ -93,6 +93,13 @@ class PlayState extends GameLevel {
 		createHUD(_score == 0 ? 0 : _score, player.health);
 		_sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		_sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");
+
+		// Save game, put this in checkpoint
+		_gameSave.data.levelName = levelName;
+		_gameSave.data.playerScore = _score;
+		_gameSave.data.collectablesMap = _levelCollectablesMap;
+		_gameSave.flush();
+
 		super.create();
 	}
 
@@ -194,6 +201,6 @@ class PlayState extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new NextLevel(grpHud.gameScore, player.health, _levelCollectablesMap, gameMusic, _gameSave));
+		FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, gameMusic, _gameSave));
 	}
 }
