@@ -16,6 +16,7 @@ class MainMenu extends FlxState {
 	var _selected:Int = 0;
 	var _startText:FlxText;
 	var _gameSave:FlxSave;
+	var _continueColor:FlxColor;
 	var _showChoices:Bool = false;
 
 	override public function create():Void {
@@ -45,8 +46,10 @@ class MainMenu extends FlxState {
 		_startText.screenCenter(X);
 		add(_startText);
 
+		_continueColor = _gameSave.data.levelName == null ? 0x777777 : 0xffffff;
+
 		_choices = new Array<FlxText>();
-		_choices.push(new FlxText(0, _gameTitle.y + 200, 0, "Continue").setFormat(22, 0x777777));
+		_choices.push(new FlxText(0, _gameTitle.y + 200, 0, "Continue").setFormat(22, _continueColor));
 		_choices.push(new FlxText(0, _gameTitle.y + 250, 0, "New Game", 22));
 
 		// Adds options to screen
@@ -82,8 +85,7 @@ class MainMenu extends FlxState {
 						if (_gameSave.data.levelName == null) { // No saved game
 							FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 						} else {
-							// Modal this will erase your saved data
-							js.Browser.console.log('this will erase your saved datas');
+							showModal('this will erase your saved data');
 						}
 				}
 			}
@@ -102,6 +104,11 @@ class MainMenu extends FlxState {
 				_selected--;
 			}
 		}
+	}
+
+	function showModal(Text:String) {
+		var _modal:MainMenuModal = new MainMenuModal(Text);
+		openSubState(_modal);
 	}
 
 	function loadLevel(GameSave:FlxSave, Level:Class<GameLevel>) {
