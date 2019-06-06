@@ -13,7 +13,7 @@ class PauseMenu extends FlxSubState {
 	var _grpMenuItems:FlxSpriteGroup;
 	var _menuTitle:FlxText;
 	var _menuWidth:Int = 500;
-	var _menuHeight:Int = 600;
+	var _menuHeight:Int = 500;
 	var _selected:Int = 0;
 	var _pointer:FlxSprite;
 	var _choices:Array<FlxText>;

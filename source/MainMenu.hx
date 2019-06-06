@@ -75,8 +75,7 @@ class MainMenu extends FlxState {
 				switch _selected {
 					case 0:
 						if (_gameSave.data.levelName == null) { // No saved game
-							// Modal you have no saved games
-							js.Browser.console.log('you have no saved games');
+							showModal('You have no saved games');
 						} else {
 							var levelNames:Map<String, Class<GameLevel>> = ["Level-1-0" => LevelOne, "Level-1-A" => LevelOneA];
 							loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
@@ -85,7 +84,7 @@ class MainMenu extends FlxState {
 						if (_gameSave.data.levelName == null) { // No saved game
 							initNewGame();
 						} else {
-							showModal('this will erase your saved data', initNewGame);
+							showModal('This will erase your saved games. Do you want to continue?', initNewGame, true);
 						}
 				}
 			}
@@ -111,8 +110,8 @@ class MainMenu extends FlxState {
 		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 	}
 
-	function showModal(Text:String, ConfirmCallback:Void->Void):Void {
-		var _modal:MainMenuModal = new MainMenuModal(Text, ConfirmCallback);
+	function showModal(Text:String, ?ConfirmCallback:Void->Void, ?ShowOptions:Bool):Void {
+		var _modal:MainMenuModal = new MainMenuModal(Text, ConfirmCallback, ShowOptions);
 		openSubState(_modal);
 	}
 
