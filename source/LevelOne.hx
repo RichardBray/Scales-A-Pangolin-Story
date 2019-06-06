@@ -37,7 +37,7 @@ class LevelOne extends GameLevel {
 	 * @param Health player health
 	 * @param PlayerReturning player coming from a previous level
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, CollectablesMap:CollMap = null, PlayerReturning = false, GameSave:FlxSave = null):Void {
+	public function new(Score:Int = 0, Health:Float = 3, ?CollectablesMap:Null<CollMap>, PlayerReturning:Bool = false, ?GameSave:Null<FlxSave>):Void {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
@@ -95,11 +95,12 @@ class LevelOne extends GameLevel {
 		_sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");
 
 		// Save game, put this in checkpoint
-		_gameSave.data.levelName = levelName;
-		_gameSave.data.playerScore = _score;
-		_gameSave.data.collectablesMap = _levelCollectablesMap;
-		_gameSave.flush();
-
+		if (_gameSave != null && _playerReturning) {
+			_gameSave.data.levelName = levelName;
+			_gameSave.data.playerScore = _score;
+			_gameSave.data.collectablesMap = _levelCollectablesMap;
+			_gameSave.flush();
+		}
 		super.create();
 	}
 

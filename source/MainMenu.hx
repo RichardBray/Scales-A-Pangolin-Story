@@ -29,7 +29,6 @@ class MainMenu extends FlxState {
 		// Save data
 		_gameSave = new FlxSave(); // initialize
 		_gameSave.bind("AutoSave"); // bind to the named save slot
-		// _gameSave.erase();
 
 		var titleWidth:Int = 450; // Worked thous out through trail and error
 		bgColor = 0xff181818; // Game background color
@@ -106,7 +105,7 @@ class MainMenu extends FlxState {
 	}
 
 	function initNewGame():Void {
-		_gameSave.erase();
+		// _gameSave.erase();
 		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 	}
 
