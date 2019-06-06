@@ -83,9 +83,9 @@ class MainMenu extends FlxState {
 						}
 					case 1:
 						if (_gameSave.data.levelName == null) { // No saved game
-							FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+							initNewGame();
 						} else {
-							showModal('this will erase your saved data');
+							showModal('this will erase your saved data', initNewGame);
 						}
 				}
 			}
@@ -106,8 +106,13 @@ class MainMenu extends FlxState {
 		}
 	}
 
-	function showModal(Text:String) {
-		var _modal:MainMenuModal = new MainMenuModal(Text);
+	function initNewGame():Void {
+		_gameSave.erase();
+		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+	}
+
+	function showModal(Text:String, ConfirmCallback:Void->Void):Void {
+		var _modal:MainMenuModal = new MainMenuModal(Text, ConfirmCallback);
 		openSubState(_modal);
 	}
 
