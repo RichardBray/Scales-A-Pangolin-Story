@@ -101,6 +101,7 @@ class LevelOne extends GameLevel {
 			_gameSave.data.collectablesMap = _levelCollectablesMap;
 			_gameSave.flush();
 		}
+
 		super.create();
 	}
 

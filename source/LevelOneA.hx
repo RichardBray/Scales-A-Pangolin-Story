@@ -55,9 +55,7 @@ class LevelOneA extends GameLevel {
 		_gameSave.data.playerScore = _score;
 		_gameSave.data.collectablesMap = _levelCollectablesMap;
 		_gameSave.flush();
-		// _gameSave.data = {
 
-		// }
 		super.create();
 	}
 
