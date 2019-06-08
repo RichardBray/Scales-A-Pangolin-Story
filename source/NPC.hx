@@ -10,91 +10,92 @@ import flixel.FlxObject;
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
 	var _parentState:GameLevel;
-    var _dialogueText:Array<String>;
-    var _xPos:Int;
-    var _yPos:Int;
 
-	public var dialoguePrompt:DialoguePrompt;    
+	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
+	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
 
     /**
      * Create an NPC
      *
-     * @param X
-     * @param Y
-     * @param DialogueText
+     * @param X				X posiiton in the level.
+     * @param Y				Y position in the level.
+     * @param DialogueText	Text for the NPC.
+	 * @param SpriteData	Sprite image unique to this NPC.
 	 * @param ParentState	Used to adjust vieport and stop player when dialogue starts.
      */
-    public function new(X:Int, Y:Int, ?DialogueText:Null<Array<String>>, ParentState:GameLevel):Void {
+    public function new(X:Int, Y:Int, ?DialogueText:Null<Array<String>>, SpriteData:FlxSprite, ParentState:GameLevel):Void {
         super();
-        _dialogueText = DialogueText;
 		_parentState = ParentState;
 
-		var _npcSprite = new NpcSprite(X, Y);
-		add(_npcSprite);
+		npcSprite = new NpcSprite(X, Y, SpriteData);
+		add(npcSprite);
 
-		// Friend Dialogue Bubble
-		dialoguePrompt = new DialoguePrompt(120, 820 + (150 / 2), 390, "Press Z");
+		dialoguePrompt = new DialoguePrompt(
+			null, 
+			(X - SpriteData.width) + (SpriteData.width * 3 / 2), 
+			(SpriteData.height + 350),  // 350 = magic number
+			"Press E"
+		);
 		add(dialoguePrompt);
 
-		_dialogueBox = new DialogueBox(_dialogueText, ParentState);
+		_dialogueBox = new DialogueBox(DialogueText, ParentState);
 		add(_dialogueBox);
 		// NPC end        		
     }
 
 	public function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
-			if (!_parentState.actionPressed) {
-				// show press e prompt
-				dialoguePrompt.showPrompt();
-			}
+			if (!_parentState.actionPressed) dialoguePrompt.showPrompt();
 
-			if (FlxG.keys.anyPressed([Z])) {
+			if (FlxG.keys.anyPressed([E])) {
 				_parentState.actionPressed = true;
 				if (!_parentState.startingConvo) {
-					// hide dialogue bubble
-					dialoguePrompt.hidePrompt(true);
+					dialoguePrompt.hidePrompt(true); // hide dialogue bubble
 					// zoom camera
 					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {
 						onComplete: (_) -> {
 							_parentState.startingConvo = true;
-							// show dialogue box
-							_dialogueBox.showBox();
+							_dialogueBox.showBox(); // show dialogue box
 						}
 					});
-					// prevent character movement
-					Player.preventMovement = true;
-
-					// hide HUD
-					_parentState.grpHud.toggleHUD(0);
+					Player.preventMovement = true; // prevent character movement
+					_parentState.grpHud.toggleHUD(0); // hide HUD
 				} else {
 					// unzoom camera
 					FlxTween.tween(FlxG.camera, {zoom: 1}, 0.2, {
 						onComplete: (_) -> _parentState.startingConvo = false
 					});
-					// hide dialogue box
-					_dialogueBox.hideBox();
-
-					// allow character movement
-					Player.preventMovement = false;
-					// show HUD
-					_parentState.grpHud.toggleHUD(1);
+					_dialogueBox.hideBox(); // hide dialogue box
+					Player.preventMovement = false; // allow character movement
+					_parentState.grpHud.toggleHUD(1); // show HUD
 				}
 			}
-		}
-		
+		} 
 	}  
 }
 
 class NpcSprite extends FlxTypedGroup<FlxSprite> {
-	var _npcBoundary:FlxSprite;
-	var _actualNPC:FlxSprite; 
 
-	public function new(X:Int, Y:Int):Void {
-		super();
-		// NPC start
-		_npcBoundary = new FlxSprite((X - 50), Y).makeGraphic(150, 50, FlxColor.TRANSPARENT);
-		add(_npcBoundary);
-		_actualNPC = new FlxSprite(X, Y).makeGraphic(50, 50, 0xff205ab7);
-		add(_actualNPC);			
+	public var npcBoundary:FlxSprite; // Used to get boundaries for collision.
+
+	/**
+	 * This creates the NPC sprite with it's boundary
+	 *
+	 * @param X	X position of the NPC sprite on the map.
+	 * @param Y	Y position of the NPC sprite on the map.
+	 */
+	public function new(X:Int, Y:Int, SpriteData:FlxSprite):Void {
+		super();	
+	
+		add(SpriteData);
+
+		npcBoundary = new FlxSprite(
+			(X - SpriteData.width), Y).makeGraphic(
+			Std.int(SpriteData.width * 3), 
+			Std.int(SpriteData.height), 
+			FlxColor.TRANSPARENT
+		);
+		add(npcBoundary);
+		
 	}
 }  

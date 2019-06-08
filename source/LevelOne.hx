@@ -17,6 +17,7 @@ class LevelOne extends GameLevel {
 	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
 	var _gameSave:FlxSave;
+	var _npcSprite:FlxSprite; 
 	var _testNPC:NPC;
 
 	/**
@@ -26,7 +27,7 @@ class LevelOne extends GameLevel {
 	 * @param Health player health
 	 * @param PlayerReturning player coming from a previous level
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, ?CollectablesMap:Null<CollMap>, PlayerReturning:Bool = false, ?GameSave:FlxSave):Void {
+	public function new(Score:Int = 0, Health:Float = 3, ?CollectablesMap:Null<CollMap>, PlayerReturning:Bool = false, ?GameSave:Null<FlxSave>):Void {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
@@ -46,16 +47,18 @@ class LevelOne extends GameLevel {
 
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
 
-		// Add NPC
-		// Friend dialogue box
+		// Add NPC Text
 		var testText:Array<String> = [
 			"Hello friend!",
 			"Welcome to a spuer early build of the Pangolin game.",
 			"Nothing is finalised, the art assets, gameplay mechanics, even the sound effects.",
 			"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to have loads more done soon.",
 			"Until then, have fun :)"
-		];		
-		_testNPC = new NPC(870, 510, testText, this);
+		];
+		
+		// Add NPC
+		_npcSprite = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
+		_testNPC = new NPC(870, 510, testText, _npcSprite, this);
 		add(_testNPC);
 	
 		// Add enemy
@@ -71,7 +74,7 @@ class LevelOne extends GameLevel {
 		// If no socre has been bassed then pass 0
 		createHUD(_score == 0 ? 0 : _score, player.health);
 
-		if (_gameSave != null && _playerReturning) saveGame(_gameSave);
+		if (_gameSave != null || _playerReturning) saveGame(_gameSave);
 
 		super.create();
 	}
@@ -83,7 +86,7 @@ class LevelOne extends GameLevel {
 		FlxG.overlap(player, _enemy, hitEnemy);
 		FlxG.overlap(levelExit, player, fadeOut);
 
-		if (!FlxG.overlap(player, _testNPC, _testNPC.initConvo)) {
+		if (!FlxG.overlap(player, _testNPC.npcSprite.npcBoundary, _testNPC.initConvo)) {
 			actionPressed = false;
 			_testNPC.dialoguePrompt.hidePrompt();
 		};

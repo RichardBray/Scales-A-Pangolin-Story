@@ -6,6 +6,7 @@ import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
+import flixel.util.FlxSave;
 
 class LevelEnd extends FlxState {
 	var _playerScore:Int;
@@ -15,6 +16,7 @@ class LevelEnd extends FlxState {
 	var _pointer:FlxSprite;
 	var _selected:Int = 0;
 	var _gameMusic:FlxSound;
+	var _gameSave:FlxSave;
 
 	/**
 	 * @param PlayerScore Show on end screen
@@ -30,6 +32,10 @@ class LevelEnd extends FlxState {
 		super.create();
 		bgColor = 0xff181818; // Game background color
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // State fades in
+
+		// Save data
+		_gameSave = new FlxSave(); // initialize
+		_gameSave.bind("AutoSave"); // bind to the named save slot		
 
 		_endHeading = new FlxText(30, 30, 300, "Level 1 clear!!", 32);
 		add(_endHeading);
@@ -58,7 +64,7 @@ class LevelEnd extends FlxState {
 			switch _selected {
 				case 0:
 					// Restarts the game / level
-					FlxG.switchState(new LevelOne());
+					FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 				case 1:
 					FlxG.switchState(new MainMenu());
 				default:

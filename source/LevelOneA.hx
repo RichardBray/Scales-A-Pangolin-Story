@@ -59,12 +59,12 @@ class LevelOneA extends GameLevel {
 		FlxG.overlap(_levelEntry, player, fadeOut);
 	}
 
-	function goToMainMenu(Player:FlxSprite, Exit:FlxSprite) {
+	function goToMainMenu(Exit:FlxSprite, Player:Player) {
 		gameMusic.stop();
 		FlxG.switchState(new LevelEnd(grpHud.gameScore, gameMusic));
 	}
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {
+	function fadeOut(Exit:FlxSprite, Player:Player ):Void {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
 	}
 
