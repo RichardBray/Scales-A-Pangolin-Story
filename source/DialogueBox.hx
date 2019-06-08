@@ -13,7 +13,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _pressDown:FlxText;
 	var _dialogueArray:Array<String>;
 	var _arrTextNum:Int = 0;
-	var _parentState:LevelOne;
+	var _parentState:GameLevel;
 	var _primaryText:FlxTextFormat;
 
 	static var _heightFromBase:Int = 200;
@@ -24,7 +24,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	 * @param Dialogue 		Text that the NPC/Player will give.
 	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
 	 */
-	public function new(Dialogue:Array<String>, ParentState:LevelOne) {
+	public function new(Dialogue:Array<String>, ParentState:GameLevel) {
 		super();
 
 		// Assign these to variables to use in other methods

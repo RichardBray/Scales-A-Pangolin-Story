@@ -8,7 +8,7 @@ import flixel.text.FlxText;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 
-// - OpenFL
+
 class MainMenu extends FlxState {
 	var _gameTitle:FlxText;
 	var _choices:Array<FlxText>;

@@ -18,8 +18,8 @@ class LevelOneA extends GameLevel {
 	/**
 	 * Level 1-1
 	 *
-	 * @param Score player score
-	 * @param Health player health
+	 * @param Score		player score
+	 * @param Health 	player health
 	 */
 	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, LevelMusic:FlxSound = null, GameSave:FlxSave = null):Void {
 		super();
@@ -39,7 +39,7 @@ class LevelOneA extends GameLevel {
 		createLevel("level-1-3", "mountains", _levelCollectablesMap);
 
 		// Block to take you back to previous level
-		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.TRANSPARENT);
+		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, FlxG.height, FlxColor.TRANSPARENT);
 		add(_levelEntry);
 
 		// Add player
@@ -49,13 +49,7 @@ class LevelOneA extends GameLevel {
 
 		// Add HUD
 		createHUD(_score, _playerHealth);
-
-		// Save game, put this in checkpoint
-		_gameSave.data.levelName = levelName;
-		_gameSave.data.playerScore = _score;
-		_gameSave.data.collectablesMap = _levelCollectablesMap;
-		_gameSave.flush();
-
+		saveGame(_gameSave);
 		super.create();
 	}
 
@@ -66,7 +60,6 @@ class LevelOneA extends GameLevel {
 	}
 
 	function goToMainMenu(Player:FlxSprite, Exit:FlxSprite) {
-		// @todo create main menu
 		gameMusic.stop();
 		FlxG.switchState(new LevelEnd(grpHud.gameScore, gameMusic));
 	}

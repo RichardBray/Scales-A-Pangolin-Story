@@ -1,6 +1,7 @@
 package;
 
 // - Flixel
+import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.FlxSprite;
@@ -13,6 +14,8 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxSpriteUtil;
 import flixel.system.FlxSound;
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
@@ -32,21 +35,21 @@ class GameLevel extends FlxState {
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
+	var _levelScore:Int; // This is used for the game save
+	// Sounds
 	var _sndCollect:FlxSound;
-
 	public var gameMusic:FlxSound; // Public for LevelEnd.hx to make music stop
 	public var gameMusicPlaying:Bool = false;
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
-	public var levelName:String; // Give level unique name REQUIRED!!!
-
-	// public var collectablesMap = new Map<String, Array<Int>>(); // Used to keep track of what has been collected between levels
+	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
+	public var actionPressed:Bool = false;
+	public var levelName:String; // Give level unique name 
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 
-		// collectablesMap = ["Level-1-0" => [], "Level-1-A" => []];
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		#if !debug
 		FlxG.mouse.visible = false; // Hide the mouse cursor
@@ -94,8 +97,8 @@ class GameLevel extends FlxState {
 
 	/**
 	 *
-	 * @param 	MapFile 	Comtains the name of the tmx data file used for the map.
-	 * @param 	Background 	Parallax background image name.
+	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
+	 * @param 	Background 		Parallax background image name.
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
 	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap):Void {
@@ -180,8 +183,14 @@ class GameLevel extends FlxState {
 		add(levelExit);
 	}
 
+	/**
+	 * This method creates and adds the HUD to the level.
+	 *
+	 * @param Score		Player score at time of HUD creation, also used for `saveGame` method.
+	 * @param Health	Player health value at time of HUD creation.
+	 */
 	public function createHUD(Score:Int, Health:Float) {
-		// Add Hud
+		_levelScore = Score;
 		grpHud = new HUD(Score, Health);
 		add(grpHud);
 	}
@@ -198,6 +207,56 @@ class GameLevel extends FlxState {
 			player.facing = FlxObject.LEFT;
 		add(player);
 	}
+
+	/**
+	 * Saves the game.
+	 *
+	 * @param GameSave	Save game data from level.
+	 */
+	public function saveGame(GameSave:FlxSave):Void {
+		GameSave.data.levelName = levelName;
+		GameSave.data.playerScore = _levelScore;
+		GameSave.data.collectablesMap = _collectablesMap;
+		GameSave.flush();
+	}
+
+	/**
+	 * What happens when the player and the enemy collide
+	 */
+	public function hitEnemy(Player:Player, Enemy:Enemy):Void {
+		if (Player.health > 1) {
+			if (Player.isTouching(FlxObject.FLOOR)) {
+				Player.hurt(1);
+				Enemy.sndHit.play();
+				FlxSpriteUtil.flicker(Player);
+
+				if (Player.flipX) { // if facing left
+					FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
+				} else { // facing right
+					FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
+				}
+			} else {
+				// Player bounce
+				Player.velocity.y = -600;
+				// from the top
+				// when rolling animation is playing
+				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
+					Enemy.sndEnemyKill.play();
+					Enemy.kill();
+				} else { // when rolling animation is NOT playing
+					Player.hurt(1);
+					Enemy.sndHit.play();
+					FlxSpriteUtil.flicker(Player);
+				}
+			}
+		} else {
+			// @todo play death animation
+			var _pauseMenu:PauseMenu = new PauseMenu(true);
+			openSubState(_pauseMenu);
+		}
+
+		grpHud.decrementHealth(Player.health);
+	}	
 
 	/**
 	 * Place entities from Tilemap.
