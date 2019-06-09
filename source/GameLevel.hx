@@ -82,7 +82,7 @@ class GameLevel extends FlxState {
 		// Paused game state
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
 			// SubState needs to be recreated here as it will be destroyed
-			gameMusic.pause();
+			FlxG.sound.music.pause();
 			var _pauseMenu:PauseMenu = new PauseMenu(false, gameMusic);
 			openSubState(_pauseMenu);
 		}
@@ -227,11 +227,7 @@ class GameLevel extends FlxState {
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String):Void {
-		gameMusic = FlxG.sound.load(LevelMusic);
-		gameMusic.looped = true;
-		gameMusic.persist = true;
-		gameMusic.volume = 0.4; // @todo remove in release
-		gameMusic.play(false, 0, 60000);		
+		FlxG.sound.playMusic(LevelMusic, 0.4, true);		
 	}
 
 	/**
