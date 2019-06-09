@@ -85,7 +85,9 @@ class LevelOne extends GameLevel {
 		// If no socre has been bassed then pass 0
 		createHUD(_score == 0 ? 0 : _score, player.health);
 
-		if (_gameSave != null || _playerReturning) saveGame(_gameSave);
+		if (_gameSave != null || _playerReturning) {
+			_gameSave = saveGame(_gameSave);
+		};
 
 		super.create();
 	}

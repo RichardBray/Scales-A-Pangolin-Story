@@ -55,7 +55,9 @@ class LevelOneA extends GameLevel {
 
 		// Add HUD
 		createHUD(_score, _playerHealth);
-		saveGame(_gameSave);
+
+		// Saves game
+		_gameSave = saveGame(_gameSave);
 		super.create();
 	}
 

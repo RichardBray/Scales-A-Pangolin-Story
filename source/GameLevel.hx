@@ -212,16 +212,18 @@ class GameLevel extends FlxState {
 	 *
 	 * @param GameSave	Save game data from level.
 	 */
-	public function saveGame(GameSave:FlxSave):Void {
+	public function saveGame(GameSave:FlxSave):FlxSave {
 		GameSave.data.levelName = levelName;
 		GameSave.data.playerScore = _levelScore;
 		GameSave.data.collectablesMap = _collectablesMap;
 		// @todo Add player position to game save
 		GameSave.flush();
+		return GameSave;
 	}
 
 	/**
 	 * Sets up and plays level music
+	 *
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String):Void {
