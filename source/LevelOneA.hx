@@ -18,23 +18,29 @@ class LevelOneA extends GameLevel {
 	/**
 	 * Level 1-1
 	 *
-	 * @param Score		player score
-	 * @param Health 	player health
+	 * @param Score				Player score
+	 * @param Health 			Player health
+	 * @param CollectablesMap	Collecables map from other parts of the level
+	 * @param LevelMusic		Game music if there is some
+	 * @param GameSave			Loaded game save
 	 */
-	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, LevelMusic:FlxSound = null, GameSave:FlxSave = null):Void {
+	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, ?LevelMusic:Null<FlxSound>, ?GameSave:Null<FlxSave>):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
 		_levelCollectablesMap = CollectablesMap;
 		_gameSave = GameSave;
-
-		gameMusic = LevelMusic;
+	
+		if(LevelMusic == null) {
+			playMusic("assets/music/music.ogg");
+		} else {
+			gameMusic = LevelMusic;
+		}
 	}
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-A';
-		gameMusicPlaying = true;
 
 		createLevel("level-1-3", "mountains", _levelCollectablesMap);
 
@@ -69,6 +75,6 @@ class LevelOneA extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
+		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, gameMusic, _gameSave));
 	}
 }

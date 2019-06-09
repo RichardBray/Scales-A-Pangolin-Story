@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
+import flixel.system.FlxSound;
 // NPC
 import flixel.util.FlxColor;
 // Typedefs
@@ -23,27 +24,37 @@ class LevelOne extends GameLevel {
 	/**
 	 * Level 1-0
 	 *
-	 * @param Score player score
-	 * @param Health player health
-	 * @param PlayerReturning player coming from a previous level
+	 * @param Score 			Player score
+	 * @param Health 			Player health
+	 * @param CollectablesMap	Collecables map from other parts of the level
+	 * @param PlayerReturning 	Player coming from a previous level
+	 * @param LevelMusic		Game music if there is some
+	 * @param GameSave			Loaded game save
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, ?CollectablesMap:Null<CollMap>, PlayerReturning:Bool = false, ?GameSave:Null<FlxSave>):Void {
+	public function new(
+		Score:Int = 0, 
+		Health:Float = 3, 
+		?CollectablesMap:Null<CollMap>, 
+		PlayerReturning:Bool = false, 
+		?LevelMusic:Null<FlxSound>, 
+		?GameSave:Null<FlxSave>
+	):Void {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
 		_playerReturning = PlayerReturning;
 		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-A" => []] : CollectablesMap;
 		_gameSave = GameSave;
+
+		if (gameMusic == null) {
+			playMusic("assets/music/music.ogg");
+		} else {
+			gameMusic = LevelMusic;
+		}		
 	}
 
 	override public function create():Void {
 		levelName = 'Level-1-0';
-
-		gameMusic = FlxG.sound.load("assets/music/music.ogg");
-		gameMusic.looped = true;
-		gameMusic.persist = true;
-		gameMusic.volume = 0; // @todo remove in release
-		gameMusic.play(false, 0, 60000);
 
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
 

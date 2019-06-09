@@ -64,7 +64,7 @@ class LevelEnd extends FlxState {
 			switch _selected {
 				case 0:
 					// Restarts the game / level
-					FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+					FlxG.switchState(new LevelOne(0, 3, null, false, null, _gameSave));
 				case 1:
 					FlxG.switchState(new MainMenu());
 				default:

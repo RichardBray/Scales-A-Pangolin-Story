@@ -106,7 +106,7 @@ class MainMenu extends FlxState {
 
 	function initNewGame():Void {
 		// _gameSave.erase();
-		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+		FlxG.switchState(new LevelOne(0, 3, null, false, null, _gameSave));
 	}
 
 	function showModal(Text:String, ?ConfirmCallback:Void->Void, ?ShowOptions:Bool):Void {

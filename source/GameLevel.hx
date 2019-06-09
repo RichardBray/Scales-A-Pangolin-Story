@@ -39,7 +39,6 @@ class GameLevel extends FlxState {
 	// Sounds
 	var _sndCollect:FlxSound;
 	public var gameMusic:FlxSound; // Public for LevelEnd.hx to make music stop
-	public var gameMusicPlaying:Bool = false;
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
@@ -217,7 +216,20 @@ class GameLevel extends FlxState {
 		GameSave.data.levelName = levelName;
 		GameSave.data.playerScore = _levelScore;
 		GameSave.data.collectablesMap = _collectablesMap;
+		// @todo Add player position to game save
 		GameSave.flush();
+	}
+
+	/**
+	 * Sets up and plays level music
+	 * @param LevelMusic	String of music location
+	 */
+	public function playMusic(LevelMusic:String):Void {
+		gameMusic = FlxG.sound.load(LevelMusic);
+		gameMusic.looped = true;
+		gameMusic.persist = true;
+		gameMusic.volume = 0.4; // @todo remove in release
+		gameMusic.play(false, 0, 60000);		
 	}
 
 	/**
