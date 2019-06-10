@@ -8,7 +8,6 @@ import flixel.text.FlxText;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 
-
 class MainMenu extends FlxState {
 	var _gameTitle:FlxText;
 	var _choices:Array<FlxText>;
@@ -30,6 +29,7 @@ class MainMenu extends FlxState {
 		_gameSave = new FlxSave(); // initialize
 		_gameSave.bind("AutoSave"); // bind to the named save slot
 
+		FlxG.sound.music = null; // Make sure there's no music
 		var titleWidth:Int = 450; // Worked thous out through trail and error
 		bgColor = 0xff181818; // Game background color
 
@@ -106,7 +106,7 @@ class MainMenu extends FlxState {
 
 	function initNewGame():Void {
 		// _gameSave.erase();
-		FlxG.switchState(new LevelOne(0, 3, null, false, null, _gameSave));
+		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 	}
 
 	function showModal(Text:String, ?ConfirmCallback:Void->Void, ?ShowOptions:Bool):Void {

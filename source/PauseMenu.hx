@@ -1,6 +1,5 @@
 package;
 
-import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -18,11 +17,10 @@ class PauseMenu extends FlxSubState {
 	var _pointer:FlxSprite;
 	var _choices:Array<FlxText>;
 	var _titleText:String;
-	var _gameMusic:FlxSound;
 
 	public var gamePaused:Bool = false;
 
-	public function new(PlayerDied:Bool = false, GameMusic:FlxSound = null):Void {
+	public function new(PlayerDied:Bool = false):Void {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -42,8 +40,6 @@ class PauseMenu extends FlxSubState {
 		_pointer = new FlxSprite(_boxXPos, _menuTitle.y + 200);
 		_pointer.makeGraphic(_menuWidth, 50, 0xffdc2de4);
 		_grpMenuItems.add(_pointer);
-
-		_gameMusic = GameMusic;
 
 		/**
 		 * Text for paused screen.
@@ -71,13 +67,12 @@ class PauseMenu extends FlxSubState {
 
 	override public function update(elapsed:Float):Void {
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
-			if (_gameMusic != null) {
-				_gameMusic.play();
-			}
+			FlxG.sound.music.play();
 			close();
 		}
 
 		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
+			FlxG.sound.music = null; // Kill the music
 			switch _selected {
 				case 0:
 					// Restarts the game / level

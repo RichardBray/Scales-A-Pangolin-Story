@@ -1,6 +1,5 @@
 package;
 
-import flixel.system.FlxSound;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.text.FlxText;
@@ -15,27 +14,24 @@ class LevelEnd extends FlxState {
 	var _choices:Array<FlxText>;
 	var _pointer:FlxSprite;
 	var _selected:Int = 0;
-	var _gameMusic:FlxSound;
 	var _gameSave:FlxSave;
 
 	/**
 	 * @param PlayerScore Show on end screen
-	 * @param GameMusic   End previous level music
 	 */
-	public function new(PlayerScore:Int = 0, GameMusic:FlxSound = null):Void {
+	public function new(PlayerScore:Int = 0):Void {
 		super();
 		_playerScore = PlayerScore;
-		_gameMusic = GameMusic;
 	}
 
 	override public function create():Void {
 		super.create();
 		bgColor = 0xff181818; // Game background color
+
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // State fades in
 
-		// Save data
-		_gameSave = new FlxSave(); // initialize
-		_gameSave.bind("AutoSave"); // bind to the named save slot		
+		FlxG.sound.music.stop();
+		FlxG.sound.music = null; // Make sure there's no music
 
 		_endHeading = new FlxText(30, 30, 300, "Level 1 clear!!", 32);
 		add(_endHeading);
@@ -55,16 +51,14 @@ class LevelEnd extends FlxState {
 		_choices.map((_choice:FlxText) -> {
 			add(_choice);
 		});
-		_gameMusic.stop();
 	}
 
 	override public function update(elapsed:Float):Void {
-		_gameMusic.stop();
 		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
 			switch _selected {
 				case 0:
 					// Restarts the game / level
-					FlxG.switchState(new LevelOne(0, 3, null, false, null, _gameSave));
+					FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 				case 1:
 					FlxG.switchState(new MainMenu());
 				default:

@@ -30,12 +30,6 @@ class LevelOneA extends GameLevel {
 		_playerHealth = Health;
 		_levelCollectablesMap = CollectablesMap;
 		_gameSave = GameSave;
-	
-		if(LevelMusic == null) {
-			playMusic("assets/music/music.ogg");
-		} else {
-			gameMusic = LevelMusic;
-		}
 	}
 
 	override public function create():Void {
@@ -68,15 +62,14 @@ class LevelOneA extends GameLevel {
 	}
 
 	function goToMainMenu(Exit:FlxSprite, Player:Player) {
-		gameMusic.stop();
-		FlxG.switchState(new LevelEnd(grpHud.gameScore, gameMusic));
+		FlxG.switchState(new LevelEnd(grpHud.gameScore));
 	}
 
-	function fadeOut(Exit:FlxSprite, Player:Player ):Void {
+	function fadeOut(Exit:FlxSprite, Player:Player):Void {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, gameMusic, _gameSave));
+		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
 	}
 }

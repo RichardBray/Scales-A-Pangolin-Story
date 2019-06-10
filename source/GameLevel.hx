@@ -1,6 +1,7 @@
 package;
 
 // - Flixel
+import flixel.system.FlxSound;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -16,7 +17,6 @@ import flixel.FlxObject;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSpriteUtil;
-import flixel.system.FlxSound;
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
@@ -38,16 +38,21 @@ class GameLevel extends FlxState {
 	var _levelScore:Int; // This is used for the game save
 	// Sounds
 	var _sndCollect:FlxSound;
-	public var gameMusic:FlxSound; // Public for LevelEnd.hx to make music stop
+
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
 	public var actionPressed:Bool = false;
-	public var levelName:String; // Give level unique name 
+	public var levelName:String; // Give level unique name
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
+
+		// Continue music if it's already playing
+		if (FlxG.sound.music == null) {
+			playMusic("assets/music/music.ogg");
+		}
 
 		FlxG.autoPause = false; // Removes the auto pause on tab switch
 		#if !debug
@@ -83,7 +88,7 @@ class GameLevel extends FlxState {
 		if (FlxG.keys.anyJustPressed([ESCAPE])) {
 			// SubState needs to be recreated here as it will be destroyed
 			FlxG.sound.music.pause();
-			var _pauseMenu:PauseMenu = new PauseMenu(false, gameMusic);
+			var _pauseMenu:PauseMenu = new PauseMenu(false);
 			openSubState(_pauseMenu);
 		}
 
@@ -227,7 +232,7 @@ class GameLevel extends FlxState {
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String):Void {
-		FlxG.sound.playMusic(LevelMusic, 0.4, true);		
+		FlxG.sound.playMusic(LevelMusic, 0.4, true);
 	}
 
 	/**
@@ -266,7 +271,7 @@ class GameLevel extends FlxState {
 		}
 
 		grpHud.decrementHealth(Player.health);
-	}	
+	}
 
 	/**
 	 * Place entities from Tilemap.

@@ -18,7 +18,7 @@ class LevelOne extends GameLevel {
 	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
 	var _gameSave:FlxSave;
-	var _npcSprite:FlxSprite; 
+	var _npcSprite:FlxSprite;
 	var _testNPC:NPC;
 
 	/**
@@ -28,29 +28,15 @@ class LevelOne extends GameLevel {
 	 * @param Health 			Player health
 	 * @param CollectablesMap	Collecables map from other parts of the level
 	 * @param PlayerReturning 	Player coming from a previous level
-	 * @param LevelMusic		Game music if there is some
 	 * @param GameSave			Loaded game save
 	 */
-	public function new(
-		Score:Int = 0, 
-		Health:Float = 3, 
-		?CollectablesMap:Null<CollMap>, 
-		PlayerReturning:Bool = false, 
-		?LevelMusic:Null<FlxSound>, 
-		?GameSave:Null<FlxSave>
-	):Void {
+	public function new(Score:Int = 0, Health:Float = 3, ?CollectablesMap:Null<CollMap>, PlayerReturning:Bool = false, ?GameSave:Null<FlxSave>):Void {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
 		_playerReturning = PlayerReturning;
 		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-A" => []] : CollectablesMap;
 		_gameSave = GameSave;
-
-		if (gameMusic == null) {
-			playMusic("assets/music/music.ogg");
-		} else {
-			gameMusic = LevelMusic;
-		}		
 	}
 
 	override public function create():Void {
@@ -66,12 +52,12 @@ class LevelOne extends GameLevel {
 			"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to have loads more done soon.",
 			"Until then, have fun :)"
 		];
-		
+
 		// Add NPC
 		_npcSprite = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
 		_testNPC = new NPC(870, 510, testText, _npcSprite, this);
 		add(_testNPC);
-	
+
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
 		add(_enemy);
@@ -85,7 +71,7 @@ class LevelOne extends GameLevel {
 		// If no socre has been bassed then pass 0
 		createHUD(_score == 0 ? 0 : _score, player.health);
 
-		if (_gameSave != null || _playerReturning) {
+		if (_playerReturning) {
 			_gameSave = saveGame(_gameSave);
 		};
 
@@ -110,6 +96,6 @@ class LevelOne extends GameLevel {
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, gameMusic, _gameSave));
+		FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
 	}
 }
