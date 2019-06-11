@@ -5,20 +5,22 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
+// Typedefs
+import Menu.MenuData;
 
 class PauseMenu extends FlxSubState {
 	var _boundingBox:FlxSprite;
 	var _gameOverlay:FlxSprite;
-	var _grpMenuItems:FlxSpriteGroup;
 	var _menuTitle:FlxText;
 	var _menuWidth:Int = 500;
 	var _menuHeight:Int = 500;
+	var _titleText:String;
+	var _menu:Menu;
+	//
 	var _selected:Int = 0;
 	var _pointer:FlxSprite;
 	var _choices:Array<FlxText>;
-	var _titleText:String;
-
-	public var gamePaused:Bool = false;
+	var _grpMenuItems:FlxSpriteGroup;
 
 	public function new(PlayerDied:Bool = false):Void {
 		super();
@@ -41,10 +43,22 @@ class PauseMenu extends FlxSubState {
 		_pointer.makeGraphic(_menuWidth, 50, 0xffdc2de4);
 		_grpMenuItems.add(_pointer);
 
+		var _menuData:MenuData = [
+			{
+				title: "Restart",
+				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false))
+			},
+			{
+				title: "Quit",
+				func: () -> FlxG.switchState(new MainMenu())
+			}
+		];
+
+		_menu = new Menu(20, 110, 50, _menuData);
+
 		/**
 		 * Text for paused screen.
-		 */
-		_choices = new Array<FlxText>();
+		 */ _choices = new Array<FlxText>();
 
 		// Add resume
 		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 200, 0, "Restart", 22));
@@ -80,7 +94,6 @@ class PauseMenu extends FlxSubState {
 				case 1:
 					// Should go back to main menu
 					FlxG.switchState(new MainMenu());
-				default:
 			}
 		}
 
@@ -99,13 +112,5 @@ class PauseMenu extends FlxSubState {
 		}
 
 		super.update(elapsed);
-	}
-
-	public function toggle(Alpha:Int):Void {
-		gamePaused = !gamePaused;
-
-		_grpMenuItems.forEach((_member:FlxSprite) -> {
-			_member.alpha = Alpha;
-		});
 	}
 }
