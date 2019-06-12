@@ -73,3 +73,6 @@ show tag
 
 push tag
 `git push origin v0.1.0`
+
+### Js let's you get away with
+!!string

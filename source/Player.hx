@@ -31,16 +31,16 @@ class Player extends FlxSprite {
 		_sndJump = FlxG.sound.load("assets/sounds/jump.wav");
 	}
 
-	override public function update(elapsed:Float):Void {
+	override public function update(Elapsed:Float):Void {
 		playerMovement();
-		super.update(elapsed);
+		super.update(Elapsed);
 	}
 
 	function playerMovement() {
 		var SPEED:Int = 900;
 		var _left = FlxG.keys.anyPressed([LEFT, A]);
 		var _right = FlxG.keys.anyPressed([RIGHT, D]);
-		var _jump = FlxG.keys.anyJustPressed([SPACE, UP, W]);
+		var _jump = Globals.jump;
 
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
