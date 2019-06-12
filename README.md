@@ -54,7 +54,9 @@ https://haxe.org/manual/debugging-javascript.html
 - neko on mac
 
 ### Haxe
-cast
+
+cast - changes the percieved type of a function/method without changing it's contents
+
 using
 
 reload vs code

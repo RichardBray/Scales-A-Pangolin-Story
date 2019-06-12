@@ -43,7 +43,7 @@ class PauseMenu extends FlxSubState {
 		_pointer.makeGraphic(_menuWidth, 50, 0xffdc2de4);
 		_grpMenuItems.add(_pointer);
 
-		var _menuData:MenuData = [
+		var _menuData:Array<MenuData> = [
 			{
 				title: "Restart",
 				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false))
@@ -54,7 +54,7 @@ class PauseMenu extends FlxSubState {
 			}
 		];
 
-		_menu = new Menu(20, 110, 50, _menuData);
+		_menu = new Menu(20, 110, 200, _menuData);
 
 		/**
 		 * Text for paused screen.
