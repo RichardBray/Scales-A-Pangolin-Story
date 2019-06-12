@@ -14,44 +14,66 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 	var _pointer:FlxSprite;
 	var _spacing:Int = 50;
 	var _menuData:Array<MenuData>;
+	var _preventKeyPress:Bool = false;
 
-	public function new(XPos:Float, YPos:Float, MenuWidth:Int = 0, Data:Array<MenuData>):Void {
+	public function new(
+		XPos:Float, 
+		YPos:Float, 
+		MenuWidth:Int = 0, 
+		Data:Array<MenuData>,
+		?CenterText:Bool = false
+	):Void {
 		super();
 		_menuData = Data;
 
 		// Pointer
-		_pointer = new FlxSprite(XPos, YPos);
+		_pointer = new FlxSprite(XPos, YPos - 5);
 		_pointer.makeGraphic(MenuWidth, _spacing, 0xffdc2de4);
 		add(_pointer);
 
 		// Text Choices
 		_menuData.mapi((idx:Int, data:MenuData) -> {
 			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, 22);
-			choice.screenCenter(X);
+			if(CenterText) choice.screenCenter(X);
 			choice.scrollFactor.set(0, 0);
 			add(choice);
 		});
 	}
 
 	override public function update(Elapsed:Float):Void {
-		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
-			_menuData[_selected].func();
-		}
+		if(!_preventKeyPress) {
+			if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
+				_menuData[_selected].func();
+			}
 
-		if (FlxG.keys.anyJustPressed([DOWN, S])) {
-			if (_selected != _menuData.length - 1) {
-				_pointer.y = _pointer.y + _spacing;
-				_selected++;
+			if (FlxG.keys.anyJustPressed([DOWN, S])) {
+				if (_selected != _menuData.length - 1) {
+					_pointer.y = _pointer.y + _spacing;
+					_selected++;
+				}
+			}
+
+			if (FlxG.keys.anyJustPressed([UP, W])) {
+				if (_selected != 0) {
+					_pointer.y = _pointer.y - _spacing;
+					_selected--;
+				}
 			}
 		}
-
-		if (FlxG.keys.anyJustPressed([UP, W])) {
-			if (_selected != 0) {
-				_pointer.y = _pointer.y - _spacing;
-				_selected--;
-			}
-		}
-
 		super.update(Elapsed);
 	}
+
+	public function hide() {
+		_preventKeyPress = true;
+		this.forEach((Item:FlxSprite) -> {
+			Item.alpha = 0;
+		});
+	}
+
+	public function show() {
+		_preventKeyPress = false;
+		this.forEach((Item:FlxSprite) -> {
+			Item.alpha = 1;
+		});
+	}	
 }

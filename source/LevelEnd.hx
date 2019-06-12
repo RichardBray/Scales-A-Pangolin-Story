@@ -7,14 +7,15 @@ import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
 
+// Typedefs
+import Menu.MenuData;
+
 class LevelEnd extends FlxState {
 	var _playerScore:Int;
 	var _endHeading:FlxText;
 	var _txtPlayerScore:FlxText;
-	var _choices:Array<FlxText>;
-	var _pointer:FlxSprite;
-	var _selected:Int = 0;
 	var _gameSave:FlxSave;
+	var _menu:Menu;
 
 	/**
 	 * @param PlayerScore Show on end screen
@@ -39,44 +40,18 @@ class LevelEnd extends FlxState {
 		_txtPlayerScore = new FlxText(30, 120, 300, "You scored: " + _playerScore + "/25", 25);
 		add(_txtPlayerScore);
 
-		_pointer = new FlxSprite(30, 350);
-		_pointer.makeGraphic(150, 40, 0xffdc2de4);
-		add(_pointer);
-
-		_choices = new Array<FlxText>();
-		_choices.push(new FlxText(30, 350, 0, "Try Again", 22));
-		_choices.push(new FlxText(30, 400, 0, "Quit", 22));
-
-		// Adds text to screen
-		_choices.map((_choice:FlxText) -> {
-			add(_choice);
-		});
-	}
-
-	override public function update(elapsed:Float):Void {
-		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
-			switch _selected {
-				case 0:
-					// Restarts the game / level
-					FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
-				case 1:
-					FlxG.switchState(new MainMenu());
-				default:
+		var _menuData:Array<MenuData> = [
+			{
+				title: "Try Again",
+				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave))
+			},
+			{
+				title: "Quit",
+				func: () -> FlxG.switchState(new MainMenu())
 			}
-		}
+		];
 
-		if (FlxG.keys.anyJustPressed([DOWN, S])) {
-			if (_selected != _choices.length - 1) {
-				_pointer.y = _pointer.y + 50;
-				_selected++;
-			}
-		}
-
-		if (FlxG.keys.anyJustPressed([UP, W])) {
-			if (_selected != 0) {
-				_pointer.y = _pointer.y - 50;
-				_selected--;
-			}
-		}
+		_menu = new Menu(30, 350, 150, _menuData);
+		add(_menu);
 	}
 }

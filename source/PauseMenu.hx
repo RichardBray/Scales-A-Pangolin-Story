@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
+
 // Typedefs
 import Menu.MenuData;
 
@@ -16,11 +17,9 @@ class PauseMenu extends FlxSubState {
 	var _menuHeight:Int = 500;
 	var _titleText:String;
 	var _menu:Menu;
-	//
-	var _selected:Int = 0;
-	var _pointer:FlxSprite;
-	var _choices:Array<FlxText>;
 	var _grpMenuItems:FlxSpriteGroup;
+
+	
 
 	public function new(PlayerDied:Bool = false):Void {
 		super();
@@ -39,10 +38,6 @@ class PauseMenu extends FlxSubState {
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
 
-		_pointer = new FlxSprite(_boxXPos, _menuTitle.y + 200);
-		_pointer.makeGraphic(_menuWidth, 50, 0xffdc2de4);
-		_grpMenuItems.add(_pointer);
-
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Restart",
@@ -54,29 +49,20 @@ class PauseMenu extends FlxSubState {
 			}
 		];
 
-		_menu = new Menu(20, 110, 200, _menuData);
-
-		/**
-		 * Text for paused screen.
-		 */ _choices = new Array<FlxText>();
-
-		// Add resume
-		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 200, 0, "Restart", 22));
-		_choices.push(new FlxText(_menuTitle.x, _menuTitle.y + 250, 0, "Quit", 22));
+		_menu = new Menu(_boxXPos, _menuTitle.y + 200, _menuWidth, _menuData, true);
 
 		// Fix members to the screen
 		_grpMenuItems.forEach((_member:FlxSprite) -> {
 			_member.scrollFactor.set(0, 0);
 		});
 
-		add(_grpMenuItems);
+		_menu.forEach((_member:FlxSprite) -> {
+			_member.scrollFactor.set(0, 0);
+		});		
 
-		// Adds text to screen
-		_choices.map((_choice:FlxText) -> {
-			_choice.screenCenter(X);
-			_choice.scrollFactor.set(0, 0);
-			add(_choice);
-		});
+		add(_grpMenuItems);
+		add(_menu);
+
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -87,28 +73,6 @@ class PauseMenu extends FlxSubState {
 
 		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
 			FlxG.sound.music = null; // Kill the music
-			switch _selected {
-				case 0:
-					// Restarts the game / level
-					FlxG.switchState(new LevelOne(0, 3, null, false));
-				case 1:
-					// Should go back to main menu
-					FlxG.switchState(new MainMenu());
-			}
-		}
-
-		if (FlxG.keys.anyJustPressed([DOWN, S])) {
-			if (_selected != _choices.length - 1) {
-				_pointer.y = _pointer.y + 50;
-				_selected++;
-			}
-		}
-
-		if (FlxG.keys.anyJustPressed([UP, W])) {
-			if (_selected != 0) {
-				_pointer.y = _pointer.y - 50;
-				_selected--;
-			}
 		}
 
 		super.update(elapsed);

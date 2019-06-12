@@ -55,7 +55,8 @@ https://haxe.org/manual/debugging-javascript.html
 
 ### Haxe
 
-cast - changes the percieved type of a function/method without changing it's contents
+cast
+The `cast` keyword reinterprets the perceived type of an expression without changing its contents.
 
 using
 
