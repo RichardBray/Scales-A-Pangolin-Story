@@ -10,6 +10,7 @@ import flixel.FlxObject;
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
 	var _parentState:GameLevel;
+	var _controls:Controls;
 
 	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
 	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
@@ -23,31 +24,38 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	 * @param SpriteData	Sprite image unique to this NPC.
 	 * @param ParentState	Used to adjust vieport and stop player when dialogue starts.
      */
-    public function new(X:Int, Y:Int, ?DialogueText:Null<Array<String>>, SpriteData:FlxSprite, ParentState:GameLevel):Void {
-        super();
-		_parentState = ParentState;
+    public function new(
+			X:Int, Y:Int, 
+			?DialogueText:Null<Array<String>>, 
+			SpriteData:FlxSprite, 
+			ParentState:GameLevel
+		):Void {
+			super();
+			_parentState = ParentState;
+			// Init controls
+			_controls = new Controls();
 
-		npcSprite = new NpcSprite(X, Y, SpriteData);
-		add(npcSprite);
+			npcSprite = new NpcSprite(X, Y, SpriteData);
+			add(npcSprite);
 
-		dialoguePrompt = new DialoguePrompt(
-			null, 
-			(X - SpriteData.width) + (SpriteData.width * 3 / 2), 
-			(SpriteData.height + 350),  // 350 = magic number
-			"Press E"
-		);
-		add(dialoguePrompt);
+			dialoguePrompt = new DialoguePrompt(
+				null, 
+				(X - SpriteData.width) + (SpriteData.width * 3 / 2), 
+				(SpriteData.height + 350),  // 350 = magic number
+				"Press E"
+			);
+			add(dialoguePrompt);
 
-		_dialogueBox = new DialogueBox(DialogueText, ParentState);
-		add(_dialogueBox);
-		// NPC end        		
+			_dialogueBox = new DialogueBox(DialogueText, ParentState);
+			add(_dialogueBox);
+		
     }
 
 	public function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			if (!_parentState.actionPressed) dialoguePrompt.showPrompt();
 
-			if (FlxG.keys.anyPressed([E])) {
+			if (_controls.triangle.triggered) {
 				_parentState.actionPressed = true;
 				if (!_parentState.startingConvo) {
 					dialoguePrompt.hidePrompt(true); // hide dialogue bubble
