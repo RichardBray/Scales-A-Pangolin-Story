@@ -16,7 +16,6 @@ class Controls {
   public var up:FlxActionDigital;
   public var down:FlxActionDigital;
 
-
   public var start:FlxActionDigital;
 
   /**
@@ -25,9 +24,10 @@ class Controls {
    * @param InMenu Keyboard controls are different if the player is in a menu.
    */
   public function new(?InMenu:Bool = false):Void {
+    _inMenu = InMenu;
     initInputs();
     addKeys();
-    addGamepad();
+    // addGamepad();
   }
 
   function initInputs() {
@@ -37,10 +37,13 @@ class Controls {
     right = new FlxActionDigital();
     up = new FlxActionDigital();
     down = new FlxActionDigital();
+    start = new FlxActionDigital();
 
-    _actionManager = new FlxActionManager();
-    FlxG.inputs.add(_actionManager);    
-    _actionManager.addActions([cross, triangle, left, right, up, down]);    
+    if (FlxG.inputs.list.length < 5) {
+      _actionManager = new FlxActionManager();
+      FlxG.inputs.add(_actionManager); 
+      _actionManager.addActions([cross, triangle, left, right, up, down, start]);  
+    }    
   }
 
   function addKeys() {

@@ -15,7 +15,6 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _arrTextNum:Int = 0;
 	var _parentState:GameLevel;
 	var _primaryText:FlxTextFormat;
-	var _controls:Controls;
 
 	static var _heightFromBase:Int = 200;
 
@@ -29,7 +28,6 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		super();
 
 		// Init controls
-		_controls = new Controls();
 
 		// Assign these to variables to use in other methods
 		_dialogueArray = Dialogue;
@@ -63,7 +61,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 	override public function update(elapsed:Float):Void {
 		// Press jump button to move to next bit of text
-		if (visible && _controls.cross.triggered) {
+		if (visible && FlxG.keys.anyJustPressed([SPACE])) {
 			// This is used to keep running the `revertUI` method on the last array number.
 			_arrTextNum == _dialogueArray.length ? _arrTextNum : _arrTextNum++;
 

@@ -10,7 +10,6 @@ import flixel.FlxObject;
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
 	var _parentState:GameLevel;
-	var _controls:Controls;
 
 	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
 	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
@@ -33,7 +32,6 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 			super();
 			_parentState = ParentState;
 			// Init controls
-			_controls = new Controls();
 
 			npcSprite = new NpcSprite(X, Y, SpriteData);
 			add(npcSprite);
@@ -55,7 +53,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			if (!_parentState.actionPressed) dialoguePrompt.showPrompt();
 
-			if (_controls.triangle.triggered) {
+			if (FlxG.keys.anyJustPressed([E])) {
 				_parentState.actionPressed = true;
 				if (!_parentState.startingConvo) {
 					dialoguePrompt.hidePrompt(true); // hide dialogue bubble
