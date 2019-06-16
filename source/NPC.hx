@@ -1,15 +1,19 @@
 package;
 
+import Controls.NPCControls;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxObject;
+import flixel.input.actions.FlxActionManager;
 
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
 	var _parentState:GameLevel;
+	var _controls:Controls.NPCControls;
+	var _npcActions:Null<FlxActionManager>;
 
 	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
 	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
@@ -24,28 +28,34 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	 * @param ParentState	Used to adjust vieport and stop player when dialogue starts.
      */
     public function new(
-			X:Int, Y:Int, 
-			?DialogueText:Null<Array<String>>, 
-			SpriteData:FlxSprite, 
-			ParentState:GameLevel
-		):Void {
-			super();
-			_parentState = ParentState;
-			// Init controls
+		X:Int, Y:Int, 
+		?DialogueText:Null<Array<String>>, 
+		SpriteData:FlxSprite, 
+		ParentState:GameLevel
+	):Void {
+		super();
+		_parentState = ParentState;
+		// Init controls
 
-			npcSprite = new NpcSprite(X, Y, SpriteData);
-			add(npcSprite);
+		npcSprite = new NpcSprite(X, Y, SpriteData);
+		add(npcSprite);
 
-			dialoguePrompt = new DialoguePrompt(
-				null, 
-				(X - SpriteData.width) + (SpriteData.width * 3 / 2), 
-				(SpriteData.height + 350),  // 350 = magic number
-				"Press E"
-			);
-			add(dialoguePrompt);
+		dialoguePrompt = new DialoguePrompt(
+			null, 
+			(X - SpriteData.width) + (SpriteData.width * 3 / 2), 
+			(SpriteData.height + 350),  // 350 = magic number
+			"Press E"
+		);
+		add(dialoguePrompt);
 
-			_dialogueBox = new DialogueBox(DialogueText, ParentState);
-			add(_dialogueBox);
+		_dialogueBox = new DialogueBox(DialogueText, ParentState);
+		add(_dialogueBox);
+		// Intialise controls
+		// if (_npcActions == null) {
+		// 	_npcActions = new FlxActionManager();
+		// 	FlxG.inputs.add(_npcActions); 
+		// }
+		// _controls = new Controls.NPCControls(_npcActions);			
 		
     }
 

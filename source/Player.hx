@@ -4,10 +4,12 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.system.FlxSound;
+import flixel.input.actions.FlxActionManager;
 
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
-	var _controls:Controls;
+	var _controls:Controls.PlayerControls;
+	var _playerActions:FlxActionManager;
 
 	public var isJumping:Bool;
 	public var preventMovement:Bool;
@@ -38,7 +40,11 @@ class Player extends FlxSprite {
 		_sndJump = FlxG.sound.load("assets/sounds/jump.wav");
 
 		// Intialise controls
-		_controls = new Controls();
+		if (_playerActions == null) {
+			_playerActions = new FlxActionManager();
+			FlxG.inputs.add(_playerActions); 
+		}
+		_controls = new Controls.PlayerControls(_playerActions);
 	}
 
 	override public function update(Elapsed:Float):Void {
@@ -50,7 +56,6 @@ class Player extends FlxSprite {
 		var SPEED:Int = 900;
 		var _left = _controls.left.triggered;
 		var _right = _controls.right.triggered;
-		if(_controls.cross.triggered) js.Lib.debug();
 
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed

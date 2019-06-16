@@ -33,7 +33,7 @@ class MainMenu extends FlxState {
 		FlxG.sound.music = null; // Make sure there's no music
 		bgColor = 0xff181818; // Game background color
 
-		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 100, _titleWidth, "Pangolin Panic!", 48);
+		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 100, _titleWidth, "Project Pangolin", 48);
 		add(_gameTitle);
 
 		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press ENTER to start", 22);

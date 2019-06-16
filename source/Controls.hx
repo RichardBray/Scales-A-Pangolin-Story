@@ -2,14 +2,11 @@ package;
 
 import flixel.input.actions.FlxActionManager;
 import flixel.input.actions.FlxAction.FlxActionDigital;
-import flixel.FlxG;
 
-class Controls {
+class PlayerControls {
   var _actionManager:FlxActionManager;
-  var _inMenu:Bool;
 
   public var cross:FlxActionDigital;
-  public var triangle:FlxActionDigital;
 
   public var left:FlxActionDigital;
   public var right:FlxActionDigital;
@@ -19,31 +16,26 @@ class Controls {
   public var start:FlxActionDigital;
 
   /**
-   * Sets up all the controls in the game.
+   * Sets up all the player controls in the game.
    *
-   * @param InMenu Keyboard controls are different if the player is in a menu.
+   * @param ActionManager State required aciton manager for controls.
    */
-  public function new(?InMenu:Bool = false):Void {
-    _inMenu = InMenu;
+  public function new(ActionManager:FlxActionManager):Void {
+    _actionManager = ActionManager;
     initInputs();
     addKeys();
-    // addGamepad();
+    addGamepad();
   }
 
   function initInputs() {
     cross = new FlxActionDigital();
-    triangle = new FlxActionDigital();
     left = new FlxActionDigital();
     right = new FlxActionDigital();
     up = new FlxActionDigital();
     down = new FlxActionDigital();
     start = new FlxActionDigital();
 
-    if (FlxG.inputs.list.length < 5) {
-      _actionManager = new FlxActionManager();
-      FlxG.inputs.add(_actionManager); 
-      _actionManager.addActions([cross, triangle, left, right, up, down, start]);  
-    }    
+    _actionManager.addActions([cross, left, right, up, down, start]);     
   }
 
   function addKeys() {
@@ -51,13 +43,8 @@ class Controls {
     cross.addKey(W, JUST_PRESSED);
     cross.addKey(UP, JUST_PRESSED);
 
-    if (_inMenu) {
-      triangle.addKey(ESCAPE, JUST_PRESSED); 
-      start.addKey(SPACE, JUST_PRESSED); 
-      start.addKey(ENTER, JUST_PRESSED); 
-    } else {
-      triangle.addKey(E, JUST_PRESSED); 
-    }
+    start.addKey(SPACE, JUST_PRESSED); 
+    start.addKey(ENTER, JUST_PRESSED);
 
     left.addKey(LEFT, PRESSED);
     left.addKey(A, PRESSED);
@@ -68,7 +55,6 @@ class Controls {
 
   function addGamepad() {
     cross.addGamepad(A, JUST_PRESSED);
-    triangle.addGamepad(Y, JUST_PRESSED); 
 
     left.addGamepad(DPAD_LEFT, PRESSED);
     left.addGamepad(LEFT_STICK_DIGITAL_LEFT, PRESSED);
@@ -76,4 +62,25 @@ class Controls {
     right.addGamepad(DPAD_RIGHT, PRESSED);
     right.addGamepad(RIGHT_STICK_DIGITAL_LEFT, PRESSED);   
   }
+}
+
+class NPCControls {
+  var _actionManager:FlxActionManager;
+
+  public var triangle:FlxActionDigital;
+
+  public function new(ActionManager:FlxActionManager):Void {
+    triangle = new FlxActionDigital();
+
+    ActionManager.addAction(triangle); 
+    triangle.addKey(E, JUST_PRESSED); 
+    triangle.addGamepad(Y, JUST_PRESSED); 
+  }
+}
+
+class DialogueControls {
+
+}
+class MenuControls {
+
 }
