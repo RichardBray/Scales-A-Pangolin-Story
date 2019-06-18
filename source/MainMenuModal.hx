@@ -27,7 +27,7 @@ class MainMenuModal extends FlxSubState {
 		add(_displayText);
 
 		if (ShowOptions) {
-			_optionsText = new FlxText(20, 350, 450, "Press ENTER for yes", 20);
+			_optionsText = new FlxText(20, 350, 450, "Press SPACE for yes", 20);
 			_optionsText.screenCenter(X);
 			add(_optionsText);
 		}
