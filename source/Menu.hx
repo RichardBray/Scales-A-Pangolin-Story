@@ -15,6 +15,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 	var _spacing:Int = 50;
 	var _menuData:Array<MenuData>;
 	var _preventKeyPress:Bool = false;
+	var _controls:Controls;
 
 	public function new(
 		XPos:Float, 
@@ -38,22 +39,25 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 			choice.scrollFactor.set(0, 0);
 			add(choice);
 		});
+
+		// Intialise controls
+		_controls = new Controls();		
 	}
 
 	override public function update(Elapsed:Float):Void {
 		if(!_preventKeyPress) {
-			if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
+			if (_controls.cross.check()) {
 				_menuData[_selected].func();
 			}
 
-			if (FlxG.keys.anyJustPressed([DOWN, S])) {
+			if (_controls.down.check()) {
 				if (_selected != _menuData.length - 1) {
 					_pointer.y = _pointer.y + _spacing;
 					_selected++;
 				}
 			}
 
-			if (FlxG.keys.anyJustPressed([UP, W])) {
+			if (_controls.up.check()) {
 				if (_selected != 0) {
 					_pointer.y = _pointer.y - _spacing;
 					_selected--;

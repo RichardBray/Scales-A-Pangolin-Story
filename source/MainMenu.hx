@@ -4,7 +4,6 @@ import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
-import flixel.FlxSprite;
 import flixel.util.FlxColor;
 
 // Typedefs
@@ -18,6 +17,7 @@ class MainMenu extends FlxState {
 	var _showChoices:Bool = false;
 	var _menu:Menu;
 	var _titleWidth:Int = 450; // Worked thous out through trail and error
+	var _controls:Controls;
 
 	override public function create():Void {
 		FlxG.autoPause = false;
@@ -56,12 +56,15 @@ class MainMenu extends FlxState {
 		_menu = new Menu(_gameTitle.x, _gameTitle.y + 200, _titleWidth, _menuData, true);
 		_menu.hide();
 		add(_menu);
+
+		// Intialise controls
+		_controls = new Controls();		
 	}
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 
-		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
+		if (_controls.cross.check()) {
 			if (!_showChoices) {
 				_showChoices = true;
 				_startText.alpha = 0;

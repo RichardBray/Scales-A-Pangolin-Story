@@ -12,6 +12,7 @@ class MainMenuModal extends FlxSubState {
 	var _menuHeight:Int = 500;
 	var _optionsText:FlxText;
 	var _confirmCallback:Void->Void;
+	var _controls:Controls;
 
 	public function new(Text:String, ?ConfirmCallback:Void->Void, ShowOptions:Bool = false):Void {
 		super();
@@ -30,16 +31,19 @@ class MainMenuModal extends FlxSubState {
 			_optionsText.screenCenter(X);
 			add(_optionsText);
 		}
+
+		// Intialise controls
+		_controls = new Controls();		
 	}
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 
-		if (FlxG.keys.anyJustPressed([ESCAPE])) {
+		if (_controls.start.check() || _controls.triangle.check()) {
 			close();
 		}
 
-		if (FlxG.keys.anyJustPressed([ENTER])) {
+		if (_controls.cross.check()) {
 			if (_confirmCallback != null)
 				_confirmCallback();
 		}

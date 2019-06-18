@@ -18,8 +18,8 @@ class PauseMenu extends FlxSubState {
 	var _titleText:String;
 	var _menu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
+	var _controls:Controls;
 
-	
 
 	public function new(PlayerDied:Bool = false):Void {
 		super();
@@ -63,17 +63,20 @@ class PauseMenu extends FlxSubState {
 		add(_grpMenuItems);
 		add(_menu);
 
+		// Intialise controls
+		_controls = new Controls();
 	}
 
 	override public function update(elapsed:Float):Void {
-		if (FlxG.keys.anyJustPressed([ESCAPE])) {
+		// Exit pause menu
+		if (_controls.start.check()) {
 			FlxG.sound.music.play();
 			close();
 		}
 
-		if (FlxG.keys.anyJustPressed([SPACE, ENTER])) {
-			FlxG.sound.music = null; // Kill the music
-		}
+		// if (_controls.cross.check()) {
+		// 	FlxG.sound.music = null; // Kill the music
+		// }
 
 		super.update(elapsed);
 	}

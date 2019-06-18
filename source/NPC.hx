@@ -1,19 +1,17 @@
 package;
 
-import Controls.NPCControls;
+import Controls;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxObject;
-import flixel.input.actions.FlxActionManager;
 
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
 	var _parentState:GameLevel;
-	var _controls:Controls.NPCControls;
-	var _npcActions:Null<FlxActionManager>;
+	var _controls:Controls;
 
 	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
 	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
@@ -51,19 +49,15 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		_dialogueBox = new DialogueBox(DialogueText, ParentState);
 		add(_dialogueBox);
 		// Intialise controls
-		// if (_npcActions == null) {
-		// 	_npcActions = new FlxActionManager();
-		// 	FlxG.inputs.add(_npcActions); 
-		// }
-		// _controls = new Controls.NPCControls(_npcActions);			
-		
+		// Intialise controls
+		_controls = new Controls();
     }
 
 	public function initConvo(Player:Player, Friend:FlxSprite):Void {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			if (!_parentState.actionPressed) dialoguePrompt.showPrompt();
 
-			if (FlxG.keys.anyJustPressed([E])) {
+			if (_controls.triangle.check()) {
 				_parentState.actionPressed = true;
 				if (!_parentState.startingConvo) {
 					dialoguePrompt.hidePrompt(true); // hide dialogue bubble

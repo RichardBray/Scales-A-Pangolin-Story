@@ -74,5 +74,8 @@ show tag
 push tag
 `git push origin v0.1.0`
 
-### Js let's you get away with
-!!string
+Scales of Life: A Pangolin's story
+### Things I've learnt though gamedev
+- Document everything
+- Javascript is very forgiving
+  - !!string

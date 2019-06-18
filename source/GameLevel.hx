@@ -36,6 +36,7 @@ class GameLevel extends FlxState {
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
+	var _controls:Controls;
 	// Sounds
 	var _sndCollect:FlxSound;
 
@@ -73,6 +74,9 @@ class GameLevel extends FlxState {
 		FlxG.camera.follow(player, PLATFORMER, 1);
 		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
+		// Intialise controls
+		_controls = new Controls();
+
 		super.create();
 	}
 
@@ -85,7 +89,7 @@ class GameLevel extends FlxState {
 			openSubState(_pauseMenu);
 		}
 		// Paused game state
-		if (FlxG.keys.anyJustPressed([ESCAPE])) {
+		if (_controls.start.check()) {
 			// SubState needs to be recreated here as it will be destroyed
 			FlxG.sound.music.pause();
 			var _pauseMenu:PauseMenu = new PauseMenu(false);
@@ -317,7 +321,7 @@ class GameLevel extends FlxState {
 
 	/** Special tiles **/
 	function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
-		if (FlxG.keys.anyPressed([DOWN, S])) {
+		if (_controls.down.check()) {
 			Tile.allowCollisions = FlxObject.NONE;
 		} else if (Object.y >= Tile.y) {
 			Tile.allowCollisions = FlxObject.CEILING;
