@@ -18,7 +18,7 @@ class MainMenu extends FlxState {
 	var _continueColor:FlxColor;
 	var _showChoices:Bool = false;
 	var _menu:Menu;
-	var _titleWidth:Int = 450; // Worked thous out through trail and error
+	var _titleWidth:Int = 800; // Worked thous out through trail and error
 	var _controls:Controls;
 
 	override public function create():Void {
@@ -35,10 +35,10 @@ class MainMenu extends FlxState {
 		FlxG.sound.music = null; // Make sure there's no music
 		bgColor = 0xff181818; // Game background color
 
-		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 100, _titleWidth, "Sacles: A Pangolin Story", 48);
+		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 100, _titleWidth, "Sacles: A Pangolin Story", 72);
 		add(_gameTitle);
 
-		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", 22);
+		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", 33);
 		_startText.screenCenter(X);
 		add(_startText);
 
@@ -114,11 +114,14 @@ class MainMenu extends FlxState {
 class HLScreen extends FlxState {
 	var _logo:FlxSprite;
 	var _timer:FlxTimer;
+	var _controls:Controls;
 
 	override public function create():Void {
 		bgColor = FlxColor.WHITE;
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
-		
+
+		_controls = new Controls();
+
 		_logo = new FlxSprite(0, 0);
 		_logo.loadGraphic("assets/images/hl_logo.png", false, 586, 262);
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
@@ -130,9 +133,15 @@ class HLScreen extends FlxState {
 		super.update(Elapsed);
 		_timer = new FlxTimer();
 		_timer.start(2.5, finishTimer, 1);
+
+		if(_controls.cross.check() || _controls.start.check()) goToMainMenu();
 	}
 
 	function finishTimer(T:FlxTimer) { 
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, () -> FlxG.switchState(new MainMenu()));
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, goToMainMenu);
 	}	
+
+	function goToMainMenu() {
+		FlxG.switchState(new MainMenu());
+	}
 }

@@ -1,15 +1,16 @@
 package;
 
+import flixel.FlxState;
 import flixel.util.FlxSave;
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.tweens.FlxTween;
-import flixel.system.FlxSound;
+import flixel.text.FlxText;
 // NPC
 import flixel.util.FlxColor;
 // Typedefs
 import GameLevel.CollMap;
+
+using Lambda;
 
 class LevelOne extends GameLevel {
 	var _enemy:Enemy;
@@ -97,5 +98,31 @@ class LevelOne extends GameLevel {
 
 	function changeState() {
 		FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
+	}
+}
+
+class Intro extends FlxState {
+	var _facts:Array<String>;
+	var _factText:FlxText;
+
+	override public function create():Void {
+		_facts = [
+			'While they are a potent defence against predators, their scales are useless against poachers.',
+			'and all eight species in Asia and Africa are now under threat'
+		];
+
+		_factText = new FlxText(0, 0, 300, "Test", 33);
+		add(_factText);
+		bgColor = FlxColor.BLACK;
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
+		
+	}	
+
+	override public function update(Elapsed:Float):Void {
+		super.update(Elapsed);
+
+		_facts.map((Fact:String) -> {
+			trace(Fact);
+		});
 	}
 }
