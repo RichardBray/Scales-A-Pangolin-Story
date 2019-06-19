@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxTimer;
+import flixel.FlxSprite;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -107,4 +109,30 @@ class MainMenu extends FlxState {
 	function loadLevel(GameSave:FlxSave, Level:Class<GameLevel>) {
 		FlxG.switchState(Type.createInstance(Level, [GameSave.data.playerScore, 3, GameSave.data.collectablesMap, null, GameSave]));
 	}
+}
+
+class HLScreen extends FlxState {
+	var _logo:FlxSprite;
+	var _timer:FlxTimer;
+
+	override public function create():Void {
+		bgColor = FlxColor.WHITE;
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
+		
+		_logo = new FlxSprite(0, 0);
+		_logo.loadGraphic("assets/images/hl_logo.png", false, 586, 262);
+		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
+		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
+		add(_logo);
+	}
+
+	override public function update(Elapsed:Float):Void {
+		super.update(Elapsed);
+		_timer = new FlxTimer();
+		_timer.start(2.5, finishTimer, 1);
+	}
+
+	function finishTimer(T:FlxTimer) { 
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, () -> FlxG.switchState(new MainMenu()));
+	}	
 }

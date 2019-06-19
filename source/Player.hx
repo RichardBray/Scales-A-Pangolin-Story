@@ -11,7 +11,7 @@ class Player extends FlxSprite {
 
 	public var isJumping:Bool;
 	public var preventMovement:Bool;
-	private static var GRAVITY:Float = 1500;
+	private static var GRAVITY:Float = 2250;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -24,7 +24,7 @@ class Player extends FlxSprite {
 		updateHitbox();
 
 		offset.set(152, 30);
-		scale.set(0.5, 0.5);
+		scale.set(1, 1);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
@@ -47,7 +47,7 @@ class Player extends FlxSprite {
 	}
 
 	function playerMovement() {
-		var SPEED:Int = 900;
+		var SPEED:Int = 1500;
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
@@ -74,7 +74,7 @@ class Player extends FlxSprite {
 				_sndJump.play();
 				// setGraphicSize(30, 40);
 				// updateHitbox();
-				velocity.y = -600;
+				velocity.y = -1100;
 				animation.play("jump");
 				animation.play("jumpLoop");
 				isJumping = true;
