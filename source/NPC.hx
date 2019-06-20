@@ -10,7 +10,7 @@ import flixel.FlxObject;
 
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
-	var _parentState:GameLevel;
+	var _parentState:LevelState;
 	var _controls:Controls;
 
 	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
@@ -29,7 +29,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		X:Int, Y:Int, 
 		?DialogueText:Null<Array<String>>, 
 		SpriteData:FlxSprite, 
-		ParentState:GameLevel
+		ParentState:LevelState
 	):Void {
 		super();
 		_parentState = ParentState;

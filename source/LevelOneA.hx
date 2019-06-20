@@ -6,9 +6,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 // Typedefs
-import GameLevel.CollMap;
+import LevelState.CollMap;
 
-class LevelOneA extends GameLevel {
+class LevelOneA extends LevelState {
 	var _score:Int;
 	var _playerHealth:Float;
 	var _levelEntry:FlxSprite;

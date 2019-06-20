@@ -12,7 +12,7 @@ typedef MenuData = {title:String, func:Void->Void};
 class Menu extends FlxTypedGroup<FlxSprite> {
 	var _selected:Int = 0;
 	var _pointer:FlxSprite;
-	var _spacing:Int = 50;
+	var _spacing:Int = 75;
 	var _menuData:Array<MenuData>;
 	var _preventKeyPress:Bool = false;
 	var _controls:Controls;
@@ -34,7 +34,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 
 		// Text Choices
 		_menuData.mapi((idx:Int, data:MenuData) -> {
-			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, 22);
+			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, 33);
 			if(CenterText) choice.screenCenter(X);
 			choice.scrollFactor.set(0, 0);
 			add(choice);

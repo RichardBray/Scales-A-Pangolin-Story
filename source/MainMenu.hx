@@ -4,14 +4,13 @@ import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
 import flixel.FlxG;
-import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 // Typedefs
 import Menu.MenuData;
 
-class MainMenu extends FlxState {
+class MainMenu extends GameState {
 	var _gameTitle:FlxText;
 	var _startText:FlxText;
 	var _gameSave:FlxSave;
@@ -22,12 +21,6 @@ class MainMenu extends FlxState {
 	var _controls:Controls;
 
 	override public function create():Void {
-		FlxG.autoPause = false;
-		#if !debug
-		FlxG.mouse.visible = false; // Hide the mouse cursor
-		#end
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
-
 		// Save data
 		_gameSave = new FlxSave(); // initialize
 		_gameSave.bind("AutoSave"); // bind to the named save slot
@@ -79,7 +72,7 @@ class MainMenu extends FlxState {
 		if (_gameSave.data.levelName == null) { // No saved game
 			showModal('You have no saved games');
 		} else {
-			var levelNames:Map<String, Class<GameLevel>> = ["Level-1-0" => LevelOne, "Level-1-A" => LevelOneA];
+			var levelNames:Map<String, Class<LevelState>> = ["Level-1-0" => LevelOne, "Level-1-A" => LevelOneA];
 			loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
 		}
 	}
@@ -93,8 +86,8 @@ class MainMenu extends FlxState {
 	}
 
 	function initNewGame(?EraseSave:Bool = false):Void {
-		if(EraseSave) _gameSave.erase();
-		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+		if (EraseSave) _gameSave.erase();
+		FlxG.switchState(new LevelOne.Intro(_gameSave));
 	}
 
 	function showModal(
@@ -106,12 +99,12 @@ class MainMenu extends FlxState {
 		openSubState(_modal);
 	}
 
-	function loadLevel(GameSave:FlxSave, Level:Class<GameLevel>) {
+	function loadLevel(GameSave:FlxSave, Level:Class<LevelState>) {
 		FlxG.switchState(Type.createInstance(Level, [GameSave.data.playerScore, 3, GameSave.data.collectablesMap, null, GameSave]));
 	}
 }
 
-class HLScreen extends FlxState {
+class HLScreen extends GameState {
 	var _logo:FlxSprite;
 	var _timer:FlxTimer;
 	var _controls:Controls;
@@ -119,9 +112,7 @@ class HLScreen extends FlxState {
 	override public function create():Void {
 		bgColor = FlxColor.WHITE;
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
-
 		_controls = new Controls();
-
 		_logo = new FlxSprite(0, 0);
 		_logo.loadGraphic("assets/images/hl_logo.png", false, 586, 262);
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
@@ -132,12 +123,12 @@ class HLScreen extends FlxState {
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 		_timer = new FlxTimer();
-		_timer.start(2.5, finishTimer, 1);
+		_timer.start(2, finishTimer, 1);
 
 		if(_controls.cross.check() || _controls.start.check()) goToMainMenu();
 	}
 
-	function finishTimer(T:FlxTimer) { 
+	function finishTimer(_) { 
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, goToMainMenu);
 	}	
 

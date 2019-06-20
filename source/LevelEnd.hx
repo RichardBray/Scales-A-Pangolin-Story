@@ -10,7 +10,7 @@ import flixel.util.FlxSave;
 // Typedefs
 import Menu.MenuData;
 
-class LevelEnd extends FlxState {
+class LevelEnd extends GameState {
 	var _playerScore:Int;
 	var _endHeading:FlxText;
 	var _txtPlayerScore:FlxText;
@@ -28,8 +28,6 @@ class LevelEnd extends FlxState {
 	override public function create():Void {
 		super.create();
 		bgColor = 0xff181818; // Game background color
-
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // State fades in
 
 		FlxG.sound.music.stop();
 		FlxG.sound.music = null; // Make sure there's no music

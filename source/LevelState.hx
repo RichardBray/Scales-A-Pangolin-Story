@@ -4,7 +4,6 @@ package;
 import flixel.system.FlxSound;
 import flixel.util.FlxSave;
 import flixel.FlxG;
-import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxSpriteGroup;
@@ -24,7 +23,7 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 
 typedef CollMap = Map<String, Array<Int>>;
 
-class GameLevel extends FlxState {
+class LevelState extends GameState {
 	var _level:FlxTilemap;
 	var _levelBg:FlxSprite;
 	var _mapEntities:FlxSpriteGroup;
@@ -54,12 +53,6 @@ class GameLevel extends FlxState {
 		if (FlxG.sound.music == null) {
 			playMusic("assets/music/music.ogg");
 		}
-
-		FlxG.autoPause = false; // Removes the auto pause on tab switch
-		#if !debug
-		FlxG.mouse.visible = false; // Hide the mouse cursor
-		#end
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 
 		/**
 		 * By default flixel only processes what it initally sees, so collisions won't

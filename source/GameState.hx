@@ -1,0 +1,15 @@
+package;
+
+import flixel.util.FlxColor;
+import flixel.FlxState;
+import flixel.FlxG;
+
+class GameState extends FlxState {
+  override public function create():Void {
+		FlxG.autoPause = false;
+		#if !debug
+		FlxG.mouse.visible = false; // Hide the mouse cursor
+		#end
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in    
+  }
+}

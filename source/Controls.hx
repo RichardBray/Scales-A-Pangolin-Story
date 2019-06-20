@@ -36,6 +36,8 @@ class Controls {
 
   function addKeys() {
     cross.addKey(SPACE, JUST_PRESSED);
+    cross.addKey(ENTER, JUST_PRESSED);
+  
     triangle.addKey(E, JUST_PRESSED); 
 
     left.addKey(LEFT, PRESSED);

@@ -1,6 +1,7 @@
 package;
 
-import flixel.FlxState;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -8,11 +9,11 @@ import flixel.text.FlxText;
 // NPC
 import flixel.util.FlxColor;
 // Typedefs
-import GameLevel.CollMap;
+import LevelState.CollMap;
 
 using Lambda;
 
-class LevelOne extends GameLevel {
+class LevelOne extends LevelState {
 	var _enemy:Enemy;
 	var _score:Int;
 	var _playerHealth:Float;
@@ -101,28 +102,57 @@ class LevelOne extends GameLevel {
 	}
 }
 
-class Intro extends FlxState {
+class Intro extends GameState {
 	var _facts:Array<String>;
 	var _factText:FlxText;
+	var _factNumber:Int = 0;
+	var _gameSave:FlxSave;
+	var _timer:FlxTimer;
+
+	/**
+	 * Runs the intro sequence for the first level.
+	 *
+	 * @param GameSave	Game save from `MainMenu.hx`
+	 */
+	public function new(GameSave:FlxSave):Void {
+		super();
+		_gameSave = GameSave;
+	}
 
 	override public function create():Void {
+		bgColor = FlxColor.BLACK;
+		_timer = new FlxTimer();
 		_facts = [
 			'While they are a potent defence against predators, their scales are useless against poachers.',
 			'and all eight species in Asia and Africa are now under threat'
 		];
-
-		_factText = new FlxText(0, 0, 300, "Test", 33);
-		add(_factText);
-		bgColor = FlxColor.BLACK;
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
-		
+		_factText = new FlxText(0, 0, 600, _facts[0], 33);
+		add(_factText);	
+		_factText.alpha = 0;		
 	}	
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 
 		_facts.map((Fact:String) -> {
-			trace(Fact);
+			showFact();
 		});
+
+		if (_factNumber == _facts.length) {
+			FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+		}
+	}
+
+	function showFact():Void {
+		FlxTween.tween(_factText, {alpha: 1}, 2, {onComplete: hideAndIncrementFact });
+	}
+
+	function hideAndIncrementFact(_) {
+		FlxTween.tween(_factText, {alpha: 0}, 2, {onComplete: (_) -> 	{
+				trace(_factNumber);
+				_factText.text = _facts[_factNumber];
+				// _factNumber++;
+			}
+		});		
 	}
 }
