@@ -108,6 +108,9 @@ class Intro extends GameState {
 	var _factNumber:Int = 0;
 	var _gameSave:FlxSave;
 	var _timer:FlxTimer;
+	var _frames:Int; // Counting frames per second
+	var _controls:Controls;
+	var _textWidth:Int = 600;
 
 	/**
 	 * Runs the intro sequence for the first level.
@@ -121,38 +124,55 @@ class Intro extends GameState {
 
 	override public function create():Void {
 		bgColor = FlxColor.BLACK;
-		_timer = new FlxTimer();
 		_facts = [
 			'While they are a potent defence against predators, their scales are useless against poachers.',
-			'and all eight species in Asia and Africa are now under threat'
+			'and all eight species in Asia and Africa are now under threat',
+			'something something something'
 		];
-		_factText = new FlxText(0, 0, 600, _facts[0], 33);
+		_factText = new FlxText(
+			(FlxG.width / 2) - (_textWidth / 2), 
+			(FlxG.height / 2) - (_textWidth / 2), 
+			_textWidth, 
+			_facts[_factNumber], 
+			33
+		);
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		add(_factText);	
-		_factText.alpha = 0;		
+		_factText.alpha = 1;
+		_controls = new Controls();		
 	}	
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
-
-		_facts.map((Fact:String) -> {
-			showFact();
-		});
-
+		_frames++; 
+	
 		if (_factNumber == _facts.length) {
-			FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+			// Start level when all the facts have looped
+			startLevel();
+		} else {
+			_timer = new FlxTimer();
+			_timer.start(2.5, showFact, 2);	
+		}
+		// Count trames and increment stels at exactly double the timer time.
+		if (_frames % (FlxG.updateFramerate *(_timer.time * 2)) == 0) _factNumber++;
+		// Start level if player presses start
+		if( _controls.start.check()) startLevel();
+	}
+
+	function showFact(T:FlxTimer):Void {
+		if (T.finished) {
+			// Run this when one loop has finished
+			_factText.text = _facts[_factNumber];
+			FlxTween.tween(_factText, {alpha: 1}, T.time / 4);
+		} else {
+			FlxTween.tween(_factText, {alpha: 0}, T.time / 4, {
+				// Show text for next fact when text dissapears
+				onComplete: (_) -> _factText.text = _facts[_factNumber]
+			});
 		}
 	}
 
-	function showFact():Void {
-		FlxTween.tween(_factText, {alpha: 1}, 2, {onComplete: hideAndIncrementFact });
-	}
-
-	function hideAndIncrementFact(_) {
-		FlxTween.tween(_factText, {alpha: 0}, 2, {onComplete: (_) -> 	{
-				trace(_factNumber);
-				_factText.text = _facts[_factNumber];
-				// _factNumber++;
-			}
-		});		
+	function startLevel():Void {
+		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 	}
 }
