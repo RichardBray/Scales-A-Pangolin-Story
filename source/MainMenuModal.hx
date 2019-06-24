@@ -48,7 +48,7 @@ class MainMenuModal extends FlxSubState {
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
 
-		if (_controls.start.check() || _controls.triangle.check()) {
+		if (_controls.triangle.check()) {
 			close();
 		}
 

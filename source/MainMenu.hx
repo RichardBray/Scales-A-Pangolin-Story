@@ -32,10 +32,10 @@ class MainMenu extends GameState {
 		FlxG.sound.music = null; // Make sure there's no music
 		bgColor = 0xff000000; // Game background color
 
-		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 100, _titleWidth, "Sacles: A Pangolin Story", 72);
+		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 200, _titleWidth, "Sacles: A Pangolin Story", 72);
 		add(_gameTitle);
 
-		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", 33);
+		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", Constants.medFont);
 		_startText.screenCenter(X);
 		_startText.alpha = 1;
 		add(_startText);

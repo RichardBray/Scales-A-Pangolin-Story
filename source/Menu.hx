@@ -39,7 +39,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 
 		// Text Choices
 		_menuData.mapi((idx:Int, data:MenuData) -> {
-			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, 33);
+			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, Constants.medFont);
 			if(CenterText) choice.screenCenter(X);
 			choice.scrollFactor.set(0, 0);
 			add(choice);
