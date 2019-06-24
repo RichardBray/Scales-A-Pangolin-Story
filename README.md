@@ -75,6 +75,11 @@ push tag
 `git push origin v0.1.0`
 
 Scales of Life: A Pangolin's story
+
+### Potential articles
+- Fading in flashing text with HaxeFlixel, without Chaining tweens
+- 
+
 ### Things I've learnt though gamedev
 - Document everything
 - Javascript is very forgiving

@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.gamepad.FlxGamepad.FlxGamepadModel;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -79,5 +80,23 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		this.forEach((Item:FlxSprite) -> {
 			Item.alpha = 1;
 		});
-	}	
+	}
+}
+
+class BottomLeft extends FlxText {
+
+	public function new() {
+		super(20, FlxG.height - 100);
+		// var gamepad = FlxG.gamepads.lastActive;
+		// trace(gamepad.model.getName());
+		// http://api.haxeflixel.com/flixel/input/gamepad/FlxGamepadModel.html
+
+		text = "[SPACE] SELECT \n[E] BACK";
+		size = 20;
+		fieldWidth = 200;
+	}
+}
+
+class BottomRight extends  FlxText {
+
 }

@@ -131,7 +131,7 @@ class Intro extends GameState {
 		];
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
-			(FlxG.height / 2) - (_textWidth / 2), 
+			FlxG.height / 2, 
 			_textWidth, 
 			_facts[_factNumber], 
 			33
@@ -151,7 +151,7 @@ class Intro extends GameState {
 			startLevel();
 		} else {
 			_timer = new FlxTimer();
-			_timer.start(2.5, showFact, 2);	
+			_timer.start(3.5, showFact, 2);	
 		}
 		// Count trames and increment stels at exactly double the timer time.
 		if (_frames % (FlxG.updateFramerate *(_timer.time * 2)) == 0) _factNumber++;
@@ -166,7 +166,6 @@ class Intro extends GameState {
 			FlxTween.tween(_factText, {alpha: 1}, T.time / 4);
 		} else {
 			FlxTween.tween(_factText, {alpha: 0}, T.time / 4, {
-				// Show text for next fact when text dissapears
 				onComplete: (_) -> _factText.text = _facts[_factNumber]
 			});
 		}

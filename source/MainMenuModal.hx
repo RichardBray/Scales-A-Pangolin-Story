@@ -31,12 +31,12 @@ class MainMenuModal extends FlxSubState {
 		_boundingBox.makeGraphic(_menuWidth, _menuHeight, 0xff205ab7);
 		add(_boundingBox);
 
-		_displayText = new FlxText(20, 250, 675, Text, 30);
+		_displayText = new FlxText(30, 400, 675, Text, 30);
 		_displayText.screenCenter(X);
 		add(_displayText);
 
 		if (ShowOptions) {
-			_optionsText = new FlxText(20, 350, 675, "Press SPACE for yes", 30);
+			_optionsText = new FlxText(40, 350, 675, "Press SPACE for yes", 45);
 			_optionsText.screenCenter(X);
 			add(_optionsText);
 		}

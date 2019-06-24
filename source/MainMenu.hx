@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
@@ -19,6 +20,8 @@ class MainMenu extends GameState {
 	var _menu:Menu;
 	var _titleWidth:Int = 800; // Worked thous out through trail and error
 	var _controls:Controls;
+	var _timer:FlxTimer;
+	var _bottomLeft:FlxText;
 
 	override public function create():Void {
 		// Save data
@@ -26,13 +29,14 @@ class MainMenu extends GameState {
 		_gameSave.bind("AutoSave"); // bind to the named save slot
 
 		FlxG.sound.music = null; // Make sure there's no music
-		bgColor = 0xff181818; // Game background color
+		bgColor = 0xff000000; // Game background color
 
 		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 100, _titleWidth, "Sacles: A Pangolin Story", 72);
 		add(_gameTitle);
 
 		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", 33);
 		_startText.screenCenter(X);
+		_startText.alpha = 1;
 		add(_startText);
 
 		_continueColor = _gameSave.data.levelName == null ? 0x777777 : 0xffffff;
@@ -54,10 +58,23 @@ class MainMenu extends GameState {
 
 		// Intialise controls
 		_controls = new Controls();		
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
+
+		_bottomLeft = new Menu.BottomLeft();
+		add(_bottomLeft);
+		_bottomLeft.alpha = 0;
 	}
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
+	
+		if (!_showChoices) {
+			_timer = new FlxTimer();
+			_timer.start(2, flashingText, 2);		
+		} else {
+			_startText.alpha = 0;
+			_bottomLeft.alpha = 1;
+		}
 
 		if (_controls.cross.check()) {
 			if (!_showChoices) {
@@ -65,6 +82,13 @@ class MainMenu extends GameState {
 				_startText.alpha = 0;
 				_menu.show();
 			}
+		}
+	}
+
+	function flashingText(T:FlxTimer):Void {
+		if (!_showChoices) {
+			var alphaValue = T.finished ? 1 : 0;
+			FlxTween.tween(_startText, {alpha: alphaValue}, T.time / 4);
 		}
 	}
 
@@ -114,7 +138,7 @@ class HLScreen extends GameState {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		_controls = new Controls();
 		_logo = new FlxSprite(0, 0);
-		_logo.loadGraphic("assets/images/hl_logo.png", false, 586, 262);
+		_logo.loadGraphic("assets/images/hl_logo.png", false, 535, 239);
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
 		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
 		add(_logo);
