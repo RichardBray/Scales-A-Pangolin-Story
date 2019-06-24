@@ -22,6 +22,7 @@ class MainMenu extends GameState {
 	var _controls:Controls;
 	var _timer:FlxTimer;
 	var _bottomLeft:FlxText;
+	var _bottomRight:FlxText;
 
 	override public function create():Void {
 		// Save data
@@ -63,6 +64,10 @@ class MainMenu extends GameState {
 		_bottomLeft = new Menu.BottomLeft();
 		add(_bottomLeft);
 		_bottomLeft.alpha = 0;
+
+		_bottomRight = new Menu.BottomRight();
+		add(_bottomRight);
+		_bottomRight.alpha = 0;		
 	}
 
 	override public function update(Elapsed:Float):Void {
@@ -74,6 +79,7 @@ class MainMenu extends GameState {
 		} else {
 			_startText.alpha = 0;
 			_bottomLeft.alpha = 1;
+			_bottomRight.alpha = 1;
 		}
 
 		if (_controls.cross.check()) {

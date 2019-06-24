@@ -17,7 +17,11 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 	var _menuData:Array<MenuData>;
 	var _preventKeyPress:Bool = false;
 	var _controls:Controls;
+	var _yPos:Float;
 
+	/**
+	 * Generic menu class
+	 */
 	public function new(
 		XPos:Float, 
 		YPos:Float, 
@@ -27,10 +31,10 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 	):Void {
 		super();
 		_menuData = Data;
-
+		_yPos = YPos;
 		// Pointer
 		_pointer = new FlxSprite(XPos, YPos - 5);
-		_pointer.makeGraphic(MenuWidth, _spacing, 0xffdc2de4);
+		_pointer.makeGraphic(MenuWidth, _spacing, Constants.secondaryColor);
 		add(_pointer);
 
 		// Text Choices
@@ -46,15 +50,19 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 	}
 
 	override public function update(Elapsed:Float):Void {
+		var _lastOption:Int = _menuData.length - 1;
 		if(!_preventKeyPress) {
 			if (_controls.cross.check()) {
 				_menuData[_selected].func();
 			}
 
 			if (_controls.down.check()) {
-				if (_selected != _menuData.length - 1) {
+				if (_selected != _lastOption) {
 					_pointer.y = _pointer.y + _spacing;
 					_selected++;
+				} else {
+					_pointer.y = _yPos;
+					_selected = 0;
 				}
 			}
 
@@ -62,6 +70,9 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 				if (_selected != 0) {
 					_pointer.y = _pointer.y - _spacing;
 					_selected--;
+				} else {
+					_pointer.y = _pointer.y + (_spacing * _lastOption);
+					_selected = _lastOption;
 				}
 			}
 		}
@@ -84,19 +95,28 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 }
 
 class BottomLeft extends FlxText {
-
+	/**
+	 * Simple class to display text on the bottom left of the screen
+	 */
 	public function new() {
-		super(20, FlxG.height - 100);
+		super(20, FlxG.height - 75);
 		// var gamepad = FlxG.gamepads.lastActive;
 		// trace(gamepad.model.getName());
 		// http://api.haxeflixel.com/flixel/input/gamepad/FlxGamepadModel.html
 
 		text = "[SPACE] SELECT \n[E] BACK";
-		size = 20;
+		size = Constants.smlFont;
 		fieldWidth = 200;
 	}
 }
 
 class BottomRight extends  FlxText {
-
+	/**
+	 * Simple class to display text on the bottom right of the screen
+	 */	
+	public function new() {
+		super(FlxG.width - 100, FlxG.height - 50);
+		text = "v0.4.0";
+		size = Constants.smlFont;
+	}
 }

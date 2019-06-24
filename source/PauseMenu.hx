@@ -13,12 +13,14 @@ class PauseMenu extends FlxSubState {
 	var _boundingBox:FlxSprite;
 	var _gameOverlay:FlxSprite;
 	var _menuTitle:FlxText;
-	var _menuWidth:Int = 500;
-	var _menuHeight:Int = 500;
+	var _menuWidth:Int = 750;
+	var _menuHeight:Int = 650;
 	var _titleText:String;
 	var _menu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
+	var _bottomRight:FlxText;
+	var _bottomLeft:FlxText;
 
 
 	public function new(PlayerDied:Bool = false):Void {
@@ -29,16 +31,20 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_gameOverlay);
 
 		_boundingBox = new FlxSprite(_boxXPos, (FlxG.height / 2) - (_menuHeight / 2));
-		_boundingBox.makeGraphic(_menuWidth, _menuHeight, 0xff205ab7);
+		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
 		_grpMenuItems.add(_boundingBox);
 
 		_titleText = PlayerDied ? "GAME OVER" : "GAME PAUSED";
-		_menuTitle = new FlxText(20, 110, 0, _titleText, 30);
+		_menuTitle = new FlxText(20, 250, 0, _titleText, 45);
 		_menuTitle.alignment = CENTER;
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
 
 		var _menuData:Array<MenuData> = [
+			{
+				title: "Resume",
+				func: () -> close()
+			},			
 			{
 				title: "Restart",
 				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false))
@@ -49,7 +55,7 @@ class PauseMenu extends FlxSubState {
 			}
 		];
 
-		_menu = new Menu(_boxXPos, _menuTitle.y + 200, _menuWidth, _menuData, true);
+		_menu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, _menuData, true);
 
 		// Fix members to the screen
 		_grpMenuItems.forEach((_member:FlxSprite) -> {
@@ -65,6 +71,12 @@ class PauseMenu extends FlxSubState {
 
 		// Intialise controls
 		_controls = new Controls();
+
+		_bottomLeft = new Menu.BottomLeft();
+		add(_bottomLeft);
+
+		_bottomRight = new Menu.BottomRight();
+		add(_bottomRight);			
 	}
 
 	override public function update(elapsed:Float):Void {
