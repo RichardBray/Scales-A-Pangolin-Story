@@ -21,6 +21,12 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 
 	/**
 	 * Generic menu class
+	 *
+	 * @param XPos				X position of menu
+	 * @param YPos				Y position of menu
+	 * @param MenuWidth		Width for menu
+	 * @param Data				Collectable data
+	 * @param	CenterText	If text should be centered or not
 	 */
 	public function new(
 		XPos:Float, 

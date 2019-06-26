@@ -102,7 +102,10 @@ class MainMenu extends GameState {
 		if (_gameSave.data.levelName == null) { // No saved game
 			showModal('You have no saved games');
 		} else {
-			var levelNames:Map<String, Class<LevelState>> = ["Level-1-0" => LevelOne, "Level-1-A" => LevelOneA];
+			var levelNames:Map<String, Class<LevelState>> = [
+				"Level-1-0" => LevelOne, 
+				"Level-1-A" => LevelOneA
+			];
 			loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
 		}
 	}
