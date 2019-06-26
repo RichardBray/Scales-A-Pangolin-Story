@@ -145,13 +145,26 @@ class LevelState extends GameState {
 
 		// Flixel level created from Tilemap map
 		_level = new FlxTilemap();
-		_level.loadMapFromArray(cast(_map.getLayer("ground"), TiledTileLayer).tileArray, _map.width, _map.height, _mergedTileset, _map.tileWidth,
-			_map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+		_level.loadMapFromArray(cast(
+			_map.getLayer("ground"), TiledTileLayer).tileArray, 
+			_map.width, 
+			_map.height, 
+			_mergedTileset, 
+			_map.tileWidth,
+			_map.tileHeight, 
+			FlxTilemapAutoTiling.OFF, 
+			1
+		);
 		add(_level);
 
 		// Tile tearing problem fix on Mac (part 2)
 		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/LevelOne.hx#L48
-		var levelTiles = FlxTileFrames.fromBitmapAddSpacesAndBorders(_collisionImg, new FlxPoint(10, 10), new FlxPoint(2, 2), new FlxPoint(2, 2));
+		var levelTiles = FlxTileFrames.fromBitmapAddSpacesAndBorders(
+			_collisionImg, 
+			new FlxPoint(10, 10), 
+			new FlxPoint(2, 2), 
+			new FlxPoint(2, 2)
+		);
 		_level.frames = levelTiles;
 
 		// Looping over `objects` layer
@@ -166,8 +179,16 @@ class LevelState extends GameState {
 
 		// Add envirionment collisions
 		_levelCollisions = new FlxTilemapExt();
-		_levelCollisions.loadMapFromArray(cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, _map.width, _map.height, _collisionImg, _map.tileWidth,
-			_map.tileHeight, FlxTilemapAutoTiling.OFF, 1);
+		_levelCollisions.loadMapFromArray(cast(
+			_map.getLayer("collisions"), TiledTileLayer).tileArray, 
+			_map.width, 
+			_map.height,
+			_collisionImg, 
+			_map.tileWidth,
+			_map.tileHeight, 
+			FlxTilemapAutoTiling.OFF, 
+			1
+		);
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes

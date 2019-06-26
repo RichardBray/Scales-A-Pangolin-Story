@@ -62,7 +62,7 @@ class LevelOneA extends LevelState {
 	}
 
 	function goToMainMenu(Exit:FlxSprite, Player:Player) {
-		FlxG.switchState(new LevelEnd(grpHud.gameScore));
+		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
 	}
 
 	function fadeOut(Exit:FlxSprite, Player:Player):Void {

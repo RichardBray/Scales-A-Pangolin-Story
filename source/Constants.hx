@@ -1,6 +1,8 @@
 package;
 
 import flixel.util.FlxColor;
+// Typedefs
+import LevelState.CollMap;
 
 class Constants {
   // Fonts
@@ -10,4 +12,9 @@ class Constants {
   // Colours
   public static var primaryColor:FlxColor = 0xff205ab7;
   public static var secondaryColor:FlxColor = 0xffdc2de4;
+
+  public static var initialColMap:Void->CollMap = () -> [
+    "Level-1-0" => [], 
+    "Level-1-A" => []
+  ];
 }

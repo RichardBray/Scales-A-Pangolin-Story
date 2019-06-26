@@ -1,10 +1,7 @@
 package;
 
-import flixel.FlxState;
 import flixel.FlxG;
 import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.FlxSprite;
 import flixel.util.FlxSave;
 
 // Typedefs
@@ -16,13 +13,20 @@ class LevelEnd extends GameState {
 	var _txtPlayerScore:FlxText;
 	var _gameSave:FlxSave;
 	var _menu:Menu;
+	var _levelName:Array<String>;
 
 	/**
+	 * End level screen for game
+	 *
 	 * @param PlayerScore Show on end screen
+	 * @param LevelName 	Unique name of the last level, used to reset game if player presses `Try again`
+	 * @param GameSave		Current game save
 	 */
-	public function new(PlayerScore:Int = 0):Void {
+	public function new(PlayerScore:Int = 0, LevelName:String, GameSave:FlxSave):Void {
 		super();
 		_playerScore = PlayerScore;
+		_levelName = LevelName.split("-"); // Splits the string to start at first part of the level
+		_gameSave = GameSave;
 	}
 
 	override public function create():Void {
@@ -41,7 +45,7 @@ class LevelEnd extends GameState {
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Try Again",
-				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave))
+				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false, resetGameSave(_gameSave)))
 			},
 			{
 				title: "Quit",
@@ -52,4 +56,13 @@ class LevelEnd extends GameState {
 		_menu = new Menu(30, 350, 150, _menuData);
 		add(_menu);
 	}
+
+	function resetGameSave(GameSave:FlxSave):FlxSave {
+		GameSave.data.levelName = _levelName[0] + "-" + _levelName[1] + "-0";
+		GameSave.data.playerScore = 0;
+		GameSave.data.collectablesMap = Constants.initialColMap();
+		GameSave.flush();
+		return GameSave;
+	}
+
 }

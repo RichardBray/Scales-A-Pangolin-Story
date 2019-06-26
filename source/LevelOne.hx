@@ -26,23 +26,29 @@ class LevelOne extends LevelState {
 	/**
 	 * Level 1-0
 	 *
-	 * @param Score 			Player score
-	 * @param Health 			Player health
+	 * @param Score 					Player score
+	 * @param Health 					Player health
 	 * @param CollectablesMap	Collecables map from other parts of the level
-	 * @param PlayerReturning 	Player coming from a previous level
-	 * @param GameSave			Loaded game save
+	 * @param PlayerReturning Player coming from a previous level
+	 * @param GameSave				Loaded game save
 	 */
-	public function new(Score:Int = 0, Health:Float = 3, ?CollectablesMap:Null<CollMap>, PlayerReturning:Bool = false, ?GameSave:Null<FlxSave>):Void {
+	public function new(
+		Score:Int = 0, 
+		Health:Float = 3, 
+		?CollectablesMap:Null<CollMap>, 
+		PlayerReturning:Bool = false, 
+		?GameSave:Null<FlxSave>
+	):Void {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
 		_playerReturning = PlayerReturning;
-		_levelCollectablesMap = (CollectablesMap == null) ? ["Level-1-0" => [], "Level-1-A" => []] : CollectablesMap;
+		_levelCollectablesMap = (CollectablesMap == null) ? Constants.initialColMap() : CollectablesMap;
 		_gameSave = GameSave;
 	}
 
 	override public function create():Void {
-		levelName = 'Level-1-0';
+		levelName = "Level-1-0";
 
 		createLevel("level-1-2", "mountains", _levelCollectablesMap);
 

@@ -43,11 +43,14 @@ class PauseMenu extends FlxSubState {
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Resume",
-				func: () -> close()
+				func: togglePauseMenu
 			},			
 			{
 				title: "Restart",
-				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false))
+				func: () -> {
+					FlxG.sound.music = null;
+					FlxG.switchState(new LevelOne(0, 3, null, false));
+				}
 			},
 			{
 				title: "Quit",
@@ -82,14 +85,14 @@ class PauseMenu extends FlxSubState {
 	override public function update(elapsed:Float):Void {
 		// Exit pause menu
 		if (_controls.start.check()) {
-			FlxG.sound.music.play();
-			close();
+			togglePauseMenu();
 		}
 
-		// if (_controls.cross.check()) {
-		// 	FlxG.sound.music = null; // Kill the music
-		// }
-
 		super.update(elapsed);
+	}
+
+	function togglePauseMenu():Void {
+		FlxG.sound.music.play();
+		close();
 	}
 }
