@@ -50,7 +50,7 @@ class LevelOne extends LevelState {
 	override public function create():Void {
 		levelName = "Level-1-0";
 
-		createLevel("level-1-2", "mountains", _levelCollectablesMap);
+		createLevel("level-1-0", "mountains", _levelCollectablesMap);
 
 		// Add NPC Text
 		var testText:Array<String> = [

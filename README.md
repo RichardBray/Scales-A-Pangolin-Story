@@ -78,9 +78,10 @@ Scales of Life: A Pangolin's story
 
 ### Potential articles
 - Fading in flashing text with HaxeFlixel, without Chaining tweens
-- 
+- What is haxe and why should you care abou it?
 
 ### Things I've learnt though gamedev
 - Document everything
+- I have a new appreciation for semicolons
 - Javascript is very forgiving
   - !!string

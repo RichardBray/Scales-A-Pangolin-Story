@@ -103,7 +103,7 @@ class LevelState extends GameState {
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
 	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap):Void {
-		_collisionImg = "assets/images/ground-collisions.png";
+		_collisionImg = "assets/images/collisions.png";
 		_collectablesMap = CollectablesMap;
 
 		/**
@@ -192,16 +192,16 @@ class LevelState extends GameState {
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes
-		_levelCollisions.setSlopes([10, 11]);
-		_levelCollisions.setGentle([11], [10]);
+		_levelCollisions.setSlopes([8, 9]);
+		_levelCollisions.setGentle([9], [8]);
 
 		// set cloud/special tiles
-		_levelCollisions.setTileProperties(5, FlxObject.NONE, fallInClouds);
+		_levelCollisions.setTileProperties(3, FlxObject.NONE, fallInClouds);
 		_levelCollisions.alpha = 0; // Hide collision objects
 		add(_levelCollisions);
 
 		// Level exit
-		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, 720, FlxColor.TRANSPARENT);
+		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, FlxG.height, FlxColor.TRANSPARENT);
 		add(levelExit);
 	}
 
