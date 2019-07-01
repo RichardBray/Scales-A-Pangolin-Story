@@ -20,11 +20,11 @@ class Player extends FlxSprite {
 		health = 3; // Health player starts off with
 	
 		loadGraphic("assets/images/pangolin-sprite_v2.png", true, 290, 114); // height 113.5
-		setGraphicSize(70, 50);
+		setGraphicSize(106, 75);
 		updateHitbox();
 
-		offset.set(152, 30);
-		scale.set(0.5, 0.5);
+		offset.set(145, 20);
+		scale.set(0.75, 0.75);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
@@ -47,7 +47,7 @@ class Player extends FlxSprite {
 	}
 
 	function playerMovement() {
-		var SPEED:Int = 900;
+		var SPEED:Int = 1300;
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
@@ -59,7 +59,7 @@ class Player extends FlxSprite {
 		if (!preventMovement) {
 			if (_left || _right) {
 				acceleration.x = _left ? -SPEED : SPEED;
-				offset.x = _left ? 73 : 145;
+				offset.x = _left ? 30 : 145;
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 				if (isTouching(FlxObject.FLOOR)) {
 					animation.play("run");
@@ -74,7 +74,7 @@ class Player extends FlxSprite {
 				_sndJump.play();
 				// setGraphicSize(30, 40);
 				// updateHitbox();
-				velocity.y = -600; // 1100
+				velocity.y = -800; // 1100
 				animation.play("jump");
 				animation.play("jumpLoop");
 				isJumping = true;

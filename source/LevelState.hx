@@ -24,7 +24,6 @@ import flixel.addons.editors.tiled.TiledObjectLayer;
 typedef CollMap = Map<String, Array<Int>>;
 
 class LevelState extends GameState {
-	var _level:FlxTilemap;
 	var _levelBg:FlxSprite;
 	var _mapEntities:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug>;
@@ -58,9 +57,9 @@ class LevelState extends GameState {
 		 * By default flixel only processes what it initally sees, so collisions won't
 		 * work until can process the whole level.
 		 */
-		FlxG.worldBounds.set(0, 0, _level.width, _level.height);
+		FlxG.worldBounds.set(0, 0, 14280, 1800);
 
-		FlxG.camera.setScrollBoundsRect(0, 0, _level.width, _level.height);
+		FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
 		FlxG.camera.antialiasing = true;
 
 		// Camera follows Player
@@ -77,7 +76,7 @@ class LevelState extends GameState {
 		super.update(Elapsed);
 
 		// Reset the game if the player goes higher/lower than the map
-		if (player.y > _level.height) {
+		if (player.y > _map.fullHeight) {
 			var _pauseMenu:PauseMenu = new PauseMenu(true);
 			openSubState(_pauseMenu);
 		}
@@ -143,29 +142,6 @@ class LevelState extends GameState {
 		_tileSpacing.put();
 		_tileBorder.put();
 
-		// Flixel level created from Tilemap map
-		_level = new FlxTilemap();
-		_level.loadMapFromArray(cast(
-			_map.getLayer("ground"), TiledTileLayer).tileArray, 
-			_map.width, 
-			_map.height, 
-			_mergedTileset, 
-			_map.tileWidth,
-			_map.tileHeight, 
-			FlxTilemapAutoTiling.OFF, 
-			1
-		);
-		add(_level);
-
-		// Tile tearing problem fix on Mac (part 2)
-		// @see https://github.com/HaxeFlixel/flixel-demos/blob/master/Platformers/FlxTilemapExt/source/LevelOne.hx#L48
-		var levelTiles = FlxTileFrames.fromBitmapAddSpacesAndBorders(
-			_collisionImg, 
-			new FlxPoint(10, 10), 
-			new FlxPoint(2, 2), 
-			new FlxPoint(2, 2)
-		);
-		_level.frames = levelTiles;
 
 		// Looping over `objects` layer
 		_mapObjects = cast(_map.getLayer("objects"), TiledObjectLayer);
@@ -179,29 +155,30 @@ class LevelState extends GameState {
 
 		// Add envirionment collisions
 		_levelCollisions = new FlxTilemapExt();
-		_levelCollisions.loadMapFromArray(cast(
-			_map.getLayer("collisions"), TiledTileLayer).tileArray, 
+		_levelCollisions.loadMapFromArray(
+			cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, 
 			_map.width, 
 			_map.height,
 			_collisionImg, 
 			_map.tileWidth,
 			_map.tileHeight, 
 			FlxTilemapAutoTiling.OFF, 
-			1
+			10
 		);
+
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes
-		_levelCollisions.setSlopes([8, 9]);
-		_levelCollisions.setGentle([9], [8]);
+		_levelCollisions.setSlopes([17, 18]);
+		_levelCollisions.setGentle([18], [17]);
 
 		// set cloud/special tiles
-		_levelCollisions.setTileProperties(3, FlxObject.NONE, fallInClouds);
+		_levelCollisions.setTileProperties(12, FlxObject.NONE, fallInClouds);
 		_levelCollisions.alpha = 0; // Hide collision objects
 		add(_levelCollisions);
 
 		// Level exit
-		levelExit = new FlxSprite((_level.width - 1), 0).makeGraphic(1, FlxG.height, FlxColor.TRANSPARENT);
+		levelExit = new FlxSprite((_map.fullWidth - 1), 0).makeGraphic(1, FlxG.height, FlxColor.TRANSPARENT);
 		add(levelExit);
 	}
 
@@ -220,8 +197,9 @@ class LevelState extends GameState {
 	/**
 	 * Adds player
 	 *
-	 * @param X Player X position
-	 * @param Y Player Y position
+	 * @param X 				Player X position
+	 * @param Y 				Player Y position
+	 * @param FacingLef If the player is facine left
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false):Void {
 		player = new Player(X, Y);
@@ -317,11 +295,16 @@ class LevelState extends GameState {
 	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int, HideCollectable:Int):Void {
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage:Map<Int, String> = [
-			226 => "assets/images/rock-1.png",
-			227 => "assets/images/tree-1.png",
-			228 => "assets/images/tree-2.png"
+			1 => "assets/images/L1_ROCK_01.png",
+			2 => "assets/images/L1_ROCK_02.png",
+			3 => "assets/images/L1_ROCK_03.png",
+			4 => "assets/images/L1_ROCK_04.png",
+			5 => "assets/images/L1_TREE_01.png",
+			6 => "assets/images/L1_TREE_02.png",
+			7 => "assets/images/L1_TREE_03.png",
+			8 => "assets/images/L1_GROUND_01.png"
 		];
-		if (ObjectId == 229) { // 229 means it's a collectable
+		if (ObjectId == 9) { 
 			if (HideCollectable == -1) {
 				var bug:CollectableBug = new CollectableBug(X, (Y - Height), Width, Height, MapObjId);
 				_grpCollectables.add(bug);

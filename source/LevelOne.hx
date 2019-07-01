@@ -71,7 +71,7 @@ class LevelOne extends LevelState {
 		add(_enemy);
 
 		// Add player
-		_playerReturning ? createPlayer(Std.int(_level.width - 150), 680, true) : createPlayer(60, 600);
+		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1515, true) : createPlayer(210, 1515);
 		// Update the player helth from the previous level
 		player.health = _playerHealth;
 
@@ -104,7 +104,8 @@ class LevelOne extends LevelState {
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
+		// FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
+		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
 	}
 }
 

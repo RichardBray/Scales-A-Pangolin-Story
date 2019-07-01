@@ -58,6 +58,8 @@ class PauseMenu extends FlxSubState {
 			}
 		];
 
+		if (PlayerDied) _menuData.shift(); // Remove `RESUME` options if player died
+
 		_menu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, _menuData, true);
 
 		// Fix members to the screen
