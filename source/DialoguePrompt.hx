@@ -26,7 +26,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	 * @param		Y								Y position.
 	 * @param		DialogueText 		Text that will go in the box, this will change to string for image.
 	 */
-	public function new(DialogueWidth:Int, X:Float = 0, Y:Float = 0, DialogueText:String):Void {
+	public function new(?DialogueWidth:Null<Int> = 120, ?X:Float = 0, ?Y:Float = 0, DialogueText:String):Void {
 		super();
 
 		_dialogueXPos = X - (DialogueWidth / 2);
@@ -54,7 +54,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 		add(_dialogueBubble);
 
 		// Create dialogue text
-		_dialogueText = new FlxText(_dialogueXPos, 500, DialogueWidth);
+		_dialogueText = new FlxText(_dialogueXPos, 510, DialogueWidth);
 		_dialogueText.text = DialogueText;
 		_dialogueText.setFormat(null, 20, FlxColor.WHITE, CENTER);
 		add(_dialogueText);

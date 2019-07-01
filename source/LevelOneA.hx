@@ -1,41 +1,45 @@
 package;
 
+import flixel.util.FlxSave;
 import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 // Typedefs
-import GameLevel.CollMap;
+import LevelState.CollMap;
 
-class NextLevel extends GameLevel {
+class LevelOneA extends LevelState {
 	var _score:Int;
 	var _playerHealth:Float;
 	var _levelEntry:FlxSprite;
 	var _levelCollectablesMap:CollMap;
+	var _gameSave:FlxSave;
 
 	/**
 	 * Level 1-1
 	 *
-	 * @param Score player score
-	 * @param Health player health
+	 * @param Score				Player score
+	 * @param Health 			Player health
+	 * @param CollectablesMap	Collecables map from other parts of the level
+	 * @param LevelMusic		Game music if there is some
+	 * @param GameSave			Loaded game save
 	 */
-	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, LevelMusic:FlxSound):Void {
+	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, ?LevelMusic:Null<FlxSound>, ?GameSave:Null<FlxSave>):Void {
 		super();
 		_score = Score;
 		_playerHealth = Health;
 		_levelCollectablesMap = CollectablesMap;
-		gameMusic = LevelMusic;
+		_gameSave = GameSave;
 	}
 
 	override public function create():Void {
 		bgColor = 0xffc7e4db; // Game background color
-		levelName = 'Level-1-1';
-		gameMusicPlaying = true;
+		levelName = 'Level-1-A';
 
 		createLevel("level-1-3", "mountains", _levelCollectablesMap);
 
 		// Block to take you back to previous level
-		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, 720, FlxColor.TRANSPARENT);
+		_levelEntry = new FlxSprite(1, 0).makeGraphic(1, FlxG.height, FlxColor.TRANSPARENT);
 		add(_levelEntry);
 
 		// Add player
@@ -46,6 +50,8 @@ class NextLevel extends GameLevel {
 		// Add HUD
 		createHUD(_score, _playerHealth);
 
+		// Saves game
+		_gameSave = saveGame(_gameSave);
 		super.create();
 	}
 
@@ -55,17 +61,15 @@ class NextLevel extends GameLevel {
 		FlxG.overlap(_levelEntry, player, fadeOut);
 	}
 
-	function goToMainMenu(Player:FlxSprite, Exit:FlxSprite) {
-		// @todo create main menu
-		gameMusic.stop();
-		FlxG.switchState(new LevelEnd(grpHud.gameScore, gameMusic));
+	function goToMainMenu(Exit:FlxSprite, Player:Player) {
+		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
 	}
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {
+	function fadeOut(Exit:FlxSprite, Player:Player):Void {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
 	}
 
 	function changeState() {
-		FlxG.switchState(new PlayState(grpHud.gameScore, player.health, _levelCollectablesMap, true));
+		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
 	}
 }

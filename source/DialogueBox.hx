@@ -13,8 +13,9 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _pressDown:FlxText;
 	var _dialogueArray:Array<String>;
 	var _arrTextNum:Int = 0;
-	var _parentState:PlayState;
+	var _parentState:LevelState;
 	var _primaryText:FlxTextFormat;
+	var _controls:Controls;
 
 	static var _heightFromBase:Int = 200;
 
@@ -24,8 +25,10 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	 * @param Dialogue 		Text that the NPC/Player will give.
 	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
 	 */
-	public function new(Dialogue:Array<String>, ParentState:PlayState) {
+	public function new(Dialogue:Array<String>, ParentState:LevelState) {
 		super();
+
+		// Init controls
 
 		// Assign these to variables to use in other methods
 		_dialogueArray = Dialogue;
@@ -55,11 +58,14 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 			_member.scrollFactor.set(0, 0);
 		});
 		this.visible = false;
+
+		// Intialise controls
+		_controls = new Controls();		
 	}
 
 	override public function update(elapsed:Float):Void {
-		// Press down to move to next bit of text
-		if (visible && FlxG.keys.anyJustPressed([SPACE])) {
+		// Press jump button to move to next bit of text
+		if (visible && _controls.cross.check()) {
 			// This is used to keep running the `revertUI` method on the last array number.
 			_arrTextNum == _dialogueArray.length ? _arrTextNum : _arrTextNum++;
 

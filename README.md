@@ -54,7 +54,10 @@ https://haxe.org/manual/debugging-javascript.html
 - neko on mac
 
 ### Haxe
+
 cast
+The `cast` keyword reinterprets the perceived type of an expression without changing its contents.
+
 using
 
 reload vs code
@@ -66,7 +69,19 @@ add tag
 `git tag -a v1.4 -m "my version 1.4"`
 
 show tag
-`git show v1.4`
+`git show v0.1.0`
 
 push tag
-`git push origin v1.4`
+`git push origin v0.1.0`
+
+Scales of Life: A Pangolin's story
+
+### Potential articles
+- Fading in flashing text with HaxeFlixel, without Chaining tweens
+- What is haxe and why should you care abou it?
+
+### Things I've learnt though gamedev
+- Document everything
+- I have a new appreciation for semicolons
+- Javascript is very forgiving
+  - !!string
