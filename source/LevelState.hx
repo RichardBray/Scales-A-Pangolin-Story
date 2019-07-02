@@ -228,7 +228,7 @@ class LevelState extends GameState {
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String):Void {
-		FlxG.sound.playMusic(LevelMusic, 0.4, true);
+		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
 	}
 
 	/**

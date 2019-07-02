@@ -11,7 +11,7 @@ class Player extends FlxSprite {
 
 	public var isJumping:Bool;
 	public var preventMovement:Bool;
-	private static var GRAVITY:Float = 1500; // 1500
+	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -19,19 +19,19 @@ class Player extends FlxSprite {
 		preventMovement = false;
 		health = 3; // Health player starts off with
 	
-		loadGraphic("assets/images/pangolin-sprite_v2.png", true, 290, 114); // height 113.5
-		setGraphicSize(106, 75);
+		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 135); // height 113.5
+		setGraphicSize(141, 100);
 		updateHitbox();
 
-		offset.set(145, 20);
-		scale.set(0.75, 0.75);
+		offset.set(150, 33);
+		scale.set(1, 1);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
 		// Animations
-		animation.add("idle", [4], false);
-		animation.add("run", [for (i in 0...11) i], 24, false);
-		animation.add("jump", [for (i in 13...24) i], 12, false);
+		animation.add("idle", [for (i in 23...28) i], 8, true);
+		animation.add("run", [for (i in 0...5) i], 12, false);
+		animation.add("jump", [for (i in 12...23) i], 12, false);
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
 
 		// Sounds
@@ -47,7 +47,7 @@ class Player extends FlxSprite {
 	}
 
 	function playerMovement() {
-		var SPEED:Int = 1300;
+		var SPEED:Int = 1500;
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
@@ -59,22 +59,22 @@ class Player extends FlxSprite {
 		if (!preventMovement) {
 			if (_left || _right) {
 				acceleration.x = _left ? -SPEED : SPEED;
-				offset.x = _left ? 30 : 145;
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 				if (isTouching(FlxObject.FLOOR)) {
 					animation.play("run");
+					offset.x = _left ? 12 : 145;
 				}
 			} else if (isTouching(FlxObject.FLOOR)) {
 				animation.play("idle");
+				offset.x = facing == FlxObject.LEFT ? 12 : 145;
 			}
 			if (_left && _right) {
 				acceleration.x = 0;
 			}
 			if (_jump && isTouching(FlxObject.FLOOR)) {
 				_sndJump.play();
-				// setGraphicSize(30, 40);
-				// updateHitbox();
-				velocity.y = -800; // 1100
+				offset.x = 80;
+				velocity.y = -880; // 1100
 				animation.play("jump");
 				animation.play("jumpLoop");
 				isJumping = true;
