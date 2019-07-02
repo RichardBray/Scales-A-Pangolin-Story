@@ -71,7 +71,7 @@ class LevelOne extends LevelState {
 		add(_enemy);
 
 		// Add player
-		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1515, true) : createPlayer(210, 1415);
+		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1500, true) : createPlayer(210, 1490);
 		// Update the player helth from the previous level
 		player.health = _playerHealth;
 
@@ -138,7 +138,7 @@ class Intro extends GameState {
 		];
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
-			FlxG.height / 2, 
+			(FlxG.height / 2) - 100, 
 			_textWidth, 
 			_facts[_factNumber], 
 			33

@@ -74,7 +74,7 @@ class Player extends FlxSprite {
 			if (_jump && isTouching(FlxObject.FLOOR)) {
 				_sndJump.play();
 				offset.x = 80;
-				velocity.y = -880; // 1100
+				velocity.y = -800; // 1100
 				animation.play("jump");
 				animation.play("jumpLoop");
 				isJumping = true;
