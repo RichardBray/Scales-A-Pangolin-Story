@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.4" name="level-1-objs" tilewidth="1137" tileheight="1494" tilecount="9" columns="0">
+<tileset version="1.2" tiledversion="1.2.4" name="level-1-objs" tilewidth="1137" tileheight="1494" tilecount="12" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="367" height="266" source="../images/L1_ROCK_01.png"/>
@@ -26,6 +26,15 @@
   <image width="974" height="258" source="../images/L1_GROUND_01.png"/>
  </tile>
  <tile id="8">
-  <image width="36" height="27" source="../images/purp-bug.png"/>
+  <image width="42" height="39" source="../images/purp-bug.png"/>
+ </tile>
+ <tile id="9">
+  <image width="47" height="39" source="../../../Dropbox/pangolin/blue-bug.png"/>
+ </tile>
+ <tile id="10">
+  <image width="36" height="15" source="../../../Dropbox/pangolin/cat-bug.png"/>
+ </tile>
+ <tile id="11">
+  <image width="178" height="206" source="../../../Dropbox/pangolin/fire.png"/>
  </tile>
 </tileset>

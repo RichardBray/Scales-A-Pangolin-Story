@@ -64,14 +64,14 @@ class LevelOne extends LevelState {
 		// Add NPC
 		_npcSprite = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
 		_testNPC = new NPC(870, 510, testText, _npcSprite, this);
-		add(_testNPC);
+		// add(_testNPC);
 
 		// Add enemy
 		_enemy = new Enemy(1570, 600);
-		add(_enemy);
+		// add(_enemy);
 
 		// Add player
-		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1500, true) : createPlayer(210, 1490);
+		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1490, true) : createPlayer(180, 1490);
 		// Update the player helth from the previous level
 		player.health = _playerHealth;
 

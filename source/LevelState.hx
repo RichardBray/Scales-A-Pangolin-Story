@@ -27,7 +27,7 @@ typedef CollMap = Map<String, Array<Int>>;
 class LevelState extends GameState {
 	var _levelBg:FlxSprite;
 	var _mapEntities:FlxSpriteGroup;
-	var _grpCollectables:FlxTypedGroup<CollectableBug>;
+	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _levelCollisions:FlxTilemapExt;
 	var _map:TiledMap;
 	var _mapObjects:TiledObjectLayer;
@@ -111,10 +111,10 @@ class LevelState extends GameState {
 		 */
 
 		// Code for parallax background
-		_levelBg = new FlxSprite(0, 400, 'assets/images/$Background.png');
+		_levelBg = new FlxSprite(0, 1280, 'assets/images/$Background.png');
 
 		_levelBg.scale.set(4.5, 4.5);
-		_levelBg.alpha = 0.75;
+		_levelBg.alpha = 0.5;
 		_levelBg.scrollFactor.set(0.3, 1);
 		add(_levelBg);
 		// Load custom tilemap
@@ -124,7 +124,7 @@ class LevelState extends GameState {
 		_mapEntities = new FlxSpriteGroup();
 
 		// Add bugs group
-		_grpCollectables = new FlxTypedGroup<CollectableBug>();
+		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
 		add(_grpCollectables);
 
 		// Tile tearing problem fix on Mac (part 1)
@@ -155,6 +155,7 @@ class LevelState extends GameState {
 		_mapEntities.y = 0; // For some reason this fixes the images being too low -115.
 
 		// Add envirionment collisions
+		var firstTile:Int = 13;
 		_levelCollisions = new FlxTilemapExt();
 		_levelCollisions.loadMapFromArray(
 			cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, 
@@ -164,17 +165,17 @@ class LevelState extends GameState {
 			_map.tileWidth,
 			_map.tileHeight, 
 			FlxTilemapAutoTiling.OFF, 
-			10
+			firstTile
 		);
 
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes
-		_levelCollisions.setSlopes([17, 18]);
-		_levelCollisions.setGentle([18], [17]);
+		_levelCollisions.setSlopes([firstTile + 7, firstTile + 8]);
+		_levelCollisions.setGentle([firstTile + 8], [firstTile + 7]);
 
 		// set cloud/special tiles
-		_levelCollisions.setTileProperties(12, FlxObject.NONE, fallInClouds);
+		_levelCollisions.setTileProperties(firstTile + 2, FlxObject.NONE, fallInClouds);
 		_levelCollisions.alpha = 0; // Hide collision objects
 		add(_levelCollisions);
 
@@ -305,9 +306,11 @@ class LevelState extends GameState {
 			7 => "assets/images/L1_TREE_03.png",
 			8 => "assets/images/L1_GROUND_01.png"
 		];
-		if (ObjectId == 9) { 
+		if (ObjectId >= 9) {
 			if (HideCollectable == -1) {
-				var bug:CollectableBug = new CollectableBug(X, (Y - Height), Width, Height, MapObjId);
+				var bug:CollectableBug.Bug = null;
+				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, (Y - Height), MapObjId);
+				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, (Y - Height), MapObjId);
 				_grpCollectables.add(bug);
 			}
 		} else {
@@ -329,7 +332,7 @@ class LevelState extends GameState {
 		}
 	}
 
-	function getCollectable(Collectable:CollectableBug, Player:FlxSprite):Void {
+	function getCollectable(Collectable:CollectableBug.Bug, Player:FlxSprite):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
 			_sndCollect.play(true);
