@@ -1,6 +1,7 @@
 package;
 
 // - Flixel
+import flixel.util.FlxTimer;
 import flixel.system.FlxSound;
 import flixel.util.FlxSave;
 import flixel.FlxG;
@@ -319,9 +320,12 @@ class LevelState extends GameState {
 	/** Special tiles **/
 	function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
 		if (_controls.down.check()) {
+			var timer = new FlxTimer();
 			Tile.allowCollisions = FlxObject.NONE;
+			timer.start(.1, (_) -> player.isGoindDown = true);	
 		} else if (Object.y >= Tile.y) {
 			Tile.allowCollisions = FlxObject.CEILING;
+			player.isGoindDown = false;
 		}
 	}
 

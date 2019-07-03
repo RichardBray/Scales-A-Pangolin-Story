@@ -9,21 +9,22 @@ class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _controls:Controls;
 
-	public var isJumping:Bool;
 	public var preventMovement:Bool;
+	public var isGoindDown:Bool;
 	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
 		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
 		preventMovement = false;
+		isGoindDown = false; // If down button is pressed
 		health = 3; // Health player starts off with
 	
 		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 135); // height 113.5
-		setGraphicSize(141, 100);
+		setGraphicSize(121, 100);
 		updateHitbox();
 
-		offset.set(150, 33);
+		offset.set(165, 33);
 		scale.set(1, 1);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -51,6 +52,7 @@ class Player extends FlxSprite {
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
+		var _down = _controls.down.check();
 
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
@@ -62,11 +64,11 @@ class Player extends FlxSprite {
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 				if (isTouching(FlxObject.FLOOR)) {
 					animation.play("run");
-					offset.x = _left ? 12 : 145;
+					offset.x = _left ? 12 : 165;
 				}
 			} else if (isTouching(FlxObject.FLOOR)) {
 				animation.play("idle");
-				offset.x = facing == FlxObject.LEFT ? 12 : 145;
+				offset.x = facing == FlxObject.LEFT ? 12 : 165;
 			}
 			if (_left && _right) {
 				acceleration.x = 0;
@@ -77,7 +79,9 @@ class Player extends FlxSprite {
 				velocity.y = -800; // 1100
 				animation.play("jump");
 				animation.play("jumpLoop");
-				isJumping = true;
+			}
+			if (isGoindDown) {
+				animation.play("jumpLoop");
 			}
 		}
 	}
