@@ -21,7 +21,6 @@ class Bug extends FlxSprite {
 	}	
 }
 
-
 class StagBeetle extends Bug {
 
 	public function new(X:Float = 0, Y:Float = 0, UniqueID:Int = 0):Void {
@@ -32,6 +31,20 @@ class StagBeetle extends Bug {
 
 	override public function update(Elapsed:Float):Void {
 		animation.play("flying");
+		super.update(Elapsed);
+	}
+}
+
+class Beetle extends Bug {
+
+	public function new(X:Float = 0, Y:Float = 0, UniqueID:Int = 0):Void {
+		super(X, Y);
+		loadGraphic("assets/images/L1_Bug_03.png", true, 47, 39);
+		animation.add("walking", [for (i in 0...6) i], 12, true);
+	}
+
+	override public function update(Elapsed:Float):Void {
+		animation.play("walking");
 		super.update(Elapsed);
 	}
 }

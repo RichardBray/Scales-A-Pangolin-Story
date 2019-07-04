@@ -30,7 +30,7 @@ To run the server for html5.
 
 In another one
 ```bash
-watchman-make -p 'source/*.hx' -r 'sh watcher.sh'
+watchman-make -p 'source/*.hx' -r 'sh watcher.sh' // , data/*.tmx
 ```
 To rebuild the game when a .hx file has been changed.
 
@@ -77,7 +77,8 @@ push tag
 Scales of Life: A Pangolin's story
 
 ### Potential articles
-- Fading in flashing text with HaxeFlixel, without Chaining tweens
+- Creating fading text in HaxeFlixel without Chaining tweens
+- Multiple hitboxes in haxeflixel
 - What is haxe and why should you care abou it?
 
 ### Things I've learnt though gamedev

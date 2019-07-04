@@ -9,7 +9,6 @@ import flixel.FlxSprite;
 import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.tile.FlxTilemap;
 import flixel.addons.tile.FlxTilemapExt;
 import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
@@ -28,6 +27,7 @@ class LevelState extends GameState {
 	var _levelBg:FlxSprite;
 	var _mapEntities:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
+	var _grpEnemies:FlxTypedGroup<Enemy>;
 	var _levelCollisions:FlxTilemapExt;
 	var _map:TiledMap;
 	var _mapObjects:TiledObjectLayer;
@@ -93,6 +93,7 @@ class LevelState extends GameState {
 		FlxG.collide(player, _levelCollisions);
 
 		// Overlaps
+		FlxG.overlap(_grpEnemies, player, hitEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
 	}
 
@@ -126,6 +127,10 @@ class LevelState extends GameState {
 		// Add bugs group
 		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
 		add(_grpCollectables);
+
+		// Add enemies
+		_grpEnemies = new FlxTypedGroup<Enemy>();
+		add(_grpEnemies);		
 
 		// Tile tearing problem fix on Mac (part 1)
 		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
@@ -234,44 +239,6 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * What happens when the player and the enemy collide
-	 */
-	public function hitEnemy(Player:Player, Enemy:Enemy):Void {
-		if (Player.health > 1) {
-			if (Player.isTouching(FlxObject.FLOOR)) {
-				Player.hurt(1);
-				Enemy.sndHit.play();
-				FlxSpriteUtil.flicker(Player);
-
-				if (Player.flipX) { // if facing left
-					FlxTween.tween(Player, {x: (Player.x + 150), y: (Player.y - 40)}, 0.1);
-				} else { // facing right
-					FlxTween.tween(Player, {x: (Player.x - 150), y: (Player.y - 40)}, 0.1);
-				}
-			} else {
-				// Player bounce
-				Player.velocity.y = -600;
-				// from the top
-				// when rolling animation is playing
-				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
-					Enemy.sndEnemyKill.play();
-					Enemy.kill();
-				} else { // when rolling animation is NOT playing
-					Player.hurt(1);
-					Enemy.sndHit.play();
-					FlxSpriteUtil.flicker(Player);
-				}
-			}
-		} else {
-			// @todo play death animation
-			var _pauseMenu:PauseMenu = new PauseMenu(true);
-			openSubState(_pauseMenu);
-		}
-
-		grpHud.decrementHealth(Player.health);
-	}
-
-	/**
 	 * Place entities from Tilemap.
 	 * This method just converts strings to integers.
 	 */
@@ -295,6 +262,7 @@ class LevelState extends GameState {
 	 * Makes object to colider with `Player` in level.
 	 */
 	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int, HideCollectable:Int):Void {
+		var newY:Int = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage:Map<Int, String> = [
 			1 => "assets/images/L1_ROCK_01.png",
@@ -306,15 +274,22 @@ class LevelState extends GameState {
 			7 => "assets/images/L1_TREE_03.png",
 			8 => "assets/images/L1_GROUND_01.png"
 		];
-		if (ObjectId >= 9) {
+		if (ObjectId >= 9 && ObjectId <=11) {
 			if (HideCollectable == -1) {
 				var bug:CollectableBug.Bug = null;
-				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, (Y - Height), MapObjId);
-				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, (Y - Height), MapObjId);
+				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, MapObjId);
+				if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, MapObjId);
+				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, MapObjId);
 				_grpCollectables.add(bug);
 			}
+
+		} else if (ObjectId == 12) {
+			var enemy:Enemy = null;
+			enemy = new Enemy.Fire(X, newY);
+			_grpEnemies.add(enemy);
+
 		} else {
-			var _object:FlxSprite = new FlxSprite(X, (Y - Height)).loadGraphic(layerImage[ObjectId], false, Width, Height);
+			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
 			_mapEntities.add(_object);
 		}
@@ -332,7 +307,7 @@ class LevelState extends GameState {
 		}
 	}
 
-	function getCollectable(Collectable:CollectableBug.Bug, Player:FlxSprite):Void {
+	function getCollectable(Collectable:CollectableBug.Bug, Player:Player):Void {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
 			_sndCollect.play(true);
@@ -340,4 +315,43 @@ class LevelState extends GameState {
 			Collectable.kill();
 		}
 	}
+
+
+	/**
+	 * What happens when the player and the enemy collide
+	 */
+	public function hitEnemy(Enemy:Enemy, Player:Player):Void {
+		if (Player.health > 1) {
+			if (Player.isTouching(FlxObject.FLOOR)) {
+				Player.hurt(1);
+				Enemy.sndHit.play();
+				FlxSpriteUtil.flicker(Player);
+
+				if (Player.flipX) { // if facing left
+					FlxTween.tween(Player, {x: (Player.x + 225), y: (Player.y - 60)}, 0.1);
+				} else { // facing right
+					FlxTween.tween(Player, {x: (Player.x - 225), y: (Player.y - 60)}, 0.1);
+				}
+			} else {
+				// Player bounce
+				Player.velocity.y = -900;
+				// from the top
+				// when rolling animation is playing
+				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
+					Enemy.sndEnemyKill.play();
+					// Enemy.kill();
+				} else { // when rolling animation is NOT playing
+					Player.hurt(1);
+					Enemy.sndHit.play();
+					FlxSpriteUtil.flicker(Player);
+				}
+			}
+		} else {
+			// @todo play death animation
+			var _pauseMenu:PauseMenu = new PauseMenu(true);
+			openSubState(_pauseMenu);
+		}
+
+		grpHud.decrementHealth(Player.health);
+	}	
 }

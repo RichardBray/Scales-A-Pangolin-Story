@@ -32,7 +32,7 @@ class Player extends FlxSprite {
 		// Animations
 		animation.add("idle", [for (i in 23...28) i], 8, true);
 		animation.add("run", [for (i in 0...5) i], 12, false);
-		animation.add("jump", [for (i in 12...23) i], 12, false);
+		animation.add("jump", [for (i in 11...23) i], 12, false);
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
 
 		// Sounds

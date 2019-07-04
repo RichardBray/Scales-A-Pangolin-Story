@@ -17,12 +17,25 @@ class Enemy extends FlxSprite {
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
 	}
 
-	override public function kill():Void {
-		alive = false;
-		FlxTween.tween(this, {alpha: 0, y: y + 50}, .5, {ease: FlxEase.quadOut, onComplete: finishKill});
+	// override public function kill():Void {
+	// 	alive = false;
+	// 	FlxTween.tween(this, {alpha: 0, y: y + 50}, .5, {ease: FlxEase.quadOut, onComplete: finishKill});
+	// }
+
+	// function finishKill(_):Void {
+	// 	exists = false;
+	// }
+}
+
+class Fire extends Enemy {
+	public function new(X:Float = 0, Y:Float = 0):Void {
+		super(X, Y);
+		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
+		animation.add("burning", [for (i in 0...7) i], 12, true);		
 	}
 
-	function finishKill(_):Void {
-		exists = false;
-	}
+	override public function update(Elapsed:Float):Void {
+		animation.play("burning");
+		super.update(Elapsed);
+	}	
 }

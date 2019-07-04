@@ -14,7 +14,6 @@ import LevelState.CollMap;
 using Lambda;
 
 class LevelOne extends LevelState {
-	var _enemy:Enemy;
 	var _score:Int;
 	var _playerHealth:Float;
 	var _playerReturning:Bool;
@@ -66,10 +65,6 @@ class LevelOne extends LevelState {
 		_testNPC = new NPC(870, 510, testText, _npcSprite, this);
 		// add(_testNPC);
 
-		// Add enemy
-		_enemy = new Enemy(1570, 600);
-		// add(_enemy);
-
 		// Add player
 		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1490, true) : createPlayer(180, 1490);
 		// Update the player helth from the previous level
@@ -90,7 +85,6 @@ class LevelOne extends LevelState {
 		super.update(Elapsed);
 
 		// Overlaps
-		FlxG.overlap(player, _enemy, hitEnemy);
 		FlxG.overlap(levelExit, player, fadeOut);
 
 		if (!FlxG.overlap(player, _testNPC.npcSprite.npcBoundary, _testNPC.initConvo)) {
