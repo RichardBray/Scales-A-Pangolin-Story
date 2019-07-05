@@ -61,7 +61,7 @@ class LevelState extends GameState {
 		FlxG.worldBounds.set(0, 0, 14280, 1800);
 
 		FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
-		FlxG.camera.antialiasing = true;
+		FlxG.camera.antialiasing = false;
 
 		// Camera follows Player
 		FlxG.camera.follow(player, PLATFORMER, 1);

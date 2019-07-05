@@ -151,6 +151,7 @@ class HLScreen extends GameState {
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
 		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
 		add(_logo);
+		FlxG.camera.antialiasing = true;
 	}
 
 	override public function update(Elapsed:Float):Void {
