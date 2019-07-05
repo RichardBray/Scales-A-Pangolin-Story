@@ -93,7 +93,7 @@ class LevelState extends GameState {
 		FlxG.collide(player, _levelCollisions);
 
 		// Overlaps
-		FlxG.overlap(_grpEnemies, player, hitEnemy);
+		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
 	}
 
@@ -320,18 +320,14 @@ class LevelState extends GameState {
 	/**
 	 * What happens when the player and the enemy collide
 	 */
-	public function hitEnemy(Enemy:Enemy, Player:Player):Void {
-		if (Player.health > 1) {
+	function hitEnemy(Enemy:Enemy, Player:Player):Void {
+		if (Enemy.alive && Player.health > 1) {
 			if (Player.isTouching(FlxObject.FLOOR)) {
 				Player.hurt(1);
 				Enemy.sndHit.play();
 				FlxSpriteUtil.flicker(Player);
 
-				if (Player.flipX) { // if facing left
-					FlxTween.tween(Player, {x: (Player.x + 225), y: (Player.y - 60)}, 0.1);
-				} else { // facing right
-					FlxTween.tween(Player, {x: (Player.x - 225), y: (Player.y - 60)}, 0.1);
-				}
+				Player.animJump(Player.flipX); 
 			} else {
 				// Player bounce
 				Player.velocity.y = -900;
@@ -346,12 +342,42 @@ class LevelState extends GameState {
 					FlxSpriteUtil.flicker(Player);
 				}
 			}
-		} else {
-			// @todo play death animation
-			var _pauseMenu:PauseMenu = new PauseMenu(true);
-			openSubState(_pauseMenu);
-		}
+		} else { showGameOverMenu(); }
 
 		grpHud.decrementHealth(Player.health);
 	}	
+
+
+	/**
+	 * Reaction for player if hitting a stading enemy i.e. spikes or fire.
+	 * Player shoudl lose health no matter how enemy is hit/overlapped.
+	 * Behavior is sort of hacked to temporarily trigger the enemy aliver property
+	 * so flixel knows which enemy has been hit.
+	 *
+	 * @param Enemy		Enemy Sprite
+	 * @param Plauer	Player Sprite
+	 */
+	function hitStandingEnemy(Enemy:Enemy, Player:Player):Void {
+		if (Enemy.alive) {
+			if (Player.health > 1) {
+				Enemy.kill(); // Change enemy alive variable temporarily
+				Enemy.sndHit.play(); // Play sound for when player is hurt
+
+				// Reduce player health
+				Player.hurt(1);
+				grpHud.decrementHealth(Player.health);
+				FlxSpriteUtil.flicker(Player); // Turn on flicker animation
+
+				Player.isTouching(FlxObject.FLOOR)
+				? Player.animJump(Player.flipX)
+				:	Player.velocity.y = -900;
+			} else { showGameOverMenu(); }
+		} 
+	}
+
+	function showGameOverMenu() {
+		// @todo play death animation
+		var _pauseMenu:PauseMenu = new PauseMenu(true);
+		openSubState(_pauseMenu);
+	}
 }

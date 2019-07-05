@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
@@ -18,18 +19,22 @@ class Enemy extends FlxSprite {
 	}
 
 	// override public function kill():Void {
-	// 	alive = false;
-	// 	FlxTween.tween(this, {alpha: 0, y: y + 50}, .5, {ease: FlxEase.quadOut, onComplete: finishKill});
-	// }
+		// exists = false;
+		// FlxTween.tween(this, {alpha: 0, y: y + 50}, .5, {ease: FlxEase.quadOut, onComplete: finishKill});
+  //}
 
 	// function finishKill(_):Void {
 	// 	exists = false;
 	// }
+	
 }
 
 class Fire extends Enemy {
+	var _timer:FlxTimer;
+
 	public function new(X:Float = 0, Y:Float = 0):Void {
 		super(X, Y);
+		_timer = new FlxTimer();
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
 		animation.add("burning", [for (i in 0...7) i], 12, true);		
 	}
@@ -37,5 +42,10 @@ class Fire extends Enemy {
 	override public function update(Elapsed:Float):Void {
 		animation.play("burning");
 		super.update(Elapsed);
+	}	
+
+	override public function kill():Void {
+		alive = false;
+		_timer.start(.5, (_) -> alive = true, 1);
 	}	
 }

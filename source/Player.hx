@@ -1,5 +1,6 @@
 package;
 
+import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -45,6 +46,14 @@ class Player extends FlxSprite {
 	override public function update(Elapsed:Float):Void {
 		playerMovement();
 		super.update(Elapsed);
+	}
+
+	/**
+	 * @param Left	If player is facing left or not
+	 */
+	public function animJump(Left:Bool = false) {
+		var xPos:Float = Left ?  this.x + 225 :  this.x - 225;
+		FlxTween.tween(this, {x: xPos, y: (this.y - 60)}, 0.1);
 	}
 
 	function playerMovement() {
