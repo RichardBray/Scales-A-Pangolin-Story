@@ -61,11 +61,10 @@ class Player extends FlxSprite {
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
-		var _down = _controls.down.check();
 
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
-		drag.x = maxVelocity.x * 4; // Deceleration applied when acceleration is not affecting the sprite.
+		drag.x = SPEED; // Deceleration applied when acceleration is not affecting the sprite.
 
 		if (!preventMovement) {
 			if (_left || _right) {

@@ -150,7 +150,7 @@ class LevelState extends GameState {
 
 
 		// Looping over `objects` layer
-		_mapObjects = cast(_map.getLayer("objects"), TiledObjectLayer);
+		_mapObjects = cast(_map.getLayer("objects"));
 		for (e in _mapObjects.objects) {
 			placeEntities(e.xmlData.x, e.gid, _mapObjectId++);
 		}

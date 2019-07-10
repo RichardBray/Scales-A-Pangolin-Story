@@ -80,9 +80,16 @@ Scales of Life: A Pangolin's story
 - Creating fading text in HaxeFlixel without Chaining tweens
 - Multiple hitboxes in haxeflixel
 - What is haxe and why should you care abou it?
+- Using more maths in my code
+- ESC
 
 ### Things I've learnt though gamedev
 - Document everything
 - I have a new appreciation for semicolons
+- Difference between acceleration and velocity
+-- speed: only magnitude not direction (Scalar)
+-- velocity: speed of something in a given direction
+- What a singketon is
+- ESC
 - Javascript is very forgiving
   - !!string
