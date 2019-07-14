@@ -59,7 +59,7 @@ class LevelState extends GameState {
 		 * work until can process the whole level.
 		 */
 		FlxG.worldBounds.set(0, 0, 14280, 1800);
-
+	
 		FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
 		FlxG.camera.antialiasing = false;
 
