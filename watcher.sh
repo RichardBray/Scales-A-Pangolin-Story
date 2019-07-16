@@ -13,4 +13,5 @@ echo "🔨  Building game!!!"
 lime build html5 -debug 
 cecho "GREEN" "🎉  Build finished!!!"
 exit 0
-# watchman-make -p '**/*.hx' -r watcher.sh
+# watchman-make -p 'source/*.hx' 'assets/data/*.tmx' -r 'sh watcher.sh'
+# http-server export/html5/bin
