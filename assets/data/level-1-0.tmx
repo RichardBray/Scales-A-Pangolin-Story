@@ -29,35 +29,11 @@
   <object id="25" gid="8" x="9540" y="1684.49" width="974" height="258"/>
   <object id="26" gid="9" x="4245" y="1167.49" width="36" height="27"/>
   <object id="27" gid="12" x="2218.83" y="1575.49" width="178" height="206"/>
-  <object id="28" gid="11" x="1365" y="1184.49" width="36" height="15">
-   <properties>
-    <property name="facingLeft" type="bool" value="true"/>
-    <property name="walkingTiles" type="int" value="16"/>
-   </properties>
-  </object>
-  <object id="29" gid="11" x="900" y="1529.49" width="36" height="15">
-   <properties>
-    <property name="facingLeft" type="bool" value="true"/>
-    <property name="walkingTiles" type="int" value="7"/>
-   </properties>
-  </object>
-  <object id="30" gid="10" x="1466.33" y="1366.49" width="47" height="39">
-   <properties>
-    <property name="facingLeft" type="bool" value="false"/>
-    <property name="walkingTiles" type="int" value="12"/>
-   </properties>
-  </object>
-  <object id="31" gid="9" x="1920" y="769.485" width="42" height="39">
-   <properties>
-    <property name="facingLeft" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="32" gid="11" x="1485" y="1005.49" width="36" height="15">
-   <properties>
-    <property name="facingLeft" type="bool" value="false"/>
-    <property name="walkingTiles" type="int" value="14"/>
-   </properties>
-  </object>
+  <object id="28" name="left" gid="11" x="1365" y="1184.49" width="36" height="15"/>
+  <object id="29" name="right" gid="11" x="780" y="1529.49" width="36" height="15"/>
+  <object id="30" gid="10" x="1466.33" y="1366.49" width="47" height="39"/>
+  <object id="31" gid="9" x="1920" y="769.485" width="42" height="39"/>
+  <object id="32" name="right" gid="11" x="1485" y="1005.49" width="36" height="15"/>
   <object id="33" gid="11" x="3195" y="1575.49" width="36" height="15"/>
   <object id="34" gid="11" x="2773.5" y="795.485" width="36" height="15"/>
   <object id="35" gid="11" x="2338.5" y="900.485" width="36" height="15"/>

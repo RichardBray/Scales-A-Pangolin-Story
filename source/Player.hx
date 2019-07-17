@@ -49,6 +49,8 @@ class Player extends FlxSprite {
 	}
 
 	/**
+	 * Animation to play when player gets hit.
+	 * 
 	 * @param Left	If player is facing left or not
 	 */
 	public function animJump(Left:Bool = false) {
