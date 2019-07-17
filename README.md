@@ -22,17 +22,14 @@ lime run html5
 
 ### Run for development
 
-In one terminal tab/pane
-```bash
-http-server export/html5/bin
 ```
-To run the server for html5.
+yarn start
+```
+or
 
-In another one
-```bash
-watchman-make -p 'source/*.hx' -r 'sh watcher.sh' // , data/*.tmx
 ```
-To rebuild the game when a .hx file has been changed.
+npm start
+```
 
 
 ## Notes
