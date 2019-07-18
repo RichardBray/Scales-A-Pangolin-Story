@@ -115,7 +115,7 @@ class LevelState extends GameState {
 		_levelBg = new FlxSprite(0, 1280, 'assets/images/$Background.png');
 
 		_levelBg.scale.set(4.5, 4.5);
-		_levelBg.alpha = 0.5;
+		_levelBg.alpha = 0;
 		_levelBg.scrollFactor.set(0.3, 1);
 		add(_levelBg);
 		// Load custom tilemap
@@ -247,21 +247,33 @@ class LevelState extends GameState {
 		var y:Int = Std.parseInt(EntityData.get("y"));
 		var width:Int = Std.parseInt(EntityData.get("width"));
 		var height:Int = Std.parseInt(EntityData.get("height"));
-
+		var name:String = EntityData.get("name");
+		var type:String = EntityData.get("type");
 		var hideCollectable:Int = -1; // Default collecatlbe ID -1 means no collecatble
+
 		if (_collectablesMap[levelName].length != 0) {
 			// The line below checks if the number in the array matches the object ID.
 			// If it does it returns an array with that number, if it doesn't, it returns an empty array.
 			var _hideColVal:Array<Int> = _collectablesMap[levelName].filter(collectable -> collectable == MapObjId);
 			hideCollectable = (_hideColVal.length == 0) ? -1 : _hideColVal[0];
 		}
-		createEntity(x, y, width, height, ObjectId, MapObjId, hideCollectable);
+		createEntity(x, y, width, height, name, type, ObjectId, MapObjId, hideCollectable);
 	}
 
 	/**
 	 * Makes object to colider with `Player` in level.
 	 */
-	function createEntity(X:Int, Y:Int, Width:Int, Height:Int, ObjectId:Int, MapObjId:Int, HideCollectable:Int):Void {
+	function createEntity(
+		X:Int, 
+		Y:Int, 
+		Width:Int, 
+		Height:Int, 
+		Name:String,
+		Otype:String, // Object type
+		ObjectId:Int, 
+		MapObjId:Int, 
+		HideCollectable:Int
+	):Void {
 		var newY:Int = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage:Map<Int, String> = [
@@ -277,9 +289,10 @@ class LevelState extends GameState {
 		if (ObjectId >= 9 && ObjectId <=11) {
 			if (HideCollectable == -1) {
 				var bug:CollectableBug.Bug = null;
-				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, MapObjId);
-				if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, MapObjId);
-				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, MapObjId);
+				trace(Name, "Name");
+				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, Name, Otype, MapObjId);
+				if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, Name, Otype, MapObjId);
+				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, Name, Otype, MapObjId);
 				_grpCollectables.add(bug);
 			}
 
