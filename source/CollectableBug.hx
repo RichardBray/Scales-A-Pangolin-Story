@@ -1,14 +1,12 @@
 package;
 
 import flixel.FlxObject;
-import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 
 class Bug extends FlxSprite {
-	var _frames:Int; // Count number of frames
-	var _seconds:Int; // Count seconds, 60 frames
+	var _seconds:Float = 0; // Count seconds, 60 frames
 	var _randomSeconds = Std.random(4) + 3; // Random seconds between 3-6 for bug movement time
 	var _distance:Int;
 	var _facingDirection:Bool;
@@ -31,9 +29,8 @@ class Bug extends FlxSprite {
 	/**
 	 * Sort of a hacky way to count seconds
 	 */
-	function countSeconds():Void {
-		_frames++;
-		if (_frames % FlxG.updateFramerate == 0) _seconds++;		
+	function countSeconds(Elapsed:Float):Void {
+		_seconds += Elapsed;	
 	}
 
 	function setDirection(Name:String, Otype:String):Void {
@@ -44,12 +41,11 @@ class Bug extends FlxSprite {
 	 * This controls the bug pacing movement.
 	 */
 	function bugPacing():Void { 
-		js.Lib.debug();
 		if (_seconds < _randomSeconds) {
 			bugMovement(_facingDirection);
 		} else if (_seconds < (_randomSeconds * 2)) {
 			bugMovement(!_facingDirection);
-		} else if (_seconds == (_randomSeconds * 2)) {
+		} else if (Math.round(_seconds) == (_randomSeconds * 2)) {
 			_seconds = 0;
 		}
 	}	
@@ -73,7 +69,7 @@ class StagBeetle extends Bug {
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
-		countSeconds();
+		countSeconds(Elapsed);
 		animation.play("flying");
 		bugPacing();
 	}
@@ -92,7 +88,7 @@ class Beetle extends Bug {
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
-		countSeconds();
+		countSeconds(Elapsed);
 		animation.play("walking");
 		bugPacing();
 	}
@@ -113,7 +109,7 @@ class Caterpillar extends Bug {
 
 	override public function update(Elapsed:Float):Void {
 		super.update(Elapsed);
-		countSeconds();
+		countSeconds(Elapsed);
 		animation.play("walking");
 		bugPacing();
 	}

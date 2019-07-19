@@ -9,10 +9,10 @@ import flixel.system.FlxSound;
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _controls:Controls;
+	static var GRAVITY:Float = 1500;
 
 	public var preventMovement:Bool;
 	public var isGoindDown:Bool;
-	private static var GRAVITY:Float = 1500;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -59,7 +59,7 @@ class Player extends FlxSprite {
 	}
 
 	function playerMovement() {
-		var SPEED:Int = 1500;
+		var SPEED:Int = 1800;
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();

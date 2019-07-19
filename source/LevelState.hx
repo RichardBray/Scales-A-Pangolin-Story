@@ -289,7 +289,6 @@ class LevelState extends GameState {
 		if (ObjectId >= 9 && ObjectId <=11) {
 			if (HideCollectable == -1) {
 				var bug:CollectableBug.Bug = null;
-				trace(Name, "Name");
 				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, Name, Otype, MapObjId);
 				if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, Name, Otype, MapObjId);
 				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, Name, Otype, MapObjId);
