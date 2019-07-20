@@ -7,7 +7,7 @@ import flixel.tweens.FlxTween;
 
 class Bug extends FlxSprite {
 	var _seconds:Float = 0; // Count seconds, 60 frames
-	var _randomSeconds = Std.random(4) + 3; // Random seconds between 3-6 for bug movement time
+	var _randomSeconds = Std.random(3) + 3; // Random seconds between 3-5 for bug movement time
 	var _distance:Int;
 	var _facingDirection:Bool;
 
@@ -40,18 +40,19 @@ class Bug extends FlxSprite {
 	/**
 	 * This controls the bug pacing movement.
 	 */
-	function bugPacing():Void { 
+	function bugPacing(XAxis:Bool = true):Void { 
 		if (_seconds < _randomSeconds) {
-			bugMovement(_facingDirection);
+			bugMovement(_facingDirection, XAxis);
 		} else if (_seconds < (_randomSeconds * 2)) {
-			bugMovement(!_facingDirection);
+			bugMovement(!_facingDirection, XAxis);
 		} else if (Math.round(_seconds) == (_randomSeconds * 2)) {
 			_seconds = 0;
 		}
 	}	
 
-	function bugMovement(Direction:Bool):Void {
-		velocity.x = Direction ? -_distance: _distance;
+	function bugMovement(Direction:Bool, XAxis:Bool):Void {
+		var distance = Direction ? -_distance: _distance;
+		XAxis ? velocity.x = distance : velocity.y = distance;
 		facing = Direction ? FlxObject.LEFT : FlxObject.RIGHT;
 	}
 }
@@ -71,7 +72,7 @@ class StagBeetle extends Bug {
 		super.update(Elapsed);
 		countSeconds(Elapsed);
 		animation.play("flying");
-		bugPacing();
+		bugPacing(false);
 	}
 }
 
@@ -83,7 +84,7 @@ class Beetle extends Bug {
 		animation.add("walking", [for (i in 0...6) i], 12, true);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);	
-		setDirection(Name, Otype);			
+		setDirection(Name, Otype);		
 	}
 
 	override public function update(Elapsed:Float):Void {
@@ -104,7 +105,8 @@ class Caterpillar extends Bug {
 		animation.add("walking", [for (i in 0...5) i], 12, true);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);	
-		setDirection(Name, Otype);			
+		setDirection(Name, Otype);		
+		trace(X, Y, _distance);		
 	}
 
 	override public function update(Elapsed:Float):Void {
