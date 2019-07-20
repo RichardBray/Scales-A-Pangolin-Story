@@ -294,7 +294,7 @@ class LevelState extends GameState {
 				_grpCollectables.add(bug);
 			}
 
-		} else if (ObjectId == 12) {
+		} else if (ObjectId == 12) { // Fire
 			var enemy:Enemy = null;
 			enemy = new Enemy.Fire(X, newY);
 			_grpEnemies.add(enemy);

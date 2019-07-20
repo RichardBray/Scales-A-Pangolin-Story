@@ -66,7 +66,8 @@ class LevelOne extends LevelState {
 		// add(_testNPC);
 
 		// Add player
-		_playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1440, true) : createPlayer(240, 1440);
+		// _playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1440, true) : createPlayer(240, 1440)
+		createPlayer(240, 1472);
 		// Update the player helth from the previous level
 		player.health = _playerHealth;
 

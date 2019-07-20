@@ -36,6 +36,11 @@ class Fire extends Enemy {
 		super(X, Y);
 		_timer = new FlxTimer();
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
+		setGraphicSize(178, 186);
+		updateHitbox();
+		offset.set(0, -20);
+		scale.set(1, 1);
+
 		animation.add("burning", [for (i in 0...7) i], 12, true);		
 	}
 
