@@ -12,6 +12,10 @@ class Bug extends FlxSprite {
 	var _facingDirection:Bool;
 
 	public var uniqueID:Int;
+
+	/**
+	 * Basic bug sprite. 
+	 */
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "", UniqueID:Int = 0):Void {
 		super(X, Y);	
 		uniqueID = UniqueID;
@@ -40,20 +44,37 @@ class Bug extends FlxSprite {
 	/**
 	 * This controls the bug pacing movement.
 	 */
-	function bugPacing(XAxis:Bool = true):Void { 
+	function bugPacing():Void { 
 		if (_seconds < _randomSeconds) {
-			bugMovement(_facingDirection, XAxis);
+			bugMovement(_facingDirection);
 		} else if (_seconds < (_randomSeconds * 2)) {
-			bugMovement(!_facingDirection, XAxis);
+			bugMovement(!_facingDirection);
 		} else if (Math.round(_seconds) == (_randomSeconds * 2)) {
 			_seconds = 0;
 		}
 	}	
 
-	function bugMovement(Direction:Bool, XAxis:Bool):Void {
-		var distance = Direction ? -_distance: _distance;
-		XAxis ? velocity.x = distance : velocity.y = distance;
+	function bugMovement(Direction:Bool):Void {
+		velocity.x = Direction ? -_distance: _distance;
 		facing = Direction ? FlxObject.LEFT : FlxObject.RIGHT;
+	}
+
+	/**
+	 * Animation for flying bug only.
+	 *
+	 * @param Direction Wether the sprite is facing left or right.
+	 */
+	function bugFlying(Direction:Bool) {
+		var direction:Float = Direction ? -30 : 30;
+		facing = Direction ? FlxObject.LEFT : FlxObject.RIGHT;
+
+		if (_seconds < 1) {
+			velocity.y = direction;
+		} else if (_seconds < 2) {
+			velocity.y = -direction;
+		} else if (Math.round(_seconds) == 2) {
+			_seconds = 0;
+		}
 	}
 }
 
@@ -72,7 +93,7 @@ class StagBeetle extends Bug {
 		super.update(Elapsed);
 		countSeconds(Elapsed);
 		animation.play("flying");
-		bugPacing(false);
+		bugFlying(_facingDirection);
 	}
 }
 
@@ -105,8 +126,7 @@ class Caterpillar extends Bug {
 		animation.add("walking", [for (i in 0...5) i], 12, true);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);	
-		setDirection(Name, Otype);		
-		trace(X, Y, _distance);		
+		setDirection(Name, Otype);			
 	}
 
 	override public function update(Elapsed:Float):Void {

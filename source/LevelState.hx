@@ -126,7 +126,6 @@ class LevelState extends GameState {
 
 		// Add bugs group
 		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
-		add(_grpCollectables);
 
 		// Add enemies
 		_grpEnemies = new FlxTypedGroup<Enemy>();
@@ -157,7 +156,7 @@ class LevelState extends GameState {
 
 		// Map objects added here
 		add(_mapEntities);
-		_mapEntities.y = 0; // For some reason this fixes the images being too low -115.
+		add(_grpCollectables);
 
 		// Add envirionment collisions
 		var firstTile:Int = 13;
