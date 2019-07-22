@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxColor;
+import flixel.util.FlxGradient;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -8,18 +10,30 @@ import flixel.group.FlxSpriteGroup;
 class HUD extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
 	var _txtScore:FlxText;
+	var _txtGoals:FlxText;
 	var _health:FlxSprite;
+	var _gradientBg:FlxSprite;
+	var _leftPush:Int = 15; // Distance away from left side of the screen
 
 	public var gameScore:Int;
 
-	public function new(Score:Int, Health:Float) {
+	public function new(Score:Int, Health:Float, ?Goals:Array<String>) {
 		super();
 
 		gameScore = Score;
+		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 140, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
+		_gradientBg.alpha = 0.4;
+		add(_gradientBg);
+	
 		// Socre text
-		_txtScore = new FlxText(FlxG.width / 2, 40, 0, updateScore(gameScore));
-		_txtScore.setFormat(null, 24, 0xFF194869, FlxTextAlign.CENTER);
+		_txtScore = new FlxText(_leftPush, 80, 0, updateScore(gameScore));
+		_txtScore.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.LEFT);
 		add(_txtScore);
+
+		// Goals Text
+		_txtGoals = new FlxText(FlxG.width - 150, 20, 0, "Collect 20 bugs.");
+		_txtScore.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.RIGHT);
+		add(_txtGoals);
 
 		// Hearts
 		_hearts = new FlxSpriteGroup();
@@ -56,7 +70,7 @@ class HUD extends FlxSpriteGroup {
 	}
 
 	function updateScore(Score:Int):String {
-		return "Score:" + Score;
+		return "Bugs: " + Score;
 	}
 
 	/**
@@ -65,7 +79,7 @@ class HUD extends FlxSpriteGroup {
 	 */
 	function createHearts(PlayerHealth:Float):Void {
 		for (i in 0...Std.int(3)) { // 3 is maxiumum player health, this might change in the future
-			_health = new FlxSprite((i * 80), 10).loadGraphic("assets/images/heart.png", false, 60, 60);
+			_health = new FlxSprite(((i * 60) + _leftPush), 20).loadGraphic("assets/images/heart.png", false, 40, 33);
 			_hearts.add(_health);
 		}
 		// For keeping health between states
