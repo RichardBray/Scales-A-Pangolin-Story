@@ -21,7 +21,7 @@ class HUD extends FlxSpriteGroup {
 		super();
 
 		gameScore = Score;
-		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 140, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
+		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 200, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
 		_gradientBg.alpha = 0.4;
 		add(_gradientBg);
 	
@@ -31,8 +31,8 @@ class HUD extends FlxSpriteGroup {
 		add(_txtScore);
 
 		// Goals Text
-		_txtGoals = new FlxText(FlxG.width - 150, 20, 0, "Collect 20 bugs.");
-		_txtScore.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.RIGHT);
+		_txtGoals = new FlxText(FlxG.width - 300, 20, 0, "Collect 20 bugs.");
+		_txtGoals.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.RIGHT);
 		add(_txtGoals);
 
 		// Hearts

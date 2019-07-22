@@ -73,7 +73,7 @@ class LevelOne extends LevelState {
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0
-		createHUD(_score == 0 ? 0 : _score, player.health);
+		createHUD(_score == 0 ? 0 : _score, player.health, ["Collect 20 bugs"]);
 
 		if (_playerReturning) {
 			_gameSave = saveGame(_gameSave);

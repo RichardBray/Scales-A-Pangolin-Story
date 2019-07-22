@@ -194,7 +194,7 @@ class LevelState extends GameState {
 	 * @param Score		Player score at time of HUD creation, also used for `saveGame` method.
 	 * @param Health	Player health value at time of HUD creation.
 	 */
-	static var test = [""]
+
 	public function createHUD(Score:Int, Health:Float, Goals:Array<String>) {
 		_levelScore = Score;
 		grpHud = new HUD(Score, Health, Goals);
