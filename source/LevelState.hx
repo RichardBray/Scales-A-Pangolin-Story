@@ -21,6 +21,8 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 
+import HUD.GoalData;
+
 typedef CollMap = Map<String, Array<Int>>;
 
 class LevelState extends GameState {
@@ -195,7 +197,7 @@ class LevelState extends GameState {
 	 * @param Health	Player health value at time of HUD creation.
 	 */
 
-	public function createHUD(Score:Int, Health:Float, Goals:Array<String>) {
+	public function createHUD(Score:Int, Health:Float, Goals:Array<GoalData>) {
 		_levelScore = Score;
 		grpHud = new HUD(Score, Health, Goals);
 		add(grpHud);

@@ -7,33 +7,37 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 
+using Lambda;
+
+typedef GoalData = { goal:String, func:Void->Bool };
+
 class HUD extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
-	var _txtScore:FlxText;
-	var _txtGoals:FlxText;
+	var _goals:FlxSpriteGroup;
+	var _scoreTxt:FlxText;
 	var _health:FlxSprite;
 	var _gradientBg:FlxSprite;
 	var _leftPush:Int = 15; // Distance away from left side of the screen
 
 	public var gameScore:Int;
 
-	public function new(Score:Int, Health:Float, ?Goals:Array<String>) {
+	public function new(Score:Int, Health:Float, ?Goals:Null<Array<GoalData>>) {
 		super();
 
 		gameScore = Score;
-		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 200, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
-		_gradientBg.alpha = 0.4;
+		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 150, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
+		_gradientBg.alpha = 0.15;
 		add(_gradientBg);
 	
 		// Socre text
-		_txtScore = new FlxText(_leftPush, 80, 0, updateScore(gameScore));
-		_txtScore.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.LEFT);
-		add(_txtScore);
+		_scoreTxt = new FlxText(_leftPush, 70, 0, updateScore(gameScore));
+		_scoreTxt.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.LEFT);
+		add(_scoreTxt);
 
 		// Goals Text
-		_txtGoals = new FlxText(FlxG.width - 300, 20, 0, "Collect 20 bugs.");
-		_txtGoals.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.RIGHT);
-		add(_txtGoals);
+		_goals = new FlxSpriteGroup();
+		createGoals(Goals);
+		add(_goals);
 
 		// Hearts
 		_hearts = new FlxSpriteGroup();
@@ -56,7 +60,7 @@ class HUD extends FlxSpriteGroup {
 
 	public function incrementScore():Void {
 		gameScore = gameScore + 1;
-		_txtScore.text = updateScore(gameScore);
+		_scoreTxt.text = updateScore(gameScore);
 	}
 
 	public function decrementHealth(PlayerHealth:Float) {
@@ -86,5 +90,16 @@ class HUD extends FlxSpriteGroup {
 		if (PlayerHealth < 3) {
 			decrementHealth(PlayerHealth);
 		}
+	}
+
+	/**
+	 * This methodm creates a group of goal strings.
+	 */
+	function createGoals(Goals:Array<GoalData>) {
+		Goals.mapi((idx:Int, data:GoalData) -> {
+			var goal = new FlxText(FlxG.width - 300, 20 + (idx * 10), 0, data.goal);	
+			goal.setFormat(null, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
+			_goals.add(goal);
+		});
 	}
 }

@@ -10,8 +10,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 // Typedefs
 import LevelState.CollMap;
+import HUD.GoalData;
 
-using Lambda;
 
 class LevelOne extends LevelState {
 	var _score:Int;
@@ -21,6 +21,7 @@ class LevelOne extends LevelState {
 	var _gameSave:FlxSave;
 	var _npcSprite:FlxSprite;
 	var _testNPC:NPC;
+	var _goalData:Array<GoalData>;
 
 	/**
 	 * Level 1-0
@@ -44,6 +45,13 @@ class LevelOne extends LevelState {
 		_playerReturning = PlayerReturning;
 		_levelCollectablesMap = (CollectablesMap == null) ? Constants.initialColMap() : CollectablesMap;
 		_gameSave = GameSave;
+
+		_goalData = [
+			{
+				goal: "Collect at least 20 bugs",
+				func: () -> _score > 19
+			}
+		];
 	}
 
 	override public function create():Void {
@@ -73,7 +81,7 @@ class LevelOne extends LevelState {
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0
-		createHUD(_score == 0 ? 0 : _score, player.health, ["Collect 20 bugs"]);
+		createHUD(_score == 0 ? 0 : _score, player.health, _goalData);
 
 		if (_playerReturning) {
 			_gameSave = saveGame(_gameSave);

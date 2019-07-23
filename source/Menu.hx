@@ -1,6 +1,5 @@
 package;
 
-import flixel.input.gamepad.FlxGamepad.FlxGamepadModel;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -8,7 +7,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 using Lambda;
 
-typedef MenuData = {title:String, func:Void->Void};
+typedef MenuData = { title:String, func:Void->Void };
 
 class Menu extends FlxTypedGroup<FlxSprite> {
 	var _selected:Int = 0;

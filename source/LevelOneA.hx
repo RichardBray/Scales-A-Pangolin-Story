@@ -48,7 +48,7 @@ class LevelOneA extends LevelState {
 		player.health = _playerHealth;
 
 		// Add HUD
-		createHUD(_score, _playerHealth, ["Collect 20 bugs"]);
+		createHUD(_score, _playerHealth, null);
 
 		// Saves game
 		_gameSave = saveGame(_gameSave);
