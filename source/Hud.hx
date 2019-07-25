@@ -9,7 +9,7 @@ import flixel.group.FlxSpriteGroup;
 
 using Lambda;
 
-typedef GoalData = { goal:String, func:Void->Bool };
+typedef GoalData = { goal:String, func:Null<Dynamic>->Bool };
 
 class HUD extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
@@ -21,6 +21,7 @@ class HUD extends FlxSpriteGroup {
 	var _goals:FlxSpriteGroup;
 	var _goalData:Null<Array<GoalData>>;
 	var _goalsArr:Array<Bool> = [];
+	var _comparisonGoalArray:Array<Bool> = []; // Used to compare against for updating goals
 
 	public var gameScore:Int;
 
@@ -30,6 +31,10 @@ class HUD extends FlxSpriteGroup {
 		gameScore = Score;
 
 		_goalData = Goals;
+
+		for (goal in Goals) {
+			_comparisonGoalArray.push(false);
+		}
 		// Garidnet for top of HUD
 		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 150, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
 		_gradientBg.alpha = 0.15;
@@ -57,7 +62,7 @@ class HUD extends FlxSpriteGroup {
 		super.update(Elapsed);
 
 		checkGoalsArray(_goalData);
-		if(compareGoalArrays([false], _goalsArr)) updateGoals();
+		if (!compareGoalArrays(_comparisonGoalArray, _goalsArr)) updateGoals();
 	}
 
 	/**
@@ -124,21 +129,29 @@ class HUD extends FlxSpriteGroup {
 		});		
 	}
 
+	/**
+	 * For loop instead of mapi because `Cannot use Void as value` error.
+	 */
 	function checkGoalsArray(Goals:Array<GoalData>) {
-		Goals.mapi((idx:Int, data:GoalData) -> {
-			if (data.func() == true) _goalsArr[idx] = true;
-		});
-		trace(_goalsArr);
+		var index:Int = 0;
+		for (goal in Goals) {
+			if (goal.func(gameScore)) _goalsArr[index] = true;
+			index++;
+		}
 	}
 
+	/**
+	 * A simple helper method to compare two arrays. Returns true if they both match.
+	 * Created specifically for the goals functionality.
+	 *
+	 * @param Arr1 First array to compare
+	 * @param Arr2 Second array to compare
+	 */
 	function compareGoalArrays(Arr1:Array<Bool>, Arr2:Array<Bool>):Bool {
 		var arrLength:Int = Arr1.length;
 		var equalValues:Int = 0;
 
-		for (a in 0...arrLength) {
-			if(Arr1[a] == Arr2[a]) equalValues++;
-		}
-
+		for (a in 0...arrLength) if (Arr1[a] == Arr2[a]) equalValues++;
 		return arrLength == equalValues;
 	}
 }
