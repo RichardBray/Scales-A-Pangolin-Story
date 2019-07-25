@@ -135,9 +135,9 @@ class Intro extends GameState {
 	override public function create():Void {
 		bgColor = FlxColor.BLACK;
 		_facts = [
-			'While they are a potent defence against predators, their scales are useless against poachers.',
-			'and all eight species in Asia and Africa are now under threat',
-			'something something something'
+			"Pangolins are the most trafficked mammal in the world, between 2011 and 2013 around 117 million of them were killed.",
+			"They're in high demand from places like China and Vietnam for their meat and scales.",
+			"They love to eat bugs and are often called 'the scaly anteater'."
 		];
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
@@ -173,9 +173,9 @@ class Intro extends GameState {
 		if (T.finished) {
 			// Run this when one loop has finished
 			_factText.text = _facts[_factNumber];
-			FlxTween.tween(_factText, {alpha: 1}, T.time / 4);
+			FlxTween.tween(_factText, {alpha: 1}, .5);
 		} else {
-			FlxTween.tween(_factText, {alpha: 0}, T.time / 4, {
+			FlxTween.tween(_factText, {alpha: 0}, .5, {
 				onComplete: (_) -> _factText.text = _facts[_factNumber]
 			});
 		}
