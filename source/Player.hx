@@ -43,7 +43,7 @@ class Player extends FlxSprite {
 		_controls = new Controls();
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		playerMovement();
 		super.update(Elapsed);
 	}

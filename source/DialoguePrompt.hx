@@ -26,7 +26,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	 * @param		Y								Y position.
 	 * @param		DialogueText 		Text that will go in the box, this will change to string for image.
 	 */
-	public function new(?DialogueWidth:Null<Int> = 120, ?X:Float = 0, ?Y:Float = 0, DialogueText:String):Void {
+	public function new(?DialogueWidth:Null<Int> = 120, ?X:Float = 0, ?Y:Float = 0, DialogueText:String) {
 		super();
 
 		_dialogueXPos = X - (DialogueWidth / 2);
@@ -63,7 +63,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 		this.forEach((_member:FlxSprite) -> _member.alpha = 0);
 	}
 
-	public function showPrompt():Void {
+	public function showPrompt() {
 		this.forEach((_member:FlxSprite) -> {
 			FlxTween.tween(_member, {alpha: 1, y: _dialogueYPosLow}, .1);
 		});
@@ -72,7 +72,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	/**
 	 * @param UseOnComplete Detemines if members should use tween onComplete option.
 	 */
-	public function hidePrompt(UseOnComplete:Bool = false):Void {
+	public function hidePrompt(UseOnComplete:Bool = false) {
 		this.forEach((_member:FlxSprite) -> {
 			FlxTween.tween(_member, {alpha: 0, y: _dialogueYPos}, .1, UseOnComplete ? {onComplete: (_) -> _member.alpha = 0} : null);
 		});

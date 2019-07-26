@@ -58,7 +58,7 @@ class HUD extends FlxSpriteGroup {
 		this.forEach((_member:FlxSprite) -> _member.scrollFactor.set(0, 0));
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 
 		checkGoalsArray(_goalData);
@@ -70,13 +70,13 @@ class HUD extends FlxSpriteGroup {
 	 *
 	 * @param Alpha 1 is to show 0 is to hide.
 	 */
-	public function toggleHUD(Alpha:Int):Void {
+	public function toggleHUD(Alpha:Int) {
 		this.forEach((member:FlxSprite) -> {
 			member.alpha = Alpha;
 		});
 	}
 
-	public function incrementScore():Void {
+	public function incrementScore() {
 		gameScore = gameScore + 1;
 		_scoreTxt.text = updateScore(gameScore);
 	}
@@ -97,7 +97,7 @@ class HUD extends FlxSpriteGroup {
 	 * Std.int converts float to int
 	 * @see https://code.haxe.org/category/beginner/numbers-floats-ints.html
 	 */
-	function createHearts(PlayerHealth:Float):Void {
+	function createHearts(PlayerHealth:Float) {
 		for (i in 0...Std.int(3)) { // 3 is maxiumum player health, this might change in the future
 			_health = new FlxSprite(((i * 60) + _leftPush), 20).loadGraphic("assets/images/heart.png", false, 40, 33);
 			_hearts.add(_health);

@@ -34,17 +34,6 @@ npm start
 
 ## Notes
 
-### Color
-
-AARRGGBB
-
-Hex is  =  RRGGBB
-AA for transparency
-0x prefix indicates it's a hexidecimal number
-
-### Debugging
-https://haxe.org/manual/debugging-javascript.html
-
 ### Probems
 - slope collision
 - moving sprite hitbox position
@@ -90,3 +79,6 @@ Scales of Life: A Pangolin's story
 - ESC
 - Javascript is very forgiving
   - !!string
+
+
+http://www.softschools.com/facts/animals/pangolin_facts/108/

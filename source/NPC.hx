@@ -30,7 +30,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		?DialogueText:Null<Array<String>>, 
 		SpriteData:FlxSprite, 
 		ParentState:LevelState
-	):Void {
+	) {
 		super();
 		_parentState = ParentState;
 		// Init controls
@@ -53,7 +53,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		_controls = new Controls();
     }
 
-	public function initConvo(Player:Player, Friend:FlxSprite):Void {
+	public function initConvo(Player:Player, Friend:FlxSprite) {
 		if (Player.isTouching(FlxObject.FLOOR)) {
 			if (!_parentState.actionPressed) dialoguePrompt.showPrompt();
 
@@ -94,7 +94,7 @@ class NpcSprite extends FlxTypedGroup<FlxSprite> {
 	 * @param X	X position of the NPC sprite on the map.
 	 * @param Y	Y position of the NPC sprite on the map.
 	 */
-	public function new(X:Int, Y:Int, SpriteData:FlxSprite):Void {
+	public function new(X:Int, Y:Int, SpriteData:FlxSprite) {
 		super();	
 	
 		add(SpriteData);

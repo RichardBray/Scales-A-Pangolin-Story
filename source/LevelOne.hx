@@ -38,7 +38,7 @@ class LevelOne extends LevelState {
 		?CollectablesMap:Null<CollMap>, 
 		PlayerReturning:Bool = false, 
 		?GameSave:Null<FlxSave>
-	):Void {
+	) {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
@@ -54,7 +54,7 @@ class LevelOne extends LevelState {
 		];
 	}
 
-	override public function create():Void {
+	override public function create() {
 		levelName = "Level-1-0";
 
 		createLevel("level-1-0", "mountains", _levelCollectablesMap);
@@ -90,7 +90,7 @@ class LevelOne extends LevelState {
 		super.create();
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 
 		// Overlaps
@@ -102,7 +102,7 @@ class LevelOne extends LevelState {
 		};
 	}
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite):Void {
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
 	}
 
@@ -118,7 +118,7 @@ class Intro extends GameState {
 	var _factNumber:Int = 0;
 	var _gameSave:FlxSave;
 	var _timer:FlxTimer;
-	var _frames:Int; // Counting frames per second
+	var _seconds:Float = 0;
 	var _controls:Controls;
 	var _textWidth:Int = 600;
 
@@ -127,17 +127,18 @@ class Intro extends GameState {
 	 *
 	 * @param GameSave	Game save from `MainMenu.hx`
 	 */
-	public function new(GameSave:FlxSave):Void {
+	public function new(GameSave:FlxSave) {
 		super();
 		_gameSave = GameSave;
 	}
 
-	override public function create():Void {
+	override public function create() {
 		bgColor = FlxColor.BLACK;
 		_facts = [
-			"Pangolins are the most trafficked mammal in the world, between 2011 and 2013 around 117 million of them were killed.",
+			"Pangolins are the most trafficked mammal in the world, 
+			 between 2011 and 2013 around 117 million of them were killed.",
 			"They're in high demand from places like China and Vietnam for their meat and scales.",
-			"They love to eat bugs and are often called 'the scaly anteater'."
+			"They love to eat bugs and are often called, 'the scaly anteater'. We join our hero doing – just that..."
 		];
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
@@ -148,40 +149,37 @@ class Intro extends GameState {
 		);
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		add(_factText);	
-		_factText.alpha = 1;
+		_factText.alpha = 0;
 		_controls = new Controls();		
 	}	
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
-		_frames++; 
+		_seconds += Elapsed;	
 	
-		if (_factNumber == _facts.length) {
-			// Start level when all the facts have looped
-			startLevel();
-		} else {
-			_timer = new FlxTimer();
-			_timer.start(3.5, showFact, 2);	
-		}
-		// Count trames and increment stels at exactly double the timer time.
-		if (_frames % (FlxG.updateFramerate *(_timer.time * 2)) == 0) _factNumber++;
+		// Starts level when all the facts have been looped through
+		(_factNumber == _facts.length) ? startLevel() : showFacts();
+
 		// Start level if player presses start
 		if( _controls.start.check()) startLevel();
 	}
 
-	function showFact(T:FlxTimer):Void {
-		if (T.finished) {
-			// Run this when one loop has finished
-			_factText.text = _facts[_factNumber];
-			FlxTween.tween(_factText, {alpha: 1}, .5);
-		} else {
-			FlxTween.tween(_factText, {alpha: 0}, .5, {
-				onComplete: (_) -> _factText.text = _facts[_factNumber]
-			});
-		}
+	function showFacts() {
+		_factText.text = _facts[_factNumber];
+		var showFor:Int = 4; // How many seconds the text should show for
+	 
+		if (_seconds < showFor) {
+			FlxTween.tween(_factText, { alpha: 1 }, .5);
+		} else if (_seconds > (showFor + 1) && _seconds < (showFor + 2)) {
+			trace("hut");
+			FlxTween.tween(_factText, { alpha: 0 }, .5);
+		} else if (Math.round(_seconds) == (showFor + 3)) {
+			_seconds = 0;
+			_factNumber++;
+		}				
 	}
 
-	function startLevel():Void {
+	function startLevel() {
 		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
 	}
 }

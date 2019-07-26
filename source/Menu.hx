@@ -33,7 +33,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		MenuWidth:Int = 0, 
 		Data:Array<MenuData>,
 		?CenterText:Bool = false
-	):Void {
+	) {
 		super();
 		_menuData = Data;
 		_yPos = YPos;
@@ -54,7 +54,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		_controls = new Controls();		
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		var _lastOption:Int = _menuData.length - 1;
 		if(!_preventKeyPress) {
 			if (_controls.cross.check()) {

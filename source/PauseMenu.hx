@@ -23,7 +23,7 @@ class PauseMenu extends FlxSubState {
 	var _bottomLeft:FlxText;
 
 
-	public function new(PlayerDied:Bool = false):Void {
+	public function new(PlayerDied:Bool = false) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -84,7 +84,7 @@ class PauseMenu extends FlxSubState {
 		add(_bottomRight);			
 	}
 
-	override public function update(elapsed:Float):Void {
+	override public function update(elapsed:Float) {
 		// Exit pause menu
 		if (_controls.start.check()) {
 			togglePauseMenu();
@@ -93,7 +93,7 @@ class PauseMenu extends FlxSubState {
 		super.update(elapsed);
 	}
 
-	function togglePauseMenu():Void {
+	function togglePauseMenu() {
 		FlxG.sound.music.play();
 		close();
 	}

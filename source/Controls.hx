@@ -18,7 +18,7 @@ class Controls {
    *
    * @param InMenu if the controls are in the menu or not
    */
-  public function new():Void {
+  public function new() {
     initInputs();
     addKeys();
     addGamepad();

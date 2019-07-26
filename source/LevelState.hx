@@ -14,7 +14,6 @@ import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
-import flixel.tweens.FlxTween;
 import flixel.util.FlxSpriteUtil;
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
@@ -48,7 +47,7 @@ class LevelState extends GameState {
 	public var actionPressed:Bool = false;
 	public var levelName:String; // Give level unique name
 
-	override public function create():Void {
+	override public function create() {
 		bgColor = 0xffc7e4db; // Game background color
 
 		// Continue music if it's already playing
@@ -75,7 +74,7 @@ class LevelState extends GameState {
 		super.create();
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 
 		// Reset the game if the player goes higher/lower than the map
@@ -105,7 +104,7 @@ class LevelState extends GameState {
 	 * @param 	Background 		Parallax background image name.
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
-	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap):Void {
+	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap) {
 		_collisionImg = "assets/images/collisions.png";
 		_collectablesMap = CollectablesMap;
 
@@ -210,7 +209,7 @@ class LevelState extends GameState {
 	 * @param Y 				Player Y position
 	 * @param FacingLef If the player is facine left
 	 */
-	public function createPlayer(X:Int, Y:Int, FacingLeft = false):Void {
+	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
 		if (FacingLeft)
 			player.facing = FlxObject.LEFT;
@@ -236,7 +235,7 @@ class LevelState extends GameState {
 	 *
 	 * @param LevelMusic	String of music location
 	 */
-	public function playMusic(LevelMusic:String):Void {
+	public function playMusic(LevelMusic:String) {
 		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
 	}
 
@@ -244,7 +243,7 @@ class LevelState extends GameState {
 	 * Place entities from Tilemap.
 	 * This method just converts strings to integers.
 	 */
-	function placeEntities(EntityData:Xml, ObjectId:Int, MapObjId:Int):Void {
+	function placeEntities(EntityData:Xml, ObjectId:Int, MapObjId:Int) {
 		var x:Int = Std.parseInt(EntityData.get("x")); // Parse string to int
 		var y:Int = Std.parseInt(EntityData.get("y"));
 		var width:Int = Std.parseInt(EntityData.get("width"));
@@ -275,7 +274,7 @@ class LevelState extends GameState {
 		ObjectId:Int, 
 		MapObjId:Int, 
 		HideCollectable:Int
-	):Void {
+	) {
 		var newY:Int = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage:Map<Int, String> = [
@@ -310,7 +309,7 @@ class LevelState extends GameState {
 	}
 
 	/** Special tiles **/
-	function fallInClouds(Tile:FlxObject, Object:FlxObject):Void {
+	function fallInClouds(Tile:FlxObject, Object:FlxObject) {
 		if (_controls.down.check()) {
 			var timer = new FlxTimer();
 			Tile.allowCollisions = FlxObject.NONE;
@@ -321,7 +320,7 @@ class LevelState extends GameState {
 		}
 	}
 
-	function getCollectable(Collectable:CollectableBug.Bug, Player:Player):Void {
+	function getCollectable(Collectable:CollectableBug.Bug, Player:Player) {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
 			_sndCollect.play(true);
@@ -334,7 +333,7 @@ class LevelState extends GameState {
 	/**
 	 * What happens when the player and the enemy collide
 	 */
-	function hitEnemy(Enemy:Enemy, Player:Player):Void {
+	function hitEnemy(Enemy:Enemy, Player:Player) {
 		if (Enemy.alive && Player.health > 1) {
 			if (Player.isTouching(FlxObject.FLOOR)) {
 				Player.hurt(1);
@@ -371,7 +370,7 @@ class LevelState extends GameState {
 	 * @param Enemy		Enemy Sprite
 	 * @param Plauer	Player Sprite
 	 */
-	function hitStandingEnemy(Enemy:Enemy, Player:Player):Void {
+	function hitStandingEnemy(Enemy:Enemy, Player:Player) {
 		if (Enemy.alive) {
 			if (Player.health > 1) {
 				Enemy.kill(); // Change enemy alive variable temporarily
