@@ -363,8 +363,9 @@ class LevelState extends GameState {
 		if (Enemy.alive && Player.health > 1) {
 			playerAttackedAnims();
 		} else { // Player is dead
+			var timer = new FlxTimer();
 			playerAttackedAnims();
-			showGameOverMenu(); 
+			timer.start(1, showGameOverMenu, 1);
 		}
 		grpHud.decrementHealth(Player.health);
 	}	
@@ -399,13 +400,14 @@ class LevelState extends GameState {
 			if (Player.health > 1) { // Player is alive
 				playerAttackedAnims();
 			} else { 
+				var timer = new FlxTimer();
 				playerAttackedAnims();
-				showGameOverMenu(); 
+				timer.start(1, showGameOverMenu, 1);
 			}
 		} 
 	}
 
-	function showGameOverMenu() {
+	function showGameOverMenu(_) {
 		// @todo play death animation
 		var _pauseMenu:PauseMenu = new PauseMenu(true);
 		openSubState(_pauseMenu);
