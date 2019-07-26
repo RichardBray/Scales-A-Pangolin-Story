@@ -59,7 +59,7 @@ class LevelState extends GameState {
 		 * By default flixel only processes what it initally sees, so collisions won't
 		 * work until can process the whole level.
 		 */
-		FlxG.worldBounds.set(0, 0, 14280, 1800);
+		FlxG.worldBounds.set(0, 0, _map.fullWidth, _map.fullHeight);
 	
 		FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
 		FlxG.camera.antialiasing = false;
@@ -334,17 +334,19 @@ class LevelState extends GameState {
 	 * What happens when the player and the enemy collide
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
-		if (Enemy.alive && Player.health > 1) {
+		/**
+		* Animations and positions for when player hits enemy
+		*/
+		function playerAttackedAnims() {
+			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
 				Player.hurt(1);
 				Enemy.sndHit.play();
 				FlxSpriteUtil.flicker(Player);
-
 				Player.animJump(Player.flipX); 
-			} else {
+			} else { // Player is in the air
 				// Player bounce
 				Player.velocity.y = -900;
-				// from the top
 				// when rolling animation is playing
 				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
 					Enemy.sndEnemyKill.play();
@@ -354,9 +356,16 @@ class LevelState extends GameState {
 					Enemy.sndHit.play();
 					FlxSpriteUtil.flicker(Player);
 				}
-			}
-		} else { showGameOverMenu(); }
+			}		
+		}
 
+		// Player is alive
+		if (Enemy.alive && Player.health > 1) {
+			playerAttackedAnims();
+		} else { // Player is dead
+			playerAttackedAnims();
+			showGameOverMenu(); 
+		}
 		grpHud.decrementHealth(Player.health);
 	}	
 
@@ -368,23 +377,31 @@ class LevelState extends GameState {
 	 * so flixel knows which enemy has been hit.
 	 *
 	 * @param Enemy		Enemy Sprite
-	 * @param Plauer	Player Sprite
+	 * @param Player	Player Sprite
 	 */
 	function hitStandingEnemy(Enemy:Enemy, Player:Player) {
-		if (Enemy.alive) {
-			if (Player.health > 1) {
-				Enemy.kill(); // Change enemy alive variable temporarily
-				Enemy.sndHit.play(); // Play sound for when player is hurt
 
-				// Reduce player health
-				Player.hurt(1);
-				grpHud.decrementHealth(Player.health);
-				FlxSpriteUtil.flicker(Player); // Turn on flicker animation
+		function playerAttackedAnims() {
+			Enemy.kill(); // Change enemy alive variable temporarily
+			Enemy.sndHit.play(); // Play sound for when player is hurt
 
-				Player.isTouching(FlxObject.FLOOR)
+			// Reduce player health
+			Player.hurt(1);
+			grpHud.decrementHealth(Player.health);
+			FlxSpriteUtil.flicker(Player); // Turn on flicker animation
+
+			Player.isTouching(FlxObject.FLOOR)
 				? Player.animJump(Player.flipX)
-				:	Player.velocity.y = -900;
-			} else { showGameOverMenu(); }
+				:	Player.velocity.y = -400;
+		}
+
+		if (Enemy.alive) { // Prevents enemy from dying
+			if (Player.health > 1) { // Player is alive
+				playerAttackedAnims();
+			} else { 
+				playerAttackedAnims();
+				showGameOverMenu(); 
+			}
 		} 
 	}
 

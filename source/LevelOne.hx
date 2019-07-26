@@ -134,12 +134,14 @@ class Intro extends GameState {
 
 	override public function create() {
 		bgColor = FlxColor.BLACK;
+
+		// @todo, this will be passed into the Class as a variable in the future
 		_facts = [
-			"Pangolins are the most trafficked mammal in the world, 
-			 between 2011 and 2013 around 117 million of them were killed.",
+			"Pangolins are the most trafficked mammal in the world, between 2011 and 2013 around 117 million of them were killed.",
 			"They're in high demand from places like China and Vietnam for their meat and scales.",
 			"They love to eat bugs and are often called, 'the scaly anteater'. We join our hero doing – just that..."
 		];
+
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
 			(FlxG.height / 2) - 100, 
@@ -147,6 +149,7 @@ class Intro extends GameState {
 			_facts[_factNumber], 
 			33
 		);
+
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		add(_factText);	
 		_factText.alpha = 0;

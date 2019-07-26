@@ -29,10 +29,9 @@ class HUD extends FlxSpriteGroup {
 		super();
 
 		gameScore = Score;
-
 		_goalData = Goals;
 
-		for (goal in Goals) {
+		for (_ in Goals) {
 			_comparisonGoalArray.push(false);
 		}
 		// Garidnet for top of HUD
