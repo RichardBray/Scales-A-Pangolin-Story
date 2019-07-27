@@ -110,7 +110,7 @@ class HUD extends FlxSpriteGroup {
 	// Methods for GOALS!!!!
 
 	/**
-	 * This methodm creates a group of goal strings.
+	 * This method creates a group of goal strings.
 	 */
 	function createGoals(Goals:Array<GoalData>) {
 		Goals.mapi((idx:Int, data:GoalData) -> {
@@ -120,6 +120,10 @@ class HUD extends FlxSpriteGroup {
 		});
 	}
 	
+	/**
+	 * This meathod updates goal strings to make them opaque if goal is completed.
+	 * It checks a goal is completed if `_goalsArr` is true for the string index.
+	 */
 	function updateGoals() {
 		var index:Int = 0;
 		_goals.forEach((goal:FlxSprite) -> {
@@ -130,6 +134,7 @@ class HUD extends FlxSpriteGroup {
 
 	/**
 	 * For loop instead of mapi because `Cannot use Void as value` error.
+	 * This method checks if a goal has been completed or not by running the specific goal function.
 	 */
 	function checkGoalsArray(Goals:Array<GoalData>) {
 		var index:Int = 0;

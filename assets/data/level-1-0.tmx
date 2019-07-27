@@ -56,7 +56,7 @@
   <object id="54" name="right" type="4" gid="11" x="5967.73" y="1350.79" width="36" height="15"/>
   <object id="55" name="left" type="3" gid="11" x="6537.73" y="1155.79" width="36" height="15"/>
   <object id="58" name="left" type="5" gid="10" x="9331" y="810.485" width="47" height="39"/>
-  <object id="61" name="right" type="6" gid="11" x="8731" y="915.485" width="36" height="15"/>
+  <object id="61" name="right" type="5" gid="11" x="8731" y="915.485" width="36" height="15"/>
   <object id="62" name="right" type="10" gid="10" x="9481" y="1575.49" width="47" height="39"/>
   <object id="68" gid="8" x="9551.67" y="1821" width="974" height="258"/>
   <object id="72" gid="3" x="7125" y="1575" width="361" height="123"/>

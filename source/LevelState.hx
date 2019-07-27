@@ -337,10 +337,10 @@ class LevelState extends GameState {
 		/**
 		* Animations and positions for when player hits enemy
 		*/
-		function playerAttackedAnims() {
+		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
-				Player.hurt(1);
+				if (!LastLife) Player.hurt(1);
 				Enemy.sndHit.play();
 				FlxSpriteUtil.flicker(Player);
 				Player.animJump(Player.flipX); 
@@ -352,22 +352,20 @@ class LevelState extends GameState {
 					Enemy.sndEnemyKill.play();
 					// Enemy.kill();
 				} else { // when rolling animation is NOT playing
-					Player.hurt(1);
+					if (!LastLife) Player.hurt(1);
 					Enemy.sndHit.play();
 					FlxSpriteUtil.flicker(Player);
 				}
 			}		
+			grpHud.decrementHealth((LastLife) ? 0 : Player.health);
 		}
 
 		// Player is alive
 		if (Enemy.alive && Player.health > 1) {
 			playerAttackedAnims();
 		} else { // Player is dead
-			var timer = new FlxTimer();
-			playerAttackedAnims();
-			timer.start(1, showGameOverMenu, 1);
+			playerDeathASequence(Player, playerAttackedAnims);
 		}
-		grpHud.decrementHealth(Player.health);
 	}	
 
 
@@ -382,13 +380,18 @@ class LevelState extends GameState {
 	 */
 	function hitStandingEnemy(Enemy:Enemy, Player:Player) {
 
-		function playerAttackedAnims() {
+		/**
+		 * Player animations in separate function.
+		 *
+		 * @param LastLife Used to prolongue death of character.
+		 */
+		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			Enemy.kill(); // Change enemy alive variable temporarily
 			Enemy.sndHit.play(); // Play sound for when player is hurt
 
 			// Reduce player health
-			Player.hurt(1);
-			grpHud.decrementHealth(Player.health);
+			if (!LastLife) Player.hurt(1);
+			grpHud.decrementHealth((LastLife) ? 0 : Player.health);
 			FlxSpriteUtil.flicker(Player); // Turn on flicker animation
 
 			Player.isTouching(FlxObject.FLOOR)
@@ -397,14 +400,22 @@ class LevelState extends GameState {
 		}
 
 		if (Enemy.alive) { // Prevents enemy from dying
-			if (Player.health > 1) { // Player is alive
-				playerAttackedAnims();
-			} else { 
-				var timer = new FlxTimer();
-				playerAttackedAnims();
-				timer.start(1, showGameOverMenu, 1);
-			}
+			(Player.health > 1) 
+				? playerAttackedAnims() 
+				: playerDeathASequence(Player, playerAttackedAnims);
 		} 
+	}
+
+	/**
+	 * Sequeence of events that need to happen when plaher dies.
+	 *
+
+	 */
+	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
+		var timer = new FlxTimer();
+		Player.preventMovement = true;
+		AttackAnims(true);
+		timer.start(0.4, showGameOverMenu, 1);
 	}
 
 	function showGameOverMenu(_) {
