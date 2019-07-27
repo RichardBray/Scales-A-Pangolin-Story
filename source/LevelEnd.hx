@@ -39,7 +39,7 @@ class LevelEnd extends GameState {
 		_endHeading = new FlxText(30, 30, 300, "Level 1 clear!!", 32);
 		add(_endHeading);
 
-		_txtPlayerScore = new FlxText(30, 120, 300, "You scored: " + _playerScore + "/25", 25);
+		_txtPlayerScore = new FlxText(30, 120, 300, "You scored: " + _playerScore + "/26", 25);
 		add(_txtPlayerScore);
 
 		var _menuData:Array<MenuData> = [

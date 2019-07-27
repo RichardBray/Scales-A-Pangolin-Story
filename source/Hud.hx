@@ -23,7 +23,8 @@ class HUD extends FlxSpriteGroup {
 	var _goalsArr:Array<Bool> = [];
 	var _comparisonGoalArray:Array<Bool> = []; // Used to compare against for updating goals
 
-	public var gameScore:Int;
+	public var gameScore:Int; // Send game score to level end menu
+	public var goalsCompleted:Bool = false; // Tells level class i.e. LevelOne when to allow exit
 
 	public function new(Score:Int, Health:Float, ?Goals:Null<Array<GoalData>>) {
 		super();
@@ -61,6 +62,8 @@ class HUD extends FlxSpriteGroup {
 		super.update(Elapsed);
 
 		checkGoalsArray(_goalData);
+		// This compares the oringinal plan array of falses to the goals array and if anything has changed 
+		// it will run `updateGoals()`
 		if (!compareGoalArrays(_comparisonGoalArray, _goalsArr)) updateGoals();
 	}
 
@@ -138,10 +141,19 @@ class HUD extends FlxSpriteGroup {
 	 */
 	function checkGoalsArray(Goals:Array<GoalData>) {
 		var index:Int = 0;
+		var trueGoals:Int = 0; // Number of goals that have been completed
+
 		for (goal in Goals) {
-			if (goal.func(gameScore)) _goalsArr[index] = true;
+			if (goal.func(gameScore)) {
+				_goalsArr[index] = true;
+				trueGoals++;
+			}
 			index++;
 		}
+
+		// If all goals are true then toggle goalsCompleted public variable
+		// @todo add goals completed chime
+		if (trueGoals == _goalData.length) goalsCompleted = true;
 	}
 
 	/**

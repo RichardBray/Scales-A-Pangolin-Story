@@ -19,7 +19,7 @@ class LevelOne extends LevelState {
 	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
 	var _gameSave:FlxSave;
-	var _npcSprite:FlxSprite;
+	// var _npcSprite:FlxSprite;
 	var _testNPC:NPC;
 	var _goalData:Array<GoalData>;
 
@@ -60,17 +60,17 @@ class LevelOne extends LevelState {
 		createLevel("level-1-0", "mountains", _levelCollectablesMap);
 
 		// Add NPC Text
-		var testText:Array<String> = [
-			"Hello friend!",
-			"Welcome to a spuer early build of the Pangolin game.",
-			"Nothing is finalised, the art assets, gameplay mechanics, even the sound effects.",
-			"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to have loads more done soon.",
-			"Until then, have fun :)"
-		];
+		// var testText:Array<String> = [
+		// 	"Hello friend!",
+		// 	"Welcome to a spuer early build of the Pangolin game.",
+		// 	"Nothing is finalised, the art assets, gameplay mechanics, even the sound effects.",
+		// 	"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to have loads more done soon.",
+		// 	"Until then, have fun :)"
+		// ];
 
 		// Add NPC
-		_npcSprite = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
-		_testNPC = new NPC(870, 510, testText, _npcSprite, this);
+		// _npcSprite = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
+		// _testNPC = new NPC(870, 510, testText, _npcSprite, this);
 		// add(_testNPC);
 
 		// Add player
@@ -94,12 +94,16 @@ class LevelOne extends LevelState {
 		super.update(Elapsed);
 
 		// Overlaps
-		FlxG.overlap(levelExit, player, fadeOut);
+		if (grpHud.goalsCompleted) {
+			FlxG.overlap(levelExit, player, fadeOut);
+		} else {
+			FlxG.collide(levelExit, player);
+		}
 
-		if (!FlxG.overlap(player, _testNPC.npcSprite.npcBoundary, _testNPC.initConvo)) {
-			actionPressed = false;
-			_testNPC.dialoguePrompt.hidePrompt();
-		};
+		// if (!FlxG.overlap(player, _testNPC.npcSprite.npcBoundary, _testNPC.initConvo)) {
+		// 	actionPressed = false;
+		// 	_testNPC.dialoguePrompt.hidePrompt();
+		// };
 	}
 
 	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
@@ -135,7 +139,7 @@ class Intro extends GameState {
 	override public function create() {
 		bgColor = FlxColor.BLACK;
 
-		// @todo, this will be passed into the Class as a variable in the future
+		// @todo, this will be passed into the Intro Class as a variable in the future
 		_facts = [
 			"Pangolins are the most trafficked mammal in the world, between 2011 and 2013 around 117 million of them were killed.",
 			"They're in high demand from places like China and Vietnam for their meat and scales.",

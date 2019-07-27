@@ -185,7 +185,8 @@ class LevelState extends GameState {
 		add(_levelCollisions);
 
 		// Level exit
-		levelExit = new FlxSprite((_map.fullWidth - 1), 0).makeGraphic(1, FlxG.height, FlxColor.TRANSPARENT);
+		levelExit = new FlxSprite((_map.fullWidth - 20), 0).makeGraphic(20, _map.fullHeight, FlxColor.TRANSPARENT);
+		levelExit.immovable = true;
 		add(levelExit);
 	}
 
@@ -413,13 +414,13 @@ class LevelState extends GameState {
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
 		var timer = new FlxTimer();
+		// @todo play death animation
 		Player.preventMovement = true;
 		AttackAnims(true);
 		timer.start(0.4, showGameOverMenu, 1);
 	}
 
 	function showGameOverMenu(_) {
-		// @todo play death animation
 		var _pauseMenu:PauseMenu = new PauseMenu(true);
 		openSubState(_pauseMenu);
 	}
