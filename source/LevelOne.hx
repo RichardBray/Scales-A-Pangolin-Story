@@ -23,6 +23,7 @@ class LevelOne extends LevelState {
 	// var _npcSprite:FlxSprite;
 	var _testNPC:NPC;
 	var _goalData:Array<GoalData>;
+	var _instructionsViewed:Bool = false;
 
 	/**
 	 * Level 1-0
@@ -96,7 +97,7 @@ class LevelOne extends LevelState {
 		_seconds += Elapsed;
 
 		// Show instructions at start of level
-		if (_seconds > 0.5) showInstructions();
+		if (_seconds > 0.5 && !_instructionsViewed) showInstructions();
 
 		// Overlaps
 		if (grpHud.goalsCompleted) {
@@ -120,9 +121,13 @@ class LevelOne extends LevelState {
 		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
 	}
 
+	/**
+	 * Show instructions specific to this level unless they have already been viewed
+	 */
 	function showInstructions() {
-		var _instructions:Instructions = new Instructions();
-		openSubState(_instructions);
+		var _instructions:Instructions = new Instructions(1, 2);
+		if (!_instructions.menuViewed) openSubState(_instructions);
+		_instructionsViewed = true;
 	}		
 }
 
@@ -188,7 +193,6 @@ class Intro extends GameState {
 		if (_seconds < showFor) {
 			FlxTween.tween(_factText, { alpha: 1 }, .5);
 		} else if (_seconds > (showFor + 1) && _seconds < (showFor + 2)) {
-			trace("hut");
 			FlxTween.tween(_factText, { alpha: 0 }, .5);
 		} else if (Math.round(_seconds) == (showFor + 3)) {
 			_seconds = 0;
