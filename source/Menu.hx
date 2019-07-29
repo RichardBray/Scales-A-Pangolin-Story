@@ -112,10 +112,11 @@ class BottomLeft extends FlxText {
 		text = "[SPACE] SELECT \n[E] BACK";
 		size = Constants.smlFont;
 		fieldWidth = 200;
+		scrollFactor.set(0, 0);
 	}
 }
 
-class BottomRight extends  FlxText {
+class BottomRight extends FlxText {
 	/**
 	 * Simple class to display text on the bottom right of the screen
 	 */	
@@ -123,5 +124,6 @@ class BottomRight extends  FlxText {
 		super(FlxG.width - 100, FlxG.height - 50);
 		text = "v0.5.0";
 		size = Constants.smlFont;
+		scrollFactor.set(0, 0);
 	}
 }

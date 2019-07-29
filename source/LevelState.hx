@@ -342,7 +342,7 @@ class LevelState extends GameState {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
 				if (!LastLife) Player.hurt(1);
-				Enemy.sndHit.play();
+				Enemy.sndHit.play(true);
 				FlxSpriteUtil.flicker(Player);
 				Player.animJump(Player.flipX); 
 			} else { // Player is in the air
@@ -388,7 +388,7 @@ class LevelState extends GameState {
 		 */
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			Enemy.kill(); // Change enemy alive variable temporarily
-			Enemy.sndHit.play(); // Play sound for when player is hurt
+			Enemy.sndHit.play(true); // Play sound for when player is hurt
 
 			// Reduce player health
 			if (!LastLife) Player.hurt(1);

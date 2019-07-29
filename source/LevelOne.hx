@@ -19,6 +19,7 @@ class LevelOne extends LevelState {
 	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
 	var _gameSave:FlxSave;
+	var _seconds:Float = 0;
 	// var _npcSprite:FlxSprite;
 	var _testNPC:NPC;
 	var _goalData:Array<GoalData>;
@@ -92,6 +93,10 @@ class LevelOne extends LevelState {
 
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
+		_seconds += Elapsed;
+
+		// Show instructions at start of level
+		if (_seconds > 0.5) showInstructions();
 
 		// Overlaps
 		if (grpHud.goalsCompleted) {
@@ -114,6 +119,11 @@ class LevelOne extends LevelState {
 		// FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
 		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
 	}
+
+	function showInstructions() {
+		var _instructions:Instructions = new Instructions();
+		openSubState(_instructions);
+	}		
 }
 
 class Intro extends GameState {
@@ -168,7 +178,7 @@ class Intro extends GameState {
 		(_factNumber == _facts.length) ? startLevel() : showFacts();
 
 		// Start level if player presses start
-		if( _controls.start.check()) startLevel();
+		if ( _controls.start.check()) startLevel();
 	}
 
 	function showFacts() {

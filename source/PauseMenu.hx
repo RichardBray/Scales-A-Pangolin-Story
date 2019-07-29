@@ -27,9 +27,12 @@ class PauseMenu extends FlxSubState {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
+
+		// Opaque black background overlay
 		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
 		_grpMenuItems.add(_gameOverlay);
 
+		// Menu bounding box
 		_boundingBox = new FlxSprite(_boxXPos, (FlxG.height / 2) - (_menuHeight / 2));
 		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
 		_grpMenuItems.add(_boundingBox);
@@ -84,13 +87,13 @@ class PauseMenu extends FlxSubState {
 		add(_bottomRight);			
 	}
 
-	override public function update(elapsed:Float) {
+	override public function update(Elapsed:Float) {
 		// Exit pause menu
 		if (_controls.start.check()) {
 			togglePauseMenu();
 		}
 
-		super.update(elapsed);
+		super.update(Elapsed);
 	}
 
 	function togglePauseMenu() {
