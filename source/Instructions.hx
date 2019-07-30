@@ -1,5 +1,6 @@
 package;
 
+import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -12,16 +13,18 @@ class Instructions extends FlxSubState {
   var _currentPage:Int = 1;
   var _startPage:Int;
   var _endPage:Int;  
+  var _closeText:FlxText;
   
   public var menuViewed:Bool; // Used in specific level classes to check if instructions have been viewed
 
   /**
    * Shows game instructions at the start of a level
    *
-   * @param StartPage Page instrcutions should start on
-   * @param Endpage   Page instrcutions should end on
+   * @param StartPage   Page instrcutions should start on
+   * @param Endpage     Page instrcutions should end on
+   * @param ShowOverlay To show background overlay or not, helpful when coming from pause menu
    */
-  public function new(StartPage:Int, EndPage:Int) {
+  public function new(StartPage:Int, EndPage:Int, ShowOverlay:Bool = true) {
     super();
 
     // Assign start and end pages numbers
@@ -29,9 +32,11 @@ class Instructions extends FlxSubState {
     _startPage = StartPage;
 
     // Opaque black background overlay
-    _gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
-    _gameOverlay.scrollFactor.set(0, 0);
-    add(_gameOverlay);
+    if (ShowOverlay) {
+      _gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
+      _gameOverlay.scrollFactor.set(0, 0);
+      add(_gameOverlay);
+    }
 
     // Init pages group
     _grpPages = new FlxSpriteGroup();
@@ -39,11 +44,16 @@ class Instructions extends FlxSubState {
 
     // Create pages, hides all the pages that aren't currently selected    
     for (i in StartPage...(EndPage + 1)) {
-      var _page = new FlxSprite(20, 20).makeGraphic((FlxG.width - 40), (FlxG.height - 40), 0xff000000);
+      var _page = new FlxSprite(160, 90).loadGraphic('assets/images/instructions/page$i.png', false, 1600, 900);
       if (i != _currentPage) _page.alpha = 0;
       _grpPages.add(_page);
     }
 
+    // Show instructions controls
+    
+
+    // next prev flxtext
+  
 		// Intialise game controls
 		_controls = new Controls();  
 
@@ -57,7 +67,7 @@ class Instructions extends FlxSubState {
     super.update(Elapsed);    
 
 		// Exit instructions
-		if (_controls.start.check()) closeInstructionsMenu();
+		if (_controls.start.check() || _controls.triangle.check()) closeInstructionsMenu();
 
     // Go to previous page
     if (_controls.left.check() && _currentPage != _startPage) {
@@ -75,7 +85,7 @@ class Instructions extends FlxSubState {
   }
 
   /**
-   * Add `alpha = 0` to pages that arent current and add `alpha = 1` to current page.
+   * Add `alpha = 0` to pages that arent current and add `alpha = 1` to current page
    */
   function updateShownPage() {
     var index:Int = 1;
@@ -84,8 +94,8 @@ class Instructions extends FlxSubState {
         Page.alpha = 1;
       } else {
         Page.alpha = 0;
-        index++;
       }
+      index++;
 		});     
   }
   

@@ -56,6 +56,13 @@ class PauseMenu extends FlxSubState {
 				}
 			},
 			{
+				title: "Instructions",
+				func: () -> {
+					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
+					openSubState(_instructions);
+				}
+			},
+			{
 				title: "Quit",
 				func: () -> FlxG.switchState(new MainMenu())
 			}
