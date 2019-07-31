@@ -52,7 +52,7 @@ haxelib install hscript
 
 ### Git Tagging commans
 add tag
-`git tag -a v1.4 -m "my version 1.4"`
+`git tag -a v0.6.0 -m "new version 0.6.0"`
 
 show tag
 `git show v0.1.0`

@@ -122,7 +122,7 @@ class BottomRight extends FlxText {
 	 */	
 	public function new() {
 		super(FlxG.width - 100, FlxG.height - 50);
-		text = "v0.5.0";
+		text = Constants.projectVersion;
 		size = Constants.smlFont;
 		scrollFactor.set(0, 0);
 	}
