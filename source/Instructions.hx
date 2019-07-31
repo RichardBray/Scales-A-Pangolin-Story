@@ -53,7 +53,7 @@ class Instructions extends FlxSubState {
     for (i in StartPage...(EndPage + 1)) {
       var widthApart:Int = 80; // Pixel size gap for left and right
       var heightApart:Int = 45;
-      var _page = new FlxSprite(widthApart*2, heightApart*2)
+      var _page = new FlxSprite(widthApart*2, heightApart*2);
       _page.loadGraphic('assets/images/instructions/page$i.png', false, 1600, 900);
       if (i != _currentPage) _page.alpha = 0;
       _grpPages.add(_page);

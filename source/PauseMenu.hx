@@ -19,8 +19,6 @@ class PauseMenu extends FlxSubState {
 	var _menu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
-	var _bottomRight:FlxText;
-	var _bottomLeft:FlxText;
 
 
 	public function new(PlayerDied:Bool = false) {
@@ -86,12 +84,7 @@ class PauseMenu extends FlxSubState {
 
 		// Intialise controls
 		_controls = new Controls();
-
-		_bottomLeft = new Menu.BottomLeft();
-		add(_bottomLeft);
-
-		_bottomRight = new Menu.BottomRight();
-		add(_bottomRight);			
+		
 	}
 
 	override public function update(Elapsed:Float) {
