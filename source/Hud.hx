@@ -37,7 +37,7 @@ class HUD extends FlxSpriteGroup {
 		}
 		// Garidnet for top of HUD
 		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 150, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
-		_gradientBg.alpha = 0.15;
+		_gradientBg.alpha = 0.2;
 		add(_gradientBg);
 	
 		// Socre text

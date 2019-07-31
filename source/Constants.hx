@@ -15,6 +15,11 @@ class Constants {
   public static var secondaryColor:FlxColor = 0xffF73156;   // Hot pink
   public static var slimeGreenColor:FlxColor = 0xff77AD0D;   // Slime green
 
+  // Controler strings
+  // @todo different controler strings for gamepads
+  public static var start:String = "ESC";
+
+  // Collectables map for bugs
   public static var initialColMap:Void->CollMap = () -> [
     "Level-1-0" => [], 
     "Level-1-A" => []
