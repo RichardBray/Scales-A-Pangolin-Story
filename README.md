@@ -22,31 +22,17 @@ lime run html5
 
 ### Run for development
 
-In one terminal tab/pane
-```bash
-http-server export/html5/bin
 ```
-To run the server for html5.
+yarn start
+```
+or
 
-In another one
-```bash
-watchman-make -p 'source/*.hx' -r 'sh watcher.sh'
 ```
-To rebuild the game when a .hx file has been changed.
+npm start
+```
 
 
 ## Notes
-
-### Color
-
-AARRGGBB
-
-Hex is  =  RRGGBB
-AA for transparency
-0x prefix indicates it's a hexidecimal number
-
-### Debugging
-https://haxe.org/manual/debugging-javascript.html
 
 ### Probems
 - slope collision
@@ -66,22 +52,33 @@ haxelib install hscript
 
 ### Git Tagging commans
 add tag
-`git tag -a v1.4 -m "my version 1.4"`
+`git tag -a v0.6.0 -m "new version 0.6.0"`
 
 show tag
 `git show v0.1.0`
 
 push tag
-`git push origin v0.1.0`
+`git push origin v0.6.0`
 
 Scales of Life: A Pangolin's story
 
 ### Potential articles
-- Fading in flashing text with HaxeFlixel, without Chaining tweens
+- Creating fading text in HaxeFlixel without Chaining tweens
+- Multiple hitboxes in haxeflixel
 - What is haxe and why should you care abou it?
+- Using more maths in my code
+- ESC
 
 ### Things I've learnt though gamedev
 - Document everything
 - I have a new appreciation for semicolons
+- Difference between acceleration and velocity
+-- speed: only magnitude not direction (Scalar)
+-- velocity: speed of something in a given direction
+- What a singketon is
+- ESC
 - Javascript is very forgiving
   - !!string
+
+
+http://www.softschools.com/facts/animals/pangolin_facts/108/

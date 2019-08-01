@@ -19,17 +19,18 @@ class PauseMenu extends FlxSubState {
 	var _menu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
-	var _bottomRight:FlxText;
-	var _bottomLeft:FlxText;
 
 
-	public function new(PlayerDied:Bool = false):Void {
+	public function new(PlayerDied:Bool = false) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
+
+		// Opaque black background overlay
 		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
 		_grpMenuItems.add(_gameOverlay);
 
+		// Menu bounding box
 		_boundingBox = new FlxSprite(_boxXPos, (FlxG.height / 2) - (_menuHeight / 2));
 		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
 		_grpMenuItems.add(_boundingBox);
@@ -53,10 +54,19 @@ class PauseMenu extends FlxSubState {
 				}
 			},
 			{
+				title: "Instructions",
+				func: () -> {
+					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
+					openSubState(_instructions);
+				}
+			},
+			{
 				title: "Quit",
 				func: () -> FlxG.switchState(new MainMenu())
 			}
 		];
+
+		if (PlayerDied) _menuData.shift(); // Remove `RESUME` options if player died
 
 		_menu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, _menuData, true);
 
@@ -74,24 +84,19 @@ class PauseMenu extends FlxSubState {
 
 		// Intialise controls
 		_controls = new Controls();
-
-		_bottomLeft = new Menu.BottomLeft();
-		add(_bottomLeft);
-
-		_bottomRight = new Menu.BottomRight();
-		add(_bottomRight);			
+		
 	}
 
-	override public function update(elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		// Exit pause menu
 		if (_controls.start.check()) {
 			togglePauseMenu();
 		}
 
-		super.update(elapsed);
+		super.update(Elapsed);
 	}
 
-	function togglePauseMenu():Void {
+	function togglePauseMenu() {
 		FlxG.sound.music.play();
 		close();
 	}

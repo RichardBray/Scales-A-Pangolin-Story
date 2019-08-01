@@ -63,7 +63,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		_controls = new Controls();		
 	}
 
-	override public function update(elapsed:Float):Void {
+	override public function update(elapsed:Float) {
 		// Press jump button to move to next bit of text
 		if (visible && _controls.cross.check()) {
 			// This is used to keep running the `revertUI` method on the last array number.
@@ -80,21 +80,21 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		super.update(elapsed);
 	}
 
-	public function showBox():Void {
+	public function showBox() {
 		this.visible = true;
 		this.forEach((_member:FlxSprite) -> {
 			FlxTween.tween(_member, {alpha: 1}, .1);
 		});
 	}
 
-	public function hideBox():Void {
+	public function hideBox() {
 		this.visible = false;
 		this.forEach((_member:FlxSprite) -> {
 			_member.alpha = 0;
 		});
 	}
 
-	function revertUI():Void {
+	function revertUI() {
 		this.hideBox();
 		FlxTween.tween(FlxG.camera, {zoom: 1}, 0.2, {
 			onComplete: (_) -> {

@@ -24,7 +24,7 @@ class LevelOneA extends LevelState {
 	 * @param LevelMusic		Game music if there is some
 	 * @param GameSave			Loaded game save
 	 */
-	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, ?LevelMusic:Null<FlxSound>, ?GameSave:Null<FlxSave>):Void {
+	public function new(Score:Int, Health:Float, CollectablesMap:CollMap, ?LevelMusic:Null<FlxSound>, ?GameSave:Null<FlxSave>) {
 		super();
 		_score = Score;
 		_playerHealth = Health;
@@ -32,7 +32,7 @@ class LevelOneA extends LevelState {
 		_gameSave = GameSave;
 	}
 
-	override public function create():Void {
+	override public function create() {
 		bgColor = 0xffc7e4db; // Game background color
 		levelName = 'Level-1-A';
 
@@ -48,14 +48,14 @@ class LevelOneA extends LevelState {
 		player.health = _playerHealth;
 
 		// Add HUD
-		createHUD(_score, _playerHealth);
+		createHUD(_score, _playerHealth, null);
 
 		// Saves game
 		_gameSave = saveGame(_gameSave);
 		super.create();
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 		FlxG.overlap(levelExit, player, goToMainMenu);
 		FlxG.overlap(_levelEntry, player, fadeOut);
@@ -65,11 +65,11 @@ class LevelOneA extends LevelState {
 		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
 	}
 
-	function fadeOut(Exit:FlxSprite, Player:Player):Void {
+	function fadeOut(Exit:FlxSprite, Player:Player) {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
+		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
 	}
 }

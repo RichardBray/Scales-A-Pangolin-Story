@@ -5,7 +5,7 @@ import flixel.FlxState;
 import flixel.FlxG;
 
 class GameState extends FlxState {
-  override public function create():Void {
+  override public function create() {
 		FlxG.autoPause = false;
 		#if !debug
 		FlxG.mouse.visible = false; // Hide the mouse cursor

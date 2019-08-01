@@ -24,7 +24,7 @@ class MainMenu extends GameState {
 	var _bottomLeft:FlxText;
 	var _bottomRight:FlxText;
 
-	override public function create():Void {
+	override public function create() {
 		// Save data
 		_gameSave = new FlxSave(); // initialize
 		_gameSave.bind("AutoSave"); // bind to the named save slot
@@ -32,7 +32,9 @@ class MainMenu extends GameState {
 		FlxG.sound.music = null; // Make sure there's no music
 		bgColor = 0xff000000; // Game background color
 
-		_gameTitle = new FlxText((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 200, _titleWidth, "Sacles: A Pangolin Story", 72);
+		_gameTitle = new FlxText((FlxG.width / 2) 
+			- (_titleWidth / 2), (FlxG.height / 2) 
+			- 200, _titleWidth, "Sacles: A Pangolin Story", 72);
 		add(_gameTitle);
 
 		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", Constants.medFont);
@@ -70,7 +72,7 @@ class MainMenu extends GameState {
 		_bottomRight.alpha = 0;		
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 	
 		if (!_showChoices) {
@@ -91,14 +93,14 @@ class MainMenu extends GameState {
 		}
 	}
 
-	function flashingText(T:FlxTimer):Void {
+	function flashingText(T:FlxTimer) {
 		if (!_showChoices) {
 			var alphaValue = T.finished ? 1 : 0;
 			FlxTween.tween(_startText, {alpha: alphaValue}, T.time / 4);
 		}
 	}
 
-	function selectContinue():Void {
+	function selectContinue() {
 		if (_gameSave.data.levelName == null) { // No saved game
 			showModal('You have no saved games');
 		} else {
@@ -110,7 +112,7 @@ class MainMenu extends GameState {
 		}
 	}
 
-	function selectNewGame():Void {
+	function selectNewGame() {
 		if (_gameSave.data.levelName == null) { // No saved game
 			initNewGame();
 		} else {
@@ -118,16 +120,16 @@ class MainMenu extends GameState {
 		}
 	}
 
-	function initNewGame(?EraseSave:Bool = false):Void {
+	function initNewGame(?EraseSave:Bool = false) {
 		if (EraseSave) _gameSave.erase();
 		FlxG.switchState(new LevelOne.Intro(_gameSave));
 	}
 
 	function showModal(
 		Text:String, 
-		?ConfirmCallback:Void->Void, 
+		?ConfirmCallback:Void->Void,
 		?ShowOptions:Bool
-	):Void {
+	) {
 		var _modal:MainMenuModal = new MainMenuModal(Text, ConfirmCallback, ShowOptions);
 		openSubState(_modal);
 	}
@@ -142,7 +144,7 @@ class HLScreen extends GameState {
 	var _timer:FlxTimer;
 	var _controls:Controls;
 
-	override public function create():Void {
+	override public function create() {
 		bgColor = FlxColor.WHITE;
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		_controls = new Controls();
@@ -151,9 +153,10 @@ class HLScreen extends GameState {
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
 		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
 		add(_logo);
+		FlxG.camera.antialiasing = true;
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 		_timer = new FlxTimer();
 		_timer.start(2, finishTimer, 1);

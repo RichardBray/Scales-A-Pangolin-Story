@@ -1,0 +1,25 @@
+{
+  "name": "pangolin",
+  "version": "1.0.0",
+  "description": "Sacles: a pangolin story game",
+  "main": "source/Main.hx",
+  "scripts": {
+    "build:html5":"watchman-make -p 'source/*.hx' 'assets/data/*.tmx' -r 'sh watcher.sh'",
+    "server:html5": "live-server export/html5/bin",
+    "start": "concurrently \"npm run build:html5\" \"npm run server:html5\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RichardBray/Pangolin.git"
+  },
+  "author": "Richard Oliver Bray",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RichardBray/Pangolin/issues"
+  },
+  "homepage": "https://github.com/RichardBray/Pangolin#readme",
+  "dependencies": {
+    "concurrently": "^4.1.1",
+    "live-server": "^1.2.1"
+  }
+}

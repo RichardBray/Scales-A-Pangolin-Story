@@ -1,6 +1,5 @@
 package;
 
-import flixel.input.gamepad.FlxGamepad.FlxGamepadModel;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -8,7 +7,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 using Lambda;
 
-typedef MenuData = {title:String, func:Void->Void};
+typedef MenuData = { title:String, func:Void->Void };
 
 class Menu extends FlxTypedGroup<FlxSprite> {
 	var _selected:Int = 0;
@@ -34,7 +33,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		MenuWidth:Int = 0, 
 		Data:Array<MenuData>,
 		?CenterText:Bool = false
-	):Void {
+	) {
 		super();
 		_menuData = Data;
 		_yPos = YPos;
@@ -55,7 +54,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		_controls = new Controls();		
 	}
 
-	override public function update(Elapsed:Float):Void {
+	override public function update(Elapsed:Float) {
 		var _lastOption:Int = _menuData.length - 1;
 		if(!_preventKeyPress) {
 			if (_controls.cross.check()) {
@@ -113,16 +112,18 @@ class BottomLeft extends FlxText {
 		text = "[SPACE] SELECT \n[E] BACK";
 		size = Constants.smlFont;
 		fieldWidth = 200;
+		scrollFactor.set(0, 0);
 	}
 }
 
-class BottomRight extends  FlxText {
+class BottomRight extends FlxText {
 	/**
 	 * Simple class to display text on the bottom right of the screen
 	 */	
 	public function new() {
 		super(FlxG.width - 100, FlxG.height - 50);
-		text = "v0.4.0";
+		text = Constants.projectVersion;
 		size = Constants.smlFont;
+		scrollFactor.set(0, 0);
 	}
 }

@@ -11,11 +11,11 @@ import flixel.system.FlxBasePreloader;
 class Preloader extends FlxBasePreloader {
 	var _text:TextField;
 
-	override public function new(MinDisplayTime:Float = 0, ?AllowedURLs:Array<String>):Void {
+	override public function new(MinDisplayTime:Float = 0, ?AllowedURLs:Array<String>) {
 		super(MinDisplayTime, AllowedURLs);
 	}
 
-	override function create():Void {
+	override function create() {
 		var _pageWidth:Int = Lib.current.stage.stageWidth;
         var _pageHeight:Int = Lib.current.stage.stageHeight;	
 		
@@ -39,11 +39,11 @@ class Preloader extends FlxBasePreloader {
 	 * Cleanup your objects!
 	 * Make sure you call super.destroy()!
 	 */
-	override function destroy():Void {
+	override function destroy() {
 		super.destroy();
 	}
 
-	override public function onLoaded():Void {
+	override public function onLoaded() {
 		super.onLoaded();
 		_loaded = false;
 		// Load after the page gets to 100%
@@ -54,7 +54,7 @@ class Preloader extends FlxBasePreloader {
 	 * Update is called every frame, passing the current percent loaded. Use this to change your loading bar or whatever.
 	 * @param	Percent	The percentage that the project is loaded
 	 */
-	override public function update(Percent:Float):Void {
+	override public function update(Percent:Float) {
 		_text.text = "Loading " + Std.int(Percent * 100) + "%";
 	}
 }

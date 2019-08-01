@@ -22,14 +22,14 @@ class LevelEnd extends GameState {
 	 * @param LevelName 	Unique name of the last level, used to reset game if player presses `Try again`
 	 * @param GameSave		Current game save
 	 */
-	public function new(PlayerScore:Int = 0, LevelName:String, GameSave:FlxSave):Void {
+	public function new(PlayerScore:Int = 0, LevelName:String, GameSave:FlxSave) {
 		super();
 		_playerScore = PlayerScore;
 		_levelName = LevelName.split("-"); // Splits the string to start at first part of the level
 		_gameSave = GameSave;
 	}
 
-	override public function create():Void {
+	override public function create() {
 		super.create();
 		bgColor = 0xff181818; // Game background color
 
@@ -39,13 +39,13 @@ class LevelEnd extends GameState {
 		_endHeading = new FlxText(30, 30, 300, "Level 1 clear!!", 32);
 		add(_endHeading);
 
-		_txtPlayerScore = new FlxText(30, 120, 300, "You scored: " + _playerScore + "/25", 25);
+		_txtPlayerScore = new FlxText(30, 120, 300, "You scored: " + _playerScore + "/26", 25);
 		add(_txtPlayerScore);
 
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Try Again",
-				func: () -> FlxG.switchState(new LevelOne(0, 3, null, false, resetGameSave(_gameSave)))
+				func: () -> FlxG.switchState(new LevelOne(0, 3, null, resetGameSave(_gameSave)))
 			},
 			{
 				title: "Quit",
