@@ -16,7 +16,6 @@ import HUD.GoalData;
 class LevelOne extends LevelState {
 	var _score:Int;
 	var _playerHealth:Float;
-	var _playerReturning:Bool;
 	var _levelCollectablesMap:CollMap;
 	var _gameSave:FlxSave;
 	var _seconds:Float = 0;
@@ -24,29 +23,30 @@ class LevelOne extends LevelState {
 	var _testNPC:NPC;
 	var _goalData:Array<GoalData>;
 	var _instructionsViewed:Bool = false;
+	var _showInstrucitons:Bool;
 
 	/**
 	 * Level 1-0
 	 *
-	 * @param Score 					Player score
-	 * @param Health 					Player health
-	 * @param CollectablesMap	Collecables map from other parts of the level
-	 * @param PlayerReturning Player coming from a previous level
-	 * @param GameSave				Loaded game save
+	 * @param Score 						Player score
+	 * @param Health 						Player health
+	 * @param CollectablesMap		Collecables map from other parts of the level
+	 * @param GameSave					Loaded game save
+	 * @param ShowInstructions	Show level insturctions
 	 */
 	public function new(
 		Score:Int = 0, 
 		Health:Float = 3, 
 		?CollectablesMap:Null<CollMap>, 
-		PlayerReturning:Bool = false, 
-		?GameSave:Null<FlxSave>
+		?GameSave:Null<FlxSave>,
+		ShowInstructions:Bool = false
 	) {
 		super();
 		_score = Score;
 		_playerHealth = (Health != 3) ? Health : 3;
-		_playerReturning = PlayerReturning;
 		_levelCollectablesMap = (CollectablesMap == null) ? Constants.initialColMap() : CollectablesMap;
 		_gameSave = GameSave;
+		_showInstrucitons = ShowInstructions;
 
 		_goalData = [
 			{
@@ -76,7 +76,6 @@ class LevelOne extends LevelState {
 		// add(_testNPC);
 
 		// Add player
-		// _playerReturning ? createPlayer(Std.int(_map.fullWidth - 150), 1440, true) : createPlayer(240, 1440)
 		createPlayer(240, 1472);
 		// Update the player helth from the previous level
 		player.health = _playerHealth;
@@ -85,9 +84,8 @@ class LevelOne extends LevelState {
 		// If no socre has been bassed then pass 0
 		createHUD(_score == 0 ? 0 : _score, player.health, _goalData);
 
-		if (_playerReturning) {
-			_gameSave = saveGame(_gameSave);
-		};
+		// Save game on load
+		// _gameSave = saveGame(_gameSave);
 
 		super.create();
 	}
@@ -97,7 +95,9 @@ class LevelOne extends LevelState {
 		_seconds += Elapsed;
 
 		// Show instructions at start of level
-		if (_seconds > 0.5 && !_instructionsViewed) showInstructions();
+		if (_showInstrucitons) {
+			if (_seconds > 0.5 && !_instructionsViewed) showInstructions();
+		}
 
 		// Overlaps
 		if (grpHud.goalsCompleted) {
@@ -201,6 +201,6 @@ class Intro extends GameState {
 	}
 
 	function startLevel() {
-		FlxG.switchState(new LevelOne(0, 3, null, false, _gameSave));
+		FlxG.switchState(new LevelOne(0, 3, null, _gameSave, true));
 	}
 }

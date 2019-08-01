@@ -70,6 +70,6 @@ class LevelOneA extends LevelState {
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, true, _gameSave));
+		FlxG.switchState(new LevelOne(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
 	}
 }

@@ -28,7 +28,7 @@ class MainMenuModal extends FlxSubState {
 		// add(_gameOverlay);
 
 		_boundingBox = new FlxSprite((FlxG.width / 2) - (_menuWidth / 2), (FlxG.height / 2) - (_menuHeight / 2));
-		_boundingBox.makeGraphic(_menuWidth, _menuHeight, 0xff205ab7);
+		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
 		add(_boundingBox);
 
 		_displayText = new FlxText(0, 400, _menuWidth - 40, Text, Constants.medFont);

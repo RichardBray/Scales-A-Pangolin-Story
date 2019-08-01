@@ -58,7 +58,7 @@ show tag
 `git show v0.1.0`
 
 push tag
-`git push origin v0.1.0`
+`git push origin v0.6.0`
 
 Scales of Life: A Pangolin's story
 
