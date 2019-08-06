@@ -39,6 +39,9 @@ class LevelState extends GameState {
 	var _controls:Controls;
 	// Sounds
 	var _sndCollect:FlxSound;
+	// Player
+	var _playerFeetCollision:FlxSprite;
+	var _preventPlayerCollisions:Bool = false;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -72,30 +75,6 @@ class LevelState extends GameState {
 		_controls = new Controls();
 
 		super.create();
-	}
-
-	override public function update(Elapsed:Float) {
-		super.update(Elapsed);
-
-		// Reset the game if the player goes higher/lower than the map
-		if (player.y > _map.fullHeight) {
-			var _pauseMenu:PauseMenu = new PauseMenu(true);
-			openSubState(_pauseMenu);
-		}
-		// Paused game state
-		if (_controls.start.check()) {
-			// SubState needs to be recreated here as it will be destroyed
-			FlxG.sound.music.pause();
-			var _pauseMenu:PauseMenu = new PauseMenu(false);
-			openSubState(_pauseMenu);
-		}
-
-		// Collisions
-		FlxG.collide(player, _levelCollisions);
-
-		// Overlaps
-		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
-		FlxG.overlap(_grpCollectables, player, getCollectable);
 	}
 
 	/**
@@ -212,9 +191,12 @@ class LevelState extends GameState {
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
-		if (FacingLeft)
-			player.facing = FlxObject.LEFT;
+		_playerFeetCollision = new FlxSprite(X + 25, Y  + 15);
+		_playerFeetCollision.acceleration.y = 1500;
+		_playerFeetCollision.makeGraphic(10, 100, FlxColor.BLUE);
+		if (FacingLeft) player.facing = FlxObject.LEFT;
 		add(player);
+		add(_playerFeetCollision);
 	}
 
 	/**
@@ -424,4 +406,44 @@ class LevelState extends GameState {
 		var _pauseMenu:PauseMenu = new PauseMenu(true);
 		openSubState(_pauseMenu);
 	}
+
+	override public function update(Elapsed:Float) {
+		if (player.isJumping) {
+			_playerFeetCollision.setPosition(player.x + 10, player.y + 20);
+		} else {
+			_playerFeetCollision.setPosition(player.x + 10, player.y);
+		}
+		trace(player.isJumping, "player velocity");
+		if (!_playerFeetCollision.isTouching(FlxObject.FLOOR)) {		  
+			trace("is not touching");
+			player.acceleration.y = 1500;
+			_preventPlayerCollisions = true;
+		} else {
+			_preventPlayerCollisions = false;
+		}
+		super.update(Elapsed);
+
+		// Reset the game if the player goes higher/lower than the map
+		if (player.y > _map.fullHeight) {
+			var _pauseMenu:PauseMenu = new PauseMenu(true);
+			openSubState(_pauseMenu);
+		}
+		// Paused game state
+		if (_controls.start.check()) {
+			// SubState needs to be recreated here as it will be destroyed
+			FlxG.sound.music.pause();
+			var _pauseMenu:PauseMenu = new PauseMenu(false);
+			openSubState(_pauseMenu);
+		}
+
+		// Collisions
+		if (!_preventPlayerCollisions) {
+			FlxG.collide(player, _levelCollisions);
+		}
+		FlxG.collide(_playerFeetCollision, _levelCollisions);
+
+		// Overlaps
+		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
+		FlxG.overlap(_grpCollectables, player, getCollectable);
+	}	
 }
