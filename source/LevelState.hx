@@ -37,11 +37,12 @@ class LevelState extends GameState {
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
 	var _controls:Controls;
+	var _secondsTwo:Float;
 	// Sounds
 	var _sndCollect:FlxSound;
 	// Player
 	var _playerFeetCollision:FlxSprite;
-	var _preventPlayerCollisions:Bool = false;
+	var _playerPushedDown:Bool;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -191,9 +192,9 @@ class LevelState extends GameState {
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
-		_playerFeetCollision = new FlxSprite(X + 25, Y  + 15);
+		_playerFeetCollision = new FlxSprite(X, Y);
 		_playerFeetCollision.acceleration.y = 1500;
-		_playerFeetCollision.makeGraphic(10, 100, FlxColor.BLUE);
+		_playerFeetCollision.makeGraphic(10, 80, FlxColor.BLUE);
 		if (FacingLeft) player.facing = FlxObject.LEFT;
 		add(player);
 		add(_playerFeetCollision);
@@ -408,19 +409,33 @@ class LevelState extends GameState {
 	}
 
 	override public function update(Elapsed:Float) {
-		if (player.isJumping) {
-			_playerFeetCollision.setPosition(player.x + 10, player.y + 20);
-		} else {
-			_playerFeetCollision.setPosition(player.x + 10, player.y);
+
+		_secondsTwo += Elapsed;
+		_playerFeetCollision.setPosition(player.x + 25, player.y + 20);
+
+		if (player.isTouching(FlxObject.FLOOR) && _secondsTwo > 0.2) {
+			if (!_playerFeetCollision.isTouching(FlxObject.FLOOR)) {	
+				trace('one');	  
+				player.acceleration.y = 1500;
+				player.allowCollisions = FlxObject.NONE;
+				_playerPushedDown = true;
+			} else {
+				trace('two');	  
+				// player.allowCollisions = FlxObject.ANY;
+				_playerPushedDown = false;
+			}
+		} else if (!player.isTouching(FlxObject.FLOOR) && !_playerPushedDown || player.isGoindDown) {
+			trace('three');	  
+			_secondsTwo = 0;
+			player.allowCollisions = FlxObject.ANY;
+			_playerFeetCollision.setPosition(player.x + 25, player.y - 30);
+		} else if (_playerFeetCollision.isTouching(FlxObject.FLOOR)) {
+			_secondsTwo = 0;
+			player.allowCollisions = FlxObject.ANY;
 		}
-		trace(player.isJumping, "player velocity");
-		if (!_playerFeetCollision.isTouching(FlxObject.FLOOR)) {		  
-			trace("is not touching");
-			player.acceleration.y = 1500;
-			_preventPlayerCollisions = true;
-		} else {
-			_preventPlayerCollisions = false;
-		}
+
+		if (player.facing == FlxObject.LEFT) _playerFeetCollision.setPosition(player.x + 80, player.y + 20);
+
 		super.update(Elapsed);
 
 		// Reset the game if the player goes higher/lower than the map
@@ -437,9 +452,7 @@ class LevelState extends GameState {
 		}
 
 		// Collisions
-		if (!_preventPlayerCollisions) {
-			FlxG.collide(player, _levelCollisions);
-		}
+		FlxG.collide(player, _levelCollisions);
 		FlxG.collide(_playerFeetCollision, _levelCollisions);
 
 		// Overlaps
