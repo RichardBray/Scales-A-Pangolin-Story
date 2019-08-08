@@ -42,7 +42,7 @@
   <object id="36" name="left" type="5" gid="10" x="2938.5" y="1306.49" width="47" height="39"/>
   <object id="37" name="right" type="1" gid="9" x="2461.5" y="1392.16" width="42" height="39"/>
   <object id="38" name="left" type="1" gid="9" x="3163.85" y="660" width="42" height="39"/>
-  <object id="39" name="right" type="5" gid="11" x="3825.25" y="1185.49" width="36" height="15"/>
+  <object id="39" name="right" type="4" gid="11" x="3825.25" y="1185.49" width="36" height="15"/>
   <object id="40" name="left" type="4" gid="11" x="3630.25" y="1020.49" width="36" height="15"/>
   <object id="41" name="right" type="10" gid="10" x="4230" y="1575.49" width="47" height="39"/>
   <object id="26" name="left" type="1" gid="9" x="4245" y="1167.49" width="36" height="27"/>

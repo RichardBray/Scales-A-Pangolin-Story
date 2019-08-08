@@ -1,6 +1,7 @@
 package;
 
 // - Flixel
+import flixel.tile.FlxTile;
 import flixel.util.FlxTimer;
 import flixel.system.FlxSound;
 import flixel.util.FlxSave;
@@ -37,12 +38,13 @@ class LevelState extends GameState {
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
 	var _controls:Controls;
-	var _secondsTwo:Float;
 	// Sounds
 	var _sndCollect:FlxSound;
 	// Player
+	var _secondsOnGround:Float; // Used for feet collisions to tell how
 	var _playerFeetCollision:FlxSprite;
-	var _playerPushedDown:Bool;
+	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
+	var _secondsFalling:Float = 0;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -293,13 +295,19 @@ class LevelState extends GameState {
 	}
 
 	/** Special tiles **/
-	function fallInClouds(Tile:FlxObject, Object:FlxObject) {
+	/**
+	 * Method to dication what should happen when player interacts weith a special tile.
+	 * 
+	 * @param FallThroughTIle	Tile that should be affected by action
+	 * @param	Player					Player sprite (I'm not 100% sure if this is true)
+	 */
+	function fallInClouds(FallThroughTIle:FlxObject, Player:FlxObject) {
 		if (_controls.down.check()) {
 			var timer = new FlxTimer();
-			Tile.allowCollisions = FlxObject.NONE;
+			FallThroughTIle.allowCollisions = FlxObject.NONE;
 			timer.start(.1, (_) -> player.isGoindDown = true);	
-		} else if (Object.y >= Tile.y) {
-			Tile.allowCollisions = FlxObject.CEILING;
+		} else if (Player.y >= FallThroughTIle.y) {
+			FallThroughTIle.allowCollisions = FlxObject.CEILING;
 			player.isGoindDown = false;
 		}
 	}
@@ -393,7 +401,6 @@ class LevelState extends GameState {
 	/**
 	 * Sequeence of events that need to happen when plaher dies.
 	 *
-
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
 		var timer = new FlxTimer();
@@ -408,34 +415,70 @@ class LevelState extends GameState {
 		openSubState(_pauseMenu);
 	}
 
-	override public function update(Elapsed:Float) {
+	/**
+	* This method updates the player of the feet collisions with the players.
+	* - Prevents feet collisions when the player is jumping and `0.2` seconds after they touch the ground.
+	*/
+	function updateFeetCollisions(Elapsed:Float) {
+		var xOffset:Int = player.facing == FlxObject.LEFT ? 80 : 25;
+		var playerIsOnGround:Bool = player.isTouching(FlxObject.FLOOR);
+		var feetCollisionIsOnGround:Bool = _playerFeetCollision.isTouching(FlxObject.FLOOR);
 
-		_secondsTwo += Elapsed;
-		_playerFeetCollision.setPosition(player.x + 25, player.y + 20);
+		// Conditions
+		var playerTouchingButNotFeet:Bool = playerIsOnGround && _secondsOnGround > 0.2;
+		var playerIsInTheAir:Bool = !playerIsOnGround && !_playerPushedByFeet;
 
-		if (player.isTouching(FlxObject.FLOOR) && _secondsTwo > 0.2) {
-			if (!_playerFeetCollision.isTouching(FlxObject.FLOOR)) {	
-				trace('one');	  
+		// Positions the feet colisions higher when jumping so that the player touches the ground first.
+		var yOffset:Int = playerIsInTheAir ? -30 : 20;
+
+		// 
+		yOffset	= _playerPushedByFeet ? 30 : yOffset;
+
+		if (playerTouchingButNotFeet) {
+			if (!feetCollisionIsOnGround) {
+				trace('one');
+				_secondsFalling += Elapsed;
+				// Activate gravity and disable player collisions.
 				player.acceleration.y = 1500;
-				player.allowCollisions = FlxObject.NONE;
-				_playerPushedDown = true;
+				trace(_secondsFalling, 'seconds falling');
+				player.allowCollisions = _secondsFalling > 1 ? FlxObject.ANY : FlxObject.NONE;
+				_playerPushedByFeet = true;
 			} else {
-				trace('two');	  
-				// player.allowCollisions = FlxObject.ANY;
-				_playerPushedDown = false;
+				trace('two');
+				_playerPushedByFeet = false;
 			}
-		} else if (!player.isTouching(FlxObject.FLOOR) && !_playerPushedDown || player.isGoindDown) {
-			trace('three');	  
-			_secondsTwo = 0;
+
+		} else if (playerIsInTheAir) {
+			trace('three'); 
+			_secondsOnGround = 0; // Reset this cos their in the air
 			player.allowCollisions = FlxObject.ANY;
-			_playerFeetCollision.setPosition(player.x + 25, player.y - 30);
-		} else if (_playerFeetCollision.isTouching(FlxObject.FLOOR)) {
-			_secondsTwo = 0;
+	
+		} else if (feetCollisionIsOnGround) {
+			trace('four');
+			_secondsOnGround = 0;
 			player.allowCollisions = FlxObject.ANY;
+			_playerPushedByFeet = false;
 		}
 
-		if (player.facing == FlxObject.LEFT) _playerFeetCollision.setPosition(player.x + 80, player.y + 20);
+		// Update feet coliison position
+		_playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);	
+	}
 
+	/**
+	 * This method prevents the player from colliding with slopes.
+	 * The slope and the feetCollisions don't work well together.
+	 */
+	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
+		var convertedSlope:FlxTile;
+		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
+		if (convertedSlope.index == 20) { _playerPushedByFeet = false; }
+		return true;
+	}
+
+	override public function update(Elapsed:Float) {
+		_secondsOnGround += Elapsed;
+		updateFeetCollisions(Elapsed);
+		
 		super.update(Elapsed);
 
 		// Reset the game if the player goes higher/lower than the map
@@ -458,5 +501,7 @@ class LevelState extends GameState {
 		// Overlaps
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
+
+		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
 	}	
 }
