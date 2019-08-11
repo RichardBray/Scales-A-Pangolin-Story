@@ -44,6 +44,7 @@ class LevelState extends GameState {
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
 	var _playerFeetCollision:FlxSprite;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
+	var _secondsFalling:Float = 0;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -294,13 +295,19 @@ class LevelState extends GameState {
 	}
 
 	/** Special tiles **/
-	function fallInClouds(Tile:FlxObject, Object:FlxObject) {
+	/**
+	 * Method to dication what should happen when player interacts weith a special tile.
+	 * 
+	 * @param FallThroughTIle	Tile that should be affected by action
+	 * @param	Player					Player sprite (I'm not 100% sure if this is true)
+	 */
+	function fallInClouds(FallThroughTIle:FlxObject, Player:FlxObject) {
 		if (_controls.down.check()) {
 			var timer = new FlxTimer();
-			Tile.allowCollisions = FlxObject.NONE;
+			FallThroughTIle.allowCollisions = FlxObject.NONE;
 			timer.start(.1, (_) -> player.isGoindDown = true);	
-		} else if (Object.y >= Tile.y) {
-			Tile.allowCollisions = FlxObject.CEILING;
+		} else if (Player.y >= FallThroughTIle.y) {
+			FallThroughTIle.allowCollisions = FlxObject.CEILING;
 			player.isGoindDown = false;
 		}
 	}
@@ -412,7 +419,7 @@ class LevelState extends GameState {
 	* This method updates the player of the feet collisions with the players.
 	* - Prevents feet collisions when the player is jumping and `0.2` seconds after they touch the ground.
 	*/
-	function updateFeetCollisions() {
+	function updateFeetCollisions(Elapsed:Float) {
 		var xOffset:Int = player.facing == FlxObject.LEFT ? 80 : 25;
 		var playerIsOnGround:Bool = player.isTouching(FlxObject.FLOOR);
 		var feetCollisionIsOnGround:Bool = _playerFeetCollision.isTouching(FlxObject.FLOOR);
@@ -424,42 +431,53 @@ class LevelState extends GameState {
 		// Positions the feet colisions higher when jumping so that the player touches the ground first.
 		var yOffset:Int = playerIsInTheAir ? -30 : 20;
 
-		// Update feet coliison position
-		_playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);
+		// 
+		yOffset	= _playerPushedByFeet ? 30 : yOffset;
+
 		if (playerTouchingButNotFeet) {
 			if (!feetCollisionIsOnGround) {
+				trace('one');
+				_secondsFalling += Elapsed;
 				// Activate gravity and disable player collisions.
 				player.acceleration.y = 1500;
-				player.allowCollisions = FlxObject.NONE;
+				trace(_secondsFalling, 'seconds falling');
+				player.allowCollisions = _secondsFalling > 1 ? FlxObject.ANY : FlxObject.NONE;
 				_playerPushedByFeet = true;
 			} else {
+				trace('two');
 				_playerPushedByFeet = false;
 			}
 
-		} else if (playerIsInTheAir) { 
+		} else if (playerIsInTheAir) {
+			trace('three'); 
 			_secondsOnGround = 0; // Reset this cos their in the air
 			player.allowCollisions = FlxObject.ANY;
 	
 		} else if (feetCollisionIsOnGround) {
+			trace('four');
 			_secondsOnGround = 0;
 			player.allowCollisions = FlxObject.ANY;
 			_playerPushedByFeet = false;
 		}
-		// Also prevent collisions on slopes
+
+		// Update feet coliison position
+		_playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);	
 	}
 
-	function testCol(Tim:FlxObject, _) {
-		var timbo:FlxTile;
-		timbo = cast Tim;
-		if (timbo.index == 20) {
-			_playerPushedByFeet = false;
-			js.Lib.debug();
-		}
+	/**
+	 * This method prevents the player from colliding with slopes.
+	 * The slope and the feetCollisions don't work well together.
+	 */
+	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
+		var convertedSlope:FlxTile;
+		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
+		if (convertedSlope.index == 20) { _playerPushedByFeet = false; }
 		return true;
 	}
+
 	override public function update(Elapsed:Float) {
 		_secondsOnGround += Elapsed;
-		updateFeetCollisions();
+		updateFeetCollisions(Elapsed);
 		
 		super.update(Elapsed);
 
@@ -484,6 +502,6 @@ class LevelState extends GameState {
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
 
-		_levelCollisions.overlapsWithCallback(player, testCol);
+		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
 	}	
 }
