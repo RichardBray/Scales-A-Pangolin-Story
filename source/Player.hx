@@ -9,7 +9,7 @@ import flixel.system.FlxSound;
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _controls:Controls;
-	static var GRAVITY:Float = 1500;
+	static var GRAVITY:Float = Constants.worldGravity;
 
 	public var preventMovement:Bool;
 	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds.

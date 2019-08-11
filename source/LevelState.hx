@@ -42,9 +42,8 @@ class LevelState extends GameState {
 	var _sndCollect:FlxSound;
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
-	var _playerFeetCollision:FlxSprite;
+	var _playerFeetCollision:FlxObject;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
-	var _secondsFalling:Float = 0;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -186,17 +185,17 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * Adds player
+	 * Adds player and the feet collisions
 	 *
 	 * @param X 				Player X position
 	 * @param Y 				Player Y position
-	 * @param FacingLef If the player is facine left
+	 * @param FacingLeft If the player is facine left
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
-		_playerFeetCollision = new FlxSprite(X, Y);
-		_playerFeetCollision.acceleration.y = 1500;
-		_playerFeetCollision.makeGraphic(10, 80, FlxColor.BLUE);
+		_playerFeetCollision = new FlxObject(X, Y, 10, 80);
+		_playerFeetCollision.acceleration.y = Constants.worldGravity;
+	
 		if (FacingLeft) player.facing = FlxObject.LEFT;
 		add(player);
 		add(_playerFeetCollision);
@@ -417,9 +416,8 @@ class LevelState extends GameState {
 
 	/**
 	* This method updates the player of the feet collisions with the players.
-	* - Prevents feet collisions when the player is jumping and `0.2` seconds after they touch the ground.
 	*/
-	function updateFeetCollisions(Elapsed:Float) {
+	function updateFeetCollisions() {
 		var xOffset:Int = player.facing == FlxObject.LEFT ? 80 : 25;
 		var playerIsOnGround:Bool = player.isTouching(FlxObject.FLOOR);
 		var feetCollisionIsOnGround:Bool = _playerFeetCollision.isTouching(FlxObject.FLOOR);
@@ -428,39 +426,26 @@ class LevelState extends GameState {
 		var playerTouchingButNotFeet:Bool = playerIsOnGround && _secondsOnGround > 0.2;
 		var playerIsInTheAir:Bool = !playerIsOnGround && !_playerPushedByFeet;
 
-		// Positions the feet colisions higher when jumping so that the player touches the ground first.
+		// Positions the feet colisions higher when jumping so that the player touches the ground first
 		var yOffset:Int = playerIsInTheAir ? -30 : 20;
 
-		// 
+		// Make sure feet collisions always hits floor before player when being pushed down by feet
 		yOffset	= _playerPushedByFeet ? 30 : yOffset;
 
-		if (playerTouchingButNotFeet) {
-			if (!feetCollisionIsOnGround) {
-				trace('one');
-				_secondsFalling += Elapsed;
-				// Activate gravity and disable player collisions.
-				player.acceleration.y = 1500;
-				trace(_secondsFalling, 'seconds falling');
-				player.allowCollisions = _secondsFalling > 1 ? FlxObject.ANY : FlxObject.NONE;
-				_playerPushedByFeet = true;
-			} else {
-				trace('two');
-				_playerPushedByFeet = false;
-			}
+		if (playerTouchingButNotFeet && !feetCollisionIsOnGround) {
+			// Activate gravity and disable player collisions
+			player.acceleration.y = Constants.worldGravity;
+			player.allowCollisions = FlxObject.NONE;
+			_playerPushedByFeet = true;
 
-		} else if (playerIsInTheAir) {
-			trace('three'); 
-			_secondsOnGround = 0; // Reset this cos their in the air
+		} else if (playerIsInTheAir || feetCollisionIsOnGround) {
+			_secondsOnGround = 0; // Reset this because their in the air
 			player.allowCollisions = FlxObject.ANY;
+			if (feetCollisionIsOnGround) _playerPushedByFeet = false;
 	
-		} else if (feetCollisionIsOnGround) {
-			trace('four');
-			_secondsOnGround = 0;
-			player.allowCollisions = FlxObject.ANY;
-			_playerPushedByFeet = false;
 		}
 
-		// Update feet coliison position
+		// Update feet coliison position at bottom 
 		_playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);	
 	}
 
@@ -477,7 +462,7 @@ class LevelState extends GameState {
 
 	override public function update(Elapsed:Float) {
 		_secondsOnGround += Elapsed;
-		updateFeetCollisions(Elapsed);
+		updateFeetCollisions();
 		
 		super.update(Elapsed);
 
