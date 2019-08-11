@@ -7,6 +7,7 @@ import LevelState.CollMap;
 class Constants {
 	// general
 	public static var projectVersion:String = "v0.6.0";
+	public static var worldGravity:Int = 1500;
 
 	// Fonts
 	public static var smlFont:Int = 20;
