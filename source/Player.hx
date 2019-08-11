@@ -9,10 +9,11 @@ import flixel.system.FlxSound;
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _controls:Controls;
-	static var GRAVITY:Float = 1500;
+	static var GRAVITY:Float = Constants.worldGravity;
 
 	public var preventMovement:Bool;
-	public var isGoindDown:Bool;
+	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds.
+	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx.
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -69,6 +70,7 @@ class Player extends FlxSprite {
 		drag.x = SPEED; // Deceleration applied when acceleration is not affecting the sprite.
 
 		if (!preventMovement) {
+			isJumping = false;
 			if (_left || _right) {
 				acceleration.x = _left ? -SPEED : SPEED;
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
@@ -86,12 +88,14 @@ class Player extends FlxSprite {
 			if (_jump && isTouching(FlxObject.FLOOR)) {
 				_sndJump.play();
 				offset.x = 80;
+				isJumping = true;
 				velocity.y = -800; // 1100
 				animation.play("jump");
 				animation.play("jumpLoop");
 			}
 			if (isGoindDown) {
 				animation.play("jumpLoop");
+				isJumping = true;
 			}
 		}
 	}

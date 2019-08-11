@@ -42,13 +42,13 @@
   <object id="36" name="left" type="5" gid="10" x="2938.5" y="1306.49" width="47" height="39"/>
   <object id="37" name="right" type="1" gid="9" x="2461.5" y="1392.16" width="42" height="39"/>
   <object id="38" name="left" type="1" gid="9" x="3163.85" y="660" width="42" height="39"/>
-  <object id="39" name="right" type="5" gid="11" x="3825.25" y="1185.49" width="36" height="15"/>
+  <object id="39" name="right" type="4" gid="11" x="3825.25" y="1185.49" width="36" height="15"/>
   <object id="40" name="left" type="4" gid="11" x="3630.25" y="1020.49" width="36" height="15"/>
   <object id="41" name="right" type="10" gid="10" x="4230" y="1575.49" width="47" height="39"/>
   <object id="26" name="left" type="1" gid="9" x="4245" y="1167.49" width="36" height="27"/>
   <object id="46" name="right" type="1" gid="9" x="6859.85" y="974.642" width="42" height="39"/>
   <object id="47" name="left" type="1" gid="9" x="5325" y="1174.49" width="42" height="39"/>
-  <object id="48" name="right" type="5" gid="11" x="7706.94" y="1185.58" width="36" height="15"/>
+  <object id="48" name="right" type="4" gid="11" x="7706.94" y="1185.58" width="36" height="15"/>
   <object id="49" name="left" type="5" gid="10" x="8306.94" y="1005.58" width="47" height="39"/>
   <object id="50" name="right" type="5" gid="11" x="8066.94" y="1365.58" width="36" height="15"/>
   <object id="51" name="left" type="10" gid="10" x="7050" y="1579.49" width="47" height="39"/>
@@ -64,7 +64,7 @@
  </objectgroup>
  <layer id="3" name="collisions" width="756" height="120">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <objectgroup id="4" name="helpers">
