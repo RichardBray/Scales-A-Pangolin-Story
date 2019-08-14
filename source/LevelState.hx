@@ -45,6 +45,7 @@ class LevelState extends GameState {
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
 	var _playerFeetCollision:FlxObject;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
+	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -429,7 +430,7 @@ class LevelState extends GameState {
 
 		// Conditions
 		var playerTouchingButNotFeet:Bool = playerIsOnGround && _secondsOnGround > 0.2;
-		var playerIsInTheAir:Bool = !playerIsOnGround && !_playerPushedByFeet;
+		var playerIsInTheAir:Bool = !playerIsOnGround && !_playerPushedByFeet || _upOnSlope;
 
 		// Positions the feet colisions higher when jumping so that the player touches the ground first
 		var yOffset:Int = playerIsInTheAir ? -30 : 20;
@@ -460,7 +461,12 @@ class LevelState extends GameState {
 	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
 		var convertedSlope:FlxTile;
 		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
-		if (convertedSlope.index == _firstTile + 7) { _playerPushedByFeet = false; }
+		if (convertedSlope.index == _firstTile + 7) { 
+			trace("two");
+			_playerPushedByFeet = false; 
+			_upOnSlope = true;
+		}
+		_upOnSlope = false;
 		return true;
 	}
 
