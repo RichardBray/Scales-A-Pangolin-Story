@@ -16,6 +16,7 @@ class Constants {
 
 	// Colours
 	public static var primaryColor:FlxColor = 0xff0F272C; // Dark background green
+	public static var primaryColorLight:FlxColor = 0xff29706F;
 	public static var secondaryColor:FlxColor = 0xffF73156; // Hot pink
 	public static var slimeGreenColor:FlxColor = 0xff77AD0D; // Slime green
 

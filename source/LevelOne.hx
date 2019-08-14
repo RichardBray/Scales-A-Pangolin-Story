@@ -100,11 +100,9 @@ class LevelOne extends LevelState {
 		}
 
 		// Overlaps
-		if (grpHud.goalsCompleted) {
-			FlxG.overlap(levelExit, player, fadeOut);
-		} else {
-			FlxG.collide(levelExit, player);
-		}
+		grpHud.goalsCompleted
+			? FlxG.overlap(levelExit, player, fadeOut)
+			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);
 
 		// if (!FlxG.overlap(player, _testNPC.npcSprite.npcBoundary, _testNPC.initConvo)) {
 		// 	actionPressed = false;
@@ -136,7 +134,6 @@ class Intro extends GameState {
 	var _factText:FlxText;
 	var _factNumber:Int = 0;
 	var _gameSave:FlxSave;
-	var _timer:FlxTimer;
 	var _seconds:Float = 0;
 	var _controls:Controls;
 	var _textWidth:Int = 600;

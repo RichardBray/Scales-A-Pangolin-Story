@@ -37,6 +37,7 @@ class LevelState extends GameState {
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
+	var _firstTile:Int = 13; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
 	// Sounds
 	var _sndCollect:FlxSound;
@@ -79,7 +80,10 @@ class LevelState extends GameState {
 		super.create();
 	}
 
+	/** PUBLIC FUNCTIONS **/
+
 	/**
+	 * Method for creating a level
 	 *
 	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
 	 * @param 	Background 		Parallax background image name.
@@ -141,7 +145,7 @@ class LevelState extends GameState {
 		add(_grpCollectables);
 
 		// Add envirionment collisions
-		var firstTile:Int = 13;
+
 		_levelCollisions = new FlxTilemapExt();
 		_levelCollisions.loadMapFromArray(
 			cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, 
@@ -151,17 +155,17 @@ class LevelState extends GameState {
 			_map.tileWidth,
 			_map.tileHeight, 
 			FlxTilemapAutoTiling.OFF, 
-			firstTile
+			_firstTile
 		);
 
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes
-		_levelCollisions.setSlopes([firstTile + 7, firstTile + 8]);
-		_levelCollisions.setGentle([firstTile + 8], [firstTile + 7]);
+		_levelCollisions.setSlopes([_firstTile + 7, _firstTile + 8]);
+		_levelCollisions.setGentle([_firstTile + 8], [_firstTile + 7]);
 
 		// set cloud/special tiles
-		_levelCollisions.setTileProperties(firstTile + 2, FlxObject.NONE, fallInClouds);
+		_levelCollisions.setTileProperties(_firstTile + 2, FlxObject.NONE, fallInClouds);
 		_levelCollisions.alpha = 0; // Hide collision objects
 		add(_levelCollisions);
 
@@ -223,6 +227,8 @@ class LevelState extends GameState {
 	public function playMusic(LevelMusic:String) {
 		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
 	}
+
+
 
 	/**
 	 * Place entities from Tilemap.
@@ -399,7 +405,6 @@ class LevelState extends GameState {
 
 	/**
 	 * Sequeence of events that need to happen when plaher dies.
-	 *
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
 		var timer = new FlxTimer();
@@ -442,7 +447,6 @@ class LevelState extends GameState {
 			_secondsOnGround = 0; // Reset this because their in the air
 			player.allowCollisions = FlxObject.ANY;
 			if (feetCollisionIsOnGround) _playerPushedByFeet = false;
-	
 		}
 
 		// Update feet coliison position at bottom 
@@ -456,7 +460,7 @@ class LevelState extends GameState {
 	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
 		var convertedSlope:FlxTile;
 		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
-		if (convertedSlope.index == 20) { _playerPushedByFeet = false; }
+		if (convertedSlope.index == _firstTile + 7) { _playerPushedByFeet = false; }
 		return true;
 	}
 
