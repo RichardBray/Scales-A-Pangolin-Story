@@ -462,7 +462,6 @@ class LevelState extends GameState {
 		var convertedSlope:FlxTile;
 		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
 		if (convertedSlope.index == _firstTile + 7) { 
-			trace("two");
 			_playerPushedByFeet = false; 
 			_upOnSlope = true;
 		}
