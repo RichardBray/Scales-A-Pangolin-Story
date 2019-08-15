@@ -4,10 +4,11 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.FlxSubState;
+import flixel.addons.display.shapes.FlxShapeBox;
 
 class MainMenuModal extends FlxSubState {
 	var _displayText:FlxText;
-	var _boundingBox:FlxSprite;
+	var _boundingBox:FlxShapeBox;
 	var _gameOverlay:FlxSprite;
 	var _menuWidth:Int = 800;
 	var _menuHeight:Int = 450;
@@ -27,11 +28,18 @@ class MainMenuModal extends FlxSubState {
 		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
 		// add(_gameOverlay);
 
-		_boundingBox = new FlxSprite((FlxG.width / 2) - (_menuWidth / 2), (FlxG.height / 2) - (_menuHeight / 2));
-		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
+		_boundingBox = new FlxShapeBox(
+			(FlxG.width / 2) - (_menuWidth / 2), 
+			(FlxG.height / 2) - (_menuHeight / 2),
+			_menuWidth,
+			_menuHeight,
+			{ thickness:8, color:Constants.primaryColorLight }, 
+			Constants.primaryColor
+		);
 		add(_boundingBox);
 
-		_displayText = new FlxText(0, 400, _menuWidth - 40, Text, Constants.medFont);
+		_displayText = new FlxText(0, 400, _menuWidth - 40, Text);
+		_displayText.setFormat(Constants.squareFont, Constants.medFont);
 		_displayText.screenCenter(X);
 		add(_displayText);
 

@@ -38,7 +38,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		_menuData = Data;
 		_yPos = YPos;
 		// Pointer
-		_pointer = new FlxSprite(XPos, YPos - 5);
+		_pointer = new FlxSprite(XPos, YPos - 15);
 		_pointer.makeGraphic(MenuWidth, _spacing, Constants.secondaryColor);
 		add(_pointer);
 

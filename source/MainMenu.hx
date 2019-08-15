@@ -42,7 +42,7 @@ class MainMenu extends GameState {
 		_gameTitle.loadGraphic("assets/images/main_menu/scales_logo.png", false, 848, 347);
 		add(_gameTitle);
 
-		_gameSubTitle = new FlxText(0, _gameTitle.y + 370, 0, "A Pangolin Story");
+		_gameSubTitle = new FlxText(0, _gameTitle.y + 365, 0, "A Pangolin Story");
 		_gameSubTitle.setFormat(Constants.squareFont, 75, Constants.slimeGreenColor);
 		_gameSubTitle.screenCenter(X);
 		add(_gameSubTitle);
