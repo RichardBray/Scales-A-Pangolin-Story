@@ -44,8 +44,10 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 
 		// Text Choices
 		_menuData.mapi((idx:Int, data:MenuData) -> {
-			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, Constants.medFont);
-			if(CenterText) choice.screenCenter(X);
+			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title);
+			choice.setFormat(Constants.squareFont, Constants.medFont);
+
+			if (CenterText) choice.screenCenter(X);
 			choice.scrollFactor.set(0, 0);
 			add(choice);
 		});
@@ -110,9 +112,10 @@ class BottomLeft extends FlxText {
 		// http://api.haxeflixel.com/flixel/input/gamepad/FlxGamepadModel.html
 
 		text = "[SPACE] SELECT \n[E] BACK";
-		size = Constants.smlFont;
 		fieldWidth = 200;
 		scrollFactor.set(0, 0);
+		setFormat(Constants.squareFont, Constants.smlFont);
+		
 	}
 }
 
@@ -123,7 +126,7 @@ class BottomRight extends FlxText {
 	public function new() {
 		super(FlxG.width - 100, FlxG.height - 50);
 		text = Constants.projectVersion;
-		size = Constants.smlFont;
 		scrollFactor.set(0, 0);
+		setFormat(Constants.squareFont, Constants.smlFont);
 	}
 }

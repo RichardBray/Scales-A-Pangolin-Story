@@ -37,6 +37,7 @@ class MainMenuModal extends FlxSubState {
 
 		if (ShowOptions) {
 			_optionsText = new FlxText(0, _displayText.y + 250, _menuWidth - 40, "Press SPACE for yes", Constants.medFont);
+			_optionsText.setFormat(Constants.squareFont, Constants.medFont);
 			_optionsText.screenCenter(X);
 			add(_optionsText);
 		}
