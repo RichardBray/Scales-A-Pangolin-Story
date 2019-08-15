@@ -149,7 +149,7 @@ class Intro extends GameState {
 	}
 
 	override public function create() {
-		bgColor = FlxColor.BLACK;
+		bgColor = 0xff04090C; // 04090C
 
 		// @todo, this will be passed into the Intro Class as a variable in the future
 		_facts = [
@@ -162,9 +162,9 @@ class Intro extends GameState {
 			(FlxG.width / 2) - (_textWidth / 2), 
 			(FlxG.height / 2) - 100, 
 			_textWidth, 
-			_facts[_factNumber], 
-			33
+			_facts[_factNumber]
 		);
+		_factText.setFormat(Constants.squareFont, Constants.lrgFont);
 
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		add(_factText);	
