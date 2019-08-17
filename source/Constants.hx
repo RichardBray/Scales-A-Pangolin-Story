@@ -26,5 +26,9 @@ class Constants {
 	public static var start:String = "ESC";
 
 	// Collectables map for bugs
-	public static var initialColMap:Void->CollMap = () -> ["Level-1-0" => [], "Level-1-A" => []];
+	public static var initialColMap:Void->CollMap = () -> [
+		"Level-1-0" => [], 
+		"Level-1-A" => [],
+		"Level-2-0" => []
+	];
 }

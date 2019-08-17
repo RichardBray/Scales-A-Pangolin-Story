@@ -1,22 +1,16 @@
 package;
 
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.text.FlxText;
 // NPC
 import flixel.util.FlxColor;
 // Typedefs
-import LevelState.CollMap;
 import HUD.GoalData;
 
 
 class LevelOne extends LevelState {
-	var _score:Int;
 	var _playerHealth:Float;
-	var _levelCollectablesMap:CollMap;
 	var _gameSave:FlxSave;
 	var _seconds:Float = 0;
 	// var _npcSprite:FlxSprite;
@@ -28,23 +22,14 @@ class LevelOne extends LevelState {
 	/**
 	 * Level 1-0
 	 *
-	 * @param Score 						Player score
-	 * @param Health 						Player health
-	 * @param CollectablesMap		Collecables map from other parts of the level
 	 * @param GameSave					Loaded game save
 	 * @param ShowInstructions	Show level insturctions
 	 */
 	public function new(
-		Score:Int = 0, 
-		Health:Float = 3, 
-		?CollectablesMap:Null<CollMap>, 
 		?GameSave:Null<FlxSave>,
 		ShowInstructions:Bool = false
 	) {
 		super();
-		_score = Score;
-		_playerHealth = (Health != 3) ? Health : 3;
-		_levelCollectablesMap = (CollectablesMap == null) ? Constants.initialColMap() : CollectablesMap;
 		_gameSave = GameSave;
 		_showInstrucitons = ShowInstructions;
 
@@ -59,7 +44,7 @@ class LevelOne extends LevelState {
 	override public function create() {
 		levelName = "Level-1-0";
 
-		createLevel("level-1-0", "mountains", _levelCollectablesMap);
+		createLevel("level-1-0", "mountains");
 
 		// Add NPC Text
 		// var testText:Array<String> = [
@@ -82,7 +67,7 @@ class LevelOne extends LevelState {
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0
-		createHUD(_score == 0 ? 0 : _score, player.health, _goalData);
+		createHUD(0, player.health, _goalData);
 
 		// Save game on load
 		// _gameSave = saveGame(_gameSave);
@@ -116,7 +101,8 @@ class LevelOne extends LevelState {
 
 	function changeState() {
 		// FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
-		FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
+		// FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
+		FlxG.switchState(new LevelTwo.IntroTwo(_gameSave));
 	}
 
 	/**
@@ -147,6 +133,6 @@ class Intro extends IntroState {
 	}
 
 	override public function startLevel() {
-		FlxG.switchState(new LevelOne(0, 3, null, _gameSave, true));
+		FlxG.switchState(new LevelOne(_gameSave, true));
 	}
 }

@@ -90,9 +90,13 @@ class LevelState extends GameState {
 	 * @param 	Background 		Parallax background image name.
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
-	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap) {
+	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap) {
 		_collisionImg = "assets/images/collisions.png";
-		_collectablesMap = CollectablesMap;
+		if (CollectablesMap != null) {
+			_collectablesMap = CollectablesMap;
+		} else {
+			_collectablesMap = Constants.initialColMap();
+		}
 
 		/**
 		 * Code for adding the environment and collisions

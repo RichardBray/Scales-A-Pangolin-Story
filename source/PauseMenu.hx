@@ -50,7 +50,7 @@ class PauseMenu extends FlxSubState {
 				title: "Restart",
 				func: () -> {
 					FlxG.sound.music = null;
-					FlxG.switchState(new LevelOne(0, 3, null, false));
+					FlxG.switchState(new LevelOne(null, false));
 				}
 			},
 			{

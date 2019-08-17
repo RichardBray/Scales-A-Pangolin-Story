@@ -45,7 +45,7 @@ class LevelEnd extends GameState {
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Try Again",
-				func: () -> FlxG.switchState(new LevelOne(0, 3, null, resetGameSave(_gameSave)))
+				func: () -> FlxG.switchState(new LevelOne(resetGameSave(_gameSave)))
 			},
 			{
 				title: "Quit",
