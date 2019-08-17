@@ -24,7 +24,8 @@ class LevelTwo extends LevelState {
     createLevel("level-2-0", "mountains");
 
 		// Add player
-		createPlayer(180, 1438);    
+		createPlayer(180, 1438);   
+    super.create(); 
   }
 
   override public function update(Elapsed:Float) {
