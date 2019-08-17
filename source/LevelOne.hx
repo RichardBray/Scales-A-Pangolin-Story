@@ -10,7 +10,6 @@ import HUD.GoalData;
 
 
 class LevelOne extends LevelState {
-	var _playerHealth:Float;
 	var _gameSave:FlxSave;
 	var _seconds:Float = 0;
 	// var _npcSprite:FlxSprite;
@@ -35,8 +34,8 @@ class LevelOne extends LevelState {
 
 		_goalData = [
 			{
-				goal: "Collect at least 20 bugs",
-				func: (GameScore:Int) -> GameScore > 19
+				goal: "Collect all 26 bugs",
+				func: (GameScore:Int) -> GameScore > 1
 			}
 		];
 	}
@@ -62,8 +61,6 @@ class LevelOne extends LevelState {
 
 		// Add player
 		createPlayer(240, 1472);
-		// Update the player helth from the previous level
-		player.health = _playerHealth;
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0
