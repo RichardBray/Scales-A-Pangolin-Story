@@ -2,9 +2,11 @@ package;
 
 import flixel.util.FlxSave;
 import flixel.FlxG;
-
+// Typedefs
+import HUD.GoalData;
 class LevelTwo extends LevelState {
-
+  var _goalData:Array<GoalData>;
+  
   /**
   * Level 2-0
   *
@@ -16,6 +18,17 @@ class LevelTwo extends LevelState {
 		ShowInstructions:Bool = false    
   ) {
     super();
+
+		_goalData = [
+			{
+				goal: "Collect over 15 bugs",
+				func: (GameScore:Int) -> GameScore > 1
+			},
+			{
+				goal: "Jump on 3 enemies",
+				func: (GameScore:Int) -> GameScore > 1
+			}      
+		];    
   }
 
   override public function create() {
@@ -24,7 +37,10 @@ class LevelTwo extends LevelState {
     createLevel("level-2-0", "mountains");
 
 		// Add player
-		createPlayer(180, 1438);   
+		createPlayer(180, 1470);
+
+    // Add HUD
+    createHUD(0, player.health, _goalData);   
     super.create(); 
   }
 
