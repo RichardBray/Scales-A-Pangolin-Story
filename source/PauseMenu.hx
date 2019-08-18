@@ -36,7 +36,8 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_boundingBox);
 
 		_titleText = PlayerDied ? "GAME OVER" : "GAME PAUSED";
-		_menuTitle = new FlxText(20, 250, 0, _titleText, 45);
+		_menuTitle = new FlxText(20, 250, 0, _titleText);
+		_menuTitle.setFormat(Constants.squareFont, Constants.lrgFont);
 		_menuTitle.alignment = CENTER;
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);

@@ -46,7 +46,7 @@ class HUD extends FlxSpriteGroup {
 	
 		// Socre text
 		_scoreTxt = new FlxText(_leftPush, 70, 0, updateScore(gameScore));
-		_scoreTxt.setFormat(null, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.LEFT);
+		_scoreTxt.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.LEFT);
 		add(_scoreTxt);
 
 		// Goals Text
@@ -72,7 +72,13 @@ class HUD extends FlxSpriteGroup {
 		add(_goalsNotCompletedBox);
 
 		// Goals not completed text
-		_goalsNotCompleted = new FlxText(0, goalsYPos + boxWidth / 4, 0, "You haven't completed all the goals", Constants.medFont);
+		_goalsNotCompleted = new FlxText(
+			0, 
+			goalsYPos + boxWidth / 4, 
+			0, 
+			"You haven't completed all the goals"
+		);
+		_goalsNotCompleted.setFormat(Constants.squareFont, Constants.medFont);
 		_goalsNotCompleted.alpha = 0;
 		_goalsNotCompleted.screenCenter(X);
 		add(_goalsNotCompleted);
@@ -147,7 +153,7 @@ class HUD extends FlxSpriteGroup {
 	function createGoals(Goals:Array<GoalData>) {
 		Goals.mapi((idx:Int, data:GoalData) -> {
 			var goal = new FlxText(FlxG.width - 300, 20 + (idx * 10), 0, data.goal);	
-			goal.setFormat(null, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
+			goal.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
 			_goals.add(goal);
 		});
 	}

@@ -10,7 +10,7 @@
   <object id="7" gid="5" x="2350" y="1594" width="889" height="1184"/>
   <object id="8" gid="3" x="1969" y="1572.33" width="361" height="123"/>
   <object id="9" gid="8" x="3557" y="1845" width="974" height="258"/>
-  <object id="11" gid="12" x="1187.67" y="1575.73" width="178" height="206"/>
+  <object id="11" gid="12" x="1142.67" y="1575.73" width="178" height="206"/>
   <object id="12" gid="8" x="-1.16667" y="1819.42" width="974" height="258"/>
   <object id="13" name="left" type="5" gid="11" x="437" y="840" width="36" height="15"/>
  </objectgroup>
