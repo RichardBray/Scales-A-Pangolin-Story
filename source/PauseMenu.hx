@@ -5,12 +5,13 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
+import flixel.addons.display.shapes.FlxShapeBox;
 
 // Typedefs
 import Menu.MenuData;
 
 class PauseMenu extends FlxSubState {
-	var _boundingBox:FlxSprite;
+	var _boundingBox:FlxShapeBox;
 	var _gameOverlay:FlxSprite;
 	var _menuTitle:FlxText;
 	var _menuWidth:Int = 750;
@@ -31,8 +32,14 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_gameOverlay);
 
 		// Menu bounding box
-		_boundingBox = new FlxSprite(_boxXPos, (FlxG.height / 2) - (_menuHeight / 2));
-		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
+		_boundingBox = new FlxShapeBox(
+			_boxXPos,
+			(FlxG.height / 2) - (_menuHeight / 2),
+			_menuWidth,
+			_menuHeight,
+			{ thickness:8, color:Constants.primaryColorLight }, 
+			Constants.primaryColor			
+		);
 		_grpMenuItems.add(_boundingBox);
 
 		_titleText = PlayerDied ? "GAME OVER" : "GAME PAUSED";
