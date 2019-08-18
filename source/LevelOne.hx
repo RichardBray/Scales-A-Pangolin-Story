@@ -35,7 +35,7 @@ class LevelOne extends LevelState {
 		_goalData = [
 			{
 				goal: "Collect all 26 bugs",
-				func: (GameScore:Int) -> GameScore > 1
+				func: (GameScore:Int) -> GameScore > 25
 			}
 		];
 	}
