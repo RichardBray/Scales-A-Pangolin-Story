@@ -420,7 +420,7 @@ class LevelState extends GameState {
 	}
 
 	function showGameOverMenu(_) {
-		var _pauseMenu:PauseMenu = new PauseMenu(true);
+		var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
 		openSubState(_pauseMenu);
 	}
 
@@ -481,14 +481,14 @@ class LevelState extends GameState {
 
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
-			var _pauseMenu:PauseMenu = new PauseMenu(true);
+			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
 			openSubState(_pauseMenu);
 		}
 		// Paused game state
 		if (_controls.start.check()) {
 			// SubState needs to be recreated here as it will be destroyed
 			FlxG.sound.music.pause();
-			var _pauseMenu:PauseMenu = new PauseMenu(false);
+			var _pauseMenu:PauseMenu = new PauseMenu(false, levelName);
 			openSubState(_pauseMenu);
 		}
 

@@ -115,11 +115,8 @@ class MainMenu extends GameState {
 		if (_gameSave.data.levelName == null) { // No saved game
 			showModal('You have no saved games');
 		} else {
-			var levelNames:Map<String, Class<LevelState>> = [
-				"Level-1-0" => LevelOne, 
-				"Level-1-A" => LevelOneA
-			];
-			loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
+
+			loadLevel(_gameSave, Constants.levelNames[_gameSave.data.levelName]);
 		}
 	}
 
@@ -146,7 +143,7 @@ class MainMenu extends GameState {
 	}
 
 	function loadLevel(GameSave:FlxSave, Level:Class<LevelState>) {
-		FlxG.switchState(Type.createInstance(Level, [GameSave.data.playerScore, 3, GameSave.data.collectablesMap, null, GameSave]));
+		FlxG.switchState(Type.createInstance(Level, [GameSave, false]));
 	}
 }
 

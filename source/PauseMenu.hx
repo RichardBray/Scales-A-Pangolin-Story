@@ -21,7 +21,7 @@ class PauseMenu extends FlxSubState {
 	var _controls:Controls;
 
 
-	public function new(PlayerDied:Bool = false) {
+	public function new(PlayerDied:Bool = false, LevelString:String) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -41,6 +41,9 @@ class PauseMenu extends FlxSubState {
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
 
+		// Maps string to class from `levelNames` in constants
+		var levelToRestart:Class<LevelState> = Constants.levelNames[LevelString];
+
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Resume",
@@ -50,7 +53,7 @@ class PauseMenu extends FlxSubState {
 				title: "Restart",
 				func: () -> {
 					FlxG.sound.music = null;
-					FlxG.switchState(new LevelOne(null, false));
+					FlxG.switchState(Type.createInstance(levelToRestart, [null, false]));
 				}
 			},
 			{

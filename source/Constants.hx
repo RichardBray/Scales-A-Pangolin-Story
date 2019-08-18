@@ -31,4 +31,10 @@ class Constants {
 		"Level-1-A" => [],
 		"Level-2-0" => []
 	];
+
+	// Used to load levels from saves and restart levels
+	public static var levelNames:Map<String, Class<LevelState>> = [
+		"Level-1-0" => LevelOne, 
+		"Level-2-0" => LevelTwo
+	];
 }
