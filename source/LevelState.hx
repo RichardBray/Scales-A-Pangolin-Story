@@ -37,7 +37,7 @@ class LevelState extends GameState {
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
-	var _firstTile:Int = 13; // ID of first collision tile, for some reason Tiled changes this
+	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
 	// Sounds
 	var _sndCollect:FlxSound;
