@@ -61,7 +61,7 @@ class HUD extends FlxSpriteGroup {
 
 		// Goals not completed box
 		var boxWidth:Int = 100;
-		var goalsYPos:Float = (FlxG.height / 2) - (boxWidth / 2);
+		var goalsYPos:Float = (FlxG.height / 2) - (boxWidth / 2); // Almost middle of the screen
 		_goalsNotCompletedBox = new FlxShapeBox(
 			-10, goalsYPos, 
 			FlxG.width + 20, boxWidth, 
@@ -74,7 +74,7 @@ class HUD extends FlxSpriteGroup {
 		// Goals not completed text
 		_goalsNotCompleted = new FlxText(
 			0, 
-			goalsYPos + boxWidth / 4, 
+			goalsYPos + boxWidth / 2, 
 			0, 
 			"You haven't completed all the goals"
 		);
