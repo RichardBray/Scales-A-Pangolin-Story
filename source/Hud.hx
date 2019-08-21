@@ -152,7 +152,8 @@ class HUD extends FlxSpriteGroup {
 	 */
 	function createGoals(Goals:Array<GoalData>) {
 		Goals.mapi((idx:Int, data:GoalData) -> {
-			var goal = new FlxText(FlxG.width - 300, 20 + (idx * 10), 0, data.goal);	
+			var goalsTextLineHeight:Int = 30;
+			var goal = new FlxText(FlxG.width - 300, 20 + (idx * goalsTextLineHeight), 0, data.goal);	
 			goal.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
 			_goals.add(goal);
 		});
