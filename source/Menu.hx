@@ -68,7 +68,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 					_pointer.y = _pointer.y + _spacing;
 					_selected++;
 				} else {
-					_pointer.y = _yPos;
+					_pointer.y = _yPos - 15;
 					_selected = 0;
 				}
 			}

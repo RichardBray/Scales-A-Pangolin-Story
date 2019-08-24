@@ -74,7 +74,7 @@ class HUD extends FlxSpriteGroup {
 		// Goals not completed text
 		_goalsNotCompleted = new FlxText(
 			0, 
-			goalsYPos + boxWidth / 2, 
+			goalsYPos + 32, // Yes 32 is a magic number 
 			0, 
 			"You haven't completed all the goals"
 		);
