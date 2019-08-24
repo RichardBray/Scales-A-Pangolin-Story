@@ -13,7 +13,6 @@ class Enemy extends FlxSprite {
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y);
-		makeGraphic(50, 50, 0xffff0000); // temporary
 		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
 	}
@@ -53,4 +52,18 @@ class Fire extends Enemy {
 		alive = false;
 		_timer.start(.5, (_) -> alive = true, 1);
 	}	
+}
+
+class Boar extends Enemy {
+	public function new(X:Float, Y:Float) {
+		super(X, Y);
+		loadGraphic("assets/images/boar_sprites.png", true, 156, 87);
+
+		animation.add("walking", [for (i in 0...6) i], 8, true);			
+	}
+
+	override public function update(Elapsed:Float) {
+		animation.play("walking");
+		super.update(Elapsed);
+	}		
 }

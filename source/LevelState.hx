@@ -30,6 +30,7 @@ class LevelState extends GameState {
 	var _mapEntities:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _grpEnemies:FlxTypedGroup<Enemy>;
+	var _grpMovingEnemies:FlxTypedGroup<Enemy>;
 	var _levelCollisions:FlxTilemapExt;
 	var _map:TiledMap;
 	var _mapObjects:TiledObjectLayer;
@@ -37,7 +38,7 @@ class LevelState extends GameState {
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
-	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
+	var _firstTile:Int = 15; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
 	// Sounds
 	var _sndCollect:FlxSound;
@@ -118,9 +119,13 @@ class LevelState extends GameState {
 		// Add bugs group
 		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
 
-		// Add enemies
+		// Add standing enemies
 		_grpEnemies = new FlxTypedGroup<Enemy>();
 		add(_grpEnemies);		
+
+		// Add moving enemies
+		_grpMovingEnemies = new FlxTypedGroup<Enemy>();
+		add(_grpMovingEnemies);				
 
 		// Tile tearing problem fix on Mac (part 1)
 		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
@@ -297,7 +302,12 @@ class LevelState extends GameState {
 			enemy = new Enemy.Fire(X, newY);
 			_grpEnemies.add(enemy);
 
-		} else {
+		} else if (ObjectId == 14) { // Boar
+			var boar:Enemy = null;
+			boar = new Enemy.Boar(X, newY);
+			_grpMovingEnemies.add(boar);
+
+		}else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
 			_mapEntities.add(_object);
