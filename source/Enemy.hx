@@ -3,15 +3,14 @@ package;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import flixel.system.FlxSound;
+import flixel.FlxObject;
 
 class Enemy extends FlxSprite {
 	public var sndHit:FlxSound;
 	public var sndEnemyKill:FlxSound;
 
-	public function new(X:Float = 0, Y:Float = 0) {
+	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
 		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
@@ -55,15 +54,42 @@ class Fire extends Enemy {
 }
 
 class Boar extends Enemy {
-	public function new(X:Float, Y:Float) {
+	var _facingDirection:Bool;
+	var _distance:Int;
+	var _seconds:Float = 0;
+
+	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y);
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 87);
+		_distance = Std.parseInt(Otype) * 10; // 15 = tile width
+		_facingDirection = Name == "left";	
 
-		animation.add("walking", [for (i in 0...6) i], 8, true);			
+		setFacingFlip(FlxObject.LEFT, true, false);
+		setFacingFlip(FlxObject.RIGHT, false, false);			
+
+		animation.add("walking", [for (i in 0...6) i], 8, true);
+		animation.add("dying", [for (i in 7...12) i], 8, true);			
 	}
 
+	function boarPacing() { 
+		if (_seconds < 5) {
+			boarMovement(_facingDirection);
+		} else if (_seconds < (5 * 2)) {
+			boarMovement(!_facingDirection);
+		} else if (Math.round(_seconds) == (5 * 2)) {
+			_seconds = 0;
+		}
+	}	
+
+	function boarMovement(Direction:Bool) {
+		velocity.x = Direction ? -_distance: _distance;
+		facing = Direction ? FlxObject.LEFT : FlxObject.RIGHT;
+	}	
+
 	override public function update(Elapsed:Float) {
+		_seconds += Elapsed;	
 		animation.play("walking");
+		boarPacing();
 		super.update(Elapsed);
 	}		
 }

@@ -304,7 +304,7 @@ class LevelState extends GameState {
 
 		} else if (ObjectId == 14) { // Boar
 			var boar:Enemy = null;
-			boar = new Enemy.Boar(X, newY);
+			boar = new Enemy.Boar(X, newY, Name, Otype);
 			_grpMovingEnemies.add(boar);
 
 		}else {
