@@ -22,6 +22,10 @@ class PauseMenu extends FlxSubState {
 	var _controls:Controls;
 
 
+	/**
+	 * @param PlayerDied	If player died or not
+	 * @param LevelString	Name of the level
+	 */
 	public function new(PlayerDied:Bool = false, LevelString:String) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
