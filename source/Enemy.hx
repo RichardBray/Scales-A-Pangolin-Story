@@ -57,9 +57,12 @@ class Boar extends Enemy {
 	var _facingDirection:Bool;
 	var _distance:Int;
 	var _seconds:Float = 0;
+	var _timer:FlxTimer;
+	var _enemyHit:Bool = false;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y);
+		_timer = new FlxTimer();
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 87);
 		_distance = Std.parseInt(Otype) * 10; // 15 = tile width
 		_facingDirection = Name == "left";	
@@ -68,17 +71,21 @@ class Boar extends Enemy {
 		setFacingFlip(FlxObject.RIGHT, false, false);			
 
 		animation.add("walking", [for (i in 0...6) i], 8, true);
-		animation.add("dying", [for (i in 7...12) i], 8, true);			
+		animation.add("dying", [for (i in 7...12) i], 8, false);			
 	}
 
 	function boarPacing() { 
-		if (_seconds < 5) {
-			boarMovement(_facingDirection);
-		} else if (_seconds < (5 * 2)) {
-			boarMovement(!_facingDirection);
-		} else if (Math.round(_seconds) == (5 * 2)) {
-			_seconds = 0;
-		}
+		if (!_enemyHit) {
+			if (_seconds < 5) {
+				boarMovement(_facingDirection);
+			} else if (_seconds < (5 * 2)) {
+				boarMovement(!_facingDirection);
+			} else if (Math.round(_seconds) == (5 * 2)) {
+				_seconds = 0;
+			}
+		} else {
+			velocity.x = 0;
+		}		
 	}	
 
 	function boarMovement(Direction:Bool) {
@@ -86,9 +93,17 @@ class Boar extends Enemy {
 		facing = Direction ? FlxObject.LEFT : FlxObject.RIGHT;
 	}	
 
+	override public function kill() {
+		_enemyHit = true;
+		alive = false;
+		_timer.start(1, (_) -> {
+			exists = false;
+		}, 1);
+  }
+
 	override public function update(Elapsed:Float) {
 		_seconds += Elapsed;	
-		animation.play("walking");
+		_enemyHit ? animation.play("dying") : animation.play("walking");
 		boarPacing();
 		super.update(Elapsed);
 	}		

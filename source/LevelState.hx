@@ -348,7 +348,9 @@ class LevelState extends GameState {
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		/**
 		* Animations and positions for when player hits enemy
-		*/
+		*
+		* @param LastLife Used to prolongue death of character.
+		*/	
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
@@ -362,22 +364,20 @@ class LevelState extends GameState {
 				// when rolling animation is playing
 				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
 					Enemy.sndEnemyKill.play();
-					// Enemy.kill();
+					Enemy.kill();
 				} else { // when rolling animation is NOT playing
 					if (!LastLife) Player.hurt(1);
 					Enemy.sndHit.play();
 					FlxSpriteUtil.flicker(Player);
 				}
-			}		
-			grpHud.decrementHealth((LastLife) ? 0 : Player.health);
+			}	
+			grpHud.decrementHealth((LastLife) ? 0 : Player.health);	
 		}
 
 		// Player is alive
-		if (Enemy.alive && Player.health > 1) {
-			playerAttackedAnims();
-		} else { // Player is dead
-			playerDeathASequence(Player, playerAttackedAnims);
-		}
+		(Player.health > 1) 
+			? playerAttackedAnims()
+			: playerDeathASequence(Player, playerAttackedAnims);
 	}	
 
 
@@ -419,7 +419,7 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * Sequeence of events that need to happen when plaher dies.
+	 * Sequence of events that need to happen when player dies.
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
 		var timer = new FlxTimer();
@@ -508,6 +508,7 @@ class LevelState extends GameState {
 
 		// Overlaps
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
+		FlxG.overlap(_grpMovingEnemies, player, hitEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
 
 		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
