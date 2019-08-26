@@ -31,12 +31,12 @@ class Fire extends Enemy {
 	var _timer:FlxTimer;
 
 	public function new(X:Float = 0, Y:Float = 0) {
-		super(X, Y + 40); // to make up for offset
+		super(X, Y + 50); // to make up for offset
 		_timer = new FlxTimer();
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
-		setGraphicSize(138, 166);
+		setGraphicSize(108, 156);
 		updateHitbox();
-		offset.set(20, 40);
+		offset.set(35, 50);
 		scale.set(1, 1);
 
 		animation.add("burning", [for (i in 0...7) i], 12, true);		

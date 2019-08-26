@@ -209,7 +209,7 @@ class LevelState extends GameState {
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
-		_playerFeetCollision = new FlxObject(X, Y, 10, 80);
+		_playerFeetCollision = new FlxObject(X, Y, 10, 74);
 		_playerFeetCollision.acceleration.y = Constants.worldGravity;
 	
 		if (FacingLeft) player.facing = FlxObject.LEFT;
