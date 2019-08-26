@@ -123,7 +123,6 @@ class HUD extends FlxSpriteGroup {
 			_goalsNotCompleted.alpha = 0;
 			_goalsNotCompletedBox.alpha = 0;
 		});
-		trace("Goals message");
 	}	
 
 	function updateScore(Score:Int):String {
