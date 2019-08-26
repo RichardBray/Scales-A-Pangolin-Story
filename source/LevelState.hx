@@ -3,7 +3,6 @@ package;
 // - Flixel
 import flixel.tile.FlxTile;
 import flixel.util.FlxTimer;
-import flixel.system.FlxSound;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -40,8 +39,6 @@ class LevelState extends GameState {
 	var _levelScore:Int; // This is used for the game save
 	var _firstTile:Int = 15; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
-	// Sounds
-	var _sndCollect:FlxSound;
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
 	var _playerFeetCollision:FlxObject;
@@ -76,7 +73,6 @@ class LevelState extends GameState {
 
 		// Camera follows Player
 		FlxG.camera.follow(player, PLATFORMER, 1);
-		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
 		// Intialise controls
 		_controls = new Controls();
@@ -209,7 +205,7 @@ class LevelState extends GameState {
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
-		_playerFeetCollision = new FlxObject(X, Y, 10, 74);
+		_playerFeetCollision = new FlxObject(X, Y, 10, 72);
 		_playerFeetCollision.acceleration.y = Constants.worldGravity;
 	
 		if (FacingLeft) player.facing = FlxObject.LEFT;
@@ -337,7 +333,6 @@ class LevelState extends GameState {
 	function getCollectable(Collectable:CollectableBug.Bug, Player:Player) {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
-			_sndCollect.play(true);
 			_collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}

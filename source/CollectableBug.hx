@@ -1,5 +1,7 @@
 package;
 
+import flixel.FlxG;
+import flixel.system.FlxSound;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
@@ -11,6 +13,9 @@ class Bug extends FlxSprite {
 	var _distance:Int;
 	var _facingDirection:Bool;
 
+	// Sounds
+	var _sndCollect:FlxSound;
+
 	public var uniqueID:Int;
 
 	/**
@@ -19,10 +24,12 @@ class Bug extends FlxSprite {
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "", UniqueID:Int = 0) {
 		super(X, Y);	
 		uniqueID = UniqueID;
+		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 	}
 
 	override public function kill() {
 		alive = false;
+		_sndCollect.play(true);
 		FlxTween.tween(this, {alpha: 0, y: y - 16}, .33, {ease: FlxEase.circOut, onComplete: finishKill});
 	}
 
