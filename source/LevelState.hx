@@ -47,6 +47,7 @@ class LevelState extends GameState {
 	var _playerFeetCollision:FlxObject;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
+	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -54,6 +55,7 @@ class LevelState extends GameState {
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
 	public var actionPressed:Bool = false;
 	public var levelName:String; // Give level unique name
+	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 
 	override public function create() {
 		bgColor = 0xffc7e4db; // Game background color
@@ -365,6 +367,7 @@ class LevelState extends GameState {
 				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
 					Enemy.sndEnemyKill.play();
 					Enemy.kill();
+					incrementDeathCount();
 				} else { // when rolling animation is NOT playing
 					if (!LastLife) Player.hurt(1);
 					Enemy.sndHit.play();
@@ -380,7 +383,17 @@ class LevelState extends GameState {
 			: playerDeathASequence(Player, playerAttackedAnims);
 	}	
 
-
+	/**
+	 * Method used to count enemy deaths. Time used to make sure boolean is set one.
+	 * Would be set multiple times otherwise because of update.
+	 */
+	function incrementDeathCount() {
+		if (!_enemyDeathCounterExecuted) {
+			killedEmenies++;
+			_enemyDeathCounterExecuted = true;
+			haxe.Timer.delay(() -> _enemyDeathCounterExecuted = false, 1000);
+		}		
+	}
 	/**
 	 * Reaction for player if hitting a stading enemy i.e. spikes or fire.
 	 * Player shoudl lose health no matter how enemy is hit/overlapped.

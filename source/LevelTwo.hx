@@ -26,7 +26,10 @@ class LevelTwo extends LevelState {
 			},
 			{
 				goal: "Jump on 3 enemies",
-				func: (GameScore:Int) -> GameScore > 1
+				func: (_) -> {
+					js.Browser.console.log(killedEmenies);
+					killedEmenies > 2;
+				}
 			}      
 		];    
   }
