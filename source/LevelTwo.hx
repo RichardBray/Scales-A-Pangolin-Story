@@ -6,7 +6,7 @@ import flixel.FlxG;
 import HUD.GoalData;
 class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;
-  
+  var _bugsGoal:Int = 15; // How many bugs to collect in order to complete level
   /**
   * Level 2-0
   *
@@ -21,8 +21,8 @@ class LevelTwo extends LevelState {
 
 		_goalData = [
 			{
-				goal: "Collect over 15 bugs",
-				func: (GameScore:Int) -> GameScore > 1
+				goal: 'Collect over $_bugsGoal bugs',
+				func: (GameScore:Int) -> GameScore > _bugsGoal
 			},
 			{
 				goal: "Jump on 3 enemies",
