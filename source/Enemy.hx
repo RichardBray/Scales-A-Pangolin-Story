@@ -63,7 +63,7 @@ class Boar extends Enemy {
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y);
 		_timer = new FlxTimer();
-		loadGraphic("assets/images/boar_sprites.png", true, 156, 87);
+		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
 		_distance = Std.parseInt(Otype) * 10; // 15 = tile width
 		_facingDirection = Name == "left";	
 
