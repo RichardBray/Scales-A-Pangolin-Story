@@ -72,6 +72,23 @@ class LevelOne extends LevelState {
 		super.create();
 	}
 
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}
+
+	function changeState() {
+		FlxG.switchState(new LevelTwo.IntroTwo(_gameSave));
+	}
+
+	/**
+	 * Show instructions specific to this level unless they have already been viewed
+	 */
+	function showInstructions() {
+		var _instructions:Instructions = new Instructions(1, 2);
+		if (!_instructions.menuViewed) openSubState(_instructions);
+		_instructionsViewed = true;
+	}	
+
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 		_seconds += Elapsed;
@@ -90,25 +107,6 @@ class LevelOne extends LevelState {
 		// 	actionPressed = false;
 		// 	_testNPC.dialoguePrompt.hidePrompt();
 		// };
-	}
-
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
-	}
-
-	function changeState() {
-		// FlxG.switchState(new LevelOneA(grpHud.gameScore, player.health, _levelCollectablesMap, _gameSave));
-		// FlxG.switchState(new LevelEnd(grpHud.gameScore, levelName, _gameSave));
-		FlxG.switchState(new LevelTwo.IntroTwo(_gameSave));
-	}
-
-	/**
-	 * Show instructions specific to this level unless they have already been viewed
-	 */
-	function showInstructions() {
-		var _instructions:Instructions = new Instructions(1, 2);
-		if (!_instructions.menuViewed) openSubState(_instructions);
-		_instructionsViewed = true;
 	}		
 }
 

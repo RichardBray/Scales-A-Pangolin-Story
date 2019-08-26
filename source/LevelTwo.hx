@@ -1,11 +1,14 @@
 package;
 
+import flixel.FlxSprite;
+import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 // Typedefs
 import HUD.GoalData;
 class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;
+	var _gameSave:FlxSave;
   var _bugsGoal:Int = 15; // How many bugs to collect in order to complete level
   /**
   * Level 2-0
@@ -18,7 +21,7 @@ class LevelTwo extends LevelState {
 		ShowInstructions:Bool = false    
   ) {
     super();
-
+		_gameSave = GameSave;
 		_goalData = [
 			{
 				goal: 'Collect over $_bugsGoal bugs',
@@ -26,10 +29,7 @@ class LevelTwo extends LevelState {
 			},
 			{
 				goal: "Jump on 3 enemies",
-				func: (_) -> {
-					js.Browser.console.log(killedEmenies);
-					killedEmenies > 2;
-				}
+				func: (_) -> killedEmenies > 2
 			}      
 		];    
   }
@@ -47,8 +47,21 @@ class LevelTwo extends LevelState {
     super.create(); 
   }
 
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
+
+	function changeState() {
+		FlxG.switchState(new LevelTwo.IntroTwo(_gameSave));
+	}	
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+
+		// Overlaps
+		grpHud.goalsCompleted
+			? FlxG.overlap(levelExit, player, fadeOut)
+			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);		
   }
 }
 
