@@ -38,6 +38,6 @@
   <image width="178" height="206" source="../../../Dropbox/pangolin/fire.png"/>
  </tile>
  <tile id="12">
-  <image width="287" height="183" source="../../../Dropbox/pangolin/boar-enemy.png"/>
+  <image width="139" height="88" source="../../../Dropbox/pangolin/boar-enemy.png"/>
  </tile>
 </tileset>

@@ -37,7 +37,7 @@ class LevelState extends GameState {
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
-	var _firstTile:Int = 15; // ID of first collision tile, for some reason Tiled changes this
+	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
@@ -300,7 +300,7 @@ class LevelState extends GameState {
 			enemy = new Enemy.Fire(X, newY);
 			_grpEnemies.add(enemy);
 
-		} else if (ObjectId == 14) { // Boar
+		} else if (ObjectId == 13) { // Boar
 			var boar:Enemy = null;
 			boar = new Enemy.Boar(X, newY, Name, Otype);
 			_grpMovingEnemies.add(boar);
