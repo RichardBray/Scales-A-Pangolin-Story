@@ -119,12 +119,10 @@ class LevelState extends GameState {
 		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
 
 		// Add standing enemies
-		_grpEnemies = new FlxTypedGroup<Enemy>();
-		add(_grpEnemies);		
+		_grpEnemies = new FlxTypedGroup<Enemy>();	
 
 		// Add moving enemies
 		_grpMovingEnemies = new FlxTypedGroup<Enemy>();
-		add(_grpMovingEnemies);				
 
 		// Tile tearing problem fix on Mac (part 1)
 		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
@@ -152,9 +150,11 @@ class LevelState extends GameState {
 		// Map objects added here
 		add(_mapEntities);
 		add(_grpCollectables);
+		add(_grpEnemies);	
+		add(_grpMovingEnemies);				
+
 
 		// Add envirionment collisions
-
 		_levelCollisions = new FlxTilemapExt();
 		_levelCollisions.loadMapFromArray(
 			cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, 
@@ -378,7 +378,7 @@ class LevelState extends GameState {
 				Player.animJump(Player.flipX); 
 			} else { // Player is in the air
 				// Player bounce
-				Player.velocity.y = -900;
+				Player.velocity.y = Enemy.push;
 				// when rolling animation is playing
 				if (playerAttacking) {
 					Enemy.sndEnemyKill.play();
@@ -435,7 +435,7 @@ class LevelState extends GameState {
 
 			Player.isTouching(FlxObject.FLOOR)
 				? Player.animJump(Player.flipX)
-				:	Player.velocity.y = -450;
+				:	Player.velocity.y = Enemy.push;
 		}
 
 		if (Enemy.alive) { // Prevents enemy from dying

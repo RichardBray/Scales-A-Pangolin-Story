@@ -9,6 +9,7 @@ import flixel.FlxObject;
 class Enemy extends FlxSprite {
 	public var sndHit:FlxSound;
 	public var sndEnemyKill:FlxSound;
+	public var push:Int = -900; // How much to push the player up by when they jump on enemy
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
@@ -40,6 +41,7 @@ class Fire extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y + 50); // to make up for offset
 		_timer = new FlxTimer();
+		push = -450;
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
 		updateSpriteHitbox(70, 50, this);
 
@@ -123,6 +125,7 @@ class Snake extends Enemy {
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y);
 		_timer = new FlxTimer();
+		push = -450;
 		loadGraphic("assets/images/snake_sprites.png", true, 238, 120);
 		_facingDirection = Name == "left";	
 
