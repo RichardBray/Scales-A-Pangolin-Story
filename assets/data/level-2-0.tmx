@@ -43,7 +43,7 @@
   <object id="79" name="left" type="5" gid="11" x="4671" y="991" width="36" height="15"/>
   <object id="80" name="right" type="1" gid="9" x="5239" y="960.333" width="42" height="39"/>
   <object id="81" name="right" type="10" gid="10" x="12525" y="1576" width="47" height="39"/>
-  <object id="49" gid="8" x="12419" y="1609" width="974" height="258"/>
+  <object id="49" gid="8" x="12420" y="1609" width="974" height="258"/>
   <object id="50" gid="8" x="13393" y="1609.33" width="974" height="258"/>
   <object id="25" gid="8" x="6556" y="1624" width="974" height="258"/>
   <object id="26" gid="8" x="7529.18" y="1624.27" width="974" height="258"/>

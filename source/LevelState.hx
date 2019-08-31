@@ -45,6 +45,7 @@ class LevelState extends GameState {
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
+	var _playerTouchEnemy:Bool = false;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -305,7 +306,12 @@ class LevelState extends GameState {
 			boar = new Enemy.Boar(X, newY, Name, Otype);
 			_grpMovingEnemies.add(boar);
 
-		}else {
+		} else if (ObjectId == 29) { // Snake
+			var snake:Enemy = null;
+			snake = new Enemy.Snake(X, newY, Name, Otype);
+			_grpMovingEnemies.add(snake);
+
+		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
 			_mapEntities.add(_object);
@@ -352,7 +358,10 @@ class LevelState extends GameState {
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
-				if (!LastLife) Player.hurt(1);
+				if (!LastLife && !_playerTouchEnemy) {
+					Player.hurt(1);
+					_playerTouchEnemy = true;
+				}
 				Enemy.sndHit.play(true);
 				FlxSpriteUtil.flicker(Player);
 				Player.animJump(Player.flipX); 
@@ -365,15 +374,18 @@ class LevelState extends GameState {
 					Enemy.kill();
 					incrementDeathCount();
 				} else { // when rolling animation is NOT playing
-					if (!LastLife) Player.hurt(1);
+					if (!LastLife && !_playerTouchEnemy) {
+						Player.hurt(1);
+						_playerTouchEnemy = true;
+					}
 					Enemy.sndHit.play();
 					FlxSpriteUtil.flicker(Player);
 				}
 			}	
-			grpHud.decrementHealth((LastLife) ? 0 : Player.health);	
+			grpHud.decrementHealth(LastLife ? 0 : Player.health);	
 		}
 
-		// Player is alive
+		// Fix player dying on last life when they attack
 		(Player.health == 1 && !playerAttacking) 
 			? playerDeathASequence(Player, playerAttackedAnims)
 			: playerAttackedAnims();
@@ -417,7 +429,7 @@ class LevelState extends GameState {
 
 			Player.isTouching(FlxObject.FLOOR)
 				? Player.animJump(Player.flipX)
-				:	Player.velocity.y = -400;
+				:	Player.velocity.y = -450;
 		}
 
 		if (Enemy.alive) { // Prevents enemy from dying
@@ -431,6 +443,7 @@ class LevelState extends GameState {
 	 * Sequence of events that need to happen when player dies.
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
+		js.Browser.console.log(Player.health);
 		var timer = new FlxTimer();
 		// @todo play death animation
 		Player.preventMovement = true;
@@ -497,6 +510,10 @@ class LevelState extends GameState {
 		updateFeetCollisions();
 		
 		super.update(Elapsed);
+
+		if (_playerTouchEnemy) {
+			haxe.Timer.delay(() -> _playerTouchEnemy = false, 500);
+		}
 
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
