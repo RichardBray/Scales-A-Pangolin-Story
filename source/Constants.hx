@@ -12,6 +12,7 @@ class Constants {
 
 	// Fonts
 	public static var smlFont:Int = 20;
+	public static var hudFont:Int = 26;
 	public static var medFont:Int = 33;
 	public static var lrgFont:Int = 48;
 
