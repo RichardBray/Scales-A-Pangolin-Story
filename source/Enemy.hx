@@ -15,16 +15,6 @@ class Enemy extends FlxSprite {
 		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
 	}
-
-	// override public function kill() {
-		// exists = false;
-		// FlxTween.tween(this, {alpha: 0, y: y + 50}, .5, {ease: FlxEase.quadOut, onComplete: finishKill});
-  //}
-
-	// function finishKill(_) {
-	// 	exists = false;
-	// }
-	
 }
 
 class Fire extends Enemy {
@@ -61,9 +51,14 @@ class Boar extends Enemy {
 	var _enemyHit:Bool = false;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
-		super(X, Y);
+		super(X, Y + 40);
 		_timer = new FlxTimer();
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
+		setGraphicSize(116, 48);
+		updateHitbox();
+		offset.set(20, 40);
+		scale.set(1, 1);
+	
 		_distance = Std.parseInt(Otype) * 10; // 15 = tile width
 		_facingDirection = Name == "left";	
 
@@ -106,5 +101,38 @@ class Boar extends Enemy {
 		_enemyHit ? animation.play("dying") : animation.play("walking");
 		boarPacing();
 		super.update(Elapsed);
+	}		
+}
+
+class Snake extends Enemy {
+	var _facingDirection:Bool;
+	var _enemyHit:Bool = false;
+	var _timer:FlxTimer;
+
+	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
+		super(X, Y);
+		_timer = new FlxTimer();
+		loadGraphic("assets/images/snake_sprites.png", true, 238, 120);
+		_facingDirection = Name == "left";	
+
+		setFacingFlip(FlxObject.LEFT, true, false);
+		setFacingFlip(FlxObject.RIGHT, false, false);	
+
+		animation.add("idle", [for (i in 0...4) i], 6, true);
+		animation.add("attacking", [for (i in 5...9) i], 8, false);		
+		animation.add("dying", [for (i in 10...14) i], 8, false);				
+	}
+
+	override public function kill() {
+		_enemyHit = true;
+		alive = false;
+		_timer.start(1, (_) -> {
+			exists = false;
+		}, 1);
+  }
+
+	override public function update(Elapsed:Float) {
+		super.update(Elapsed);
+		_enemyHit ? animation.play("dying") : animation.play("idle");
 	}		
 }
