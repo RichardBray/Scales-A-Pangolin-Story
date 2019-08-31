@@ -66,7 +66,7 @@
   <object id="96" name="left" type="16" gid="13" x="11362" y="1578.67" width="139" height="88"/>
   <object id="97" name="right" type="18" gid="13" x="6855.67" y="1381.33" width="139" height="88"/>
   <object id="98" name="right" type="16" gid="13" x="3936" y="1577.67" width="139" height="88"/>
-  <object id="99" gid="29" x="7612" y="1064" width="238" height="120"/>
+  <object id="99" gid="29" x="10402" y="1226" width="238" height="120"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
