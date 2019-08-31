@@ -45,7 +45,7 @@ class LevelState extends GameState {
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
-	var _playerTouchEnemy:Bool = false;
+	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -350,6 +350,22 @@ class LevelState extends GameState {
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		var playerAttacking:Bool = Player.animation.curAnim.name == "jump" || Player.animation.curAnim.name == "jumpLoop";
+
+		/**
+		 * Things to do when player get's hurt.
+		 * Sets `_playerTouchMovingEnemy` true if player gets hurt. Prevents loosing two harts on one hit.
+		 *
+		 * @param LastLife Used to prolongue death of character.
+		 */
+		function playerHurt(LastLife:Bool) {
+			if (!LastLife && !_playerTouchMovingEnemy) {
+				Player.hurt(1);
+				_playerTouchMovingEnemy = true;
+			}
+			Enemy.sndHit.play();
+			FlxSpriteUtil.flicker(Player);
+		}
+
 		/**
 		* Animations and positions for when player hits enemy
 		*
@@ -358,12 +374,7 @@ class LevelState extends GameState {
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
-				if (!LastLife && !_playerTouchEnemy) {
-					Player.hurt(1);
-					_playerTouchEnemy = true;
-				}
-				Enemy.sndHit.play(true);
-				FlxSpriteUtil.flicker(Player);
+				playerHurt(LastLife);
 				Player.animJump(Player.flipX); 
 			} else { // Player is in the air
 				// Player bounce
@@ -374,19 +385,14 @@ class LevelState extends GameState {
 					Enemy.kill();
 					incrementDeathCount();
 				} else { // when rolling animation is NOT playing
-					if (!LastLife && !_playerTouchEnemy) {
-						Player.hurt(1);
-						_playerTouchEnemy = true;
-					}
-					Enemy.sndHit.play();
-					FlxSpriteUtil.flicker(Player);
+					playerHurt(LastLife);
 				}
 			}	
 			grpHud.decrementHealth(LastLife ? 0 : Player.health);	
 		}
 
 		// Fix player dying on last life when they attack
-		(Player.health == 1 && !playerAttacking) 
+		(Player.health == 1 && !playerAttacking && !_playerTouchMovingEnemy) 
 			? playerDeathASequence(Player, playerAttackedAnims)
 			: playerAttackedAnims();
 	}	
@@ -511,8 +517,8 @@ class LevelState extends GameState {
 		
 		super.update(Elapsed);
 
-		if (_playerTouchEnemy) {
-			haxe.Timer.delay(() -> _playerTouchEnemy = false, 500);
+		if (_playerTouchMovingEnemy) {
+			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
 		}
 
 		// Reset the game if the player goes higher/lower than the map
