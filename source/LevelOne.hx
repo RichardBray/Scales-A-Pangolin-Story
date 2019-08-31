@@ -77,7 +77,7 @@ class LevelOne extends LevelState {
 	}
 
 	function changeState() {
-		FlxG.switchState(new LevelTwo.IntroTwo(_gameSave));
+		FlxG.switchState(new LevelTwo(_gameSave));
 	}
 
 	/**
