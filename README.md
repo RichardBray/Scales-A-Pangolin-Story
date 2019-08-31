@@ -31,6 +31,10 @@ or
 npm start
 ```
 
+## Build for production
+```
+lime build mac
+```
 
 ## Notes
 
