@@ -15,6 +15,23 @@ class Enemy extends FlxSprite {
 		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
 	}
+
+	/**
+	 * Method to change the site of a sprite's hitbox size.
+	 *
+	 * @param Width Amount to want to reduce or increase the hitbox WIDTH by
+	 * @param Height Amount to want to reduce or increase the hitbox HEIGHT by
+	 * @param Sprite Sprite instance
+	 */
+	public function updateSpriteHitbox(Width:Int, Height:Int, Sprite:FlxSprite) {
+		var newHitboxWidth:Int = Std.int(Sprite.width - Width);
+		var newHitboxHeight:Int = Std.int(Sprite.height - Height);
+
+		Sprite.setGraphicSize(newHitboxWidth, newHitboxHeight);
+		Sprite.updateHitbox();
+		Sprite.offset.set(Width / 2, Height);
+		Sprite.scale.set(1, 1);
+	}	
 }
 
 class Fire extends Enemy {
@@ -24,10 +41,7 @@ class Fire extends Enemy {
 		super(X, Y + 50); // to make up for offset
 		_timer = new FlxTimer();
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
-		setGraphicSize(108, 156);
-		updateHitbox();
-		offset.set(35, 50);
-		scale.set(1, 1);
+		updateSpriteHitbox(70, 50, this);
 
 		animation.add("burning", [for (i in 0...7) i], 12, true);		
 	}
@@ -54,10 +68,7 @@ class Boar extends Enemy {
 		super(X, Y + 40);
 		_timer = new FlxTimer();
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
-		setGraphicSize(116, 48);
-		updateHitbox();
-		offset.set(20, 40);
-		scale.set(1, 1);
+		updateSpriteHitbox(40, 40, this);
 	
 		_distance = Std.parseInt(Otype) * 10; // 15 = tile width
 		_facingDirection = Name == "left";	
