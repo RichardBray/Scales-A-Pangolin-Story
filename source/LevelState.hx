@@ -316,16 +316,16 @@ class LevelState extends GameState {
 	/**
 	 * Method to dication what should happen when player interacts weith a special tile.
 	 * 
-	 * @param FallThroughTIle	Tile that should be affected by action
+	 * @param FallThroughTile	Tile that should be affected by action
 	 * @param	Player					Player sprite (I'm not 100% sure if this is true)
 	 */
-	function fallInClouds(FallThroughTIle:FlxObject, Player:FlxObject) {
+	function fallInClouds(FallThroughTile:FlxObject, Player:FlxObject) {
 		if (_controls.down.check()) {
 			var timer = new FlxTimer();
-			FallThroughTIle.allowCollisions = FlxObject.NONE;
+			FallThroughTile.allowCollisions = FlxObject.NONE;
 			timer.start(.1, (_) -> player.isGoindDown = true);	
-		} else if (Player.y >= FallThroughTIle.y) {
-			FallThroughTIle.allowCollisions = FlxObject.CEILING;
+		} else if (Player.y >= FallThroughTile.y) {
+			FallThroughTile.allowCollisions = FlxObject.CEILING;
 			player.isGoindDown = false;
 		}
 	}
