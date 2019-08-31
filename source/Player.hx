@@ -98,5 +98,8 @@ class Player extends FlxSprite {
 				isJumping = true;
 			}
 		}
+
+		// Fix bug where pressing down plays jump loop evem on ground
+		if (isTouching(FlxObject.FLOOR)) isGoindDown = false;
 	}
 }
