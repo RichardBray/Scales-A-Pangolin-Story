@@ -343,6 +343,7 @@ class LevelState extends GameState {
 	 * What happens when the player and the enemy collide
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
+		var playerAttacking:Bool = Player.animation.curAnim.name == "jump" || Player.animation.curAnim.name == "jumpLoop";
 		/**
 		* Animations and positions for when player hits enemy
 		*
@@ -359,7 +360,7 @@ class LevelState extends GameState {
 				// Player bounce
 				Player.velocity.y = -900;
 				// when rolling animation is playing
-				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
+				if (playerAttacking) {
 					Enemy.sndEnemyKill.play();
 					Enemy.kill();
 					incrementDeathCount();
@@ -373,9 +374,9 @@ class LevelState extends GameState {
 		}
 
 		// Player is alive
-		(Player.health > 1) 
-			? playerAttackedAnims()
-			: playerDeathASequence(Player, playerAttackedAnims);
+		(Player.health == 1 && !playerAttacking) 
+			? playerDeathASequence(Player, playerAttackedAnims)
+			: playerAttackedAnims();
 	}	
 
 	/**
