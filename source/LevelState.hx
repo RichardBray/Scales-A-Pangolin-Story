@@ -306,10 +306,10 @@ class LevelState extends GameState {
 			boar = new Enemy.Boar(X, newY, Name, Otype);
 			_grpMovingEnemies.add(boar);
 
-		} else if (ObjectId == 29) { // Snake
-			var snake:Enemy = null;
-			snake = new Enemy.Snake(X, newY, Name, Otype);
-			_grpMovingEnemies.add(snake);
+		// } else if (ObjectId == 29) { // Snake
+		// 	var snake:Enemy = null;
+		// 	snake = new Enemy.Snake(X, newY, Name, Otype);
+		// 	_grpMovingEnemies.add(snake);
 
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
@@ -449,7 +449,6 @@ class LevelState extends GameState {
 	 * Sequence of events that need to happen when player dies.
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
-		js.Browser.console.log(Player.health);
 		var timer = new FlxTimer();
 		// @todo play death animation
 		Player.preventMovement = true;
