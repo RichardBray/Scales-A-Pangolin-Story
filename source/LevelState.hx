@@ -1,8 +1,8 @@
 package;
 
 // - Flixel
+import flixel.tile.FlxTile;
 import flixel.util.FlxTimer;
-import flixel.system.FlxSound;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -29,6 +29,7 @@ class LevelState extends GameState {
 	var _mapEntities:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _grpEnemies:FlxTypedGroup<Enemy>;
+	var _grpMovingEnemies:FlxTypedGroup<Enemy>;
 	var _levelCollisions:FlxTilemapExt;
 	var _map:TiledMap;
 	var _mapObjects:TiledObjectLayer;
@@ -36,9 +37,15 @@ class LevelState extends GameState {
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
+	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
-	// Sounds
-	var _sndCollect:FlxSound;
+	// Player
+	var _secondsOnGround:Float; // Used for feet collisions to tell how
+	var _playerFeetCollision:FlxObject;
+	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
+	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
+	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
+	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -46,6 +53,7 @@ class LevelState extends GameState {
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
 	public var actionPressed:Bool = false;
 	public var levelName:String; // Give level unique name
+	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 
 	override public function create() {
 		bgColor = 0xffc7e4db; // Game background color
@@ -66,7 +74,6 @@ class LevelState extends GameState {
 
 		// Camera follows Player
 		FlxG.camera.follow(player, PLATFORMER, 1);
-		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 
 		// Intialise controls
 		_controls = new Controls();
@@ -74,39 +81,22 @@ class LevelState extends GameState {
 		super.create();
 	}
 
-	override public function update(Elapsed:Float) {
-		super.update(Elapsed);
-
-		// Reset the game if the player goes higher/lower than the map
-		if (player.y > _map.fullHeight) {
-			var _pauseMenu:PauseMenu = new PauseMenu(true);
-			openSubState(_pauseMenu);
-		}
-		// Paused game state
-		if (_controls.start.check()) {
-			// SubState needs to be recreated here as it will be destroyed
-			FlxG.sound.music.pause();
-			var _pauseMenu:PauseMenu = new PauseMenu(false);
-			openSubState(_pauseMenu);
-		}
-
-		// Collisions
-		FlxG.collide(player, _levelCollisions);
-
-		// Overlaps
-		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
-		FlxG.overlap(_grpCollectables, player, getCollectable);
-	}
+	/** PUBLIC FUNCTIONS **/
 
 	/**
+	 * Method for creating a level
 	 *
 	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
 	 * @param 	Background 		Parallax background image name.
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
-	public function createLevel(MapFile:String, Background:String, CollectablesMap:CollMap) {
+	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap) {
 		_collisionImg = "assets/images/collisions.png";
-		_collectablesMap = CollectablesMap;
+		if (CollectablesMap != null) {
+			_collectablesMap = CollectablesMap;
+		} else {
+			_collectablesMap = Constants.initialColMap();
+		}
 
 		/**
 		 * Code for adding the environment and collisions
@@ -128,9 +118,11 @@ class LevelState extends GameState {
 		// Add bugs group
 		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
 
-		// Add enemies
-		_grpEnemies = new FlxTypedGroup<Enemy>();
-		add(_grpEnemies);		
+		// Add standing enemies
+		_grpEnemies = new FlxTypedGroup<Enemy>();	
+
+		// Add moving enemies
+		_grpMovingEnemies = new FlxTypedGroup<Enemy>();
 
 		// Tile tearing problem fix on Mac (part 1)
 		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
@@ -158,9 +150,11 @@ class LevelState extends GameState {
 		// Map objects added here
 		add(_mapEntities);
 		add(_grpCollectables);
+		add(_grpEnemies);	
+		add(_grpMovingEnemies);				
+
 
 		// Add envirionment collisions
-		var firstTile:Int = 13;
 		_levelCollisions = new FlxTilemapExt();
 		_levelCollisions.loadMapFromArray(
 			cast(_map.getLayer("collisions"), TiledTileLayer).tileArray, 
@@ -170,17 +164,17 @@ class LevelState extends GameState {
 			_map.tileWidth,
 			_map.tileHeight, 
 			FlxTilemapAutoTiling.OFF, 
-			firstTile
+			_firstTile
 		);
 
 		_levelCollisions.follow(); // lock camera to map's edges
 
 		// set slopes
-		_levelCollisions.setSlopes([firstTile + 7, firstTile + 8]);
-		_levelCollisions.setGentle([firstTile + 8], [firstTile + 7]);
+		_levelCollisions.setSlopes([_firstTile + 7, _firstTile + 8]);
+		_levelCollisions.setGentle([_firstTile + 8], [_firstTile + 7]);
 
 		// set cloud/special tiles
-		_levelCollisions.setTileProperties(firstTile + 2, FlxObject.NONE, fallInClouds);
+		_levelCollisions.setTileProperties(_firstTile + 2, FlxObject.NONE, fallInClouds);
 		_levelCollisions.alpha = 0; // Hide collision objects
 		add(_levelCollisions);
 
@@ -204,17 +198,20 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * Adds player
+	 * Adds player and the feet collisions
 	 *
 	 * @param X 				Player X position
 	 * @param Y 				Player Y position
-	 * @param FacingLef If the player is facine left
+	 * @param FacingLeft If the player is facine left
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
-		if (FacingLeft)
-			player.facing = FlxObject.LEFT;
+		_playerFeetCollision = new FlxObject(X, Y, 10, 72);
+		_playerFeetCollision.acceleration.y = Constants.worldGravity;
+	
+		if (FacingLeft) player.facing = FlxObject.LEFT;
 		add(player);
+		add(_playerFeetCollision);
 	}
 
 	/**
@@ -237,8 +234,10 @@ class LevelState extends GameState {
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String) {
-		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
+		FlxG.sound.playMusic(LevelMusic, 0.2, true); // .4
 	}
+
+
 
 	/**
 	 * Place entities from Tilemap.
@@ -302,6 +301,16 @@ class LevelState extends GameState {
 			enemy = new Enemy.Fire(X, newY);
 			_grpEnemies.add(enemy);
 
+		} else if (ObjectId == 13) { // Boar
+			var boar:Enemy = null;
+			boar = new Enemy.Boar(X, newY, Name, Otype);
+			_grpMovingEnemies.add(boar);
+
+		// } else if (ObjectId == 29) { // Snake
+		// 	var snake:Enemy = null;
+		// 	snake = new Enemy.Snake(X, newY, Name, Otype);
+		// 	_grpMovingEnemies.add(snake);
+
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
@@ -310,13 +319,19 @@ class LevelState extends GameState {
 	}
 
 	/** Special tiles **/
-	function fallInClouds(Tile:FlxObject, Object:FlxObject) {
+	/**
+	 * Method to dication what should happen when player interacts weith a special tile.
+	 * 
+	 * @param FallThroughTile	Tile that should be affected by action
+	 * @param	Player					Player sprite (I'm not 100% sure if this is true)
+	 */
+	function fallInClouds(FallThroughTile:FlxObject, Player:FlxObject) {
 		if (_controls.down.check()) {
 			var timer = new FlxTimer();
-			Tile.allowCollisions = FlxObject.NONE;
+			FallThroughTile.allowCollisions = FlxObject.NONE;
 			timer.start(.1, (_) -> player.isGoindDown = true);	
-		} else if (Object.y >= Tile.y) {
-			Tile.allowCollisions = FlxObject.CEILING;
+		} else if (Player.y >= FallThroughTile.y) {
+			FallThroughTile.allowCollisions = FlxObject.CEILING;
 			player.isGoindDown = false;
 		}
 	}
@@ -324,7 +339,6 @@ class LevelState extends GameState {
 	function getCollectable(Collectable:CollectableBug.Bug, Player:Player) {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
-			_sndCollect.play(true);
 			_collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}
@@ -335,41 +349,65 @@ class LevelState extends GameState {
 	 * What happens when the player and the enemy collide
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
+		var playerAttacking:Bool = Player.animation.curAnim.name == "jump" || Player.animation.curAnim.name == "jumpLoop";
+
+		/**
+		 * Things to do when player get's hurt.
+		 * Sets `_playerTouchMovingEnemy` true if player gets hurt. Prevents loosing two harts on one hit.
+		 *
+		 * @param LastLife Used to prolongue death of character.
+		 */
+		function playerHurt(LastLife:Bool) {
+			if (!LastLife && !_playerTouchMovingEnemy) {
+				Player.hurt(1);
+				_playerTouchMovingEnemy = true;
+			}
+			Enemy.sndHit.play();
+			FlxSpriteUtil.flicker(Player);
+		}
+
 		/**
 		* Animations and positions for when player hits enemy
-		*/
+		*
+		* @param LastLife Used to prolongue death of character.
+		*/	
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
-				if (!LastLife) Player.hurt(1);
-				Enemy.sndHit.play(true);
-				FlxSpriteUtil.flicker(Player);
+				playerHurt(LastLife);
 				Player.animJump(Player.flipX); 
 			} else { // Player is in the air
 				// Player bounce
-				Player.velocity.y = -900;
+				Player.velocity.y = Enemy.push;
 				// when rolling animation is playing
-				if (Player.animation.curAnim.name == 'jump' || Player.animation.curAnim.name == 'jumpLoop') {
+				if (playerAttacking) {
 					Enemy.sndEnemyKill.play();
-					// Enemy.kill();
+					Enemy.kill();
+					incrementDeathCount();
 				} else { // when rolling animation is NOT playing
-					if (!LastLife) Player.hurt(1);
-					Enemy.sndHit.play();
-					FlxSpriteUtil.flicker(Player);
+					playerHurt(LastLife);
 				}
-			}		
-			grpHud.decrementHealth((LastLife) ? 0 : Player.health);
+			}	
+			grpHud.decrementHealth(LastLife ? 0 : Player.health);	
 		}
 
-		// Player is alive
-		if (Enemy.alive && Player.health > 1) {
-			playerAttackedAnims();
-		} else { // Player is dead
-			playerDeathASequence(Player, playerAttackedAnims);
-		}
+		// Fix player dying on last life when they attack
+		(Player.health == 1 && !playerAttacking && !_playerTouchMovingEnemy) 
+			? playerDeathASequence(Player, playerAttackedAnims)
+			: playerAttackedAnims();
 	}	
 
-
+	/**
+	 * Method used to count enemy deaths. Time used to make sure boolean is set one.
+	 * Would be set multiple times otherwise because of update.
+	 */
+	function incrementDeathCount() {
+		if (!_enemyDeathCounterExecuted) {
+			killedEmenies++;
+			_enemyDeathCounterExecuted = true;
+			haxe.Timer.delay(() -> _enemyDeathCounterExecuted = false, 1000);
+		}		
+	}
 	/**
 	 * Reaction for player if hitting a stading enemy i.e. spikes or fire.
 	 * Player shoudl lose health no matter how enemy is hit/overlapped.
@@ -397,7 +435,7 @@ class LevelState extends GameState {
 
 			Player.isTouching(FlxObject.FLOOR)
 				? Player.animJump(Player.flipX)
-				:	Player.velocity.y = -400;
+				:	Player.velocity.y = Enemy.push;
 		}
 
 		if (Enemy.alive) { // Prevents enemy from dying
@@ -408,9 +446,7 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * Sequeence of events that need to happen when plaher dies.
-	 *
-
+	 * Sequence of events that need to happen when player dies.
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
 		var timer = new FlxTimer();
@@ -421,7 +457,91 @@ class LevelState extends GameState {
 	}
 
 	function showGameOverMenu(_) {
-		var _pauseMenu:PauseMenu = new PauseMenu(true);
+		var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
 		openSubState(_pauseMenu);
 	}
+
+	/**
+	* This method updates the player of the feet collisions with the players.
+	*/
+	function updateFeetCollisions() {
+		var xOffset:Int = player.facing == FlxObject.LEFT ? 80 : 25;
+		var playerIsOnGround:Bool = player.isTouching(FlxObject.FLOOR);
+		var feetCollisionIsOnGround:Bool = _playerFeetCollision.isTouching(FlxObject.FLOOR);
+
+		// Conditions
+		var playerTouchingButNotFeet:Bool = playerIsOnGround && _secondsOnGround > 0.2;
+		var playerIsInTheAir:Bool = !playerIsOnGround && !_playerPushedByFeet || _upOnSlope;
+
+		// Positions the feet colisions higher when jumping so that the player touches the ground first
+		var yOffset:Int = playerIsInTheAir ? -30 : 20;
+
+		// Make sure feet collisions always hits floor before player when being pushed down by feet
+		yOffset	= _playerPushedByFeet ? 30 : yOffset;
+
+		if (playerTouchingButNotFeet && !feetCollisionIsOnGround) {
+			// Activate gravity and disable player collisions
+			player.acceleration.y = Constants.worldGravity;
+			player.allowCollisions = FlxObject.NONE;
+			_playerPushedByFeet = true;
+
+		} else if (playerIsInTheAir || feetCollisionIsOnGround) {
+			_secondsOnGround = 0; // Reset this because their in the air
+			player.allowCollisions = FlxObject.ANY;
+			if (feetCollisionIsOnGround) _playerPushedByFeet = false;
+		}
+
+		// Update feet coliison position at bottom 
+		_playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);	
+	}
+
+	/**
+	 * This method prevents the player from colliding with slopes.
+	 * The slope and the feetCollisions don't work well together.
+	 */
+	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
+		var convertedSlope:FlxTile;
+		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
+		if (convertedSlope.index == _firstTile + 7) { 
+			_playerPushedByFeet = false; 
+			_upOnSlope = true;
+		}
+		_upOnSlope = false;
+		return true;
+	}
+
+	override public function update(Elapsed:Float) {
+		_secondsOnGround += Elapsed;
+		updateFeetCollisions();
+		
+		super.update(Elapsed);
+
+		if (_playerTouchMovingEnemy) {
+			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
+		}
+
+		// Reset the game if the player goes higher/lower than the map
+		if (player.y > _map.fullHeight) {
+			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
+			openSubState(_pauseMenu);
+		}
+		// Paused game state
+		if (_controls.start.check()) {
+			// SubState needs to be recreated here as it will be destroyed
+			FlxG.sound.music.pause();
+			var _pauseMenu:PauseMenu = new PauseMenu(false, levelName);
+			openSubState(_pauseMenu);
+		}
+
+		// Collisions
+		FlxG.collide(player, _levelCollisions);
+		FlxG.collide(_playerFeetCollision, _levelCollisions);
+
+		// Overlaps
+		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
+		FlxG.overlap(_grpMovingEnemies, player, hitEnemy);
+		FlxG.overlap(_grpCollectables, player, getCollectable);
+
+		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
+	}	
 }

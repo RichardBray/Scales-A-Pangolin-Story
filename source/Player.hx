@@ -9,10 +9,11 @@ import flixel.system.FlxSound;
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _controls:Controls;
-	static var GRAVITY:Float = 1500;
+	static var GRAVITY:Float = Constants.worldGravity;
 
 	public var preventMovement:Bool;
-	public var isGoindDown:Bool;
+	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds.
+	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx.
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -21,17 +22,17 @@ class Player extends FlxSprite {
 		isGoindDown = false; // If down button is pressed
 		health = 3; // Health player starts off with
 	
-		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 135); // height 113.5
-		setGraphicSize(121, 100);
+		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 127); // height 113.5
+		setGraphicSize(121, 92);
 		updateHitbox();
 
-		offset.set(165, 33);
+		offset.set(165, 37);
 		scale.set(1, 1);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
 		// Animations
-		animation.add("idle", [for (i in 23...28) i], 8, true);
+		animation.add("idle", [for (i in 24...29) i], 8, true);
 		animation.add("run", [for (i in 0...5) i], 12, false);
 		animation.add("jump", [for (i in 11...23) i], 12, false);
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
@@ -69,6 +70,7 @@ class Player extends FlxSprite {
 		drag.x = SPEED; // Deceleration applied when acceleration is not affecting the sprite.
 
 		if (!preventMovement) {
+			isJumping = false;
 			if (_left || _right) {
 				acceleration.x = _left ? -SPEED : SPEED;
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
@@ -86,13 +88,18 @@ class Player extends FlxSprite {
 			if (_jump && isTouching(FlxObject.FLOOR)) {
 				_sndJump.play();
 				offset.x = 80;
+				isJumping = true;
 				velocity.y = -800; // 1100
 				animation.play("jump");
 				animation.play("jumpLoop");
 			}
 			if (isGoindDown) {
 				animation.play("jumpLoop");
+				isJumping = true;
 			}
 		}
+
+		// Fix bug where pressing down plays jump loop evem on ground
+		if (isTouching(FlxObject.FLOOR)) isGoindDown = false;
 	}
 }

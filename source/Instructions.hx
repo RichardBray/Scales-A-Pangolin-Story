@@ -61,13 +61,15 @@ class Instructions extends FlxSubState {
 
     // Exit test
     var start:String = Constants.start;
-    _exitText = new FlxText(1480, 120, 'Press $start to Exit', Constants.smlFont);
+    _exitText = new FlxText(1480, 120, 'Press $start to Exit');
+    _exitText.setFormat(Constants.squareFont, Constants.smlFont);
     _exitText.scrollFactor.set(0, 0);
     add(_exitText);
 
     // Show instructions controls
     _totalPages = (EndPage + 1) - StartPage;
-    _pagePosition = new FlxText(0, 925, 100, '$_currentPage/$_totalPages', Constants.smlFont);
+    _pagePosition = new FlxText(0, 925, 100, '$_currentPage/$_totalPages');
+    _pagePosition.setFormat(Constants.squareFont, Constants.smlFont);
     _pagePosition.scrollFactor.set(0, 0);
     _pagePosition.screenCenter(X);
     add(_pagePosition);

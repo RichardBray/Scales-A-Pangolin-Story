@@ -38,14 +38,16 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		_menuData = Data;
 		_yPos = YPos;
 		// Pointer
-		_pointer = new FlxSprite(XPos, YPos - 5);
+		_pointer = new FlxSprite(XPos, YPos - 15);
 		_pointer.makeGraphic(MenuWidth, _spacing, Constants.secondaryColor);
 		add(_pointer);
 
 		// Text Choices
 		_menuData.mapi((idx:Int, data:MenuData) -> {
-			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title, Constants.medFont);
-			if(CenterText) choice.screenCenter(X);
+			var choice = new FlxText(XPos, YPos + (_spacing * idx), 0, data.title);
+			choice.setFormat(Constants.squareFont, Constants.medFont);
+
+			if (CenterText) choice.screenCenter(X);
 			choice.scrollFactor.set(0, 0);
 			add(choice);
 		});
@@ -66,7 +68,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 					_pointer.y = _pointer.y + _spacing;
 					_selected++;
 				} else {
-					_pointer.y = _yPos;
+					_pointer.y = _yPos - 15;
 					_selected = 0;
 				}
 			}
@@ -110,9 +112,10 @@ class BottomLeft extends FlxText {
 		// http://api.haxeflixel.com/flixel/input/gamepad/FlxGamepadModel.html
 
 		text = "[SPACE] SELECT \n[E] BACK";
-		size = Constants.smlFont;
 		fieldWidth = 200;
 		scrollFactor.set(0, 0);
+		setFormat(Constants.squareFont, Constants.smlFont);
+		
 	}
 }
 
@@ -123,7 +126,7 @@ class BottomRight extends FlxText {
 	public function new() {
 		super(FlxG.width - 100, FlxG.height - 50);
 		text = Constants.projectVersion;
-		size = Constants.smlFont;
 		scrollFactor.set(0, 0);
+		setFormat(Constants.squareFont, Constants.smlFont);
 	}
 }

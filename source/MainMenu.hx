@@ -12,13 +12,15 @@ import flixel.util.FlxColor;
 import Menu.MenuData;
 
 class MainMenu extends GameState {
-	var _gameTitle:FlxText;
+	var _bgImg:FlxSprite;
+	var _gameTitle:FlxSprite;
+	var _gameSubTitle:FlxText;
 	var _startText:FlxText;
 	var _gameSave:FlxSave;
 	var _continueColor:FlxColor;
 	var _showChoices:Bool = false;
 	var _menu:Menu;
-	var _titleWidth:Int = 800; // Worked thous out through trail and error
+	var _titleWidth:Int = 848;
 	var _controls:Controls;
 	var _timer:FlxTimer;
 	var _bottomLeft:FlxText;
@@ -32,12 +34,21 @@ class MainMenu extends GameState {
 		FlxG.sound.music = null; // Make sure there's no music
 		bgColor = 0xff000000; // Game background color
 
-		_gameTitle = new FlxText((FlxG.width / 2) 
-			- (_titleWidth / 2), (FlxG.height / 2) 
-			- 200, _titleWidth, "Sacles: A Pangolin Story", 72);
+		_bgImg = new FlxSprite(0, 0);
+		_bgImg.loadGraphic("assets/images/main_menu/scales_bg.jpg", false, 1920, 1080);
+		add(_bgImg);
+
+		_gameTitle = new FlxSprite((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 350);
+		_gameTitle.loadGraphic("assets/images/main_menu/scales_logo.png", false, 848, 347);
 		add(_gameTitle);
 
-		_startText = new FlxText(0, _gameTitle.y + 200, 0, "Press SPACE to start", Constants.medFont);
+		_gameSubTitle = new FlxText(0, _gameTitle.y + 365, 0, "A Pangolin Story");
+		_gameSubTitle.setFormat(Constants.squareFont, 75, Constants.slimeGreenColor);
+		_gameSubTitle.screenCenter(X);
+		add(_gameSubTitle);
+
+		_startText = new FlxText(0, _gameTitle.y + 500, 0, "Press SPACE to start");
+		_startText.setFormat(Constants.squareFont, Constants.medFont);
 		_startText.screenCenter(X);
 		_startText.alpha = 1;
 		add(_startText);
@@ -55,7 +66,7 @@ class MainMenu extends GameState {
 			}
 		];
 
-		_menu = new Menu(_gameTitle.x, _gameTitle.y + 200, _titleWidth, _menuData, true);
+		_menu = new Menu(_gameTitle.x, _gameTitle.y + 500, _titleWidth, _menuData, true);
 		_menu.hide();
 		add(_menu);
 
@@ -104,11 +115,8 @@ class MainMenu extends GameState {
 		if (_gameSave.data.levelName == null) { // No saved game
 			showModal('You have no saved games');
 		} else {
-			var levelNames:Map<String, Class<LevelState>> = [
-				"Level-1-0" => LevelOne, 
-				"Level-1-A" => LevelOneA
-			];
-			loadLevel(_gameSave, levelNames[_gameSave.data.levelName]);
+
+			loadLevel(_gameSave, Constants.levelNames[_gameSave.data.levelName]);
 		}
 	}
 
@@ -135,7 +143,7 @@ class MainMenu extends GameState {
 	}
 
 	function loadLevel(GameSave:FlxSave, Level:Class<LevelState>) {
-		FlxG.switchState(Type.createInstance(Level, [GameSave.data.playerScore, 3, GameSave.data.collectablesMap, null, GameSave]));
+		FlxG.switchState(Type.createInstance(Level, [GameSave, false]));
 	}
 }
 

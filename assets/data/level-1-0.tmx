@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="756" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="75">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="756" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="78">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
- <tileset firstgid="13" source="collisions.tsx"/>
+ <tileset firstgid="14" source="collisions.tsx"/>
  <objectgroup id="2" name="objects">
   <object id="1" gid="1" x="749" y="1608.66" width="367" height="266"/>
   <object id="2" gid="6" x="959.5" y="1612.49" width="850" height="1101"/>
-  <object id="3" gid="2" x="1842" y="1586.49" width="260" height="230"/>
   <object id="4" gid="7" x="2022.5" y="1598.49" width="1137" height="1494"/>
   <object id="5" gid="5" x="3274.43" y="1611.07" width="889" height="1184"/>
   <object id="7" gid="6" x="7586.77" y="1612.25" width="850" height="1101"/>
@@ -40,15 +39,14 @@
   <object id="34" name="left" type="5" gid="11" x="2818.5" y="810.485" width="36" height="15"/>
   <object id="35" name="left" type="5" gid="11" x="2443.5" y="915.485" width="36" height="15"/>
   <object id="36" name="left" type="5" gid="10" x="2938.5" y="1306.49" width="47" height="39"/>
-  <object id="37" name="right" type="1" gid="9" x="2461.5" y="1392.16" width="42" height="39"/>
   <object id="38" name="left" type="1" gid="9" x="3163.85" y="660" width="42" height="39"/>
-  <object id="39" name="right" type="5" gid="11" x="3825.25" y="1185.49" width="36" height="15"/>
+  <object id="39" name="right" type="4" gid="11" x="3825.25" y="1185.49" width="36" height="15"/>
   <object id="40" name="left" type="4" gid="11" x="3630.25" y="1020.49" width="36" height="15"/>
   <object id="41" name="right" type="10" gid="10" x="4230" y="1575.49" width="47" height="39"/>
   <object id="26" name="left" type="1" gid="9" x="4245" y="1167.49" width="36" height="27"/>
   <object id="46" name="right" type="1" gid="9" x="6859.85" y="974.642" width="42" height="39"/>
   <object id="47" name="left" type="1" gid="9" x="5325" y="1174.49" width="42" height="39"/>
-  <object id="48" name="right" type="5" gid="11" x="7706.94" y="1185.58" width="36" height="15"/>
+  <object id="48" name="right" type="4" gid="11" x="7706.94" y="1185.58" width="36" height="15"/>
   <object id="49" name="left" type="5" gid="10" x="8306.94" y="1005.58" width="47" height="39"/>
   <object id="50" name="right" type="5" gid="11" x="8066.94" y="1365.58" width="36" height="15"/>
   <object id="51" name="left" type="10" gid="10" x="7050" y="1579.49" width="47" height="39"/>
@@ -64,10 +62,10 @@
  </objectgroup>
  <layer id="3" name="collisions" width="756" height="120">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <objectgroup id="4" name="helpers">
-  <object id="65" x="240" y="1440" width="300" height="135"/>
+  <object id="65" name="Player star" x="240" y="1440" width="300" height="135"/>
  </objectgroup>
 </map>

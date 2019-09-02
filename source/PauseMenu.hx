@@ -5,12 +5,13 @@ import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
+import flixel.addons.display.shapes.FlxShapeBox;
 
 // Typedefs
 import Menu.MenuData;
 
 class PauseMenu extends FlxSubState {
-	var _boundingBox:FlxSprite;
+	var _boundingBox:FlxShapeBox;
 	var _gameOverlay:FlxSprite;
 	var _menuTitle:FlxText;
 	var _menuWidth:Int = 750;
@@ -21,7 +22,11 @@ class PauseMenu extends FlxSubState {
 	var _controls:Controls;
 
 
-	public function new(PlayerDied:Bool = false) {
+	/**
+	 * @param PlayerDied	If player died or not
+	 * @param LevelString	Name of the level
+	 */
+	public function new(PlayerDied:Bool = false, LevelString:String) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -31,15 +36,25 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_gameOverlay);
 
 		// Menu bounding box
-		_boundingBox = new FlxSprite(_boxXPos, (FlxG.height / 2) - (_menuHeight / 2));
-		_boundingBox.makeGraphic(_menuWidth, _menuHeight, Constants.primaryColor);
+		_boundingBox = new FlxShapeBox(
+			_boxXPos,
+			(FlxG.height / 2) - (_menuHeight / 2),
+			_menuWidth,
+			_menuHeight,
+			{ thickness:8, color:Constants.primaryColorLight }, 
+			Constants.primaryColor			
+		);
 		_grpMenuItems.add(_boundingBox);
 
 		_titleText = PlayerDied ? "GAME OVER" : "GAME PAUSED";
-		_menuTitle = new FlxText(20, 250, 0, _titleText, 45);
+		_menuTitle = new FlxText(20, 250, 0, _titleText);
+		_menuTitle.setFormat(Constants.squareFont, Constants.lrgFont);
 		_menuTitle.alignment = CENTER;
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
+
+		// Maps string to class from `levelNames` in constants
+		var levelToRestart:Class<LevelState> = Constants.levelNames[LevelString];
 
 		var _menuData:Array<MenuData> = [
 			{
@@ -50,7 +65,7 @@ class PauseMenu extends FlxSubState {
 				title: "Restart",
 				func: () -> {
 					FlxG.sound.music = null;
-					FlxG.switchState(new LevelOne(0, 3, null, false));
+					FlxG.switchState(Type.createInstance(levelToRestart, [null, false]));
 				}
 			},
 			{

@@ -1,11 +1,13 @@
 package;
 
+import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
+import flixel.addons.display.shapes.FlxShapeBox; // Used for goals not completed message
 
 using Lambda;
 
@@ -22,7 +24,9 @@ class HUD extends FlxSpriteGroup {
 	var _goalData:Null<Array<GoalData>>;
 	var _goalsArr:Array<Bool> = [];
 	var _comparisonGoalArray:Array<Bool> = []; // Used to compare against for updating goals
-
+	var _goalsNotCompleted:FlxText;
+	var _goalsNotCompletedBox:FlxShapeBox;
+	
 	public var gameScore:Int; // Send game score to level end menu
 	public var goalsCompleted:Bool = false; // Tells level class i.e. LevelOne when to allow exit
 
@@ -42,7 +46,7 @@ class HUD extends FlxSpriteGroup {
 	
 		// Socre text
 		_scoreTxt = new FlxText(_leftPush, 70, 0, updateScore(gameScore));
-		_scoreTxt.setFormat(null, 24, FlxColor.WHITE, FlxTextAlign.LEFT);
+		_scoreTxt.setFormat(Constants.squareFont, Constants.hudFont, FlxColor.WHITE, FlxTextAlign.LEFT);
 		add(_scoreTxt);
 
 		// Goals Text
@@ -55,16 +59,31 @@ class HUD extends FlxSpriteGroup {
 		createHearts(Health);
 		add(_hearts);
 
+		// Goals not completed box
+		var boxWidth:Int = 100;
+		var goalsYPos:Float = (FlxG.height / 2) - (boxWidth / 2); // Almost middle of the screen
+		_goalsNotCompletedBox = new FlxShapeBox(
+			-10, goalsYPos, 
+			FlxG.width + 20, boxWidth, 
+			{ thickness:8, color:Constants.primaryColorLight }, 
+			Constants.primaryColor
+		);
+		_goalsNotCompletedBox.alpha = 0;
+		add(_goalsNotCompletedBox);
+
+		// Goals not completed text
+		_goalsNotCompleted = new FlxText(
+			0, 
+			goalsYPos + 32, // Yes 32 is a magic number 
+			0, 
+			"You haven't completed all the goals"
+		);
+		_goalsNotCompleted.setFormat(Constants.squareFont, Constants.hudFont);
+		_goalsNotCompleted.alpha = 0;
+		_goalsNotCompleted.screenCenter(X);
+		add(_goalsNotCompleted);
+
 		this.forEach((_member:FlxSprite) -> _member.scrollFactor.set(0, 0));
-	}
-
-	override public function update(Elapsed:Float) {
-		super.update(Elapsed);
-
-		checkGoalsArray(_goalData);
-		// This compares the oringinal plan array of falses to the goals array and if anything has changed 
-		// it will run `updateGoals()`
-		if (!compareGoalArrays(_comparisonGoalArray, _goalsArr)) updateGoals();
 	}
 
 	/**
@@ -91,6 +110,21 @@ class HUD extends FlxSpriteGroup {
 		});
 	}
 
+	/**
+	 * Method to say goals haven't been completed. 
+	 * Only to be used as collide callback, hence the two arguments.
+	 */
+	public function goalsNotComplete(_, _) {
+		var _timer:FlxTimer = new FlxTimer();
+		_goalsNotCompleted.alpha = 1;
+		_goalsNotCompletedBox.alpha = 0.7; // Not fully visible so that tbe player can be seen behind it
+		// Hide message after two seconds
+		_timer.start(2, (_) -> {
+			_goalsNotCompleted.alpha = 0;
+			_goalsNotCompletedBox.alpha = 0;
+		});
+	}	
+
 	function updateScore(Score:Int):String {
 		return "Bugs: " + Score;
 	}
@@ -110,15 +144,17 @@ class HUD extends FlxSpriteGroup {
 		}
 	}
 
-	// Methods for GOALS!!!!
+	// *** Methods for GOALS!!!! ***
 
 	/**
 	 * This method creates a group of goal strings.
 	 */
 	function createGoals(Goals:Array<GoalData>) {
 		Goals.mapi((idx:Int, data:GoalData) -> {
-			var goal = new FlxText(FlxG.width - 300, 20 + (idx * 10), 0, data.goal);	
-			goal.setFormat(null, Constants.smlFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
+			var goalsTextLineHeight:Int = 40;
+			var distanceFromScreenTop:Int = 20;
+			var goal = new FlxText(FlxG.width - 300, distanceFromScreenTop + (idx * goalsTextLineHeight), 0, data.goal);	
+			goal.setFormat(Constants.squareFont, Constants.hudFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
 			_goals.add(goal);
 		});
 	}
@@ -170,4 +206,13 @@ class HUD extends FlxSpriteGroup {
 		for (a in 0...arrLength) if (Arr1[a] == Arr2[a]) equalValues++;
 		return arrLength == equalValues;
 	}
+
+	override public function update(Elapsed:Float) {
+		super.update(Elapsed);
+
+		checkGoalsArray(_goalData);
+		// This compares the oringinal plan array of falses to the goals array and if anything has changed 
+		// it will run `updateGoals()`
+		if (!compareGoalArrays(_comparisonGoalArray, _goalsArr)) updateGoals();
+	}	
 }
