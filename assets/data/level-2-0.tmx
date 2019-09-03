@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="100">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="101">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -52,7 +52,7 @@
   <object id="6" gid="8" x="1946" y="1819.33" width="974" height="258"/>
   <object id="35" gid="8" x="9810.33" y="1819.67" width="974" height="258"/>
   <object id="9" gid="8" x="3557" y="1819" width="974" height="258"/>
-  <object id="12" gid="8" x="-1.16667" y="1819.42" width="974" height="258"/>
+  <object id="12" gid="8" x="-0.16667" y="1819.42" width="974" height="258"/>
   <object id="19" gid="8" x="4529" y="1819" width="974" height="258"/>
   <object id="20" gid="8" x="5502" y="1819" width="974" height="258"/>
   <object id="23" gid="8" x="6474.67" y="1819.33" width="974" height="258"/>
@@ -67,14 +67,14 @@
   <object id="97" name="right" type="18" gid="13" x="6855.67" y="1381.33" width="139" height="88"/>
   <object id="98" name="right" type="16" gid="13" x="3936" y="1577.67" width="139" height="88"/>
   <object id="99" gid="29" x="10402" y="1226" width="238" height="120"/>
+  <object id="100" name="left" gid="2147483677" x="13167.7" y="1078.67" width="238" height="120"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
-   eJzt3UFO40AQhtHcIMCJc/SJFyxGaBKb6XL373pPqi1KwLj4nBDfbgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZ7rMfAAAAAOykYQEAAEihYQEAAEihYQEAAEihYQEAAEihYQEAAEihYQEAAK7to2Bm0bAAAACk0LAAAACk0LAAAACk0LAAAACk0LAAAACk0LAAAACk0LAAAADzVNz3Zua9b6ppWAAAAFJoWAAAAFJoWAAAAFJoWADgf/k/LgDOcqRh7ScAgL/52wjgXF6HBQAAIIWGBQAAIIWGBbrxvj8AgFwaFgAAgBQaFgAAgBQaFgAAgBQaFgC4KvcFBLgeDQsAAEAKDQsAAEAKDQusxPv+AAB4RcOyKt2yj+8T8ErFdSHnD45yrAEjbQ3rnAHAvzx3wWPkzH4+AOzn2tf5XHd8z+uwAAAApNCwAAAApNCwAAAApNCwAAAApNCwAAAApNCwAAAApNCwAAAApNCwAAAApNCwAAAAfBRMBQ1Ldyv+Xq5m1fMXAHyzp6APDQsA/FbKNXsArmNvw9pPAGt5nksfFTP7eUGFitb2Nw0zOZ7pzOuwAHRwfzFfEx8XAHCMhgWgg3f7TscCQAYNC6zK+6QYac++07EAsD4NC0AHe/edjgWAtWlYADo4su90LACsS8MC0MGRfWc3AsC67GkAOtCwAHAN9jQAHWhYALgGexqADjQsM/mMdYBx7GkAOtCwAHAN9jSrcl36PdfvYb/7wQHGsKeYrep+82be2NMAP40+1yZ6Pu7H6DnhMRsDDOD3kpVpWAAAAFJsDTv7eunsAQAAIIPXYQEAAEihYQEAAEihYfn2eTv+uZ0+0xMAADiT1mDzOfjrOa4AAIAKWoPR/bpxXAEAABW0Rm8V/bpxXAEAABW0Rm9VP3/HFQAAUEFr9KZhAQCAJFqjNw0LAAAk0Rq9aVgAACDJyPuBGpM8KWZ/n4wxxqwzZ5v9fI0xZhsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABe+wPt8ZXy
+   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
   </data>
  </layer>
  <objectgroup id="3" name="helpers">
   <object id="5" name="Player start" x="198" y="1438.5" width="300" height="135"/>
-  <object id="32" name="Snake enemy" x="7373.03" y="1243.44" width="300" height="135"/>
  </objectgroup>
 </map>
