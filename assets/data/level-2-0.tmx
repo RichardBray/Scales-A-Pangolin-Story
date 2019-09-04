@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="101">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="104">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -50,7 +50,7 @@
   <object id="3" gid="8" x="-0.333333" y="1653.67" width="974" height="258"/>
   <object id="4" gid="8" x="973.97" y="1819.15" width="974" height="258"/>
   <object id="6" gid="8" x="1946" y="1819.33" width="974" height="258"/>
-  <object id="35" gid="8" x="9810.33" y="1819.67" width="974" height="258"/>
+  <object id="35" gid="8" x="9811.33" y="1819.67" width="974" height="258"/>
   <object id="9" gid="8" x="3557" y="1819" width="974" height="258"/>
   <object id="12" gid="8" x="-0.16667" y="1819.42" width="974" height="258"/>
   <object id="19" gid="8" x="4529" y="1819" width="974" height="258"/>
@@ -66,8 +66,8 @@
   <object id="96" name="left" type="16" gid="13" x="11362" y="1578.67" width="139" height="88"/>
   <object id="97" name="right" type="18" gid="13" x="6855.67" y="1381.33" width="139" height="88"/>
   <object id="98" name="right" type="16" gid="13" x="3936" y="1577.67" width="139" height="88"/>
-  <object id="99" gid="29" x="10402" y="1226" width="238" height="120"/>
-  <object id="100" name="left" gid="2147483677" x="13167.7" y="1078.67" width="238" height="120"/>
+  <object id="101" name="left" gid="2147483677" x="11699" y="1442" width="238" height="120"/>
+  <object id="102" name="left" gid="2147483677" x="9104" y="1394" width="238" height="120"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
