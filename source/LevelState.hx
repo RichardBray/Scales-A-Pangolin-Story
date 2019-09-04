@@ -29,7 +29,7 @@ class LevelState extends GameState {
 	var _mapEntities:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _grpEnemies:FlxTypedGroup<Enemy>;
-	var _grpMovingEnemies:FlxTypedGroup<Enemy>;
+	var _grpKillableEnemies:FlxTypedGroup<Enemy>;
 	var _levelCollisions:FlxTilemapExt;
 	var _map:TiledMap;
 	var _mapObjects:TiledObjectLayer;
@@ -44,8 +44,10 @@ class LevelState extends GameState {
 	var _playerFeetCollision:FlxObject;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
-	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
+	var _playerJustHitEnemy:Bool = false;
+	// HUD
+	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -122,7 +124,7 @@ class LevelState extends GameState {
 		_grpEnemies = new FlxTypedGroup<Enemy>();	
 
 		// Add moving enemies
-		_grpMovingEnemies = new FlxTypedGroup<Enemy>();
+		_grpKillableEnemies = new FlxTypedGroup<Enemy>();
 
 		// Tile tearing problem fix on Mac (part 1)
 		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
@@ -151,7 +153,7 @@ class LevelState extends GameState {
 		add(_mapEntities);
 		add(_grpCollectables);
 		add(_grpEnemies);	
-		add(_grpMovingEnemies);				
+		add(_grpKillableEnemies);				
 
 
 		// Add envirionment collisions
@@ -304,13 +306,16 @@ class LevelState extends GameState {
 		} else if (ObjectId == 13) { // Boar
 			var boar:Enemy = null;
 			boar = new Enemy.Boar(X, newY, Name, Otype);
-			_grpMovingEnemies.add(boar);
+			_grpKillableEnemies.add(boar);
 
-		// } else if (ObjectId == 29) { // Snake
-		// 	var snake:Enemy = null;
-		// 	snake = new Enemy.Snake(X, newY, Name, Otype);
-		// 	_grpMovingEnemies.add(snake);
-
+		} else if (ObjectId == 29) { // Snake
+			var snake:Enemy = null;
+			var snakeAttackBox:Enemy = null;
+			snake = new Enemy.Snake(X, newY, Name, Otype);
+			snakeAttackBox = new Enemy.SnakeAttackBox(X, newY, Name);
+			_grpKillableEnemies.add(snake);
+			_grpEnemies.add(snakeAttackBox);
+		
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
@@ -349,7 +354,9 @@ class LevelState extends GameState {
 	 * What happens when the player and the enemy collide
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
-		var playerAttacking:Bool = Player.animation.curAnim.name == "jump" || Player.animation.curAnim.name == "jumpLoop";
+		var playerAttacking:Bool = 
+			Player.animation.name == "jump" || Player.animation.name == "jumpLoop"
+			&& !Player.isAscending || _playerJustHitEnemy;
 
 		/**
 		 * Things to do when player get's hurt.
@@ -377,14 +384,20 @@ class LevelState extends GameState {
 				playerHurt(LastLife);
 				Player.animJump(Player.flipX); 
 			} else { // Player is in the air
-				// Player bounce
-				Player.velocity.y = Enemy.push;
 				// when rolling animation is playing
 				if (playerAttacking) {
+					// Player bounce
+					Player.velocity.y = Enemy.push;					
 					Enemy.sndEnemyKill.play();
+					_playerJustHitEnemy = true; // true for half a second, false when touch ground
 					Enemy.kill();
 					incrementDeathCount();
 				} else { // when rolling animation is NOT playing
+					if (Player.animation.name == "jump" || Player.animation.name == "jumpLoop") {
+						Player.animJump(Player.flipX);
+					} else {
+						Player.velocity.y = (Enemy.push / 3) * 2;
+					}
 					playerHurt(LastLife);
 				}
 			}	
@@ -513,7 +526,6 @@ class LevelState extends GameState {
 	override public function update(Elapsed:Float) {
 		_secondsOnGround += Elapsed;
 		updateFeetCollisions();
-		
 		super.update(Elapsed);
 
 		if (_playerTouchMovingEnemy) {
@@ -539,7 +551,7 @@ class LevelState extends GameState {
 
 		// Overlaps
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
-		FlxG.overlap(_grpMovingEnemies, player, hitEnemy);
+		FlxG.overlap(_grpKillableEnemies, player, hitEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
 
 		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
