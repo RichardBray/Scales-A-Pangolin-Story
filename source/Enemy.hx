@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxColor;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -20,17 +22,25 @@ class Enemy extends FlxSprite {
 	/**
 	 * Method to change the site of a sprite's hitbox size.
 	 *
-	 * @param Width Amount to want to reduce or increase the hitbox WIDTH by
-	 * @param Height Amount to want to reduce or increase the hitbox HEIGHT by
-	 * @param Sprite Sprite instance
+	 * @param Width 				Amount to want to reduce or increase the hitbox WIDTH by
+	 * @param Height 				Amount to want to reduce or increase the hitbox HEIGHT by
+	 * @param Sprite 				Sprite instance
+	 * @param CustomOffset	Self explanitory [width, height]
 	 */
-	public function updateSpriteHitbox(Width:Int, Height:Int, Sprite:FlxSprite) {
+	public function updateSpriteHitbox(Width:Int, Height:Int, Sprite:FlxSprite, ?CustomOffset:Null<Array<Float>>) {
 		var newHitboxWidth:Int = Std.int(Sprite.width - Width);
 		var newHitboxHeight:Int = Std.int(Sprite.height - Height);
+		var offsetWidth:Float = Width / 2;
+		var offsetHeight:Float = Height;
 
+		if (CustomOffset != null) {
+			offsetWidth = CustomOffset[0];
+			offsetHeight = CustomOffset[1];
+		}
+	
 		Sprite.setGraphicSize(newHitboxWidth, newHitboxHeight);
 		Sprite.updateHitbox();
-		Sprite.offset.set(Width / 2, Height);
+		Sprite.offset.set(offsetWidth, offsetHeight);
 		Sprite.scale.set(1, 1);
 	}	
 }
@@ -118,19 +128,23 @@ class Boar extends Enemy {
 }
 
 class Snake extends Enemy {
-	var _facingDirection:Bool;
 	var _enemyHit:Bool = false;
 	var _timer:FlxTimer;
 
+	public var snakeAttacking:Bool = false; // True if player in snake attack box
+	public var enableAttackBox:Bool = false;
+
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
-		super(X, Y);
+		super(X + 100, Y);
 		_timer = new FlxTimer();
-		push = -450;
+		push = -900;
 		loadGraphic("assets/images/snake_sprites.png", true, 238, 120);
-		_facingDirection = Name == "left";	
+		updateSpriteHitbox(100, 0, this, [100, 0]);
 
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);	
+
+		facing = Name == "left" ? FlxObject.LEFT : FlxObject.RIGHT;
 
 		animation.add("idle", [for (i in 0...4) i], 6, true);
 		animation.add("attacking", [for (i in 5...9) i], 8, false);		
@@ -147,6 +161,21 @@ class Snake extends Enemy {
 
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
-		_enemyHit ? animation.play("dying") : animation.play("idle");
+		if (snakeAttacking) {
+			animation.play("attacking");
+			if (animation.frameIndex == 6) {
+				enableAttackBox = true;
+			}
+		} else {
+			_enemyHit ? animation.play("dying") : animation.play("idle");
+		}
 	}		
 }
+
+class SnakeAttackBox extends Enemy {
+	public function new(X:Float, Y:Float, Name:String = "") {
+		super(X, Y);
+		makeGraphic(50, 50, FlxColor.TRANSPARENT);
+	}
+}
+// class SnakeSpr extends FlxTypedGroup<FlxSprite> {}
