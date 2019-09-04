@@ -48,6 +48,8 @@ class LevelState extends GameState {
 	var _playerJustHitEnemy:Bool = false;
 	// HUD
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
+	// Enemies
+	var _grpEnemyAttackBoundaries:FlxTypedGroup<FlxObject>;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -123,8 +125,9 @@ class LevelState extends GameState {
 		// Add standing enemies
 		_grpEnemies = new FlxTypedGroup<Enemy>();	
 
-		// Add moving enemies
+		// Add killable enemies
 		_grpKillableEnemies = new FlxTypedGroup<Enemy>();
+		_grpEnemyAttackBoundaries = new FlxTypedGroup<FlxObject>();
 
 		// Tile tearing problem fix on Mac (part 1)
 		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
@@ -153,7 +156,8 @@ class LevelState extends GameState {
 		add(_mapEntities);
 		add(_grpCollectables);
 		add(_grpEnemies);	
-		add(_grpKillableEnemies);				
+		add(_grpKillableEnemies);	
+		add(_grpEnemyAttackBoundaries);			
 
 
 		// Add envirionment collisions
@@ -299,22 +303,27 @@ class LevelState extends GameState {
 			}
 
 		} else if (ObjectId == 12) { // Fire
-			var enemy:Enemy = null;
+			var enemy:Enemy;
 			enemy = new Enemy.Fire(X, newY);
 			_grpEnemies.add(enemy);
 
 		} else if (ObjectId == 13) { // Boar
-			var boar:Enemy = null;
+			var boar:Enemy;
 			boar = new Enemy.Boar(X, newY, Name, Otype);
 			_grpKillableEnemies.add(boar);
 
 		} else if (ObjectId == 29) { // Snake
-			var snake:Enemy = null;
-			var snakeAttackBox:Enemy = null;
+			var snake:Enemy;
+			var snakeAttackBox:Enemy;
+			var snakeAttackBoundary:FlxObject;
+
 			snake = new Enemy.Snake(X, newY, Name, Otype);
 			snakeAttackBox = new Enemy.SnakeAttackBox(X, newY, Name);
+			snakeAttackBoundary = new FlxObject(X, newY, snake.width, snake.height); // Public var
+
 			_grpKillableEnemies.add(snake);
 			_grpEnemies.add(snakeAttackBox);
+			_grpEnemyAttackBoundaries.add(snakeAttackBoundary);
 		
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
@@ -458,6 +467,11 @@ class LevelState extends GameState {
 		} 
 	}
 
+
+	function initEnemyAttack(_, _) {
+		// Boomting
+	}	
+
 	/**
 	 * Sequence of events that need to happen when player dies.
 	 */
@@ -553,6 +567,7 @@ class LevelState extends GameState {
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
 		FlxG.overlap(_grpKillableEnemies, player, hitEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
+		FlxG.overlap(_grpEnemyAttackBoundaries, player, initEnemyAttack);
 
 		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
 	}	

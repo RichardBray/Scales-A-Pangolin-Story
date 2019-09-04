@@ -1,7 +1,6 @@
 package;
 
 import flixel.util.FlxColor;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -131,7 +130,7 @@ class Snake extends Enemy {
 	var _enemyHit:Bool = false;
 	var _timer:FlxTimer;
 
-	public var snakeAttacking:Bool = false; // True if player in snake attack box
+	public var attacking:Bool = false; // True if player in snake attack box
 	public var enableAttackBox:Bool = false;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
@@ -161,7 +160,7 @@ class Snake extends Enemy {
 
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
-		if (snakeAttacking) {
+		if (attacking) {
 			animation.play("attacking");
 			if (animation.frameIndex == 6) {
 				enableAttackBox = true;
