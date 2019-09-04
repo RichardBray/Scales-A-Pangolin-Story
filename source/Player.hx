@@ -12,8 +12,9 @@ class Player extends FlxSprite {
 	static var GRAVITY:Float = Constants.worldGravity;
 
 	public var preventMovement:Bool;
-	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds.
-	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx.
+	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds
+	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx
+	public var isAscending:Bool = false; // Indicates is player ascending or descending in jump
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -42,11 +43,6 @@ class Player extends FlxSprite {
 
 		// Intialise controls
 		_controls = new Controls();
-	}
-
-	override public function update(Elapsed:Float) {
-		playerMovement();
-		super.update(Elapsed);
 	}
 
 	/**
@@ -102,4 +98,19 @@ class Player extends FlxSprite {
 		// Fix bug where pressing down plays jump loop evem on ground
 		if (isTouching(FlxObject.FLOOR)) isGoindDown = false;
 	}
+
+	/**
+	 * Checks if player is going up or down
+	 */
+	function detectPlayerAscending():Bool {
+		return velocity.y == 0 
+			? false 
+			: !(velocity.y > 0);
+	}
+
+	override public function update(Elapsed:Float) {
+		playerMovement();
+		isAscending = detectPlayerAscending();
+		super.update(Elapsed);
+	}	
 }
