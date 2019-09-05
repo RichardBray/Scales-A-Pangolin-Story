@@ -315,11 +315,15 @@ class LevelState extends GameState {
 		} else if (ObjectId == 29) { // Snake
 			var snake:Enemy;
 			var snakeAttackBox:Enemy;
-			var snakeAttackBoundary:FlxObject;
+			var snakeAttackBoundary:Enemy.Boundaries;
 
 			snake = new Enemy.Snake(X, newY, Name, Otype);
 			snakeAttackBox = new Enemy.SnakeAttackBox(X, newY, Name);
-			snakeAttackBoundary = new FlxObject(X, newY, snake.width, snake.height); // Public var
+			snakeAttackBoundary = new Enemy.Boundaries(
+				X, newY, 
+				snake.width, 
+				snake.height - 20, // 20 so snake doesn't attack as soon as player enters boundary
+				snake); 
 
 			_grpKillableEnemies.add(snake);
 			_grpEnemies.add(snakeAttackBox);
@@ -468,8 +472,11 @@ class LevelState extends GameState {
 	}
 
 
-	function initEnemyAttack(_, _) {
-		// Boomting
+	/**
+	 * Cause enemy to attack when player enters their boundary
+	 */
+	function initEnemyAttack(Boundary:Enemy.Boundaries, Player:Player) {
+		Boundary.enemy.attacking = true;
 	}	
 
 	/**
@@ -568,6 +575,13 @@ class LevelState extends GameState {
 		FlxG.overlap(_grpKillableEnemies, player, hitEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
 		FlxG.overlap(_grpEnemyAttackBoundaries, player, initEnemyAttack);
+
+		if (!FlxG.overlap(_grpEnemyAttackBoundaries, player, initEnemyAttack)) {
+			_grpEnemyAttackBoundaries.forEach((Boundary:FlxObject) -> {
+				var bound:Enemy.Boundaries = cast Boundary;
+				bound.enemy.attacking = false;
+			});
+		};		
 
 		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
 	}	

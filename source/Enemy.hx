@@ -11,6 +11,7 @@ class Enemy extends FlxSprite {
 	public var sndHit:FlxSound;
 	public var sndEnemyKill:FlxSound;
 	public var push:Int = -900; // How much to push the player up by when they jump on enemy
+	public var attacking:Bool = false; // True if player in snake attack box
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
@@ -130,8 +131,6 @@ class Snake extends Enemy {
 	var _enemyHit:Bool = false;
 	var _timer:FlxTimer;
 
-	public var attacking:Bool = false; // True if player in snake attack box
-	public var enableAttackBox:Bool = false;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X + 100, Y);
@@ -162,9 +161,6 @@ class Snake extends Enemy {
 		super.update(Elapsed);
 		if (attacking) {
 			animation.play("attacking");
-			if (animation.frameIndex == 6) {
-				enableAttackBox = true;
-			}
 		} else {
 			_enemyHit ? animation.play("dying") : animation.play("idle");
 		}
@@ -174,7 +170,17 @@ class Snake extends Enemy {
 class SnakeAttackBox extends Enemy {
 	public function new(X:Float, Y:Float, Name:String = "") {
 		super(X, Y);
-		makeGraphic(50, 50, FlxColor.TRANSPARENT);
+		makeGraphic(50, 120, FlxColor.TRANSPARENT);
+	}
+}
+
+
+class Boundaries extends FlxObject {
+	public var enemy:Enemy;
+
+	public function new(X:Float, Y:Float, Width:Float, Height:Float, Enemy:Enemy) {
+		super(X, Y, Width, Height);
+		enemy = Enemy;
 	}
 }
 // class SnakeSpr extends FlxTypedGroup<FlxSprite> {}
