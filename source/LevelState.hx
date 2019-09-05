@@ -320,7 +320,7 @@ class LevelState extends GameState {
 			snake = new Enemy.Snake(X, newY, Name, Otype);
 			snakeAttackBox = new Enemy.SnakeAttackBox(X, newY, Name);
 			snakeAttackBoundary = new Enemy.Boundaries(
-				X, newY, 
+				X, newY + 20, // 20 so snake doesn't attack as soon as player enters boundary
 				snake.width, 
 				snake.height - 20, // 20 so snake doesn't attack as soon as player enters boundary
 				snake); 
