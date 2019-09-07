@@ -47,7 +47,8 @@ class Enemy extends FlxSprite {
 	}	
 
 	/**
-	 * Keep bringing this back to life even if the player kills it, like the fire.
+	 * Keep bringing this back to life even if the player kills it, u
+	 * seful for things like fire.
 	 *
 	 * @param EnemySprite Sprite to run this method on
 	 */
