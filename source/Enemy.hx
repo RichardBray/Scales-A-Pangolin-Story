@@ -10,11 +10,13 @@ import flixel.FlxObject;
 class Enemy extends FlxSprite {
 	public var sndHit:FlxSound;
 	public var sndEnemyKill:FlxSound;
+	public var timer:FlxTimer;
 	public var push:Int = -900; // How much to push the player up by when they jump on enemy
 	public var attacking:Bool = false; // True if player in snake attack box
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
+		timer = new FlxTimer();
 		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
 	}
@@ -43,14 +45,22 @@ class Enemy extends FlxSprite {
 		Sprite.offset.set(offsetWidth, offsetHeight);
 		Sprite.scale.set(1, 1);
 	}	
+
+	/**
+	 * Keep bringing this back to life even if the player kills it, like the fire.
+	 *
+	 * @param EnemySprite Sprite to run this method on
+	 */
+	public function keepAlive(EnemySprite:Enemy) {
+		EnemySprite.alive = false;
+		timer.start(.5, (_) -> EnemySprite.alive = true, 1);		
+	}
 }
 
 class Fire extends Enemy {
-	var _timer:FlxTimer;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y + 50); // to make up for offset
-		_timer = new FlxTimer();
 		push = -450;
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
 		updateSpriteHitbox(70, 50, this);
@@ -64,8 +74,7 @@ class Fire extends Enemy {
 	}	
 
 	override public function kill() {
-		alive = false;
-		_timer.start(.5, (_) -> alive = true, 1);
+		keepAlive(this);
 	}	
 }
 
@@ -73,12 +82,10 @@ class Boar extends Enemy {
 	var _facingDirection:Bool;
 	var _distance:Int;
 	var _seconds:Float = 0;
-	var _timer:FlxTimer;
 	var _enemyHit:Bool = false;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 40);
-		_timer = new FlxTimer();
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
 		updateSpriteHitbox(40, 40, this);
 	
@@ -114,7 +121,7 @@ class Boar extends Enemy {
 	override public function kill() {
 		_enemyHit = true;
 		alive = false;
-		_timer.start(1, (_) -> {
+		timer.start(1, (_) -> {
 			exists = false;
 		}, 1);
   }
@@ -129,12 +136,10 @@ class Boar extends Enemy {
 
 class Snake extends Enemy {
 	var _enemyHit:Bool = false;
-	var _timer:FlxTimer;
 
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X + 100, Y);
-		_timer = new FlxTimer();
 		push = -900;
 		loadGraphic("assets/images/snake_sprites.png", true, 238, 120);
 		updateSpriteHitbox(100, 0, this, [100, 0]);
@@ -152,7 +157,7 @@ class Snake extends Enemy {
 	override public function kill() {
 		_enemyHit = true;
 		alive = false;
-		_timer.start(1, (_) -> {
+		timer.start(1, (_) -> {
 			exists = false;
 		}, 1);
   }
@@ -168,19 +173,42 @@ class Snake extends Enemy {
 }
 
 class SnakeAttackBox extends Enemy {
-	public function new(X:Float, Y:Float, Name:String = "") {
+	var _parentEnemy:Enemy;
+
+	public function new(X:Float, Y:Float, Name:String = "", ParentEnemy:Enemy) {
 		super(X, Y);
-		makeGraphic(50, 120, FlxColor.TRANSPARENT);
+		_parentEnemy = ParentEnemy;
+		makeGraphic(50, 100, FlxColor.TRANSPARENT);
 	}
+
+	override public function kill() {
+		keepAlive(this);
+	}	
+
+	override public function update(Elapsed:Float) {
+		super.update(Elapsed);
+		if (!_parentEnemy.exists) {
+			alive = false;
+			exists = false;
+		}
+	}	 
 }
 
 
 class Boundaries extends FlxObject {
 	public var enemy:Enemy;
 
-	public function new(X:Float, Y:Float, Width:Float, Height:Float, Enemy:Enemy) {
+	/**
+	 * Class to trigger enemy attack when player overlaps this boundary.
+	 *
+	 * @param X						X position
+	 * @param Y						Y position
+	 * @param Width				Width of boundary
+	 * @param Height			Height of boundary
+	 * @param ParentEnemy	Enemy that is affected by boundary, also toggle enemy attack variable
+	 */
+	public function new(X:Float, Y:Float, Width:Float, Height:Float, ParentEnemy:Enemy) {
 		super(X, Y, Width, Height);
-		enemy = Enemy;
+		enemy = ParentEnemy; 
 	}
 }
-// class SnakeSpr extends FlxTypedGroup<FlxSprite> {}
