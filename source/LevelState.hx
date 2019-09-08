@@ -368,12 +368,12 @@ class LevelState extends GameState {
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		var playerAttacking:Bool = 
-			Player.animation.name == "jump" || Player.animation.name == "jumpLoop"
-			&& !Player.isAscending || _playerJustHitEnemy;
+			(Player.animation.name == "jump" || Player.animation.name == "jumpLoop")
+			&& (!Player.isAscending || _playerJustHitEnemy);
 
 		/**
 		 * Things to do when player get's hurt.
-		 * Sets `_playerTouchMovingEnemy` true if player gets hurt. Prevents loosing two harts on one hit.
+		 * Sets `_playerTouchMovingEnemy` true if player gets hurt. Prevents loosing two hearts on one hit.
 		 *
 		 * @param LastLife Used to prolongue death of character.
 		 */
@@ -404,7 +404,7 @@ class LevelState extends GameState {
 					Enemy.sndEnemyKill.play();
 					_playerJustHitEnemy = true; // true for half a second, false when touch ground
 					Enemy.kill();
-					FlxG.camera.shake(0.00200, 0.25);
+					FlxG.camera.shake(0.00150, 0.25);
 					incrementDeathCount();
 				} else { // when rolling animation is NOT playing
 					if (Player.animation.name == "jump" || Player.animation.name == "jumpLoop") {
