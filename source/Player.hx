@@ -23,11 +23,11 @@ class Player extends FlxSprite {
 		isGoindDown = false; // If down button is pressed
 		health = 3; // Health player starts off with
 	
-		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 127); // height 113.5
+		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 127);
 		setGraphicSize(121, 92);
 		updateHitbox();
 
-		offset.set(165, 37);
+		offset.set(165, 35);
 		scale.set(1, 1);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);
