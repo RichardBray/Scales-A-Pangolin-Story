@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="14">
+ <tileset firstgid="1" source="level-1-objs.tsx"/>
+ <tileset firstgid="14" source="collisions.tsx"/>
+ <objectgroup id="3" name="objects">
+  <object id="4" gid="8" x="1636.67" y="1609.33" width="974" height="258"/>
+  <object id="5" gid="8" x="1695.67" y="1819" width="974" height="258"/>
+  <object id="6" gid="8" x="722.97" y="1819.15" width="974" height="258"/>
+  <object id="7" gid="8" x="-251.167" y="1819.42" width="974" height="258"/>
+  <object id="8" gid="8" x="669" y="1609.67" width="974" height="258"/>
+  <object id="9" gid="8" x="-303.182" y="1609.92" width="974" height="258"/>
+  <object id="10" gid="8" x="1604.83" y="1413.33" width="974" height="258"/>
+  <object id="12" gid="8" x="4166.67" y="1819" width="974" height="258"/>
+  <object id="13" gid="5" x="3037" y="1968" width="889" height="1184"/>
+ </objectgroup>
+ <layer id="1" name="collisions" width="945" height="120">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAEAIBLBr8PZP+y1EdIMlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP1KAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACGqkMBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKDT0wUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIPjyrEi8=
+  </data>
+ </layer>
+</map>

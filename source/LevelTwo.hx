@@ -6,6 +6,7 @@ import flixel.util.FlxSave;
 import flixel.FlxG;
 // Typedefs
 import HUD.GoalData;
+
 class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;
 	var _gameSave:FlxSave;
@@ -52,7 +53,7 @@ class LevelTwo extends LevelState {
 	}	
 
 	function changeState() {
-		FlxG.switchState(new LevelTwo.IntroTwo(_gameSave));
+		FlxG.switchState(new LevelThree(_gameSave));
 	}	
 
   override public function update(Elapsed:Float) {

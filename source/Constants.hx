@@ -30,12 +30,14 @@ class Constants {
 	public static var initialColMap:Void->CollMap = () -> [
 		"Level-1-0" => [], 
 		"Level-1-A" => [],
-		"Level-2-0" => []
+		"Level-2-0" => [],
+		"Level-3-0" => []
 	];
 
 	// Used to load levels from saves and restart levels
 	public static var levelNames:Map<String, Class<LevelState>> = [
 		"Level-1-0" => LevelOne, 
-		"Level-2-0" => LevelTwo
+		"Level-2-0" => LevelTwo,
+		"Level-3-0" => LevelThree
 	];
 }
