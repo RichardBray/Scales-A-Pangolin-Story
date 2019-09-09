@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="14">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="49">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
+ <tileset firstgid="29" source="level-2-objs.tsx"/>
  <objectgroup id="3" name="objects">
   <object id="4" gid="8" x="1636.67" y="1609.33" width="974" height="258"/>
   <object id="5" gid="8" x="1695.67" y="1819" width="974" height="258"/>
@@ -10,12 +11,46 @@
   <object id="8" gid="8" x="669" y="1609.67" width="974" height="258"/>
   <object id="9" gid="8" x="-303.182" y="1609.92" width="974" height="258"/>
   <object id="10" gid="8" x="1604.83" y="1413.33" width="974" height="258"/>
-  <object id="12" gid="8" x="4166.67" y="1819" width="974" height="258"/>
+  <object id="12" gid="8" x="4167.67" y="1819" width="974" height="258"/>
   <object id="13" gid="5" x="3037" y="1968" width="889" height="1184"/>
+  <object id="14" gid="8" x="5140" y="1819" width="974" height="258"/>
+  <object id="15" name="right" type="16" gid="13" x="4168.33" y="1574.67" width="139" height="88"/>
+  <object id="16" gid="12" x="4908" y="1576.33" width="178" height="206"/>
+  <object id="17" gid="6" x="5181.06" y="1613.55" width="850" height="1101"/>
+  <object id="18" gid="8" x="6110.27" y="1820.09" width="974" height="258"/>
+  <object id="19" gid="7" x="6104.73" y="1616.7" width="1137" height="1494"/>
+  <object id="20" gid="8" x="7082.09" y="1820.09" width="974" height="258"/>
+  <object id="21" gid="2147483677" x="6794" y="1383" width="238" height="120"/>
+  <object id="22" gid="3" x="7341" y="1573" width="361" height="123"/>
+  <object id="24" gid="7" x="7248" y="1619" width="1137" height="1494"/>
+  <object id="25" gid="8" x="8954.91" y="1820.47" width="974" height="258"/>
+  <object id="26" gid="6" x="8636.38" y="1608.79" width="850" height="1101"/>
+  <object id="28" gid="1" x="8267.8" y="1897.8" width="367" height="266"/>
+  <object id="29" gid="8" x="9925" y="1821" width="974" height="258"/>
+  <object id="30" gid="8" x="10894.3" y="1821.67" width="974" height="258"/>
+  <object id="31" name="left" type="16=" gid="2147483661" x="10175" y="1578.67" width="139" height="88"/>
+  <object id="32" gid="5" x="10060" y="1596" width="889" height="1184"/>
+  <object id="33" gid="8" x="11866.3" y="1821.67" width="974" height="258"/>
+  <object id="34" gid="8" x="12831.2" y="1822.52" width="974" height="258"/>
+  <object id="35" gid="8" x="13793" y="1821" width="974" height="258"/>
+  <object id="37" gid="12" x="1314.03" y="1363.61" width="178" height="206"/>
+  <object id="38" gid="7" x="11010" y="1627" width="1137" height="1494"/>
+  <object id="40" gid="8" x="12437" y="1629" width="974" height="258"/>
+  <object id="41" gid="6" x="13279" y="1210" width="850" height="1101"/>
+  <object id="42" gid="5" x="64.4848" y="1385.94" width="889" height="1184"/>
+  <object id="43" gid="29" x="11820.4" y="1390.3" width="238" height="120"/>
+  <object id="44" gid="8" x="13403.9" y="1627.94" width="974" height="258"/>
+  <object id="45" gid="8" x="13555.4" y="1416.88" width="974" height="258"/>
+  <object id="46" gid="4" x="13832" y="1578" width="241" height="179"/>
+  <object id="47" gid="4" x="13916" y="1386.33" width="241" height="179"/>
+  <object id="48" name="left" type="16" gid="13" x="12473.7" y="1388" width="139" height="88"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
    eJztwwEJAEAIBLBr8PZP+y1EdIMlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP1KAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACGqkMBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKDT0wUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIPjyrEi8=
   </data>
  </layer>
+ <objectgroup id="4" name="helpers">
+  <object id="39" name="friend npc" x="11320" y="768" width="176" height="168"/>
+ </objectgroup>
 </map>
