@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
@@ -22,9 +23,13 @@ class LevelThree extends LevelState {
 				func: (GameScore:Int) -> GameScore > _bugsGoal
 			},
 			{
-				goal: "Jump on 3 enemies",
-				func: (_) -> killedEmenies > 2
-			}      
+				goal: "Jump on over 2 enemies",
+				func: (_) -> killedEmenies > 1
+			},
+			{
+				goal: "Talk to friend",
+				func: (_) -> killedEmenies > 1
+			}            
 		]; 
 
   }
@@ -42,7 +47,20 @@ class LevelThree extends LevelState {
     super.create(); 
   }
 
-  override public function update(elapsed:Float) {
-    super.update(elapsed);
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
+
+	function changeState() {
+		FlxG.switchState(new LevelThree(_gameSave));
+	}	
+  
+  override public function update(Elapsed:Float) {
+    super.update(Elapsed);
+
+		// Overlaps
+		grpHud.goalsCompleted
+			? FlxG.overlap(levelExit, player, fadeOut)
+			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);	    
   }
 }
