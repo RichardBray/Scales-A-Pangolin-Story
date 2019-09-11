@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="82">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="88">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
  <objectgroup id="3" name="objects">
-  <object id="10" gid="8" x="1604.83" y="1413.33" width="974" height="258"/>
   <object id="13" gid="5" x="3037" y="1971" width="889" height="1184"/>
-  <object id="15" name="right" type="16" gid="13" x="4168.33" y="1574.67" width="139" height="88"/>
+  <object id="86" gid="4" x="2369.18" y="1377.93" width="241" height="179"/>  
+  <object id="85" gid="3" x="1674.79" y="1381.16" width="361" height="123"/>
+  <object id="15" name="right" type="13" gid="13" x="4168.33" y="1574.67" width="139" height="88"/>
   <object id="16" gid="12" x="4908" y="1576.33" width="178" height="206"/>
   <object id="17" gid="6" x="5181.06" y="1613.55" width="850" height="1101"/>
   <object id="19" gid="7" x="6104.73" y="1613.7" width="1137" height="1494"/>
@@ -17,14 +18,14 @@
   <object id="28" gid="1" x="8267.8" y="1897.8" width="367" height="266"/>
   <object id="31" name="left" type="16=" gid="2147483661" x="10175" y="1578.67" width="139" height="88"/>
   <object id="32" gid="5" x="10060" y="1597" width="889" height="1184"/>
-  <object id="37" gid="12" x="1314.03" y="1363.61" width="178" height="206"/>
+  <object id="37" gid="12" x="1389.03" y="1363.61" width="178" height="206"/>
   <object id="38" gid="7" x="11010" y="1629" width="1137" height="1494"/>
   <object id="41" gid="6" x="13279" y="1252" width="850" height="1101"/>
   <object id="42" gid="5" x="64.4848" y="1385.94" width="889" height="1184"/>
   <object id="43" name="left" gid="2147483677" x="11723.4" y="1394.3" width="238" height="120"/>
   <object id="48" name="right" type="16" gid="13" x="12473.7" y="1396" width="139" height="88"/>
   <object id="49" name="right" type="3" gid="10" x="230.5" y="795" width="47" height="39"/>
-  <object id="50" name="left" type="1" gid="9" x="994.152" y="903.848" width="42" height="39"/>
+  <object id="50" name="left" type="1" gid="9" x="1460.67" y="1053.68" width="42" height="39"/>
   <object id="52" name="right" type="10" gid="10" x="1921" y="1365" width="47" height="39"/>
   <object id="53" name="left" type="3" gid="11" x="3394" y="1379" width="36" height="15"/>
   <object id="55" name="right" type="5" gid="11" x="5678.67" y="1004.33" width="36" height="15"/>
@@ -63,17 +64,15 @@
   <object id="71" name="left" type="10" gid="10" x="1721.79" y="1576.65" width="47" height="39"/>
   <object id="72" name="right" type="5" gid="11" x="3195.52" y="1739.47" width="36" height="15"/>
   <object id="73" name="left" type="5" gid="11" x="9408.44" y="1035.28" width="36" height="15"/>
-  <object id="74" gid="10" x="13871" y="1578.41" width="47" height="39"/>
   <object id="75" name="left" type="11" gid="10" x="13900.1" y="1577.03" width="47" height="39"/>
   <object id="77" name="left" type="5" gid="11" x="13683.8" y="824.282" width="36" height="15"/>
-  <object id="78" name="right" type="1" gid="9" x="8231.66" y="1428.92" width="42" height="39"/>
   <object id="79" name="left" type="1" gid="9" x="13223.4" y="1042.13" width="42" height="39"/>
   <object id="80" name="left" type="5" gid="10" x="14037.4" y="646.199" width="47" height="39"/>
   <object id="81" name="right" type="1" gid="9" x="9787.66" y="953.075" width="42" height="39"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <objectgroup id="4" name="helpers">
