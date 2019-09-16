@@ -12,8 +12,6 @@ import HUD.GoalData;
 class LevelOne extends LevelState {
 	var _gameSave:FlxSave;
 	var _seconds:Float = 0;
-	// var _npcSprite:FlxSprite;
-	var _testNPC:NPC;
 	var _goalData:Array<GoalData>;
 	var _instructionsViewed:Bool = false;
 	var _showInstrucitons:Bool;
@@ -44,20 +42,6 @@ class LevelOne extends LevelState {
 		levelName = "Level-1-0";
 
 		createLevel("level-1-0", "mountains");
-
-		// Add NPC Text
-		// var testText:Array<String> = [
-		// 	"Hello friend!",
-		// 	"Welcome to a spuer early build of the Pangolin game.",
-		// 	"Nothing is finalised, the art assets, gameplay mechanics, even the sound effects.",
-		// 	"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to have loads more done soon.",
-		// 	"Until then, have fun :)"
-		// ];
-
-		// Add NPC
-		// _npcSprite = new FlxSprite(870, 510).makeGraphic(50, 50, 0xff205ab7);
-		// _testNPC = new NPC(870, 510, testText, _npcSprite, this);
-		// add(_testNPC);
 
 		// Add player
 		createPlayer(240, 1472);
@@ -102,11 +86,6 @@ class LevelOne extends LevelState {
 		grpHud.goalsCompleted
 			? FlxG.overlap(levelExit, player, fadeOut)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);
-
-		// if (!FlxG.overlap(player, _testNPC.npcSprite.npcBoundary, _testNPC.initConvo)) {
-		// 	actionPressed = false;
-		// 	_testNPC.dialoguePrompt.hidePrompt();
-		// };
 	}		
 }
 

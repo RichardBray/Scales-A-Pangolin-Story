@@ -4,16 +4,16 @@
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
  <objectgroup id="3" name="objects">
+  <object id="86" gid="4" x="2369.18" y="1377.93" width="241" height="179"/> 
   <object id="13" gid="5" x="3037" y="1971" width="889" height="1184"/>
-  <object id="86" gid="4" x="2369.18" y="1377.93" width="241" height="179"/>  
   <object id="85" gid="3" x="1674.79" y="1381.16" width="361" height="123"/>
-  <object id="15" name="right" type="13" gid="13" x="4168.33" y="1574.67" width="139" height="88"/>
+  <object id="15" name="right" type="12" gid="13" x="4168.33" y="1574.67" width="139" height="88"/>
   <object id="16" gid="12" x="4908" y="1576.33" width="178" height="206"/>
   <object id="17" gid="6" x="5181.06" y="1613.55" width="850" height="1101"/>
   <object id="19" gid="7" x="6104.73" y="1613.7" width="1137" height="1494"/>
   <object id="21" name="left" gid="2147483677" x="6794" y="1380" width="238" height="120"/>
   <object id="22" gid="3" x="7341" y="1577" width="361" height="123"/>
-  <object id="24" gid="7" x="7248" y="1617" width="1137" height="1494"/>
+  <object id="24" gid="7" x="7248" y="1613" width="1137" height="1494"/>
   <object id="26" gid="6" x="8636.38" y="1642.79" width="850" height="1101"/>
   <object id="28" gid="1" x="8267.8" y="1897.8" width="367" height="266"/>
   <object id="31" name="left" type="16=" gid="2147483661" x="10175" y="1578.67" width="139" height="88"/>

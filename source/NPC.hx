@@ -18,18 +18,19 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
     /**
      * Create an NPC
-     *
+     * --
      * @param X				X posiiton in the level.
      * @param Y				Y position in the level.
      * @param DialogueText	Text for the NPC.
-	 * @param SpriteData	Sprite image unique to this NPC.
-	 * @param ParentState	Used to adjust vieport and stop player when dialogue starts.
+		 * @param SpriteData	Sprite image unique to this NPC.
+		 * @param ParentState	Used to adjust vieport and stop player when dialogue starts.
      */
     public function new(
-		X:Int, Y:Int, 
-		?DialogueText:Null<Array<String>>, 
-		SpriteData:FlxSprite, 
-		ParentState:LevelState
+			X:Int, 
+			Y:Int, 
+			?DialogueText:Null<Array<String>>, 
+			SpriteData:FlxSprite, 
+			ParentState:LevelState
 	) {
 		super();
 		_parentState = ParentState;
@@ -40,15 +41,15 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 		dialoguePrompt = new DialoguePrompt(
 			null, 
-			(X - SpriteData.width) + (SpriteData.width * 3 / 2), 
-			(SpriteData.height + 350),  // 350 = magic number
+			X, 
+			(Y - 350),  // 350 = magic number
 			"Press E"
 		);
 		add(dialoguePrompt);
 
 		_dialogueBox = new DialogueBox(DialogueText, ParentState);
 		add(_dialogueBox);
-		// Intialise controls
+
 		// Intialise controls
 		_controls = new Controls();
     }
@@ -59,6 +60,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 			if (_controls.triangle.check()) {
 				_parentState.actionPressed = true;
+
 				if (!_parentState.startingConvo) {
 					dialoguePrompt.hidePrompt(true); // hide dialogue bubble
 					// zoom camera
@@ -102,10 +104,9 @@ class NpcSprite extends FlxTypedGroup<FlxSprite> {
 		npcBoundary = new FlxSprite(
 			(X - SpriteData.width), Y).makeGraphic(
 			Std.int(SpriteData.width * 3), 
-			Std.int(SpriteData.height), 
+			Std.int(SpriteData.height * 3), 
 			FlxColor.TRANSPARENT
 		);
 		add(npcBoundary);
-		
 	}
 }  

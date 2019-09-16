@@ -56,7 +56,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 		// Create dialogue text
 		_dialogueText = new FlxText(_dialogueXPos, 510, DialogueWidth);
 		_dialogueText.text = DialogueText;
-		_dialogueText.setFormat(null, 20, FlxColor.WHITE, CENTER);
+		_dialogueText.setFormat(Constants.squareFont, 20, FlxColor.WHITE, CENTER);
 		add(_dialogueText);
 
 		// Hide the members
@@ -74,7 +74,12 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	 */
 	public function hidePrompt(UseOnComplete:Bool = false) {
 		this.forEach((_member:FlxSprite) -> {
-			FlxTween.tween(_member, {alpha: 0, y: _dialogueYPos}, .1, UseOnComplete ? {onComplete: (_) -> _member.alpha = 0} : null);
+			FlxTween.tween(
+				_member, 
+				{alpha: 0, y: _dialogueYPos}, 
+				.1, 
+				UseOnComplete ? {onComplete: (_) -> _member.alpha = 0} : null
+			);
 		});
 	}
 }

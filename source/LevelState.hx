@@ -55,7 +55,7 @@ class LevelState extends GameState {
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
-	public var actionPressed:Bool = false;
+	public var actionPressed:Bool = false; // Used for NPC conversation
 	public var levelName:String; // Give level unique name
 	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 

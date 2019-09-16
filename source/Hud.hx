@@ -92,8 +92,10 @@ class HUD extends FlxSpriteGroup {
 	 * @param Alpha 1 is to show 0 is to hide.
 	 */
 	public function toggleHUD(Alpha:Int) {
-		this.forEach((member:FlxSprite) -> {
-			member.alpha = Alpha;
+		var hudObjects:Array<FlxSprite> = [_gradientBg, _scoreTxt, _goals, _hearts];
+		var objectAlpha:Array<Float> = [0.2, 1, 1, 1];
+		hudObjects.mapi((idx:Int, member:FlxSprite) -> {
+			member.alpha = objectAlpha[idx];
 		});
 	}
 
