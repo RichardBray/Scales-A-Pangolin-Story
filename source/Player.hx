@@ -9,8 +9,10 @@ import flixel.system.FlxSound;
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _controls:Controls;
+
 	static var GRAVITY:Float = Constants.worldGravity;
 
+	public var jumpPosition:Array<Float>; // Saves player jump position for poof
 	public var preventMovement:Bool;
 	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds
 	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx
@@ -82,6 +84,7 @@ class Player extends FlxSprite {
 				acceleration.x = 0;
 			}
 			if (_jump && isTouching(FlxObject.FLOOR)) {
+				jumpPosition = [this.x, this.y];
 				_sndJump.play();
 				offset.x = 80;
 				isJumping = true;
@@ -121,20 +124,28 @@ class JumpPoof extends FlxSprite {
 		loadGraphic("assets/images/player_jump_dust.png", true, 135, 29);
 
 		// Animations
-		animation.add("disperse", [for (i in 0...6) i], 8, false);
+		animation.add("disperse", [for (i in 0...7) i], 7, false);
 
 		// Flips
 		setFacingFlip(FlxObject.LEFT, true, false);
-		setFacingFlip(FlxObject.RIGHT, false, false);	
-
-		alpha = 0;	
+		setFacingFlip(FlxObject.RIGHT, false, false);		
 	}
 
+	/**
+	 * Show the poof for one second in the position of the player.
+	 *
+	 * @param	X	Player X position
+	 * @param Y Player Y position
+	 */
 	public function show(X:Float, Y:Float) {
-		setPosition(X, Y);
-		js.Browser.console.log(X, Y);
+		setPosition(X, Y - this.height);
 		alpha = 1;
 		animation.play("disperse");
+	}
+
+	public function hide() {
+		alpha = 0;
+		animation.stop();		
 	}
 
 	override function update(Elapsed:Float) {

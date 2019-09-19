@@ -369,8 +369,7 @@ class LevelState extends GameState {
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		var playerAttacking:Bool = 
-			(Player.animation.name == "jump" || Player.animation.name == "jumpLoop")
-			&& (!Player.isAscending || _playerJustHitEnemy);
+			Player.animation.name == "jumpLoop" && (!Player.isAscending || _playerJustHitEnemy);
 
 		/**
 		 * Things to do when player get's hurt.
@@ -557,11 +556,16 @@ class LevelState extends GameState {
 		}
 
 		// Show jump poof when player jumps
-		js.Browser.console.log(player.animation.name);
-		if (player.animation.name == "jumpLoop") {
-			js.Browser.console.log("trigger");
-			_playerJumpPoof.show(player.x, player.y);
+		var playerGoingUp:Bool = player.velocity.y < 0;
+		if (player.animation.name == "jumpLoop" && playerGoingUp && !_playerJustHitEnemy) {
+			_playerJumpPoof.show(
+				player.jumpPosition[0], 
+				player.jumpPosition[1] + player.height // Move lower than player
+			);
+		} else {
+			_playerJumpPoof.hide();
 		}
+
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);

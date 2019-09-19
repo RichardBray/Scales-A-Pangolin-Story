@@ -78,7 +78,7 @@ class HUD extends FlxSpriteGroup {
 			0, 
 			"You haven't completed all the goals"
 		);
-		_goalsNotCompleted.setFormat(Constants.squareFont, Constants.hudFont);
+		_goalsNotCompleted.setFormat(Constants.squareFont, Constants.medFont);
 		_goalsNotCompleted.alpha = 0;
 		_goalsNotCompleted.screenCenter(X);
 		add(_goalsNotCompleted);
