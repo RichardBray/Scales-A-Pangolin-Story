@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="88">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="89">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
  <objectgroup id="3" name="objects">
-  <object id="86" gid="4" x="2369.18" y="1377.93" width="241" height="179"/> 
+  <object id="86" gid="4" x="2369.18" y="1377.93" width="241" height="179"/>
   <object id="13" gid="5" x="3037" y="1971" width="889" height="1184"/>
   <object id="85" gid="3" x="1674.79" y="1381.16" width="361" height="123"/>
-  <object id="15" name="right" type="12" gid="13" x="4168.33" y="1574.67" width="139" height="88"/>
+  <object id="15" name="right" type="12" gid="13" x="4168.33" y="1576.67" width="139" height="88"/>
   <object id="16" gid="12" x="4908" y="1576.33" width="178" height="206"/>
   <object id="17" gid="6" x="5181.06" y="1613.55" width="850" height="1101"/>
   <object id="19" gid="7" x="6104.73" y="1613.7" width="1137" height="1494"/>
@@ -24,11 +24,11 @@
   <object id="42" gid="5" x="64.4848" y="1385.94" width="889" height="1184"/>
   <object id="43" name="left" gid="2147483677" x="11723.4" y="1394.3" width="238" height="120"/>
   <object id="48" name="right" type="16" gid="13" x="12473.7" y="1396" width="139" height="88"/>
-  <object id="49" name="right" type="3" gid="10" x="230.5" y="795" width="47" height="39"/>
+  <object id="49" name="right" type="3" gid="10" x="230.5" y="796" width="47" height="39"/>
   <object id="50" name="left" type="1" gid="9" x="1460.67" y="1053.68" width="42" height="39"/>
   <object id="52" name="right" type="10" gid="10" x="1921" y="1365" width="47" height="39"/>
-  <object id="53" name="left" type="3" gid="11" x="3394" y="1379" width="36" height="15"/>
-  <object id="55" name="right" type="5" gid="11" x="5678.67" y="1004.33" width="36" height="15"/>
+  <object id="53" name="left" type="3" gid="11" x="3394" y="1380" width="36" height="15"/>
+  <object id="55" name="right" type="5" gid="11" x="5678.67" y="1005.33" width="36" height="15"/>
   <object id="56" name="left" type="1" gid="9" x="6087" y="829" width="42" height="39"/>
   <object id="57" name="left" type="5" gid="10" x="6890.07" y="826.067" width="47" height="39"/>
   <object id="58" name="right" type="5" gid="11" x="7472.37" y="1185.04" width="36" height="15"/>
@@ -77,5 +77,6 @@
  </layer>
  <objectgroup id="4" name="helpers">
   <object id="39" name="friend npc" x="11315" y="775" width="176" height="168"/>
+  <object id="88" x="11336.3" y="691.889" width="133.886" height="75.149"/>
  </objectgroup>
 </map>

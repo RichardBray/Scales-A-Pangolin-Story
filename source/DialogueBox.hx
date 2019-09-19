@@ -38,12 +38,12 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		_primaryText = new FlxTextFormat(0xffdc2de4, false, false, null);
 
 		// Create the box
-		_dialogueBox = new FlxSprite(0, FlxG.height - _heightFromBase).makeGraphic(FlxG.width, _heightFromBase, 0xff205ab7);
+		_dialogueBox = new FlxSprite(0, FlxG.height - _heightFromBase).makeGraphic(FlxG.width, _heightFromBase, Constants.primaryColor);
 		add(_dialogueBox);
 
 		// Create the text
 		_dialogueBoxText = new FlxText(120, FlxG.height - (_heightFromBase - 20), FlxG.width - 200, _dialogueArray[_arrTextNum]);
-		_dialogueBoxText.setFormat(null, 20, FlxColor.WHITE, LEFT);
+		_dialogueBoxText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, LEFT);
 
 		add(_dialogueBoxText);
 

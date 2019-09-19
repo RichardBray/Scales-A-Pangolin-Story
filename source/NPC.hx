@@ -40,11 +40,12 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		add(npcSprite);
 
 		dialoguePrompt = new DialoguePrompt(
-			null, 
-			X, 
-			(Y - 350),  // 350 = magic number
+			SpriteData.width, 
+			X - (SpriteData.width / 2), 
+			(Y - 130),  // 350 = magic number
 			"Press E"
 		);
+
 		add(dialoguePrompt);
 
 		_dialogueBox = new DialogueBox(DialogueText, ParentState);

@@ -86,7 +86,7 @@ class Player extends FlxSprite {
 				offset.x = 80;
 				isJumping = true;
 				velocity.y = -800; // 1100
-				animation.play("jump");
+				// animation.play("jump");
 				animation.play("jumpLoop");
 			}
 			if (isGoindDown) {
@@ -113,4 +113,31 @@ class Player extends FlxSprite {
 		isAscending = detectPlayerAscending();
 		super.update(Elapsed);
 	}	
+}
+
+class JumpPoof extends FlxSprite {
+	public function new(X:Float = 0, Y:Float = 0) {
+		super(X, Y);
+		loadGraphic("assets/images/player_jump_dust.png", true, 135, 29);
+
+		// Animations
+		animation.add("disperse", [for (i in 0...6) i], 8, false);
+
+		// Flips
+		setFacingFlip(FlxObject.LEFT, true, false);
+		setFacingFlip(FlxObject.RIGHT, false, false);	
+
+		alpha = 0;	
+	}
+
+	public function show(X:Float, Y:Float) {
+		setPosition(X, Y);
+		js.Browser.console.log(X, Y);
+		alpha = 1;
+		animation.play("disperse");
+	}
+
+	override function update(Elapsed:Float) {
+		super.update(Elapsed);
+	}
 }

@@ -41,6 +41,7 @@ class LevelState extends GameState {
 	var _controls:Controls;
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
+	var _playerJumpPoof:Player.JumpPoof; 
 	var _playerFeetCollision:FlxObject;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
@@ -139,8 +140,6 @@ class LevelState extends GameState {
 		var _tileSpacing:FlxPoint = FlxPoint.get(0, 0);
 		var _tileBorder:FlxPoint = FlxPoint.get(2, 2);
 
-		var _mergedTileset = FlxTileFrames.combineTileFrames(_tilesetTileFrames, _tileSpacing, _tileBorder);
-
 		_mapSize.put();
 		_tileSpacing.put();
 		_tileBorder.put();
@@ -212,11 +211,13 @@ class LevelState extends GameState {
 	 */
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
+		_playerJumpPoof = new Player.JumpPoof(X, Y);
 		_playerFeetCollision = new FlxObject(X, Y, 10, 72);
 		_playerFeetCollision.acceleration.y = Constants.worldGravity;
 	
 		if (FacingLeft) player.facing = FlxObject.LEFT;
 		add(player);
+		add(_playerJumpPoof);
 		add(_playerFeetCollision);
 	}
 
@@ -550,10 +551,17 @@ class LevelState extends GameState {
 		updateFeetCollisions();
 		super.update(Elapsed);
 
+		// Hacky way to prevent player for losing two lives on one hit
 		if (_playerTouchMovingEnemy) {
 			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
 		}
 
+		// Show jump poof when player jumps
+		js.Browser.console.log(player.animation.name);
+		if (player.animation.name == "jumpLoop") {
+			js.Browser.console.log("trigger");
+			_playerJumpPoof.show(player.x, player.y);
+		}
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
