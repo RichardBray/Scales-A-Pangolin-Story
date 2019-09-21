@@ -16,14 +16,11 @@ class Bug extends FlxSprite {
 	// Sounds
 	var _sndCollect:FlxSound;
 
-	public var uniqueID:Int;
-
 	/**
 	 * Basic bug sprite. 
 	 */
-	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "", UniqueID:Int = 0) {
+	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);	
-		uniqueID = UniqueID;
 		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
 	}
 
@@ -87,7 +84,7 @@ class Bug extends FlxSprite {
 
 class StagBeetle extends Bug {
 
-	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String, UniqueID:Int = 0) {
+	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String) {
 		super(X, Y);
 		loadGraphic("assets/images/L1_Bug_02.png", true, 42, 39);
 		animation.add("flying", [for (i in 0...7) i], 12, true);
@@ -106,7 +103,7 @@ class StagBeetle extends Bug {
 
 class Beetle extends Bug {
 
-	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String, UniqueID:Int = 0) {
+	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String) {
 		super(X, Y);
 		loadGraphic("assets/images/L1_Bug_03.png", true, 47, 39);
 		animation.add("walking", [for (i in 0...6) i], 12, true);
@@ -127,7 +124,7 @@ class Caterpillar extends Bug {
 	/**
 	 * Creates a caterpillar looking bug
 	 */
-	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String, UniqueID:Int = 0) {
+	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String) {
 		super(X, Y);
 		loadGraphic("assets/images/L1_Bug_01.png", true, 36, 15);
 		animation.add("walking", [for (i in 0...5) i], 12, true);

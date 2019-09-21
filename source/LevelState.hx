@@ -35,7 +35,6 @@ class LevelState extends GameState {
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
-	var _collectablesMap:CollMap; // Private collectables map for comparison
 	var _levelScore:Int; // This is used for the game save
 	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
@@ -97,11 +96,6 @@ class LevelState extends GameState {
 	 */
 	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap) {
 		_collisionImg = "assets/images/collisions.png";
-		if (CollectablesMap != null) {
-			_collectablesMap = CollectablesMap;
-		} else {
-			_collectablesMap = Constants.initialColMap();
-		}
 
 		/**
 		 * Code for adding the environment and collisions
@@ -229,7 +223,6 @@ class LevelState extends GameState {
 	public function saveGame(GameSave:FlxSave):FlxSave {
 		GameSave.data.levelName = levelName;
 		GameSave.data.playerScore = _levelScore;
-		GameSave.data.collectablesMap = _collectablesMap;
 		// @todo Add player position to game save
 		GameSave.flush();
 		return GameSave;
@@ -257,15 +250,7 @@ class LevelState extends GameState {
 		var height:Int = Std.parseInt(EntityData.get("height"));
 		var name:String = EntityData.get("name");
 		var type:String = EntityData.get("type");
-		var hideCollectable:Int = -1; // Default collecatlbe ID -1 means no collecatble
-
-		if (_collectablesMap[levelName].length != 0) {
-			// The line below checks if the number in the array matches the object ID.
-			// If it does it returns an array with that number, if it doesn't, it returns an empty array.
-			var _hideColVal:Array<Int> = _collectablesMap[levelName].filter(collectable -> collectable == MapObjId);
-			hideCollectable = (_hideColVal.length == 0) ? -1 : _hideColVal[0];
-		}
-		createEntity(x, y, width, height, name, type, ObjectId, MapObjId, hideCollectable);
+		createEntity(x, y, width, height, name, type, ObjectId, MapObjId);
 	}
 
 	/**
@@ -279,8 +264,7 @@ class LevelState extends GameState {
 		Name:String,
 		Otype:String, // Object type
 		ObjectId:Int, 
-		MapObjId:Int, 
-		HideCollectable:Int
+		MapObjId:Int
 	) {
 		var newY:Int = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
@@ -295,13 +279,11 @@ class LevelState extends GameState {
 			8 => "assets/images/L1_GROUND_01.png"
 		];
 		if (ObjectId >= 9 && ObjectId <=11) {
-			if (HideCollectable == -1) {
-				var bug:CollectableBug.Bug = null;
-				if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, Name, Otype, MapObjId);
-				if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, Name, Otype, MapObjId);
-				if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, Name, Otype, MapObjId);
-				_grpCollectables.add(bug);
-			}
+			var bug:CollectableBug.Bug = null;
+			if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, Name, Otype);
+			if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, Name, Otype);
+			if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, Name, Otype);
+			_grpCollectables.add(bug);
 
 		} else if (ObjectId == 12) { // Fire
 			var enemy:Enemy;
@@ -358,7 +340,6 @@ class LevelState extends GameState {
 	function getCollectable(Collectable:CollectableBug.Bug, Player:Player) {
 		if (Collectable.alive && Collectable.exists) {
 			grpHud.incrementScore();
-			_collectablesMap[levelName].push(Collectable.uniqueID);
 			Collectable.kill();
 		}
 	}

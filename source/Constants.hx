@@ -26,14 +26,6 @@ class Constants {
 	// @todo different controler strings for gamepads
 	public static var start:String = "ESC";
 
-	// Collectables map for bugs
-	public static var initialColMap:Void->CollMap = () -> [
-		"Level-1-0" => [], 
-		"Level-1-A" => [],
-		"Level-2-0" => [],
-		"Level-3-0" => []
-	];
-
 	// Used to load levels from saves and restart levels
 	public static var levelNames:Map<String, Class<LevelState>> = [
 		"Level-1-0" => LevelOne, 
