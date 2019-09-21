@@ -45,7 +45,7 @@ class LevelState extends GameState {
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
-	var _playerJustHitEnemy:Bool = false;
+	var _playerJustHitEnemy:Bool = false; // Used to check if player just hit the enemy for jumpPoof
 	// HUD
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 	// Enemies
@@ -223,7 +223,7 @@ class LevelState extends GameState {
 	public function saveGame(GameSave:FlxSave):FlxSave {
 		GameSave.data.levelName = levelName;
 		GameSave.data.playerScore = _levelScore;
-		// @todo Add player position to game save
+		// @todo Add player position to game save, why?
 		GameSave.flush();
 		return GameSave;
 	}
@@ -383,7 +383,7 @@ class LevelState extends GameState {
 					// Player bounce
 					Player.velocity.y = Enemy.push;					
 					Enemy.sndEnemyKill.play();
-					_playerJustHitEnemy = true; // true for half a second, false when touch ground
+					_playerJustHitEnemy = true; // false when touching ground
 					Enemy.kill();
 					FlxG.camera.shake(0.00150, 0.25);
 					incrementDeathCount();
@@ -514,6 +514,8 @@ class LevelState extends GameState {
 	/**
 	 * This method prevents the player from colliding with slopes.
 	 * The slope and the feetCollisions don't work well together.
+	 *
+	 * @todo Remove this class since there are no splopes
 	 */
 	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
 		var convertedSlope:FlxTile;
@@ -526,6 +528,28 @@ class LevelState extends GameState {
 		return true;
 	}
 
+	/**
+	 * Controls when to show player jumpm poof and when not to.
+	 */
+	function handleJumpPoof() {
+		var playerGoingUp:Bool = player.velocity.y < 0;
+
+		// Used to check if player hit enemy to not show jump poof. Resets after player 250ms
+		if (_playerJustHitEnemy && playerGoingUp) {
+			haxe.Timer.delay(() -> _playerJustHitEnemy = false, 250);
+		}
+
+		// Show jump poof when player jumps from the ground and not from an enemy jump
+		if (player.animation.name == "jumpLoop" && playerGoingUp && !_playerJustHitEnemy) {
+			_playerJumpPoof.show(
+				player.jumpPosition[0], 
+				player.jumpPosition[1] + player.height // Move lower than player
+			);
+		} else {
+			_playerJumpPoof.hide();
+		}
+	}
+
 	override public function update(Elapsed:Float) {
 		_secondsOnGround += Elapsed;
 		updateFeetCollisions();
@@ -536,17 +560,7 @@ class LevelState extends GameState {
 			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
 		}
 
-		// Show jump poof when player jumps
-		var playerGoingUp:Bool = player.velocity.y < 0;
-		if (player.animation.name == "jumpLoop" && playerGoingUp && !_playerJustHitEnemy) {
-			_playerJumpPoof.show(
-				player.jumpPosition[0], 
-				player.jumpPosition[1] + player.height // Move lower than player
-			);
-		} else {
-			_playerJumpPoof.hide();
-		}
-
+		handleJumpPoof();
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
