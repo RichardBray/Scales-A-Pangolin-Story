@@ -55,7 +55,6 @@ class LevelState extends GameState {
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
-	public var actionPressed:Bool = false; // Used for NPC conversation
 	public var levelName:String; // Give level unique name
 	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 
@@ -327,13 +326,15 @@ class LevelState extends GameState {
 	 * @param	Player					Player sprite (I'm not 100% sure if this is true)
 	 */
 	function fallInClouds(FallThroughTile:FlxObject, Player:FlxObject) {
-		if (_controls.down.check()) {
-			var timer = new FlxTimer();
-			FallThroughTile.allowCollisions = FlxObject.NONE;
-			timer.start(.1, (_) -> player.isGoindDown = true);	
-		} else if (Player.y >= FallThroughTile.y) {
-			FallThroughTile.allowCollisions = FlxObject.CEILING;
-			player.isGoindDown = false;
+		if (!player.preventMovement) {
+			if (_controls.down.check()) {
+				var timer = new FlxTimer();
+				FallThroughTile.allowCollisions = FlxObject.NONE;
+				timer.start(.1, (_) -> player.isGoindDown = true);	
+			} else if (Player.y >= FallThroughTile.y) {
+				FallThroughTile.allowCollisions = FlxObject.CEILING;
+				player.isGoindDown = false;
+			}
 		}
 	}
 
@@ -555,12 +556,13 @@ class LevelState extends GameState {
 		updateFeetCollisions();
 		super.update(Elapsed);
 
+		handleJumpPoof();
+
 		// Hacky way to prevent player for losing two lives on one hit
 		if (_playerTouchMovingEnemy) {
 			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
 		}
 
-		handleJumpPoof();
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
