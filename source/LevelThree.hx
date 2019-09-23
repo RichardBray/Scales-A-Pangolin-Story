@@ -25,7 +25,11 @@ class LevelThree extends LevelState {
 			},
 			{
 				goal: "Talk to friend",
-				func: (_) -> killedEmenies > 1
+				func: (_) -> {
+					var spokentoNPC:Int = 0;
+					if (startingConvo) spokentoNPC++;
+					return spokentoNPC > 0;
+				}
 			}            
 		]; 
 
