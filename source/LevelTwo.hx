@@ -38,7 +38,7 @@ class LevelTwo extends LevelState {
   override public function create() {
     levelName = "Level-2-0";
 
-    createLevel("level-2-0", "mountains");
+    createLevel("level-2-0", "jungle.jpg");
 
 		// Add player
 		createPlayer(180, 1470);
