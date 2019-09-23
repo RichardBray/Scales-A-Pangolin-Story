@@ -35,18 +35,13 @@ class LevelThree extends LevelState {
     levelName = "Level-3-0";
 
     createLevel("level-3-0", "mountains");
-	
-		// Add player
-		// createPlayer(180, 1470);
-		createPlayer(10936, 1480);  
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [
 			"Hello friend!",
-			"Welcome to a spuer early build of the Pangolin game.",
-			"Nothing is finalised, the art assets, gameplay mechanics, even the sound effects.",
-			"Right now all you can do is collect <pt>purple bugs<pt>, but we're hoping to \nhave loads more done soon.",
-			"Until then, have fun :)"
+			"Wow, I've never seen a pangolin move so fast before, that's incredible.",
+			"Anyway I saw a <pt>black panther<pt> just come by here.",
+			"You might want to be carful when you're running around the jungle."
 		];
 
 		// Add NPC
@@ -57,9 +52,13 @@ class LevelThree extends LevelState {
 		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this);
 		add(_monkeyNPC);		
 
+		// Add player
+		// createPlayer(180, 1470);
+		createPlayer(10936, 1480);  
+		
     // Add HUD
     createHUD(0, player.health, _goalData); 
-		
+
     super.create(); 
   }
 
@@ -81,7 +80,6 @@ class LevelThree extends LevelState {
 
 		FlxG.overlap(player, _monkeyNPC.npcSprite.npcBoundary, _monkeyNPC.initConvo);
 		if (!FlxG.overlap(player, _monkeyNPC.npcSprite.npcBoundary, _monkeyNPC.initConvo)) {
-			actionPressed = false;
 			_monkeyNPC.dialoguePrompt.hidePrompt();
 		};				    
   }
