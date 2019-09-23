@@ -6,7 +6,6 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import flixel.text.FlxText;
-import flixel.tweens.FlxTween;
 
 
 class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
@@ -63,19 +62,14 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 		add(_dialogueText);
 
 		// Hide the members
-		this.forEach((_member:FlxSprite) -> _member.alpha = 0);
+		hidePrompt();
 	}
 
 	public function showPrompt() {
-		this.forEach((_member:FlxSprite) -> {
-			FlxTween.tween(_member, {alpha: 1}, .1);
-		});
+		this.forEach((_member:FlxSprite) -> _member.alpha = 1);
 	}
 
 	public function hidePrompt() {
-		this.forEach((_member:FlxSprite) -> {
-			FlxTween.tween(
-				_member, {alpha: 0}, .1);
-		});
+		this.forEach((_member:FlxSprite) -> _member.alpha = 0);
 	}
 }
