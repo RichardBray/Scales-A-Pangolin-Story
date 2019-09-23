@@ -51,20 +51,20 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		add(_dialogueBox);
 
 		// Create the text
+		var distanceFromTop:Int = 30;
 		_dialogueBoxText = new FlxText(
 			spacingWidth + 20, 
-			FlxG.height - (_heightFromBase - 100), 
+			FlxG.height - (_heightFromBase + distanceFromTop), 
 			FlxG.width - (spacingWidth * 2), 
 			_dialogueArray[_arrTextNum]
 		);
 		_dialogueBoxText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, LEFT);
-
 		add(_dialogueBoxText);
 
-		// TODO Create down arrow
+		// Space to continue text
 		_pressDown = new FlxText(
-			FlxG.width - 350, 
-			FlxG.height - 140, 
+			FlxG.width - 370, 
+			FlxG.height - 150, 
 			FlxG.width - 400, 
 			"Press SPACE to skip"
 		);
