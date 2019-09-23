@@ -101,10 +101,10 @@ class LevelState extends GameState {
 		 */
 
 		// Code for parallax background
-		_levelBg = new FlxSprite(0, 1280, 'assets/images/$Background.png');
+		_levelBg = new FlxSprite(0, 400, 'assets/images/backgrounds/$Background');
 
-		_levelBg.scale.set(4.5, 4.5);
-		_levelBg.alpha = 0;
+		_levelBg.scale.set(1.5, 1.5);
+		_levelBg.alpha = 0.5;
 		_levelBg.scrollFactor.set(0.3, 1);
 		add(_levelBg);
 		// Load custom tilemap
