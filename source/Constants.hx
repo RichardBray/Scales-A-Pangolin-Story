@@ -25,6 +25,9 @@ class Constants {
 	// Controler strings
 	// @todo different controler strings for gamepads
 	public static var start:String = "ESC";
+	public static var cross:String = "SPACE";
+	public static var triangle:String = "E";
+	
 
 	// Used to load levels from saves and restart levels
 	public static var levelNames:Map<String, Class<LevelState>> = [

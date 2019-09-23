@@ -62,11 +62,12 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		add(_dialogueBoxText);
 
 		// Space to continue text
+		var cross:String = Constants.cross;
 		_pressDown = new FlxText(
 			FlxG.width - 370, 
 			FlxG.height - 150, 
 			FlxG.width - 400, 
-			"Press SPACE to skip"
+			'Press $cross to skip'
 		);
 		_pressDown.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
 		add(_pressDown);
