@@ -57,13 +57,11 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 	public function initConvo(Player:Player, Friend:FlxSprite) {
 		if (Player.isTouching(FlxObject.FLOOR)) {
-			if (!_parentState.actionPressed) dialoguePrompt.showPrompt();
+			// Show prompt when player is in collision boundary
+			dialoguePrompt.showPrompt();
 
 			if (_controls.triangle.check()) {
-				_parentState.actionPressed = true;
-
 				if (!_parentState.startingConvo) {
-					dialoguePrompt.hidePrompt(); // hide dialogue bubble
 					// zoom camera
 					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {
 						onComplete: (_) -> {
@@ -84,6 +82,8 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 				}
 			}
 		} 
+
+		if (_parentState.startingConvo) dialoguePrompt.hidePrompt(); // hide dialogue bubble
 	}  
 }
 
