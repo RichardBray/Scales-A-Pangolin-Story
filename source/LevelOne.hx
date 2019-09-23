@@ -32,7 +32,7 @@ class LevelOne extends LevelState {
 
 		_goalData = [
 			{
-				goal: "Collect all 15 bugs",
+				goal: "Collect at least 15 bugs",
 				func: (GameScore:Int) -> GameScore > 14
 			}
 		];
@@ -41,7 +41,7 @@ class LevelOne extends LevelState {
 	override public function create() {
 		levelName = "Level-1-0";
 
-		createLevel("level-1-0", "mountains");
+		createLevel("level-1-0", "jungle.jpg");
 
 		// Add player
 		createPlayer(240, 1472);
