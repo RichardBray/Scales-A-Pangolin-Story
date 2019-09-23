@@ -6,9 +6,10 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
+import flixel.addons.display.shapes.FlxShapeBox;
 
 class DialogueBox extends FlxTypedGroup<FlxSprite> {
-	var _dialogueBox:FlxSprite;
+	var _dialogueBox:FlxShapeBox;
 	var _dialogueBoxText:FlxText;
 	var _pressDown:FlxText;
 	var _dialogueArray:Array<String>;
@@ -17,7 +18,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _primaryText:FlxTextFormat;
 	var _controls:Controls;
 
-	static var _heightFromBase:Int = 200;
+	static var _heightFromBase:Int = 340;
 
 	/**
 	 * Dialogue Box constructor
@@ -28,28 +29,46 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	public function new(Dialogue:Array<String>, ParentState:LevelState) {
 		super();
 
-		// Init controls
-
 		// Assign these to variables to use in other methods
 		_dialogueArray = Dialogue;
 		_parentState = ParentState;
 
 		// Markup styles for text
-		_primaryText = new FlxTextFormat(0xffdc2de4, false, false, null);
+		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false, null);
 
 		// Create the box
-		_dialogueBox = new FlxSprite(0, FlxG.height - _heightFromBase).makeGraphic(FlxG.width, _heightFromBase, Constants.primaryColor);
+		var spacingWidth:Int = 150;
+		var spacingHeight:Int = 55;
+
+		_dialogueBox = new FlxShapeBox(
+			spacingWidth,
+			FlxG.height - (_heightFromBase + spacingHeight),
+			FlxG.width - (spacingWidth * 2),
+			_heightFromBase - spacingHeight,
+			{ thickness:8, color:Constants.primaryColorLight }, 
+			Constants.primaryColor			
+		);		
 		add(_dialogueBox);
 
 		// Create the text
-		_dialogueBoxText = new FlxText(120, FlxG.height - (_heightFromBase - 20), FlxG.width - 200, _dialogueArray[_arrTextNum]);
+		_dialogueBoxText = new FlxText(
+			spacingWidth + 20, 
+			FlxG.height - (_heightFromBase - 100), 
+			FlxG.width - (spacingWidth * 2), 
+			_dialogueArray[_arrTextNum]
+		);
 		_dialogueBoxText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, LEFT);
 
 		add(_dialogueBoxText);
 
 		// TODO Create down arrow
-		_pressDown = new FlxText(FlxG.width - 350, FlxG.height - (_heightFromBase - 130), FlxG.width - 400, "Press SPACE to skip");
-		_pressDown.setFormat(null, 16, FlxColor.WHITE, LEFT);
+		_pressDown = new FlxText(
+			FlxG.width - 350, 
+			FlxG.height - 140, 
+			FlxG.width - 400, 
+			"Press SPACE to skip"
+		);
+		_pressDown.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
 		add(_pressDown);
 
 		// Hide and fix the members to the screen
@@ -61,23 +80,6 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 		// Intialise controls
 		_controls = new Controls();		
-	}
-
-	override public function update(elapsed:Float) {
-		// Press jump button to move to next bit of text
-		if (visible && _controls.cross.check()) {
-			// This is used to keep running the `revertUI` method on the last array number.
-			_arrTextNum == _dialogueArray.length ? _arrTextNum : _arrTextNum++;
-
-			if (_arrTextNum == _dialogueArray.length) {
-				this.revertUI();
-			} else {
-				_dialogueBoxText.text = _dialogueArray[_arrTextNum];
-				_dialogueBoxText.applyMarkup(_dialogueArray[_arrTextNum], [new FlxTextFormatMarkerPair(_primaryText, "<pt>")]);
-			}
-		}
-
-		super.update(elapsed);
 	}
 
 	public function showBox() {
@@ -104,4 +106,21 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 			}
 		});
 	}
+
+	override public function update(Elapsed:Float) {
+		// Press jump button to move to next bit of text
+		if (visible && _controls.cross.check()) {
+			// This is used to keep running the `revertUI` method on the last array number.
+			_arrTextNum == _dialogueArray.length ? _arrTextNum : _arrTextNum++;
+
+			if (_arrTextNum == _dialogueArray.length) {
+				this.revertUI();
+			} else {
+				_dialogueBoxText.text = _dialogueArray[_arrTextNum];
+				_dialogueBoxText.applyMarkup(_dialogueArray[_arrTextNum], [new FlxTextFormatMarkerPair(_primaryText, "<pt>")]);
+			}
+		}
+
+		super.update(Elapsed);
+	}	
 }

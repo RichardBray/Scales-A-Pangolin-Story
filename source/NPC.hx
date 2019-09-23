@@ -19,11 +19,11 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
     /**
      * Create an NPC
      * --
-     * @param X				X posiiton in the level.
-     * @param Y				Y position in the level.
+     * @param X							X posiiton in the level.
+     * @param Y							Y position in the level.
      * @param DialogueText	Text for the NPC.
-		 * @param SpriteData	Sprite image unique to this NPC.
-		 * @param ParentState	Used to adjust vieport and stop player when dialogue starts.
+		 * @param SpriteData		Sprite image unique to this NPC.
+		 * @param ParentState		Used to adjust vieport and stop player when dialogue starts.
      */
     public function new(
 			X:Int, 
@@ -42,7 +42,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		dialoguePrompt = new DialoguePrompt(
 			SpriteData.width, 
 			X - (SpriteData.width / 2), 
-			(Y - 130),  // 350 = magic number
+			(Y - 130),  // 130 = magic number
 			"Press E"
 		);
 
@@ -63,7 +63,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 				_parentState.actionPressed = true;
 
 				if (!_parentState.startingConvo) {
-					dialoguePrompt.hidePrompt(true); // hide dialogue bubble
+					dialoguePrompt.hidePrompt(); // hide dialogue bubble
 					// zoom camera
 					FlxTween.tween(FlxG.camera, {zoom: 1.1}, 0.2, {
 						onComplete: (_) -> {

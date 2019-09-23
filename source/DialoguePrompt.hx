@@ -8,12 +8,14 @@ import flixel.util.FlxSpriteUtil;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 
+
 class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	var _dialogueBubble:FlxSprite;
 	var _dialogueText:FlxText;
 	var _dialogueXPos:Float;
 	var _dialogueYPos:Float;
 	var _dialogueYPosLow:Float;
+	var _dialogueTextYPos:Float;
 	var _vertices:Array<FlxPoint>;
 	var _w:Float;
 	var _h:Float;
@@ -32,6 +34,7 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 		_dialogueXPos = X + (DialogueWidth / 2);
 		_dialogueYPos = Y;
 		_dialogueYPosLow = Y - 10;
+		_dialogueTextYPos = Y + 22;
 
 		// Create the speech bubble
 		_dialogueBubble = new FlxSprite(_dialogueXPos, Y);
@@ -50,13 +53,13 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 			new FlxPoint(_w / 4, _w / 2),
 			new FlxPoint(0, _w / 2)
 		];
-		FlxSpriteUtil.drawPolygon(_dialogueBubble, _vertices, 0xff205ab7);
+		FlxSpriteUtil.drawPolygon(_dialogueBubble, _vertices, Constants.primaryColor);
 		add(_dialogueBubble);
 
 		// Create dialogue text
-		_dialogueText = new FlxText(_dialogueXPos, 510, DialogueWidth);
+		_dialogueText = new FlxText(_dialogueXPos, _dialogueTextYPos, DialogueWidth);
 		_dialogueText.text = DialogueText;
-		_dialogueText.setFormat(Constants.squareFont, 20, FlxColor.WHITE, CENTER);
+		_dialogueText.setFormat(Constants.squareFont, Constants.hudFont, FlxColor.WHITE, CENTER);
 		add(_dialogueText);
 
 		// Hide the members
@@ -65,21 +68,14 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 
 	public function showPrompt() {
 		this.forEach((_member:FlxSprite) -> {
-			FlxTween.tween(_member, {alpha: 1, y: _dialogueYPosLow}, .1);
+			FlxTween.tween(_member, {alpha: 1}, .1);
 		});
 	}
 
-	/**
-	 * @param UseOnComplete Detemines if members should use tween onComplete option.
-	 */
-	public function hidePrompt(UseOnComplete:Bool = false) {
+	public function hidePrompt() {
 		this.forEach((_member:FlxSprite) -> {
 			FlxTween.tween(
-				_member, 
-				{alpha: 0, y: _dialogueYPos}, 
-				.1, 
-				UseOnComplete ? {onComplete: (_) -> _member.alpha = 0} : null
-			);
+				_member, {alpha: 0}, .1);
 		});
 	}
 }
