@@ -95,7 +95,7 @@ class HUD extends FlxSpriteGroup {
 		var hudObjects:Array<FlxSprite> = [_gradientBg, _scoreTxt, _goals, _hearts];
 		var objectAlpha:Array<Float> = [0.2, 1, 1, 1];
 		hudObjects.mapi((idx:Int, member:FlxSprite) -> {
-			member.alpha = objectAlpha[idx];
+			member.alpha = (Alpha == 1) ? objectAlpha[idx] : 0;
 		});
 	}
 

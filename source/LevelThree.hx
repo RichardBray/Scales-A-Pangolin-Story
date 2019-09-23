@@ -38,10 +38,7 @@ class LevelThree extends LevelState {
 	
 		// Add player
 		// createPlayer(180, 1470);
-		createPlayer(10936, 1480);
-
-    // Add HUD
-    createHUD(0, player.health, _goalData);   
+		createPlayer(10936, 1480);  
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [
@@ -60,6 +57,9 @@ class LevelThree extends LevelState {
 		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this);
 		add(_monkeyNPC);		
 
+    // Add HUD
+    createHUD(0, player.health, _goalData); 
+		
     super.create(); 
   }
 
