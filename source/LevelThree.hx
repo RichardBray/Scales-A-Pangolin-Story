@@ -53,8 +53,7 @@ class LevelThree extends LevelState {
 		add(_monkeyNPC);		
 
 		// Add player
-		// createPlayer(180, 1470);
-		createPlayer(10936, 1480);  
+		createPlayer(180, 1470); 
 		
     // Add HUD
     createHUD(0, player.health, _goalData); 
