@@ -530,23 +530,6 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * This method prevents the player from colliding with slopes.
-	 * The slope and the feetCollisions don't work well together.
-	 *
-	 * @todo Remove this class since there are no splopes
-	 */
-	function preventSlopeCollisions(SlopeTile:FlxObject, _) {
-		var convertedSlope:FlxTile;
-		convertedSlope = cast SlopeTile; // Changes FlxObject to FlxTile
-		if (convertedSlope.index == _firstTile + 7) { 
-			_playerPushedByFeet = false; 
-			_upOnSlope = true;
-		}
-		_upOnSlope = false;
-		return true;
-	}
-
-	/**
 	 * Controls when to show player jumpm poof and when not to.
 	 */
 	function handleJumpPoof() {
@@ -609,7 +592,5 @@ class LevelState extends GameState {
 				bound.enemy.attacking = false;
 			});
 		};		
-
-		_levelCollisions.overlapsWithCallback(player, preventSlopeCollisions);
 	}	
 }
