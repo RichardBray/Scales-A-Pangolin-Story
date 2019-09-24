@@ -59,7 +59,7 @@ class LevelState extends GameState {
 	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 
 	override public function create() {
-		bgColor = 0xffc7e4db; // Game background color
+		bgColor = 0xff8cd2bc; // Game background color
 
 		// Continue music if it's already playing
 		if (FlxG.sound.music == null) {
@@ -117,7 +117,7 @@ class LevelState extends GameState {
 			for (i in 0...bgSpritesNeeded) {
 				var _levelBg:FlxSprite = new FlxSprite(((bgWidth * bgScale) * i), 400, bgPath);
 				_levelBg.scale.set(bgScale, bgScale);
-				_levelBg.alpha = 0.5;
+				_levelBg.alpha = 0.75;
 				_levelBg.scrollFactor.set(0.3, 1);
 				_levelBgs.add(_levelBg);
 			}
