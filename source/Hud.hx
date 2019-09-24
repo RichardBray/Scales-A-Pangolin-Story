@@ -157,6 +157,7 @@ class HUD extends FlxSpriteGroup {
 			var distanceFromScreenTop:Int = 20;
 			var goal = new FlxText(FlxG.width - 300, distanceFromScreenTop + (idx * goalsTextLineHeight), 0, data.goal);	
 			goal.setFormat(Constants.squareFont, Constants.hudFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
+			goal.setBorderStyle(OUTLINE, FlxColor.BLACK);
 			_goals.add(goal);
 		});
 	}
