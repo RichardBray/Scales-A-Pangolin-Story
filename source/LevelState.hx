@@ -25,7 +25,7 @@ import HUD.GoalData;
 typedef CollMap = Map<String, Array<Int>>;
 
 class LevelState extends GameState {
-	var _levelBg:FlxSprite;
+	var _levelBgs:FlxTypedGroup<FlxSprite>;
 	var _mapEntities:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _grpEnemies:FlxTypedGroup<Enemy>;
@@ -94,21 +94,37 @@ class LevelState extends GameState {
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
 	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap) {
+		// Tiles for collisions
 		_collisionImg = "assets/images/collisions.png";
 
-		/**
-		 * Code for adding the environment and collisions
-		 */
+		// Load custom tilemap (up here because of background)
+		_map = new TiledMap('assets/data/$MapFile.tmx');
 
 		// Code for parallax background
-		_levelBg = new FlxSprite(0, 400, 'assets/images/backgrounds/$Background');
 
-		_levelBg.scale.set(1.5, 1.5);
-		_levelBg.alpha = 0.5;
-		_levelBg.scrollFactor.set(0.3, 1);
-		add(_levelBg);
-		// Load custom tilemap
-		_map = new TiledMap('assets/data/$MapFile.tmx');
+		/**
+		 * This method creates the parallax background by dividing the length of the map 
+		 * by the length of the sprite image. Then creating sprites for the amount of bg images needed.
+		 */
+		function renderBgSprites():FlxTypedGroup<FlxSprite> {
+			var bgPath:String ='assets/images/backgrounds/$Background'; 
+			var bgWidth:Float = new FlxSprite(0, 0, bgPath).width;
+			var bgScale:Float = 1.5;
+			var bgSpritesNeeded:Int = Std.int(_map.fullWidth / (bgWidth * bgScale));
+			
+			_levelBgs = new FlxTypedGroup<FlxSprite>();
+
+			for (i in 0...bgSpritesNeeded) {
+				var _levelBg:FlxSprite = new FlxSprite(((bgWidth * bgScale) * i), 400, bgPath);
+				_levelBg.scale.set(bgScale, bgScale);
+				_levelBg.alpha = 0.5;
+				_levelBg.scrollFactor.set(0.3, 1);
+				_levelBgs.add(_levelBg);
+			}
+			return _levelBgs;
+		}
+
+		add(renderBgSprites());
 
 		// Map objects initiated here.
 		_mapEntities = new FlxSpriteGroup();
@@ -233,7 +249,7 @@ class LevelState extends GameState {
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String) {
-		FlxG.sound.playMusic(LevelMusic, 0.2, true); // .4
+		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
 	}
 
 
@@ -417,6 +433,7 @@ class LevelState extends GameState {
 			haxe.Timer.delay(() -> _enemyDeathCounterExecuted = false, 1000);
 		}		
 	}
+	
 	/**
 	 * Reaction for player if hitting a stading enemy i.e. spikes or fire.
 	 * Player shoudl lose health no matter how enemy is hit/overlapped.
