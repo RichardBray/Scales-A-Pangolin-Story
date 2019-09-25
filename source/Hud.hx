@@ -41,7 +41,7 @@ class HUD extends FlxSpriteGroup {
 		}
 		// Garidnet for top of HUD
 		_gradientBg = FlxGradient.createGradientFlxSprite(FlxG.width, 150, [FlxColor.BLACK, FlxColor.TRANSPARENT]);
-		_gradientBg.alpha = 0.2;
+		_gradientBg.alpha = 0.3;
 		add(_gradientBg);
 	
 		// Socre text
@@ -157,7 +157,7 @@ class HUD extends FlxSpriteGroup {
 			var distanceFromScreenTop:Int = 20;
 			var goal = new FlxText(FlxG.width - 300, distanceFromScreenTop + (idx * goalsTextLineHeight), 0, data.goal);	
 			goal.setFormat(Constants.squareFont, Constants.hudFont, FlxColor.WHITE, FlxTextAlign.RIGHT);
-			goal.setBorderStyle(OUTLINE, FlxColor.BLACK);
+			// goal.setBorderStyle(SHADOW, FlxColor.GREY, 4);
 			_goals.add(goal);
 		});
 	}
