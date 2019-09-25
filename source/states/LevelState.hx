@@ -1,4 +1,4 @@
-package;
+package states;
 
 // - Flixel
 import flixel.tile.FlxTile;

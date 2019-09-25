@@ -1,4 +1,4 @@
-package;
+package states;
 
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;

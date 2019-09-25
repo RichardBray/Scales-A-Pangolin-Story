@@ -1,8 +1,12 @@
 package;
 
 import flixel.util.FlxColor;
+
+// Internal
+import states.LevelState;
+
 // Typedefs
-import LevelState.CollMap;
+import states.LevelState.CollMap;
 
 class Constants {
 	// general
@@ -31,8 +35,9 @@ class Constants {
 
 	// Used to load levels from saves and restart levels
 	public static var levelNames:Map<String, Class<LevelState>> = [
-		"Level-1-0" => LevelOne, 
-		"Level-2-0" => LevelTwo,
-		"Level-3-0" => LevelThree
+		"Level-1-0" => levels.LevelOne, 
+		"Level-2-0" => levels.LevelTwo,
+		"Level-3-0" => levels.LevelThree,
+		"Level-4-0" => levels.LevelFour
 	];
 }

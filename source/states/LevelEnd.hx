@@ -1,8 +1,11 @@
-package;
+package states;
 
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.util.FlxSave;
+
+// Internal
+import levels.LevelOne;
 
 // Typedefs
 import Menu.MenuData;

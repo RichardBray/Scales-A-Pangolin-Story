@@ -8,6 +8,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxObject;
 
+// Internal
+import states.LevelState;
+
+
 class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	var _dialogueBox:DialogueBox;
 	var _parentState:LevelState;

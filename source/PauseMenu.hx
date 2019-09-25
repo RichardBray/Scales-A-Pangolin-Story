@@ -54,7 +54,7 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_menuTitle);
 
 		// Maps string to class from `levelNames` in constants
-		var levelToRestart:Class<LevelState> = Constants.levelNames[LevelString];
+		var levelToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
 
 		var _menuData:Array<MenuData> = [
 			{

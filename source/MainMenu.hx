@@ -8,6 +8,10 @@ import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
+// Internal
+import states.GameState;
+import states.LevelState;
+
 // Typedefs
 import Menu.MenuData;
 
@@ -130,7 +134,7 @@ class MainMenu extends GameState {
 
 	function initNewGame(?EraseSave:Bool = false) {
 		if (EraseSave) _gameSave.erase();
-		FlxG.switchState(new LevelOne.Intro(_gameSave));
+		FlxG.switchState(new levels.LevelOne.Intro(_gameSave));
 	}
 
 	function showModal(

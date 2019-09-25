@@ -1,10 +1,13 @@
-package;
+package levels;
 
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
-// NPC
 import flixel.util.FlxColor;
+
+// Internal
+import states.LevelState;
+import states.IntroState;
 // Typedefs
 import HUD.GoalData;
 

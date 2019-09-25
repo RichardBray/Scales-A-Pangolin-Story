@@ -8,6 +8,9 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.addons.display.shapes.FlxShapeBox;
 
+// Internal
+import states.LevelState;
+
 class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _dialogueBox:FlxShapeBox;
 	var _dialogueBoxText:FlxText;
