@@ -1,7 +1,6 @@
 package states;
 
 // - Flixel
-import flixel.tile.FlxTile;
 import flixel.util.FlxTimer;
 import flixel.util.FlxSave;
 import flixel.FlxG;
@@ -111,8 +110,10 @@ class LevelState extends GameState {
 			var bgWidth:Float = new FlxSprite(0, 0, bgPath).width;
 			var bgScale:Float = 1.5;
 			var bgSpritesNeeded:Int = Std.int(_map.fullWidth / (bgWidth * bgScale));
-			
+
 			_levelBgs = new FlxTypedGroup<FlxSprite>();
+			// Fix for if level width is smaller than the bg width
+			if (bgSpritesNeeded == 0) bgSpritesNeeded = 1;
 
 			for (i in 0...bgSpritesNeeded) {
 				var _levelBg:FlxSprite = new FlxSprite(((bgWidth * bgScale) * i), 400, bgPath);
@@ -327,6 +328,11 @@ class LevelState extends GameState {
 			_grpEnemies.add(snakeAttackBox);
 			_grpEnemyAttackBoundaries.add(snakeAttackBoundary);
 		
+		} else if (ObjectId == 30) { // Leopard
+			var leopard:Enemy;
+			leopard = new Leopard(X, newY);
+			_grpEnemies.add(leopard);
+			
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;

@@ -4,7 +4,7 @@
   "description": "Sacles: a pangolin story game",
   "main": "source/Main.hx",
   "scripts": {
-    "build:html5":"watchman-make -p 'source/*.hx' 'assets/data/*.tmx' -r 'sh watcher.sh'",
+    "build:html5":"watchman-make -p 'source/*/**.hx' 'assets/data/*.tmx' -r 'sh watcher.sh'",
     "server:html5": "live-server export/html5/bin",
     "start": "concurrently \"npm run build:html5\" \"npm run server:html5\""
   },
