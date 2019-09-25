@@ -4,6 +4,7 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import flixel.FlxG;
+
 // Typedefs
 import HUD.GoalData;
 
@@ -17,7 +18,7 @@ class LevelThree extends LevelState {
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
-
+		_gameSave = GameSave;
 		_goalData = [
 			{
 				goal: 'Collect over $_bugsGoal bugs',
@@ -70,7 +71,7 @@ class LevelThree extends LevelState {
 	}	
 
 	function changeState() {
-		FlxG.switchState(new LevelThree(_gameSave));
+		FlxG.switchState(new LevelFour(_gameSave));
 	}	
   
   override public function update(Elapsed:Float) {
