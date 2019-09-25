@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="256" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="3" nextobjectid="12">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="256" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="14">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
+ <tileset firstgid="29" source="level-2-objs.tsx"/>
  <objectgroup id="2" name="objects">
   <object id="1" gid="8" x="-326.167" y="1819.42" width="974" height="258"/>
   <object id="2" gid="8" x="-329.182" y="1609.92" width="974" height="258"/>
@@ -12,10 +13,14 @@
   <object id="7" gid="8" x="3560.26" y="1820.36" width="974" height="258"/>
   <object id="8" gid="7" x="1786.38" y="1613.29" width="1137" height="1494"/>
   <object id="11" gid="5" x="2943.15" y="1609.36" width="889" height="1184"/>
+  <object id="12" gid="30" x="1872.94" y="1575.91" width="338" height="170"/>
  </objectgroup>
  <layer id="1" name="collisions" width="256" height="120">
   <data encoding="base64" compression="zlib">
    eJzt3bEJwEAQA0F38P136yYMj7wzcLmSje88QNW5PQC4Rv/QpX/o0j906R+69A9d+ocu/UOX/qFL/9Clf+jSP3TpH7r0D136hy79Q5f+oUv/0KV/6NI/dOkfuvQPXfqHLv1Dl/6hS//QpX/o0j906R+69A9d+ocu/UOX/qFL/9Clf+jSP3TpH7r0D136hy79Q5f+oUv/0KV/6NI/dOkfuvQPXfqHLv1Dl/6hS//QpX/o0j906R+69A9d+ocu/UOX/qFL/9Clf+jSP3TpH7r0D136hy79Q5f+oUv/0KV/6NI/dOkfuvQPXfqHLv1Dl/6hS//QpX/oOkMHfGulq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq5WdsGSlq9u/R5376wFN+ocu/UOX/qFL/9Clf+jSP3TpH7r0D136hy79Q5f+oUv/0KV/6HoBM1wXrQ==
   </data>
  </layer>
+ <objectgroup id="3" name="helpers">
+  <object id="13" name="Player star" x="117.34" y="1003.67" width="300" height="135"/>
+ </objectgroup>
 </map>
