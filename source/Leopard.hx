@@ -1,8 +1,8 @@
 package;
 
 import flixel.FlxObject;
-import flixel.FlxSprite;
-import flixel.FlxG;
+import flixel.math.FlxVelocity;
+
 
 class Leopard extends Enemy {
   var _seconds:Float = 0;
@@ -37,6 +37,7 @@ class Leopard extends Enemy {
 
   function running() {
     animation.play("running");
+    // FlxVelocity.moveTowardsPoint(this, playerPos);
   }
 
   function movingLeft(FaceLeft:Bool = true) {
