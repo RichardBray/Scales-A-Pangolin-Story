@@ -56,6 +56,16 @@ class Enemy extends FlxSprite {
 		EnemySprite.alive = false;
 		timer.start(.5, (_) -> EnemySprite.alive = true, 1);		
 	}
+
+	/**
+	 * Allow death animation to play when Enemy dies.
+	 */
+	public function dieSlowly() {
+		alive = false;
+		timer.start(1, (_) -> {
+			exists = false;
+		}, 1);
+	}
 }
 
 class Fire extends Enemy {
@@ -121,10 +131,7 @@ class Boar extends Enemy {
 
 	override public function kill() {
 		_enemyHit = true;
-		alive = false;
-		timer.start(1, (_) -> {
-			exists = false;
-		}, 1);
+		dieSlowly();
   }
 
 	override public function update(Elapsed:Float) {
@@ -157,10 +164,7 @@ class Snake extends Enemy {
 
 	override public function kill() {
 		_enemyHit = true;
-		alive = false;
-		timer.start(1, (_) -> {
-			exists = false;
-		}, 1);
+		dieSlowly();
   }
 
 	override public function update(Elapsed:Float) {
