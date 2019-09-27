@@ -330,9 +330,14 @@ class LevelState extends GameState {
 		
 		} else if (ObjectId == 30) { // Leopard
 			var leopard:Enemy;
+			var leopardAttackBoundary:Enemy.Boundaries;
+
 			leopard = new Leopard(X, newY);
+			leopardAttackBoundary = new Enemy.Boundaries(X, newY, FlxG.width, 200, leopard);
+		
 			_grpEnemies.add(leopard);
-			
+			_grpEnemyAttackBoundaries.add(leopardAttackBoundary);
+
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
@@ -407,7 +412,8 @@ class LevelState extends GameState {
 					Player.velocity.y = Enemy.push;					
 					Enemy.sndEnemyKill.play();
 					_playerJustHitEnemy = true; // false when touching ground
-					Enemy.kill();
+					Enemy.hurt(1);
+					// Enemy.kill();
 					FlxG.camera.shake(0.00150, 0.25);
 					incrementDeathCount();
 				} else { // when rolling animation is NOT playing

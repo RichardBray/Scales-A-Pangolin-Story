@@ -16,6 +16,7 @@ class Enemy extends FlxSprite {
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
+		health = 1;
 		timer = new FlxTimer();
 		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
@@ -180,6 +181,10 @@ class Snake extends Enemy {
 class SnakeAttackBox extends Enemy {
 	var _parentEnemy:Enemy;
 
+	/**
+	 * Box that attacks the player if they overlap it. 
+	 * This is necessary for the snake because their attack stretches out of their hitbox.
+	 */
 	public function new(X:Float, Y:Float, Name:String = "", ParentEnemy:Enemy) {
 		super(X, Y);
 		_parentEnemy = ParentEnemy;
@@ -210,7 +215,7 @@ class Boundaries extends FlxObject {
 	 * @param Y						Y position
 	 * @param Width				Width of boundary
 	 * @param Height			Height of boundary
-	 * @param ParentEnemy	Enemy that is affected by boundary, also toggle enemy attack variable
+	 * @param ParentEnemy	Enemy affected by boundary, also toggle enemy attack variable
 	 */
 	public function new(X:Float, Y:Float, Width:Float, Height:Float, ParentEnemy:Enemy) {
 		super(X, Y, Width, Height);
