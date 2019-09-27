@@ -333,7 +333,7 @@ class LevelState extends GameState {
 			var leopardAttackBoundary:Enemy.Boundaries;
 
 			leopard = new Leopard(X, newY);
-			leopardAttackBoundary = new Enemy.Boundaries(X, newY, FlxG.width, 200, leopard);
+			leopardAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, leopard);
 		
 			_grpEnemies.add(leopard);
 			_grpEnemyAttackBoundaries.add(leopardAttackBoundary);

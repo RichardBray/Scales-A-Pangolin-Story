@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="256" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="14">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="256" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="19">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -11,8 +11,8 @@
   <object id="5" gid="8" x="1617.16" y="1819.23" width="974" height="258"/>
   <object id="6" gid="8" x="2588.53" y="1819.95" width="974" height="258"/>
   <object id="7" gid="8" x="3560.26" y="1820.36" width="974" height="258"/>
-  <object id="8" gid="7" x="1786.38" y="1613.29" width="1137" height="1494"/>
-  <object id="11" gid="5" x="2943.15" y="1609.36" width="889" height="1184"/>
+  <object id="8" gid="7" x="2056.38" y="1613.29" width="1137" height="1494"/>
+  <object id="11" gid="5" x="3108.15" y="1609.36" width="889" height="1184"/>
   <object id="12" gid="30" x="2322.94" y="1576.91" width="338" height="170"/>
  </objectgroup>
  <layer id="1" name="collisions" width="256" height="120">
@@ -22,5 +22,7 @@
  </layer>
  <objectgroup id="3" name="helpers">
   <object id="13" name="Player star" x="117.34" y="1003.67" width="300" height="135"/>
+  <object id="14" x="676" y="1140" width="1920" height="430"/>
+  <object id="17" name="Pangolin npc" x="2306.84" y="998.41" width="186.01" height="181.24"/>
  </objectgroup>
 </map>

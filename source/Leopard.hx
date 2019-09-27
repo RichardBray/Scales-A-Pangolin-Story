@@ -58,8 +58,11 @@ class Leopard extends Enemy {
 		facing = FaceLeft ? FlxObject.LEFT : FlxObject.RIGHT;
   }
 
+  /**
+   * Leopart has spotted player, so it roars and starts attacking.
+   */
   function inAttackMode() {
-    if (attacking) {
+    if (attacking && facing == FlxObject.LEFT) {
       var _roarTimer:FlxTimer = new FlxTimer();
       animation.play("roaring");
       velocity.x = 0;
