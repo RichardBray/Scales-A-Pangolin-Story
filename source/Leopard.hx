@@ -18,7 +18,7 @@ class Leopard extends Enemy {
 
   public function new(X:Float, Y:Float) {
     super(X, Y + 55);
-    override health = 5;
+    health = 5;
 
     loadGraphic("assets/images/leopard.png", true, 338, 170);
     updateSpriteHitbox(78, 55, this);
@@ -27,9 +27,9 @@ class Leopard extends Enemy {
 
 		// Animations
 		animation.add("walking", [for (i in 0...5) i], 6, true);
-    animation.add("running", [for (i in 6...11) i], 12, true); 
+    animation.add("running", [for (i in 6...11) i], 10, true); 
     animation.add("dying", [for (i in 12...17) i], 6, true);   
-    animation.add("roaring", [15, 16, 17], 6, true);
+    animation.add("roaring", [for (i in 0...5) i], 6, true);
     // Leopard attacked
     // Leopard jumping   
   }
@@ -62,13 +62,16 @@ class Leopard extends Enemy {
    * Leopart has spotted player, so it roars and starts attacking.
    */
   function inAttackMode() {
-    if (attacking && facing == FlxObject.LEFT) {
-      var _roarTimer:FlxTimer = new FlxTimer();
-      animation.play("roaring");
-      velocity.x = 0;
-      _roarTimer.start(2, (_) -> _leopardRoared = true, 1);	
+    if (attacking && facing == FlxObject.LEFT) { // Player seen
       if (_leopardRoared) {
         running();
+      } else {
+        var _roarTimer:FlxTimer = new FlxTimer();
+        animation.play("roaring");
+        velocity.x = 0;
+        _roarTimer.start(2, (_) -> {
+          _leopardRoared = true;
+        }, 1);	
       }
     } else {
       pacing();
