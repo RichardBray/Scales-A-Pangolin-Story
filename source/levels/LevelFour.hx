@@ -1,5 +1,8 @@
 package levels;
 
+import flixel.FlxG;
+import flixel.util.FlxColor;
+import flixel.FlxSprite;
 import flixel.util.FlxSave;
 
 // Internal
@@ -16,14 +19,25 @@ class LevelFour extends LevelState {
   public function new(?GameSave:Null<FlxSave>) {
     super();
     _gameSave = GameSave;
-		_goalData = [
+  _goalData = [
 			{
 				goal: "Defeat the Leopard",
 				func: (_) -> true
-			}           
+			},
+			{
+				goal: "Talk to saved pangolin",
+				func: (_) -> true
+			}                 
 		]; 
-
   }
+
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
+
+	function changeState() {
+		FlxG.switchState(new MainMenu());
+	}	  
 
   override public function create() {
     levelName = "Level-4-0";
@@ -41,5 +55,10 @@ class LevelFour extends LevelState {
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+
+		// Overlaps
+		grpHud.goalsCompleted
+			? FlxG.overlap(levelExit, player, fadeOut)
+			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);    
   }
 }
