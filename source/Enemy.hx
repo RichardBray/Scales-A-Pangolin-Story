@@ -6,6 +6,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
 import flixel.FlxObject;
+import flixel.math.FlxPoint;
 
 class Enemy extends FlxSprite {
 	public var sndHit:FlxSound;
@@ -13,6 +14,10 @@ class Enemy extends FlxSprite {
 	public var timer:FlxTimer;
 	public var push:Int = -900; // How much to push the player up by when they jump on enemy
 	public var attacking:Bool = false; // True if player in snake attack box
+
+	// For boss enemies
+  public var boundaryLeft:FlxPoint;
+  public var boundaryRight:FlxPoint;	
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
