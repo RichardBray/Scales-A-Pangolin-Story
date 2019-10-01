@@ -1,6 +1,5 @@
 package;
 
-import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxTimer;
 import flixel.math.FlxVelocity;
@@ -10,16 +9,14 @@ class Leopard extends Enemy {
   var _seconds:Float = 0;
   var _enemyDying:Bool = false;
   var _leopardRoared:Bool = false;
+  var _hitLeftBoundary:Bool = false;
+  var _attackMode:Bool = false; // When leapord has seen player for first time
 
-  static var runningSpeed:Int = 200;
-
-  public var boundaryLeft:FlxPoint;
-  public var boundaryRight:FlxPoint;
+  static var runningSpeed:Int = 750;
 
   public function new(X:Float, Y:Float) {
     super(X, Y + 55);
-    health = 5;
-
+    health = 20; // For some reason eat hit takes 3
     loadGraphic("assets/images/leopard.png", true, 338, 170);
     updateSpriteHitbox(78, 55, this);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -29,7 +26,7 @@ class Leopard extends Enemy {
 		animation.add("walking", [for (i in 0...5) i], 6, true);
     animation.add("running", [for (i in 6...11) i], 10, true); 
     animation.add("dying", [for (i in 12...17) i], 6, true);   
-    animation.add("roaring", [for (i in 0...5) i], 6, true);
+    animation.add("roaring", [0], 6, true);
     // Leopard attacked
     // Leopard jumping   
   }
@@ -48,8 +45,15 @@ class Leopard extends Enemy {
 
   function running() {
     animation.play("running");
-    // Move to point for a certain number of seconds, then move to opposite boundary point
-    // FlxVelocity.moveTowardsPoint(this, boundaryLeft, runningSpeed);
+    if (!_hitLeftBoundary) {
+      FlxVelocity.moveTowardsPoint(this, boundaryLeft, runningSpeed);
+      facing = FlxObject.LEFT;
+      if (Std.int(this.getPosition().x) <= Std.int(boundaryLeft.x)) _hitLeftBoundary = true;
+    } else {
+      FlxVelocity.moveTowardsPoint(this, boundaryRight, runningSpeed);
+      facing = FlxObject.RIGHT;
+      if (Std.int(this.getPosition().x) > (Std.int(boundaryRight.x) - this.width)) _hitLeftBoundary = false;
+    }
   }
 
   function movingLeft(FaceLeft:Bool = true) {
@@ -62,7 +66,8 @@ class Leopard extends Enemy {
    * Leopart has spotted player, so it roars and starts attacking.
    */
   function inAttackMode() {
-    if (attacking && facing == FlxObject.LEFT) { // Player seen
+    if (attacking && facing == FlxObject.LEFT) _attackMode = true;
+    if (_attackMode) {
       if (_leopardRoared) {
         running();
       } else {
@@ -85,6 +90,7 @@ class Leopard extends Enemy {
 
   override public function update(Elapsed:Float):Void {
     super.update(Elapsed);
+    trace(this.health, "Leopard health");
     _seconds += Elapsed;
     _enemyDying ? {
       animation.play("dying");
