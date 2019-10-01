@@ -12,11 +12,11 @@ class Leopard extends Enemy {
   var _hitLeftBoundary:Bool = false;
   var _attackMode:Bool = false; // When leapord has seen player for first time
 
-  static var runningSpeed:Int = 750;
+  static var runningSpeed:Int = 800;
 
   public function new(X:Float, Y:Float) {
     super(X, Y + 55);
-    health = 20; // For some reason eat hit takes 3
+    health = 20;
     loadGraphic("assets/images/leopard.png", true, 338, 170);
     updateSpriteHitbox(78, 55, this);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -27,7 +27,7 @@ class Leopard extends Enemy {
     animation.add("running", [for (i in 6...11) i], 10, true); 
     animation.add("dying", [for (i in 12...17) i], 6, true);   
     animation.add("roaring", [0], 6, true);
-    // Leopard attacked
+    animation.add("attacked", [1], 6, true);
     // Leopard jumping   
   }
 
