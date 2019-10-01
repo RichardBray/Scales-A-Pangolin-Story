@@ -333,8 +333,8 @@ class LevelState extends GameState {
 			leopard = new Leopard(X, newY);
 			leopardAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, leopard);
 
-			leopard.boundaryLeft = new FlxPoint((676 + leopard.width), 1550);
-			leopard.boundaryRight = new FlxPoint(((676 + FlxG.width) + leopard.width), 1550);
+			leopard.boundaryLeft = new FlxPoint((676 + leopard.width), 1540);
+			leopard.boundaryRight = new FlxPoint(((676 + FlxG.width) + leopard.width), 1540);
 
 			_grpKillableEnemies.add(leopard);
 			_grpEnemyAttackBoundaries.add(leopardAttackBoundary);
@@ -416,7 +416,7 @@ class LevelState extends GameState {
 					Enemy.hurt(1);
 					// Enemy.kill();
 					FlxG.camera.shake(0.00150, 0.25);
-					incrementDeathCount();
+					if (Enemy.health < 1) incrementDeathCount();
 				} else { // when rolling animation is NOT playing
 					if (Player.animation.name == "jump" || Player.animation.name == "jumpLoop") {
 						Player.animJump(Player.flipX);

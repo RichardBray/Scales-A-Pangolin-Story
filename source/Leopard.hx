@@ -9,6 +9,7 @@ class Leopard extends Enemy {
   var _seconds:Float = 0;
   var _enemyDying:Bool = false;
   var _leopardRoared:Bool = false;
+  var _leopardAttacked:Bool = false;
   var _hitLeftBoundary:Bool = false;
   var _attackMode:Bool = false; // When leapord has seen player for first time
 
@@ -16,7 +17,7 @@ class Leopard extends Enemy {
 
   public function new(X:Float, Y:Float) {
     super(X, Y + 55);
-    health = 20;
+    health = 15;
     loadGraphic("assets/images/leopard.png", true, 338, 170);
     updateSpriteHitbox(78, 55, this);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -74,13 +75,18 @@ class Leopard extends Enemy {
         var _roarTimer:FlxTimer = new FlxTimer();
         animation.play("roaring");
         velocity.x = 0;
-        _roarTimer.start(2, (_) -> {
-          _leopardRoared = true;
-        }, 1);	
+        _roarTimer.start(2, (_) -> {_leopardRoared = true;}, 1);	
       }
     } else {
       pacing();
     }
+  }
+
+  override public function hurt(Damage:Float) {
+    _leopardAttacked = true;
+		health = health - Damage;
+		if (health <= 0) kill();  
+    trace(this.health, "Leopard health");  
   }
 
 	override public function kill() {
@@ -90,11 +96,16 @@ class Leopard extends Enemy {
 
   override public function update(Elapsed:Float):Void {
     super.update(Elapsed);
-    trace(this.health, "Leopard health");
     _seconds += Elapsed;
     _enemyDying ? {
       animation.play("dying");
       velocity.x = 0;
     } : inAttackMode();
+
+    if (_leopardAttacked) {
+      var _attackedTimer:FlxTimer = new FlxTimer();
+      animation.play("attacked");
+      _attackedTimer.start(0.5, (_) -> {_leopardAttacked = false;}, 1);      
+    }
   }
 }

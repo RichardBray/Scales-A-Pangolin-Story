@@ -28,19 +28,21 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
      * @param DialogueText	Text for the NPC.
 		 * @param SpriteData		Sprite image unique to this NPC.
 		 * @param ParentState		Used to adjust vieport and stop player when dialogue starts.
+		 * @param BoundaryDimensions	Width and height boundary should be more than the sprite
      */
     public function new(
 			X:Int, 
 			Y:Int, 
 			?DialogueText:Null<Array<String>>, 
 			SpriteData:FlxSprite, 
-			ParentState:LevelState
+			ParentState:LevelState,
+			BoundaryDimensions:Array<Float>
 	) {
 		super();
 		_parentState = ParentState;
 		// Init controls
 
-		npcSprite = new NpcSprite(X, Y, SpriteData);
+		npcSprite = new NpcSprite(X, Y, SpriteData, BoundaryDimensions);
 		add(npcSprite);
 
 		dialoguePrompt = new DialoguePrompt(
@@ -100,16 +102,18 @@ class NpcSprite extends FlxTypedGroup<FlxSprite> {
 	 *
 	 * @param X	X position of the NPC sprite on the map.
 	 * @param Y	Y position of the NPC sprite on the map.
+	 * @param SpriteData	Sprite that boundary will be applied to, used for calculating width
+	 * @param BoundaryDimensions	Width and height boundary should be more than the sprite
 	 */
-	public function new(X:Int, Y:Int, SpriteData:FlxSprite) {
+	public function new(X:Int, Y:Int, SpriteData:FlxSprite, BoundaryDimensions:Array<Float>) {
 		super();	
 	
 		add(SpriteData);
 
 		npcBoundary = new FlxSprite(
 			(X - SpriteData.width), Y).makeGraphic(
-			Std.int(SpriteData.width * 3), 
-			Std.int(SpriteData.height * 3), 
+			Std.int(SpriteData.width * BoundaryDimensions[0]), 
+			Std.int(SpriteData.height * BoundaryDimensions[1]), 
 			FlxColor.TRANSPARENT
 		);
 		add(npcBoundary);

@@ -57,7 +57,7 @@ class LevelThree extends LevelState {
 		var npcYPos:Int = 775;
 
 		_monkeySprite = new FlxSprite(npcXPos, npcYPos).makeGraphic(176, 168, 0xff205ab7);
-		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this);
+		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this, [3, 3]);
 		add(_monkeyNPC);		
 
 		// Add player
