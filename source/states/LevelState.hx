@@ -253,8 +253,6 @@ class LevelState extends GameState {
 		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
 	}
 
-
-
 	/**
 	 * Place entities from Tilemap.
 	 * This method just converts strings to integers.
@@ -334,8 +332,11 @@ class LevelState extends GameState {
 
 			leopard = new Leopard(X, newY);
 			leopardAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, leopard);
-		
-			_grpEnemies.add(leopard);
+
+			leopard.boundaryLeft = new FlxPoint((676 + leopard.width), 1550);
+			leopard.boundaryRight = new FlxPoint(((676 + FlxG.width) + leopard.width), 1550);
+
+			_grpKillableEnemies.add(leopard);
 			_grpEnemyAttackBoundaries.add(leopardAttackBoundary);
 
 		} else {
