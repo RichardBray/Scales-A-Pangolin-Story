@@ -117,7 +117,8 @@ class MainMenu extends GameState {
 
 	function selectContinue() {
 		if (_gameSave.data.levelName == null) { // No saved game
-			showModal('You have no saved games');
+			// showModal('You have no saved games');
+			showModal("Save states have are not in this build yet");
 		} else {
 
 			loadLevel(_gameSave, Constants.levelNames[_gameSave.data.levelName]);
