@@ -20,7 +20,7 @@ class Player extends FlxSprite {
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
-		acceleration.y = Constants.worldGravity; // Constantly pushes the player down on Y axis
+		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
 		preventMovement = false;
 		isGoindDown = false; // If down button is pressed
 		health = 3; // Health player starts off with

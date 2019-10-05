@@ -333,8 +333,8 @@ class LevelState extends GameState {
 			leopard = new Leopard(X, newY);
 			leopardAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, leopard);
 
-			leopard.boundaryLeft = new FlxPoint((676 + leopard.width), 1540);
-			leopard.boundaryRight = new FlxPoint(((676 + FlxG.width) + leopard.width), 1540);
+			leopard.boundaryLeft = new FlxPoint((676 + leopard.width), 1545);
+			leopard.boundaryRight = new FlxPoint(((676 + FlxG.width) + leopard.width), 1545);
 
 			_grpKillableEnemies.add(leopard);
 			_grpEnemyAttackBoundaries.add(leopardAttackBoundary);
@@ -591,6 +591,7 @@ class LevelState extends GameState {
 
 		// Collisions
 		FlxG.collide(player, _levelCollisions);
+		FlxG.collide(_grpKillableEnemies, _levelCollisions);
 		FlxG.collide(_playerFeetCollision, _levelCollisions);
 
 		// Overlaps

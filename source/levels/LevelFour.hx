@@ -52,9 +52,9 @@ class LevelFour extends LevelState {
 
 		// Add NPC Text
 		var pangoText:Array<String> = [
-			"Oh man you've saved my life!",
-			"Thank you so much. You have to be the fastest pangolin I've ever seen",
-			"You know, there are <pt>three<pt> of other pangolins that could use your help.",
+			"Oh man you saved my life. Thank you so much.",
+			"So swift, so agile, you have to be the fastest pangolin I've ever seen.",
+			"There are <pt>three<pt> other pangolins around that could use your help.",
 			"Not just from panthers but <pt>human traps<pt> and <pt>other predators<pt>",
       "Please do what you can to help them."
 		]; 
