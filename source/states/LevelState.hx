@@ -34,7 +34,6 @@ class LevelState extends GameState {
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
-	var _levelScore:Int; // This is used for the game save
 	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
 	// Player
@@ -207,7 +206,6 @@ class LevelState extends GameState {
 	 */
 
 	public function createHUD(Score:Int, Health:Float, Goals:Array<GoalData>) {
-		_levelScore = Score;
 		grpHud = new HUD(Score, Health, Goals);
 		add(grpHud);
 	}
@@ -236,9 +234,12 @@ class LevelState extends GameState {
 	 *
 	 * @param GameSave	Save game data from level.
 	 */
-	public function saveGame(GameSave:FlxSave):FlxSave {
+	public function saveGame(GameSave:FlxSave, ?EndData:Array<Int>):FlxSave {
 		GameSave.data.levelName = levelName;
-		GameSave.data.playerScore = _levelScore;
+		if (EndData != null) {
+			GameSave.data.totalBugs = EndData[0];
+			GameSave.data.totalEnemies = EndData[1];
+		}
 		GameSave.flush();
 		return GameSave;
 	}

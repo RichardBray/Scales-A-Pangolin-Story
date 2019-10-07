@@ -28,6 +28,7 @@ class LevelTwo extends LevelState {
   ) {
     super();
 		_gameSave = GameSave;
+
 		_goalData = [
 			{
 				goal: 'Collect over $_bugsGoal bugs',
@@ -50,7 +51,11 @@ class LevelTwo extends LevelState {
 
     // Add HUD
     createHUD(0, player.health, _goalData);   
-    super.create(); 
+
+		// Save game on load
+		_gameSave = saveGame(_gameSave);
+
+		super.create(); 
   }
 
 	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
@@ -58,6 +63,8 @@ class LevelTwo extends LevelState {
 	}	
 
 	function changeState() {
+		var totalLevelScore:Int = _gameSave.data.totalBugs + grpHud.gameScore;
+		_gameSave = saveGame(_gameSave, [totalLevelScore, killedEmenies]);
 		FlxG.switchState(new LevelThree(_gameSave));
 	}	
 

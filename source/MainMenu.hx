@@ -21,7 +21,6 @@ class MainMenu extends GameState {
 	var _gameSubTitle:FlxText;
 	var _startText:FlxText;
 	var _gameSave:FlxSave;
-	var _continueColor:FlxColor;
 	var _showChoices:Bool = false;
 	var _menu:Menu;
 	var _titleWidth:Int = 848;
@@ -56,8 +55,6 @@ class MainMenu extends GameState {
 		_startText.screenCenter(X);
 		_startText.alpha = 1;
 		add(_startText);
-
-		_continueColor = _gameSave.data.levelName == null ? 0x777777 : 0xffffff;
 
 		var _menuData:Array<MenuData> = [
 			{
@@ -120,7 +117,6 @@ class MainMenu extends GameState {
 			// showModal('You have no saved games');
 			showModal("Save states have are not in this build yet");
 		} else {
-
 			loadLevel(_gameSave, Constants.levelNames[_gameSave.data.levelName]);
 		}
 	}

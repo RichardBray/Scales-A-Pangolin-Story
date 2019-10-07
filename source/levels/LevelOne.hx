@@ -43,7 +43,7 @@ class LevelOne extends LevelState {
 
 	override public function create() {
 		levelName = "Level-1-0";
-
+	
 		createLevel("level-1-0", "jungle.jpg");
 
 		// Add player
@@ -54,7 +54,7 @@ class LevelOne extends LevelState {
 		createHUD(0, player.health, _goalData);
 
 		// Save game on load
-		// _gameSave = saveGame(_gameSave);
+		_gameSave = saveGame(_gameSave);
 
 		super.create();
 	}
@@ -64,6 +64,8 @@ class LevelOne extends LevelState {
 	}
 
 	function changeState() {
+		js.Browser.console.log(grpHud.gameScore);
+		_gameSave = saveGame(_gameSave, [grpHud.gameScore, 0]);
 		FlxG.switchState(new LevelTwo(_gameSave));
 	}
 
