@@ -239,7 +239,6 @@ class LevelState extends GameState {
 	public function saveGame(GameSave:FlxSave):FlxSave {
 		GameSave.data.levelName = levelName;
 		GameSave.data.playerScore = _levelScore;
-		// @todo Add player position to game save, why?
 		GameSave.flush();
 		return GameSave;
 	}
@@ -543,14 +542,14 @@ class LevelState extends GameState {
 	}
 
 	/**
-	 * Controls when to show player jumpm poof and when not to.
+	 * Controls when to show player jump poof shows and it hides.
 	 */
 	function handleJumpPoof() {
 		var playerGoingUp:Bool = player.velocity.y < 0;
 
-		// Used to check if player hit enemy to not show jump poof. Resets after player 250ms
+		// Used to check if player hit enemy to not show jump poof. Resets after player 1 second
 		if (_playerJustHitEnemy && playerGoingUp) {
-			haxe.Timer.delay(() -> _playerJustHitEnemy = false, 250);
+			haxe.Timer.delay(() -> _playerJustHitEnemy = false, 1000);
 		}
 
 		// Show jump poof when player jumps from the ground and not from an enemy jump
@@ -581,6 +580,7 @@ class LevelState extends GameState {
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
 			openSubState(_pauseMenu);
 		}
+
 		// Paused game state
 		if (_controls.start.check()) {
 			// SubState needs to be recreated here as it will be destroyed

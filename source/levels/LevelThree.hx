@@ -28,7 +28,7 @@ class LevelThree extends LevelState {
 				func: (GameScore:Int) -> GameScore > _bugsGoal
 			},
 			{
-				goal: "Talk to friend",
+				goal: "Talk to monkey",
 				func: (_) -> {
 					var spokentoNPC:Int = 0;
 					if (startingConvo) spokentoNPC++;

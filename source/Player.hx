@@ -89,7 +89,6 @@ class Player extends FlxSprite {
 				offset.x = 80;
 				isJumping = true;
 				velocity.y = -800; // 1100
-				// animation.play("jump");
 				animation.play("jumpLoop");
 			}
 			if (isGoindDown) {

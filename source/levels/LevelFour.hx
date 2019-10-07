@@ -21,13 +21,13 @@ class LevelFour extends LevelState {
   public function new(?GameSave:Null<FlxSave>) {
     super();
     _gameSave = GameSave;
-  _goalData = [
+  	_goalData = [
 			{
 				goal: "Defeat the Leopard",
 				func: (_) -> killedEmenies > 0
 			},
 			{
-				goal: "Talk to saved pangolin",
+				goal: "Talk to pangolin",
 				func: (_) -> {
 					var spokentoNPC:Int = 0;
 					if (startingConvo) spokentoNPC++;
@@ -68,7 +68,7 @@ class LevelFour extends LevelState {
 		add(_pangoNPC);	       
 
 		// Add player
-		createPlayer(118, 1004);
+		createPlayer(180, 1044);
 
     // Add HUD
     createHUD(0, player.health, _goalData); 
@@ -84,12 +84,11 @@ class LevelFour extends LevelState {
 			? FlxG.overlap(levelExit, player, fadeOut)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);  
 
-  if (killedEmenies > 0) { // Only talk when leopard has been defeated
-		FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, _pangoNPC.initConvo);
-		if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, _pangoNPC.initConvo)) {
-			_pangoNPC.dialoguePrompt.hidePrompt();
-		};
-  }
-
+		if (killedEmenies > 0) { // Only talk when leopard has been defeated
+			FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, _pangoNPC.initConvo);
+			if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, _pangoNPC.initConvo)) {
+				_pangoNPC.dialoguePrompt.hidePrompt();
+			};
+		}
   }
 }

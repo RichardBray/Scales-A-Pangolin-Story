@@ -3,7 +3,6 @@ package;
 import flixel.tweens.FlxTween;
 import flixel.FlxObject;
 import flixel.util.FlxTimer;
-import flixel.math.FlxVelocity;
 
 
 class Leopard extends Enemy {
@@ -14,13 +13,14 @@ class Leopard extends Enemy {
   var _hitLeftBoundary:Bool = false;
   var _attackMode:Bool = false; // When leapord has seen player for first time
   var _randomJumpNumber:Int = 0;
-  var _secondsVal:Int = 0;
+  var _jumpNmber:Int = 100;
 
   static var runningSpeed:Int = 800;
+  static var _movementDistance:Int = 1000;
 
   public function new(X:Float, Y:Float) {
     super(X, Y + 55);
-    health = 15;
+    health = 25;
     loadGraphic("assets/images/leopard.png", true, 338, 170);
     updateSpriteHitbox(78, 55, this);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -33,10 +33,13 @@ class Leopard extends Enemy {
     animation.add("roaring", [0], 6, true);
     animation.add("attacked", [1], 6, true);
 
-    // Leopard jumping   
+    // Leopard gravity   
     acceleration.y = Constants.worldGravity;
   }
 
+  /**
+   * Pacing before seeing player. 
+   */
   function pacing() {
     animation.play("walking");
     var walkingTime:Int = 3;
@@ -49,34 +52,39 @@ class Leopard extends Enemy {
     }
   }
 
-  function repeat() {
-    var secondsInt:Int = Std.int(_seconds);
-    if (secondsInt != _secondsVal) {
-      _secondsVal = secondsInt;
-      _randomJumpNumber = Std.random(120);
-    }
-  };  
-
-  function running() {  
-    // repeat();
-     _randomJumpNumber = Std.random(50);
-    // Initate running back and forth
-    animation.play("running");
-    if (!_hitLeftBoundary) {
-      FlxVelocity.moveTowardsPoint(this, boundaryLeft, runningSpeed);
-      facing = FlxObject.LEFT;
-      if (Std.int(this.getPosition().x) <= Std.int(boundaryLeft.x)) _hitLeftBoundary = true;
-    } else {
-      FlxVelocity.moveTowardsPoint(this, boundaryRight, runningSpeed);
-      facing = FlxObject.RIGHT;
-      if (Std.int(this.getPosition().x) > (Std.int(boundaryRight.x) - this.width)) _hitLeftBoundary = false;
-    }
-  }
-
   function movingLeft(FaceLeft:Bool = true) {
     var walkingDistance:Int = 200;
 		velocity.x = FaceLeft ? -walkingDistance: walkingDistance;
 		facing = FaceLeft ? FlxObject.LEFT : FlxObject.RIGHT;
+  }
+
+  /**
+   * Place running animation, start jumping and cause leopard to go back and forth 
+   * based on the boundaries.
+   */
+  function running() {  
+     _randomJumpNumber = Std.random(_jumpNmber);
+    animation.play("running");
+
+    if (!_hitLeftBoundary) {
+      facing = FlxObject.LEFT;
+       if (Std.int(this.getPosition().x) <= Std.int(boundaryLeft.x)) _hitLeftBoundary = true;
+       velocity.x = -_movementDistance;
+    } else {
+      facing = FlxObject.RIGHT;
+      if (Std.int(this.getPosition().x) > (Std.int(boundaryRight.x) - this.width)) _hitLeftBoundary = false;
+      velocity.x = _movementDistance;
+    }
+  }
+
+  /**
+   * Causes player to jump only when leopard is on the ground 
+   * and random number is hit. `5` in this case.
+   */
+  function jumping() {
+    if (_randomJumpNumber == 5 && velocity.y == 25) {
+      FlxTween.tween(velocity, {y: -400}, 0.2); 
+    }   
   }
 
   /**
@@ -86,12 +94,14 @@ class Leopard extends Enemy {
     if (attacking && facing == FlxObject.LEFT) _attackMode = true;
     if (_attackMode) {
       if (_leopardRoared) {
+        jumping();
         running();
       } else {
+        // Leopard roars
         var _roarTimer:FlxTimer = new FlxTimer();
         animation.play("roaring");
-        velocity.x = 0;
-        _roarTimer.start(2, (_) -> {_leopardRoared = true;}, 1);	
+        velocity.x = 0; // Stop moving
+        _roarTimer.start(1.5, (_) -> {_leopardRoared = true;}, 1);	
       }
     } else {
       pacing();
@@ -119,15 +129,15 @@ class Leopard extends Enemy {
     super.update(Elapsed);
     _seconds += Elapsed;
     _enemyDying ? {
-      animation.play("dying");
+      // Make sure leopard is on the ground before playing dying anim
+      if (velocity.y <= 25) animation.play("dying");
       velocity.x = 0;
     } : inAttackMode();
 
-    if (_randomJumpNumber == 5 && velocity.y <= 0) {
-      js.Browser.console.log("leopard should jump");
-      FlxTween.tween(velocity, {y: -800}, 0.2); 
-    }
+    // Make leopard jump more when health is low
+    if (health <= 10) _jumpNmber = Std.int(_jumpNmber / 2);
 
+    // Play attack anim when player gets hit.
     if (_leopardAttacked) {
       var _attackedTimer:FlxTimer = new FlxTimer();
       animation.play("attacked");
