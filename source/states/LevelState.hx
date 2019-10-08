@@ -245,6 +245,20 @@ class LevelState extends GameState {
 	}
 
 	/**
+	 * Adds up the saved bugs and enemis with the ones in the level.
+	 * Only useful for levels with bugs and enemies.
+	 *
+	 * @param GameSave	Save game data from level
+	 * @param Bugs	Number of bugs collected by the end of this level
+	 * @param Enemies	Number of enemies squashed at the end of this level.
+	 */
+	public function endOfLevelSave(GameSave:FlxSave, Bugs:Int, Enemies:Int) {
+		var totalLevelScore:Int = GameSave.data.totalBugs + Bugs;
+		var totalEnemyKills:Int = GameSave.data.totalEnemies + Enemies;
+		return saveGame(GameSave, [totalLevelScore, totalEnemyKills]);		
+	}
+
+	/**
 	 * Sets up and plays level music
 	 *
 	 * @param LevelMusic	String of music location
@@ -592,8 +606,12 @@ class LevelState extends GameState {
 
 		// Collisions
 		FlxG.collide(player, _levelCollisions);
-		FlxG.collide(_grpKillableEnemies, _levelCollisions);
 		FlxG.collide(_playerFeetCollision, _levelCollisions);
+
+		// Only add level collisions to specific enemies
+		_grpKillableEnemies.forEach((member:Enemy) -> {
+			if (member.hasCollisions) FlxG.collide(member, _levelCollisions);
+		});
 
 		// Overlaps
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
