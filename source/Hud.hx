@@ -18,6 +18,7 @@ class HUD extends FlxSpriteGroup {
 	var _scoreTxt:FlxText;
 	var _health:FlxSprite;
 	var _gradientBg:FlxSprite;
+	var _spinner:FlxSprite;
 	var _leftPush:Int = 15; // Distance away from left side of the screen
 	// Goals
 	var _goals:FlxSpriteGroup;
@@ -58,6 +59,13 @@ class HUD extends FlxSpriteGroup {
 		_hearts = new FlxSpriteGroup();
 		createHearts(Health);
 		add(_hearts);
+
+		// Add loading spinner
+		_spinner = new FlxSprite(
+			(FlxG.width - 100), 
+			(FlxG.height - 100)).loadGraphic("assets/images/icons/loading_spinner.png", false, 67, 67);
+		_spinner.angularVelocity = 120;
+		add(_spinner);
 
 		// Goals not completed box
 		var boxWidth:Int = 100;
