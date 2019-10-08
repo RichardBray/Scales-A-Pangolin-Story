@@ -5,8 +5,6 @@ import flixel.util.FlxColor;
 // Internal
 import states.LevelState;
 
-// Typedefs
-import states.LevelState.CollMap;
 
 class Constants {
 	// general
