@@ -18,6 +18,7 @@ class Enemy extends FlxSprite {
 	// For boss enemies
   public var boundaryLeft:FlxPoint;
   public var boundaryRight:FlxPoint;	
+	public var hasCollisions:Bool = false;
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
