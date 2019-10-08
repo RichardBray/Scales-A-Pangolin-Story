@@ -68,7 +68,7 @@ class LevelThree extends LevelState {
 
 		// Save game on load
 		_gameSave = saveGame(_gameSave);
-		
+
     super.create(); 
   }
 
@@ -77,6 +77,7 @@ class LevelThree extends LevelState {
 	}	
 
 	function changeState() {
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
 		FlxG.switchState(new LevelFour(_gameSave));
 	}	
   

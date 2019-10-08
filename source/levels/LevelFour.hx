@@ -37,14 +37,6 @@ class LevelFour extends LevelState {
 		]; 
   }
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
-	}	
-
-	function changeState() {
-		FlxG.switchState(new MainMenu());
-	}	  
-
   override public function create() {
     levelName = "Level-4-0";
 
@@ -73,8 +65,21 @@ class LevelFour extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData); 
 
+		// Save game on load
+		_gameSave = saveGame(_gameSave);
+
     super.create();        
   }
+
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
+
+	function changeState() {
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
+		FlxG.switchState(new MainMenu());
+	}	  
+
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
