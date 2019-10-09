@@ -64,7 +64,7 @@ class HUD extends FlxSpriteGroup {
 		_spinner = new FlxSprite(
 			(FlxG.width - 100), 
 			(FlxG.height - 100)).loadGraphic("assets/images/icons/loading_spinner.png", false, 67, 67);
-		_spinner.angularVelocity = 120;
+		_spinner.alpha = 0;
 		add(_spinner);
 
 		// Goals not completed box
@@ -118,6 +118,19 @@ class HUD extends FlxSpriteGroup {
 			if (index >= PlayerHealth) s.alpha = 0.2;
 			index++;
 		});
+	}
+
+	/**
+	 * Show saving spinner for 2 seconds, then hide.
+	 */
+	public function showSpinner() {
+		var spinnerTimer:FlxTimer = new FlxTimer();
+		_spinner.alpha = 1;
+		_spinner.angularVelocity = 150;
+		spinnerTimer.start(2, (_) -> {
+			_spinner.alpha = 0;
+			_spinner.angularVelocity = 0;
+		}, 1);
 	}
 
 	/**

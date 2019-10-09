@@ -235,6 +235,7 @@ class LevelState extends GameState {
 	 * @param GameSave	Save game data from level.
 	 */
 	public function saveGame(GameSave:FlxSave, ?EndData:Array<Int>):FlxSave {
+		grpHud.showSpinner();
 		GameSave.data.levelName = levelName;
 		if (EndData != null) {
 			GameSave.data.totalBugs = EndData[0];
