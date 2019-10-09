@@ -181,3 +181,7 @@ class HLScreen extends GameState {
 		FlxG.switchState(new MainMenu());
 	}
 }
+
+class SaveWarning extends GameState {
+	
+}
