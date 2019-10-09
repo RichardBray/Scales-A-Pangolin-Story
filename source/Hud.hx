@@ -126,7 +126,7 @@ class HUD extends FlxSpriteGroup {
 	public function showSpinner() {
 		var spinnerTimer:FlxTimer = new FlxTimer();
 		_spinner.alpha = 1;
-		_spinner.angularVelocity = 150;
+		_spinner.angularVelocity = 200;
 		spinnerTimer.start(2, (_) -> {
 			_spinner.alpha = 0;
 			_spinner.angularVelocity = 0;

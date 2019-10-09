@@ -165,23 +165,57 @@ class HLScreen extends GameState {
 		FlxG.camera.antialiasing = true;
 	}
 
+	function finishTimer(_) { 
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, goToSaveScreen);
+	}	
+
+	function goToSaveScreen() {
+		FlxG.switchState(new SaveWarning());
+	}
+
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 		_timer = new FlxTimer();
 		_timer.start(2, finishTimer, 1);
+		if (_controls.cross.check() || _controls.start.check()) goToSaveScreen();
+	}
+}
 
-		if(_controls.cross.check() || _controls.start.check()) goToMainMenu();
+class SaveWarning extends GameState {
+	var _gameSaveText:FlxText;
+	var _timer:FlxTimer;
+	var _spinner:FlxSprite;
+
+	override public function create() {
+		bgColor = FlxColor.BLACK;
+
+		// Add loading spinner
+		_spinner = new FlxSprite(
+			(FlxG.width / 2) - 67, 
+			300).loadGraphic("assets/images/icons/loading_spinner.png", false, 67, 67);
+		_spinner.angularVelocity = 200;
+		add(_spinner);
+
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
+
+		_gameSaveText = new FlxText(0, (FlxG.height / 2), FlxG.width,"
+			This game saves automatically at certain points. \n
+			Please do not switch off the power when the above icon is displayed.");
+		_gameSaveText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, CENTER);
+		add(_gameSaveText);
+	}
+
+	function goToMainMenu() {
+		FlxG.switchState(new MainMenu());
 	}
 
 	function finishTimer(_) { 
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, goToMainMenu);
 	}	
 
-	function goToMainMenu() {
-		FlxG.switchState(new MainMenu());
+	override public function update(Elapsed:Float) {
+		super.update(Elapsed);
+		_timer = new FlxTimer();
+		_timer.start(4, finishTimer, 1);
 	}
-}
-
-class SaveWarning extends GameState {
-	
 }
