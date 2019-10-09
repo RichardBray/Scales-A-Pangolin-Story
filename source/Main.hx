@@ -10,7 +10,7 @@ class Main extends Sprite {
 		#if !debug
 		addChild(new FlxGame(1920, 1080, MainMenu.HLScreen, 1, 60, 60, true));
 		#else 
-		addChild(new FlxGame(1920, 1080, MainMenu.HLScreen, 1, 60, 60, true));
+		addChild(new FlxGame(1920, 1080, screens.LevelComplete, 1, 60, 60, true));
 		#end
 	}
 }
