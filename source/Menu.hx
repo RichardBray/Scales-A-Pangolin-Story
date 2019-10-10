@@ -1,15 +1,18 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
 
 using Lambda;
 
 typedef MenuData = { title:String, func:Void->Void };
 
-class Menu extends FlxTypedGroup<FlxSprite> {
+class Menu extends FlxSpriteGroup {
 	var _selected:Int = 0;
 	var _pointer:FlxSprite;
 	var _spacing:Int = 75;
@@ -53,7 +56,7 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 		});
 
 		// Intialise controls
-		_controls = new Controls();		
+		_controls = new Controls();	
 	}
 
 	override public function update(Elapsed:Float) {
@@ -99,6 +102,10 @@ class Menu extends FlxTypedGroup<FlxSprite> {
 			Item.alpha = 1;
 		});
 	}
+
+	public function fadeIn() {
+		FlxTween.tween(this, {alpha: 1}, 1, {ease: FlxEase.backOut});
+	}	
 }
 
 class BottomLeft extends FlxText {

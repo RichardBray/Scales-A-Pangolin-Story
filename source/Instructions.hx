@@ -1,6 +1,6 @@
 package;
 
-import flixel.FlxObject;
+
 import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;

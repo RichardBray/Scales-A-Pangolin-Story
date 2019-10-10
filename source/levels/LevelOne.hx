@@ -64,7 +64,6 @@ class LevelOne extends LevelState {
 	}
 
 	function changeState() {
-		js.Browser.console.log(grpHud.gameScore);
 		_gameSave = saveGame(_gameSave, [grpHud.gameScore, 0]);
 		FlxG.switchState(new LevelTwo(_gameSave));
 	}
