@@ -41,6 +41,10 @@ class LevelComplete extends FlxSubState {
       func: () -> {}
     },
     {
+      title: "  Restart level",
+      func: () -> {}
+    },    
+    {
       title: "  Quit",
       func: () -> FlxG.switchState(new MainMenu())
     }
@@ -78,12 +82,13 @@ class LevelComplete extends FlxSubState {
     add(_levelRating);
 
     // Right side of level complete screen
-    _rightSide = new FlxSprite(twoThirdsScreen, distanceOffScreen).makeGraphic(Std.int(FlxG.width / 3), FlxG.height, FlxColor.RED);
+    _rightSide = new FlxSprite(twoThirdsScreen, distanceOffScreen);
+    _rightSide.makeGraphic(Std.int(FlxG.width / 3), FlxG.height, FlxColor.BLACK);
     _rightSide.scrollFactor.set(0, 0);
     _rightSide.alpha = 0;
     add(_rightSide);
 
-    _menu = new Menu(100, FlxG.height - 250, 300, _menuData, false);
+    _menu = new Menu(100, FlxG.height - 250, 350, _menuData, false);
     _menu.scrollFactor.set(0, 0);
     _menu.alpha = 0;
     add(_menu);
