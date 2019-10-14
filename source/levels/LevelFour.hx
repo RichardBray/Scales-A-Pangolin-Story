@@ -67,7 +67,7 @@ class LevelFour extends LevelState {
     createHUD(0, player.health, _goalData); 
 
 		// Save game on load
-		// _gameSave = saveGame(_gameSave);
+		_gameSave = saveGame(_gameSave);
 
     super.create();        
   }
@@ -84,9 +84,6 @@ class LevelFour extends LevelState {
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
-
-		var _levelCompleteState:LevelComplete = new LevelComplete();
-		openSubState(_levelCompleteState);
 
 		// Overlaps
 		grpHud.goalsCompleted

@@ -1,5 +1,6 @@
 package levels;
 
+import screens.LevelComplete;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -68,6 +69,12 @@ class LevelOne extends LevelState {
 		FlxG.switchState(new LevelTwo(_gameSave));
 	}
 
+	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
+		_gameSave = saveGame(_gameSave, [grpHud.gameScore, 0]);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
+		openSubState(_levelCompleteState);			
+	}	
+
 	/**
 	 * Show instructions specific to this level unless they have already been viewed
 	 */
@@ -88,7 +95,7 @@ class LevelOne extends LevelState {
 
 		// Overlaps
 		grpHud.goalsCompleted
-			? FlxG.overlap(levelExit, player, fadeOut)
+			? FlxG.overlap(levelExit, player, levelComplete)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);
 	}		
 }

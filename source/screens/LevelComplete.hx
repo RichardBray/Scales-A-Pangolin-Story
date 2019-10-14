@@ -1,10 +1,9 @@
 package screens;
 
-import flixel.addons.plugin.taskManager.FlxTask;
+
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxSave;
@@ -28,12 +27,28 @@ class LevelComplete extends FlxSubState {
 
   var _levelRating:FlxText;
 
+  var _levelTotals:Map<String, Array<Int>>; 
+  var _totalBugsCollected:Int;
+  var _totalEnemiesKilled:Int;
+
   public function new(?GameSave:FlxSave) {
     super();
     _gameSave = GameSave;
+
+    _levelTotals = [
+      "Level-1-0" => [74, 9] // [74, 10]
+    ];
+    _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
+    _totalEnemiesKilled = _levelTotals[_gameSave.data.levelName][1];
   }
 
- override public function create() {
+  function calculatePercentge():Int {
+    var total = _totalBugsCollected + _totalEnemiesKilled;
+    var value = _gameSave.data.totalBugs + _gameSave.data.totalEnemies;
+
+    return Std.int(value / total * 100);
+  }
+  override public function create() {
 
   var _menuData:Array<MenuData> = [
     {
@@ -52,30 +67,28 @@ class LevelComplete extends FlxSubState {
   var twoThirdsScreen:Int = Std.int((FlxG.width / 3) * 2);
   var distanceOffScreen:Int = 300;
 
-   // Left side of level complete screen
+    // Left side of level complete screen
     _grpLeftSide = new FlxSpriteGroup(0, -distanceOffScreen);
     add(_grpLeftSide);
 
     _leftBg = new FlxSprite(0, 0).makeGraphic(twoThirdsScreen, FlxG.height, Constants.primaryColor);
     _grpLeftSide.add(_leftBg);
-  
+
     _title = new FlxText(100, 70, FlxG.width, "Level One Complete!!!");
     _title.setFormat(Constants.squareFont, Constants.medFont * 3, null, LEFT);
     _grpLeftSide.add(_title);
 
-    _levelData = new FlxText(80, 230, FlxG.width, '
-    Bugs collected: $_bugsCollected/50 \n
-    Enemies killed: $_enemiesKilled/50'
-    );
+    _levelData = new FlxText(80, 230, FlxG.width);
     _levelData.setFormat(Constants.squareFont, Constants.medFont, null, LEFT);
     _grpLeftSide.add(_levelData);
 
     _grpLeftSide.alpha = 0;
-		_grpLeftSide.forEach((_member:FlxSprite) -> {
-			_member.scrollFactor.set(0, 0);
-		});	 
+    _grpLeftSide.forEach((_member:FlxSprite) -> {
+      _member.scrollFactor.set(0, 0);
+    });	 
 
-    _levelRating = new FlxText(100, 500, FlxG.width, "58% Complete"); 
+    var levelPercentage:Int = calculatePercentge();
+    _levelRating = new FlxText(120, 500, FlxG.width, '$levelPercentage% Complete'); 
     _levelRating.setFormat(Constants.squareFont, Constants.medFont * 2, null, LEFT);
     _levelRating.alpha = 0;  
     _levelRating.scrollFactor.set(0, 0);
@@ -83,7 +96,7 @@ class LevelComplete extends FlxSubState {
 
     // Right side of level complete screen
     _rightSide = new FlxSprite(twoThirdsScreen, distanceOffScreen);
-    _rightSide.makeGraphic(Std.int(FlxG.width / 3), FlxG.height, FlxColor.BLACK);
+    _rightSide.loadGraphic("assets/images/level_comp/left_img.jpg", false, 640, FlxG.height);
     _rightSide.scrollFactor.set(0, 0);
     _rightSide.alpha = 0;
     add(_rightSide);
@@ -104,10 +117,10 @@ class LevelComplete extends FlxSubState {
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
-    incrementNumbers(25, 5);
+    incrementNumbers(_gameSave.data.totalBugs, _gameSave.data.totalEnemies);
     _levelData.text = '
-    Bugs collected: $_bugsCollected/50 \n
-    Enemies killed: $_enemiesKilled/50';
+    Bugs collected: $_bugsCollected/$_totalBugsCollected \n
+    Enemies killed: $_enemiesKilled/$_totalEnemiesKilled';
 
     // Animate sides
     FlxTween.tween(_grpLeftSide, {y: 0, alpha: 1}, 1, {ease: FlxEase.backOut});
@@ -119,6 +132,6 @@ class LevelComplete extends FlxSubState {
     }, 2000);
 
     // Show menu after a few seconds
-     haxe.Timer.delay(() -> { _menu.fadeIn();}, 3200);
+      haxe.Timer.delay(() -> { _menu.fadeIn();}, 3200);
   }
 }

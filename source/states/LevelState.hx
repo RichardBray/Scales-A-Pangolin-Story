@@ -233,6 +233,7 @@ class LevelState extends GameState {
 	 * Saves the game.
 	 *
 	 * @param GameSave	Save game data from level.
+	 * @param EndData		Data to start level with, optional for save
 	 */
 	public function saveGame(GameSave:FlxSave, ?EndData:Array<Int>):FlxSave {
 		grpHud.showSpinner();

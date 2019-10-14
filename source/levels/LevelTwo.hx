@@ -1,5 +1,6 @@
 package levels;
 
+import screens.LevelComplete;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
@@ -63,10 +64,16 @@ class LevelTwo extends LevelState {
 	}	
 
 	function changeState() {
-		var totalLevelScore:Int = _gameSave.data.totalBugs + grpHud.gameScore;
-		_gameSave = saveGame(_gameSave, [totalLevelScore, killedEmenies]);
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
 		FlxG.switchState(new LevelThree(_gameSave));
-	}	
+	}	 
+
+	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
+		openSubState(_levelCompleteState);			
+	}
+
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
