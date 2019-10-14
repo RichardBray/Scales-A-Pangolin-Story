@@ -45,7 +45,7 @@ class LevelComplete extends FlxSubState {
       func: () -> {}
     },    
     {
-      title: "  Quit",
+      title: "  Main Menu",
       func: () -> FlxG.switchState(new MainMenu())
     }
   ];

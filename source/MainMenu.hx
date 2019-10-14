@@ -191,7 +191,7 @@ class SaveWarning extends GameState {
 
 		// Add loading spinner
 		_spinner = new FlxSprite(
-			(FlxG.width / 2) - 67, 
+			(FlxG.width / 2) - (67 / 2), 
 			300).loadGraphic("assets/images/icons/loading_spinner.png", false, 67, 67);
 		_spinner.angularVelocity = 200;
 		add(_spinner);
@@ -200,7 +200,7 @@ class SaveWarning extends GameState {
 
 		_gameSaveText = new FlxText(0, (FlxG.height / 2), FlxG.width,"
 			This game saves automatically at certain points. \n
-			Please do not switch off the power when the above icon is displayed.");
+			Please do not switch off power when the above icon is displayed.");
 		_gameSaveText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, CENTER);
 		add(_gameSaveText);
 	}
