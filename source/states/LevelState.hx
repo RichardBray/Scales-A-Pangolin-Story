@@ -48,6 +48,8 @@ class LevelState extends GameState {
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 	// Enemies
 	var _grpEnemyAttackBoundaries:FlxTypedGroup<FlxObject>;
+	// Game saving
+	var _levelCompleteSave:Bool = false;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -254,10 +256,17 @@ class LevelState extends GameState {
 	 * @param Bugs	Number of bugs collected by the end of this level
 	 * @param Enemies	Number of enemies squashed at the end of this level.
 	 */
-	public function endOfLevelSave(GameSave:FlxSave, Bugs:Int, Enemies:Int) {
-		var totalLevelScore:Int = GameSave.data.totalBugs + Bugs;
-		var totalEnemyKills:Int = GameSave.data.totalEnemies + Enemies;
-		return saveGame(GameSave, [totalLevelScore, totalEnemyKills]);		
+	public function endOfLevelSave(GameSave:FlxSave, Bugs:Int, Enemies:Int):Null<FlxSave> {
+		if (!_levelCompleteSave) {
+			js.Browser.console.log('data before, bugs: $Bugs, enemies $Enemies');
+			var totalLevelScore:Int = GameSave.data.totalBugs + Bugs;
+			var totalEnemyKills:Int = GameSave.data.totalEnemies + Enemies;
+			js.Browser.console.log('data after, bugs: $totalLevelScore, enemies $totalEnemyKills');
+			// Prevent game from saving twice
+			_levelCompleteSave = true;
+			return saveGame(GameSave, [totalLevelScore, totalEnemyKills]);
+		}	
+		return saveGame(GameSave);	
 	}
 
 	/**

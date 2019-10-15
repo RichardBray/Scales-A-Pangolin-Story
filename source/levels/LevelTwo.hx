@@ -59,14 +59,14 @@ class LevelTwo extends LevelState {
 		super.create(); 
   }
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
-	}	
+	// function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+	// 	FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	// }	
 
-	function changeState() {
-		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		FlxG.switchState(new LevelThree(_gameSave));
-	}	 
+	// function changeState() {
+	// 	_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
+	// 	FlxG.switchState(new LevelThree(_gameSave));
+	// }	 
 
 	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
