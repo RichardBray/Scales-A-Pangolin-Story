@@ -13,6 +13,7 @@ import flixel.FlxSubState;
 // Typedefs
 import Menu.MenuData;
 
+
 class LevelComplete extends FlxSubState {
   var _title:FlxText;
   var _levelData:FlxText;
@@ -28,6 +29,7 @@ class LevelComplete extends FlxSubState {
   var _levelRating:FlxText;
 
   var _levelTotals:Map<String, Array<Int>>; 
+  var _levelNames:Map<String, String>;
   var _totalBugsCollected:Int;
   var _totalEnemiesKilled:Int;
 
@@ -36,8 +38,13 @@ class LevelComplete extends FlxSubState {
     _gameSave = GameSave;
 
     _levelTotals = [
-      "Level-1-0" => [74, 9] // [74, 10]
+      "Level-2-0" => [74, 9] // [74, 10]
     ];
+
+    _levelNames = [
+      "Level-2-0" => "One"
+    ];
+
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
     _totalEnemiesKilled = _levelTotals[_gameSave.data.levelName][1];
   }
@@ -49,23 +56,27 @@ class LevelComplete extends FlxSubState {
     return Std.int(value / total * 100);
   }
   override public function create() {
+    var levelToRestart:Class<states.LevelState> = Helpers.restartLevel(_gameSave.data.levelName);
+    // Spaces before menu items is for menu pointer spacing
+    var _menuData:Array<MenuData> = [
+      {
+        title: "  Continue",
+        func: () -> {}
+      },
+      {
+        title: "  Restart Level",
+        func: () -> {
+          FlxG.switchState(Type.createInstance(levelToRestart, [null, false]));
+        }
+      },    
+      {
+        title: "  Main Menu",
+        func: () -> FlxG.switchState(new MainMenu())
+      }
+    ];
 
-  var _menuData:Array<MenuData> = [
-    {
-      title: "  Continue",
-      func: () -> {}
-    },
-    {
-      title: "  Restart level",
-      func: () -> {}
-    },    
-    {
-      title: "  Main Menu",
-      func: () -> FlxG.switchState(new MainMenu())
-    }
-  ];
-  var twoThirdsScreen:Int = Std.int((FlxG.width / 3) * 2);
-  var distanceOffScreen:Int = 300;
+    var twoThirdsScreen:Int = Std.int((FlxG.width / 3) * 2);
+    var distanceOffScreen:Int = 300;
 
     // Left side of level complete screen
     _grpLeftSide = new FlxSpriteGroup(0, -distanceOffScreen);
@@ -74,7 +85,9 @@ class LevelComplete extends FlxSubState {
     _leftBg = new FlxSprite(0, 0).makeGraphic(twoThirdsScreen, FlxG.height, Constants.primaryColor);
     _grpLeftSide.add(_leftBg);
 
-    _title = new FlxText(100, 70, FlxG.width, "Level One Complete!!!");
+    var levelTitle:String = _levelNames[_gameSave.data.levelName];
+
+    _title = new FlxText(100, 70, FlxG.width, 'Level $levelTitle Complete!!');
     _title.setFormat(Constants.squareFont, Constants.medFont * 3, null, LEFT);
     _grpLeftSide.add(_title);
 

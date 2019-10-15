@@ -185,10 +185,12 @@ class SaveWarning extends GameState {
 	var _gameSaveText:FlxText;
 	var _timer:FlxTimer;
 	var _spinner:FlxSprite;
+	var _controls:Controls;
 
 	override public function create() {
 		bgColor = FlxColor.BLACK;
 
+		_controls = new Controls();
 		// Add loading spinner
 		_spinner = new FlxSprite(
 			(FlxG.width / 2) - (67 / 2), 
@@ -217,5 +219,6 @@ class SaveWarning extends GameState {
 		super.update(Elapsed);
 		_timer = new FlxTimer();
 		_timer.start(4, finishTimer, 1);
+		if (_controls.cross.check() || _controls.start.check()) goToMainMenu();
 	}
 }

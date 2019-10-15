@@ -80,7 +80,7 @@ class LevelTwo extends LevelState {
 
 		// Overlaps
 		grpHud.goalsCompleted
-			? FlxG.overlap(levelExit, player, fadeOut)
+			? FlxG.overlap(levelExit, player, levelComplete)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);		
   }
 }
