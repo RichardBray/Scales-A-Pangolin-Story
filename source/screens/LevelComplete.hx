@@ -38,11 +38,11 @@ class LevelComplete extends FlxSubState {
     _gameSave = GameSave;
 
     _levelTotals = [
-      "Level-2-0" => [74, 9] // [74, 10]
+      "Level-4-0" => [74, 9] // [74, 10]
     ];
 
     _levelNames = [
-      "Level-2-0" => "One"
+      "Level-4-0" => "One"
     ];
 
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
@@ -65,7 +65,7 @@ class LevelComplete extends FlxSubState {
       },
       {
         title: "  Restart Level",
-        func: () -> FlxG.switchState(Type.createInstance(levelToRestart, [_gameSave, false]))
+         func: () -> FlxG.switchState(Type.createInstance(levelToRestart, [_gameSave, false]))
       },    
       {
         title: "  Main Menu",

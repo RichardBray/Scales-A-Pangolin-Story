@@ -56,8 +56,6 @@ class PauseMenu extends FlxSubState {
 		// Maps string to class from `levelNames` in constants
 		var sectionToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
 
-		var levelToRestart:Class<states.LevelState> = Helpers.restartLevel(LevelString);
-
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Resume",
@@ -68,13 +66,6 @@ class PauseMenu extends FlxSubState {
 				func: () -> {
 					FlxG.sound.music = null;
 					FlxG.switchState(Type.createInstance(sectionToRestart, [null, false]));
-				}
-			},
-			{
-				title: "Restart Level",
-				func: () -> {
-					FlxG.sound.music = null;
-					FlxG.switchState(Type.createInstance(levelToRestart, [null, false]));
 				}
 			},			
 			{

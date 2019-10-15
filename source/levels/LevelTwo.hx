@@ -1,6 +1,5 @@
 package levels;
 
-import screens.LevelComplete;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
@@ -59,20 +58,14 @@ class LevelTwo extends LevelState {
 		super.create(); 
   }
 
-	// function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
-	// 	FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
-	// }	
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
 
-	// function changeState() {
-	// 	_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-	// 	FlxG.switchState(new LevelThree(_gameSave));
-	// }	 
-
-	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
+	function changeState() {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
-		openSubState(_levelCompleteState);			
-	}
+		FlxG.switchState(new LevelThree(_gameSave));
+	}	 
 
 
   override public function update(Elapsed:Float) {
@@ -80,7 +73,7 @@ class LevelTwo extends LevelState {
 
 		// Overlaps
 		grpHud.goalsCompleted
-			? FlxG.overlap(levelExit, player, levelComplete)
+			? FlxG.overlap(levelExit, player, fadeOut)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);		
   }
 }

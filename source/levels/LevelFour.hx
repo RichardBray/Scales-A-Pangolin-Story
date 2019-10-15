@@ -2,7 +2,6 @@ package levels;
 
 import screens.LevelComplete;
 import flixel.FlxG;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
 
@@ -72,22 +71,18 @@ class LevelFour extends LevelState {
     super.create();        
   }
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
-	}	
-
-	function changeState() {
+	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		FlxG.switchState(new MainMenu());
-	}	  
-
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
+		openSubState(_levelCompleteState);			
+	}
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
 
 		// Overlaps
 		grpHud.goalsCompleted
-			? FlxG.overlap(levelExit, player, fadeOut)
+			? FlxG.overlap(levelExit, player, levelComplete)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);  
 
 		if (killedEmenies > 0) { // Only talk when leopard has been defeated
