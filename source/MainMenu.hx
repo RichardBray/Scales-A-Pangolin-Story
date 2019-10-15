@@ -29,6 +29,13 @@ class MainMenu extends GameState {
 	var _bottomLeft:FlxText;
 	var _bottomRight:FlxText;
 
+	var _showDemoModal:Bool;
+
+	public function new(?ShowDemoModal:Bool = false) {
+		super();
+		_showDemoModal = ShowDemoModal
+	}
+
 	override public function create() {
 		// Save data
 		_gameSave = new FlxSave(); // initialize
@@ -82,6 +89,8 @@ class MainMenu extends GameState {
 		_bottomRight = new Menu.BottomRight();
 		add(_bottomRight);
 		_bottomRight.alpha = 0;		
+
+		super.create();
 	}
 
 	override public function update(Elapsed:Float) {
@@ -154,6 +163,7 @@ class HLScreen extends GameState {
 	var _controls:Controls;
 
 	override public function create() {
+		super.create();
 		bgColor = FlxColor.WHITE;
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		_controls = new Controls();
@@ -188,6 +198,7 @@ class SaveWarning extends GameState {
 	var _controls:Controls;
 
 	override public function create() {
+		super.create();
 		bgColor = FlxColor.BLACK;
 
 		_controls = new Controls();

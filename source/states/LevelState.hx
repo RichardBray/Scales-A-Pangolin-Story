@@ -258,10 +258,9 @@ class LevelState extends GameState {
 	 */
 	public function endOfLevelSave(GameSave:FlxSave, Bugs:Int, Enemies:Int):Null<FlxSave> {
 		if (!_levelCompleteSave) {
-			js.Browser.console.log('data before, bugs: $Bugs, enemies $Enemies');
 			var totalLevelScore:Int = GameSave.data.totalBugs + Bugs;
 			var totalEnemyKills:Int = GameSave.data.totalEnemies + Enemies;
-			js.Browser.console.log('data after, bugs: $totalLevelScore, enemies $totalEnemyKills');
+
 			// Prevent game from saving twice
 			_levelCompleteSave = true;
 			return saveGame(GameSave, [totalLevelScore, totalEnemyKills]);

@@ -18,6 +18,7 @@ class IntroState extends GameState {
 
 
 	override public function create() {
+		super.create();
 		bgColor = 0xff04090C; // 04090C
 
 

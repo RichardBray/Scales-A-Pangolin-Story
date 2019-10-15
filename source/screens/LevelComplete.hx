@@ -61,7 +61,7 @@ class LevelComplete extends FlxSubState {
     var _menuData:Array<MenuData> = [
       {
         title: "  Continue",
-        func: () -> {}
+        func: () -> FlxG.switchState(new MainMenu())
       },
       {
         title: "  Restart Level",
