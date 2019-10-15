@@ -65,9 +65,7 @@ class LevelComplete extends FlxSubState {
       },
       {
         title: "  Restart Level",
-        func: () -> {
-          FlxG.switchState(Type.createInstance(levelToRestart, [null, false]));
-        }
+        func: () -> FlxG.switchState(Type.createInstance(levelToRestart, [_gameSave, false]))
       },    
       {
         title: "  Main Menu",
