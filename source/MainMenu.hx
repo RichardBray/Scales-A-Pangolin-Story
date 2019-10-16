@@ -7,6 +7,7 @@ import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.group.FlxGroup.FlxTypedGroup;
 
 // Internal
 import states.GameState;
@@ -14,6 +15,9 @@ import states.LevelState;
 
 // Typedefs
 import Menu.MenuData;
+
+using Lambda;
+
 
 class MainMenu extends GameState {
 	var _bgImg:FlxSprite;
@@ -28,12 +32,12 @@ class MainMenu extends GameState {
 	var _timer:FlxTimer;
 	var _bottomLeft:FlxText;
 	var _bottomRight:FlxText;
+	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 
 	var _showDemoModal:Bool;
 
-	public function new(?ShowDemoModal:Bool = false) {
+	public function new() {
 		super();
-		_showDemoModal = ShowDemoModal
 	}
 
 	override public function create() {
@@ -77,6 +81,21 @@ class MainMenu extends GameState {
 		_menu = new Menu(_gameTitle.x, _gameTitle.y + 500, _titleWidth, _menuData, true);
 		_menu.hide();
 		add(_menu);
+
+		// Render flying stag beetles
+		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
+		add(_grpCollectables);
+		var bugPositions:Array<Array<Int>> = [
+			[384, 493],
+			[1444, 132],
+		];
+
+		bugPositions.mapi((Idx:Int, BugPos:Array<Int>) -> {
+			var bugDirection:String = Idx == 1 ? "left" : "right";
+			var bug:CollectableBug.Bug = new CollectableBug.StagBeetle(BugPos[0], BugPos[1], bugDirection, "1");
+			_grpCollectables.add(bug);
+		});
+
 
 		// Intialise controls
 		_controls = new Controls();		
