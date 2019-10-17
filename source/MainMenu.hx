@@ -153,7 +153,7 @@ class MainMenu extends GameState {
 		if (_gameSave.data.levelName == null) { // No saved game
 			// Below line is shown for demo only
 			showModal(
-				"Welcome to the Scales demo. There is a lot to be done before this game is done,even this demo isn't yet complete. We just wanted to give you a glipse of whatwe've been working on.\n\rHave fun :)", 
+				"Welcome to the Scales demo. There is a lot to do before this game is finished, even this demo isn't complete. We just wanted to give you a glipse of what we've been working on.\n\rHave fun :)", 
 				() -> initNewGame(), 
 				true,
 				"Press SPACE to continue, E to close"

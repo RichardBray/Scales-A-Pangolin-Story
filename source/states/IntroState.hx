@@ -13,6 +13,7 @@ class IntroState extends GameState {
 	var _seconds:Float = 0;
 	var _controls:Controls;
 	var _textWidth:Int = 600;
+	var _skipText:FlxText;
 
 	public var facts:Array<String>;
 
@@ -20,7 +21,7 @@ class IntroState extends GameState {
 	override public function create() {
 		super.create();
 		bgColor = 0xff04090C; // 04090C
-
+		// bgColor = Constants.primaryColor;
 
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
@@ -28,12 +29,23 @@ class IntroState extends GameState {
 			_textWidth, 
 			facts[_factNumber]
 		);
-		_factText.setFormat(Constants.squareFont, Constants.lrgFont);
+		_factText.setFormat(Constants.squareFont, Constants.lrgFont, FlxTextAlign.CENTER);
 
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		add(_factText);	
 		_factText.alpha = 0;
-		_controls = new Controls();		
+		_controls = new Controls();	
+
+		// Skip text
+		_skipText = new FlxText(
+			FlxG.width - 300,
+			FlxG.height - 80,
+			0,
+			"Press ESC to skip"
+		);	
+		_skipText.setFormat(Constants.squareFont, Constants.hudFont);
+		_skipText.alpha = 0;
+		add(_skipText);
 	}	
 
 	override public function update(Elapsed:Float) {
@@ -42,6 +54,9 @@ class IntroState extends GameState {
 	
 		// Starts level when all the facts have been looped through
 		(_factNumber == facts.length) ? startLevel() : showFacts();
+
+		// Show skip text a second later
+		haxe.Timer.delay(() -> FlxTween.tween(_skipText, {alpha: 1}, .5), 3000);
 
 		// Start level if player presses start
 		if ( _controls.start.check()) startLevel();
