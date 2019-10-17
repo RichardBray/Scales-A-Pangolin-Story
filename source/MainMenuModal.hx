@@ -19,14 +19,20 @@ class MainMenuModal extends FlxSubState {
 	/**
 	 * @param Text						Text that goes in modal
 	 * @param ConfirmCallback	What function to run when the player hits confirm
-	 * @param ShowOptions			Whether the modal has options or not
+	 * @param ShowOptions			Whether the modal has `press button for yes` text
+	 * @param OptionsText			Text for `press button for yes` if something different is desired
 	 */
-	public function new(Text:String, ?ConfirmCallback:Void->Void, ShowOptions:Bool = false):Void {
+	public function new(
+		Text:String, 
+		?ConfirmCallback:Void->Void, 
+		ShowOptions:Bool = false, 
+		?OptionsText:String = "Press SPACE for yes"
+	):Void {
 		super();
 		_confirmCallback = ConfirmCallback;
 
-		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
-		// add(_gameOverlay);
+		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x75000000);
+		add(_gameOverlay);
 
 		_boundingBox = new FlxShapeBox(
 			(FlxG.width / 2) - (_menuWidth / 2), 
@@ -38,14 +44,14 @@ class MainMenuModal extends FlxSubState {
 		);
 		add(_boundingBox);
 
-		_displayText = new FlxText(0, 400, _menuWidth - 40, Text);
+		_displayText = new FlxText(0, 350, _menuWidth - 40, Text);
 		_displayText.setFormat(Constants.squareFont, Constants.medFont);
 		_displayText.screenCenter(X);
 		add(_displayText);
 
 		if (ShowOptions) {
-			_optionsText = new FlxText(0, _displayText.y + 250, _menuWidth - 40, "Press SPACE for yes", Constants.medFont);
-			_optionsText.setFormat(Constants.squareFont, Constants.medFont);
+			_optionsText = new FlxText(0, _displayText.y + 350, _menuWidth - 40, OptionsText);
+			_optionsText.setFormat(Constants.squareFont, Constants.hudFont);
 			_optionsText.screenCenter(X);
 			add(_optionsText);
 		}

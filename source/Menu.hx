@@ -118,7 +118,7 @@ class BottomLeft extends FlxText {
 		// trace(gamepad.model.getName());
 		// http://api.haxeflixel.com/flixel/input/gamepad/FlxGamepadModel.html
 
-		text = "[SPACE] SELECT \n[E] BACK";
+		text = "[SPACE] SELECT \n[E] BACK or Close";
 		fieldWidth = 200;
 		scrollFactor.set(0, 0);
 		setFormat(Constants.squareFont, Constants.smlFont);

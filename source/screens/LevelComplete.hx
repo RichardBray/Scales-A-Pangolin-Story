@@ -60,7 +60,7 @@ class LevelComplete extends FlxSubState {
     // Spaces before menu items is for menu pointer spacing
     var _menuData:Array<MenuData> = [
       {
-        title: "  Continue",
+        title: "  End Demo", // Continue
         func: () -> FlxG.switchState(new MainMenu())
       },
       {

@@ -73,7 +73,7 @@ class MainMenu extends GameState {
 				func: selectContinue
 			},
 			{
-				title: "New Game",
+				title: "Start Demo", // New Game
 				func: selectNewGame
 			}
 		];
@@ -143,7 +143,7 @@ class MainMenu extends GameState {
 	function selectContinue() {
 		if (_gameSave.data.levelName == null) { // No saved game
 			// showModal('You have no saved games');
-			showModal("Save states have are not in this build yet");
+			showModal("You have no saved games :(", null, true, "Press E to close");
 		} else {
 			loadLevel(_gameSave, Constants.levelNames[_gameSave.data.levelName]);
 		}
@@ -151,7 +151,14 @@ class MainMenu extends GameState {
 
 	function selectNewGame() {
 		if (_gameSave.data.levelName == null) { // No saved game
-			initNewGame();
+			// Below line is shown for demo only
+			showModal(
+				"Welcome to the Scales demo. There is a lot to be done before this game is done,even this demo isn't yet complete. We just wanted to give you a glipse of whatwe've been working on.\n\rHave fun :)", 
+				() -> initNewGame(), 
+				true,
+				"Press SPACE to continue, E to close"
+			);
+			// initNewGame();
 		} else {
 			showModal('This will erase your saved games. Do you want to continue?', () -> initNewGame(true), true);
 		}
@@ -162,12 +169,21 @@ class MainMenu extends GameState {
 		FlxG.switchState(new levels.LevelOne.Intro(_gameSave));
 	}
 
+	/**
+	 * Shows the menu page modal.
+	 *
+	 * @param Text						Text to show in the modal
+	 * @param ConfirmCallback	Function to run when confirm option is chosen
+	 * @param ShowOptions			Whether the modal has `press button for yes` text
+	 * @param OptionsText			Text for `press button for yes` if something different is desired
+	 */
 	function showModal(
 		Text:String, 
 		?ConfirmCallback:Void->Void,
-		?ShowOptions:Bool
+		?ShowOptions:Bool,
+		?OptionsText:String
 	) {
-		var _modal:MainMenuModal = new MainMenuModal(Text, ConfirmCallback, ShowOptions);
+		var _modal:MainMenuModal = new MainMenuModal(Text, ConfirmCallback, ShowOptions, OptionsText);
 		openSubState(_modal);
 	}
 
