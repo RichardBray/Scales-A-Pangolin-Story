@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -18,15 +19,18 @@ class PauseMenu extends FlxSubState {
 	var _menuHeight:Int = 650;
 	var _titleText:String;
 	var _menu:Menu;
+	var _quitMenu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
 
+	var _grpQuitItems:FlxSpriteGroup;
+	
 
 	/**
 	 * @param PlayerDied	If player died or not
 	 * @param LevelString	Name of the level
 	 */
-	public function new(PlayerDied:Bool = false, LevelString:String) {
+	public function new(PlayerDied:Bool = false, LevelString:String, ?GameSave:Null<FlxSave>) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -40,7 +44,7 @@ class PauseMenu extends FlxSubState {
 			_boxXPos,
 			(FlxG.height / 2) - (_menuHeight / 2),
 			_menuWidth,
-			_menuHeight,
+			_menuHeight - 50,
 			{ thickness:8, color:Constants.primaryColorLight }, 
 			Constants.primaryColor			
 		);
@@ -65,7 +69,7 @@ class PauseMenu extends FlxSubState {
 				title: "Restart Section",
 				func: () -> {
 					FlxG.sound.music = null;
-					FlxG.switchState(Type.createInstance(sectionToRestart, [null, false]));
+					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
 				}
 			},			
 			{
@@ -77,7 +81,7 @@ class PauseMenu extends FlxSubState {
 			},
 			{
 				title: "Quit",
-				func: () -> FlxG.switchState(new MainMenu())
+				func: () -> FlxG.switchState(new MainMenu()) // toggleLevelQuit
 			}
 		];
 
@@ -97,9 +101,53 @@ class PauseMenu extends FlxSubState {
 		add(_grpMenuItems);
 		add(_menu);
 
+		// Quit screen
+
+		_grpQuitItems = new FlxSpriteGroup();
+		add(_grpQuitItems);
+
+		var quitMenuData:Array<MenuData> = [
+			{
+				title: "Yes",
+				func: () -> FlxG.switchState(new MainMenu())
+			},
+			{
+				title: "No",
+				func: toggleLevelQuit
+			},			
+		];
+
+		_quitMenu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, quitMenuData, true);
+		_quitMenu.kill();
+		_grpQuitItems.add(_quitMenu);
+
+		var quitText:FlxText = new FlxText(_boxXPos, _menuTitle.y + 150, 0, "Are you sure you want to quit?");
+
+		_grpQuitItems.add(quitText);
+
+		_grpQuitItems.forEach((_member:FlxSprite) -> {
+		 	_member.alpha = 0;
+			_member.scrollFactor.set(0, 0);
+		});			
+	
 		// Intialise controls
 		_controls = new Controls();
-		
+	}
+
+	function toggleLevelQuit() {
+		_quitMenu.revive();
+		_grpQuitItems.forEach((_member:FlxSprite) -> {
+			_member.alpha = 1;
+		});	
+
+		_menu.forEach((_member:FlxSprite) -> {
+			_member.alpha = 0;
+		});			
+	}
+
+	function togglePauseMenu() {
+		FlxG.sound.music.play();
+		close();
 	}
 
 	override public function update(Elapsed:Float) {
@@ -109,10 +157,5 @@ class PauseMenu extends FlxSubState {
 		}
 
 		super.update(Elapsed);
-	}
-
-	function togglePauseMenu() {
-		FlxG.sound.music.play();
-		close();
-	}
+	}	
 }

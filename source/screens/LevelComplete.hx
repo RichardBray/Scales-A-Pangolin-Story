@@ -1,6 +1,7 @@
 package screens;
 
 
+import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
@@ -86,11 +87,11 @@ class LevelComplete extends FlxSubState {
     var levelTitle:String = _levelNames[_gameSave.data.levelName];
 
     _title = new FlxText(100, 70, FlxG.width, 'Level $levelTitle Complete!!');
-    _title.setFormat(Constants.squareFont, Constants.medFont * 3, null, LEFT);
+    _title.setFormat(Constants.squareFont, Constants.medFont * 3, FlxColor.WHITE, LEFT);
     _grpLeftSide.add(_title);
 
     _levelData = new FlxText(80, 230, FlxG.width);
-    _levelData.setFormat(Constants.squareFont, Constants.medFont, null, LEFT);
+    _levelData.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, LEFT);
     _grpLeftSide.add(_levelData);
 
     _grpLeftSide.alpha = 0;
@@ -100,7 +101,7 @@ class LevelComplete extends FlxSubState {
 
     var levelPercentage:Int = calculatePercentge();
     _levelRating = new FlxText(120, 500, FlxG.width, '$levelPercentage% Complete'); 
-    _levelRating.setFormat(Constants.squareFont, Constants.medFont * 2, null, LEFT);
+    _levelRating.setFormat(Constants.squareFont, Constants.medFont * 2, FlxColor.WHITE, LEFT);
     _levelRating.alpha = 0;  
     _levelRating.scrollFactor.set(0, 0);
     add(_levelRating);

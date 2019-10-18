@@ -50,6 +50,7 @@ class LevelState extends GameState {
 	var _grpEnemyAttackBoundaries:FlxTypedGroup<FlxObject>;
 	// Game saving
 	var _levelCompleteSave:Bool = false;
+	var _gameSaveForPause:FlxSave;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -245,6 +246,7 @@ class LevelState extends GameState {
 			GameSave.data.totalEnemies = EndData[1];
 		}
 		GameSave.flush();
+		_gameSaveForPause = GameSave;
 		return GameSave;
 	}
 
@@ -528,7 +530,7 @@ class LevelState extends GameState {
 	}
 
 	function showGameOverMenu(_) {
-		var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
+		var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
 		openSubState(_pauseMenu);
 	}
 
@@ -602,7 +604,7 @@ class LevelState extends GameState {
 
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
-			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName);
+			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
 			openSubState(_pauseMenu);
 		}
 
@@ -610,7 +612,7 @@ class LevelState extends GameState {
 		if (_controls.start.check()) {
 			// SubState needs to be recreated here as it will be destroyed
 			FlxG.sound.music.pause();
-			var _pauseMenu:PauseMenu = new PauseMenu(false, levelName);
+			var _pauseMenu:PauseMenu = new PauseMenu(false, levelName, _gameSaveForPause);
 			openSubState(_pauseMenu);
 		}
 

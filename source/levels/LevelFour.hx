@@ -23,7 +23,7 @@ class LevelFour extends LevelState {
     _gameSave = GameSave;
   	_goalData = [
 			{
-				goal: "Defeat the Leopard",
+				goal: "Defeat the Panther",
 				func: (_) -> killedEmenies > 0
 			},
 			{

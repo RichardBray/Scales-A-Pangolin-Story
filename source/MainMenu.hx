@@ -33,7 +33,7 @@ class MainMenu extends GameState {
 	var _bottomLeft:FlxText;
 	var _bottomRight:FlxText;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
-
+	var _openCloseText:String = "Press SPACE to continue, E to close";
 	var _showDemoModal:Bool;
 
 	public function new() {
@@ -156,11 +156,11 @@ class MainMenu extends GameState {
 				"Welcome to the Scales demo. There is a lot to do before this game is finished, even this demo isn't complete. We just wanted to give you a glipse of what we've been working on.\n\rHave fun :)", 
 				() -> initNewGame(), 
 				true,
-				"Press SPACE to continue, E to close"
+				_openCloseText
 			);
 			// initNewGame();
 		} else {
-			showModal('This will erase your saved games. Do you want to continue?', () -> initNewGame(true), true);
+			showModal('This will erase your saved games. Do you want to continue?', () -> initNewGame(true), true, _openCloseText);
 		}
 	}
 
