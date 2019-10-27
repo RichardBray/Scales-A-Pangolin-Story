@@ -5,8 +5,8 @@ import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.system.FlxSound;
 
 using Lambda;
 
@@ -20,6 +20,10 @@ class Menu extends FlxSpriteGroup {
 	var _preventKeyPress:Bool = false;
 	var _controls:Controls;
 	var _yPos:Float;
+
+	// Sounds
+	var _sndMove:FlxSound;
+	var _sndSelect:FlxSound;
 
 	/**
 	 * Generic menu class
@@ -40,6 +44,11 @@ class Menu extends FlxSpriteGroup {
 		super();
 		_menuData = Data;
 		_yPos = YPos;
+
+		//Sounds
+		_sndMove = FlxG.sound.load("assets/sounds/menu_move.wav");
+		_sndSelect = FlxG.sound.load("assets/sounds/menu_selected.wav");
+	
 		// Pointer
 		_pointer = new FlxSprite(XPos, YPos - 15);
 		_pointer.makeGraphic(MenuWidth, _spacing, Constants.secondaryColor);
@@ -60,9 +69,11 @@ class Menu extends FlxSpriteGroup {
 	}
 
 	override public function update(Elapsed:Float) {
+		super.update(Elapsed);
 		var _lastOption:Int = _menuData.length - 1;
 		if(!_preventKeyPress) {
 			if (_controls.cross.check()) {
+				_sndSelect.play();
 				_menuData[_selected].func();
 			}
 
@@ -85,8 +96,11 @@ class Menu extends FlxSpriteGroup {
 					_selected = _lastOption;
 				}
 			}
+
+			if (_controls.up.check() || _controls.down.check()) {
+				_sndMove.play(true);
+			}
 		}
-		super.update(Elapsed);
 	}
 
 	public function hide() {
