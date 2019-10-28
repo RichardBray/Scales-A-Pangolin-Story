@@ -24,7 +24,7 @@ class Enemy extends FlxSprite {
 		super(X, Y);
 		health = 1;
 		timer = new FlxTimer();
-		sndHit = FlxG.sound.load("assets/sounds/hurt.wav");
+		sndHit = FlxG.sound.load("assets/sounds/hurt.mp3");
 		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
 	}
 

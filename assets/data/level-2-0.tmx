@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="108">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="4" nextobjectid="115">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
  <objectgroup id="2" name="objects">
+  <object id="111" gid="32" x="2917.9" y="1799.81" width="325" height="124"/>
+  <object id="112" gid="32" x="3240.97" y="1799.81" width="325" height="124"/>
+  <object id="113" gid="32" x="9379.98" y="1799.97" width="325" height="124"/>
+  <object id="114" gid="32" x="9704.86" y="1799.97" width="325" height="124"/> 
   <object id="1" gid="6" x="-324.75" y="1447.25" width="850" height="1101"/>
   <object id="7" gid="5" x="2350" y="1596" width="889" height="1184"/>
   <object id="8" gid="3" x="1909" y="1577.33" width="361" height="123"/>

@@ -69,8 +69,10 @@ class PauseMenu extends FlxSubState {
 			{
 				title: "Restart Section",
 				func: () -> {
-					FlxG.sound.music = null;
-					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
+					if (_allowQuitting) {
+						FlxG.sound.music = null;
+						FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
+					}
 				}
 			},			
 			{

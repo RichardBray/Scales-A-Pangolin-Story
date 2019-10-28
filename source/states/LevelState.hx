@@ -20,6 +20,8 @@ import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 
 import HUD.GoalData;
+// - Components
+import components.Lava;
 
 typedef CollMap = Map<String, Array<Int>>;
 
@@ -330,6 +332,10 @@ class LevelState extends GameState {
 			enemy = new Enemy.Fire(X, newY);
 			_grpEnemies.add(enemy);
 
+		} else if (ObjectId == 32) { // Lava
+			var lava:Lava = new Lava(X, newY);
+			_mapEntities.add(lava);
+
 		} else if (ObjectId == 13) { // Boar
 			var boar:Enemy;
 			boar = new Enemy.Boar(X, newY, Name, Otype);
@@ -418,7 +424,7 @@ class LevelState extends GameState {
 				Player.hurt(1);
 				_playerTouchMovingEnemy = true;
 			}
-			Enemy.sndHit.play();
+			Enemy.sndHit.play(true);
 			FlxSpriteUtil.flicker(Player);
 		}
 
