@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
 import flixel.addons.display.shapes.FlxShapeBox;
+import substates.QuitMenu;
 
 // Typedefs
 import Menu.MenuData;
@@ -19,12 +20,8 @@ class PauseMenu extends FlxSubState {
 	var _menuHeight:Int = 650;
 	var _titleText:String;
 	var _menu:Menu;
-	var _quitMenu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
-
-	var _grpQuitItems:FlxSpriteGroup;
-	var _allowQuitting:Bool = true;
 	
 
 	/**
@@ -69,22 +66,23 @@ class PauseMenu extends FlxSubState {
 			{
 				title: "Restart Section",
 				func: () -> {
-					if (_allowQuitting) {
-						FlxG.sound.music = null;
-						FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
-					}
+					FlxG.sound.music = null;
+					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
 				}
 			},			
 			{
 				title: "Instructions",
 				func: () -> {
 					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
-					if (_allowQuitting) openSubState(_instructions);
+					openSubState(_instructions);
 				}
 			},
 			{
 				title: "Quit",
-				func: toggleLevelQuit
+				func: () -> {
+					var quitMenu:QuitMenu = new QuitMenu();
+					openSubState(quitMenu);
+				}
 			}
 		];
 
@@ -104,55 +102,8 @@ class PauseMenu extends FlxSubState {
 		add(_grpMenuItems);
 		add(_menu);
 
-		// Quit screen
-
-		_grpQuitItems = new FlxSpriteGroup();
-		add(_grpQuitItems);
-
-		var quitMenuData:Array<MenuData> = [
-			{
-				title: "Yes",
-				func: () -> {
-						if (!_allowQuitting) FlxG.switchState(new MainMenu()) ;
-					}
-			},
-			{
-				title: "No",
-				func: toggleLevelQuit
-			},			
-		];
-
-		_quitMenu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, quitMenuData, true);
-		_grpQuitItems.add(_quitMenu);
-
-		var quitText:FlxText = new FlxText(_boxXPos, _menuTitle.y + 150, 0, "Are you sure you want to quit?");
-
-		_grpQuitItems.add(quitText);
-
-		_grpQuitItems.forEach((_member:FlxSprite) -> {
-		 	_member.alpha = 0;
-			_member.scrollFactor.set(0, 0);
-		});			
-	
 		// Intialise controls
 		_controls = new Controls();
-	}
-
-	function toggleLevelQuit() {
-		trace(_allowQuitting);
-		if (_allowQuitting) {
-			_grpQuitItems.forEach((_member:FlxSprite) -> {
-				_member.alpha = 1;
-			});	
-
-			_menu.forEach((_member:FlxSprite) -> {
-				_member.alpha = 0;
-			});		
-			_allowQuitting = false;
-		} else {
-			trace("you can't quit stuff");
-		}
-	
 	}
 
 	function togglePauseMenu() {
@@ -162,10 +113,7 @@ class PauseMenu extends FlxSubState {
 
 	override public function update(Elapsed:Float) {
 		// Exit pause menu
-		if (_controls.start.check()) {
-			togglePauseMenu();
-		}
-
+		if (_controls.start.check()) togglePauseMenu();
 		super.update(Elapsed);
 	}	
 }

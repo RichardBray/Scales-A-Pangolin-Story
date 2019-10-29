@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="93">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="101">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -69,6 +69,14 @@
   <object id="79" name="left" type="1" gid="9" x="13223.4" y="1042.13" width="42" height="39"/>
   <object id="80" name="left" type="5" gid="10" x="14037.4" y="646.199" width="47" height="39"/>
   <object id="81" name="right" type="1" gid="9" x="9787.66" y="953.075" width="42" height="39"/>
+  <object id="93" gid="32" x="8053" y="1800.44" width="325" height="124"/>
+  <object id="94" gid="32" x="8375.72" y="1800.44" width="325" height="124"/>
+  <object id="95" gid="32" x="8689.97" y="1799.38" width="325" height="124"/>
+  <object id="96" gid="32" x="2662.78" y="1800.33" width="325" height="124"/>
+  <object id="97" gid="32" x="2985.25" y="1800.33" width="325" height="124"/>
+  <object id="98" gid="32" x="3311.19" y="1799.17" width="325" height="124"/>
+  <object id="99" gid="32" x="3635.97" y="1798.01" width="325" height="124"/>
+  <object id="100" gid="32" x="3945.72" y="1799.17" width="325" height="124"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
