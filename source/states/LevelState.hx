@@ -66,7 +66,7 @@ class LevelState extends GameState {
 
 		// Continue music if it's already playing
 		if (FlxG.sound.music == null) {
-			playMusic("assets/music/music.ogg");
+			playMusic("assets/music/jungle-sound.mp3");
 		}
 
 		/**
@@ -278,7 +278,7 @@ class LevelState extends GameState {
 	 * @param LevelMusic	String of music location
 	 */
 	public function playMusic(LevelMusic:String) {
-		FlxG.sound.playMusic(LevelMusic, 0, true); // .4
+		FlxG.sound.playMusic(LevelMusic, 0.4, true); // .4
 	}
 
 	/**
@@ -293,6 +293,13 @@ class LevelState extends GameState {
 		var name:String = EntityData.get("name");
 		var type:String = EntityData.get("type");
 		createEntity(x, y, width, height, name, type, ObjectId, MapObjId);
+	}
+
+	/**
+	 * Utiolity function for returning image strings for level assets.
+	 */
+	static function createImageString(Image:String):String {
+		return 'assets/images/components/$Image.png';
 	}
 
 	/**
@@ -318,7 +325,9 @@ class LevelState extends GameState {
 			5 => "assets/images/L1_TREE_01.png",
 			6 => "assets/images/L1_TREE_02.png",
 			7 => "assets/images/L1_TREE_03.png",
-			8 => "assets/images/L1_GROUND_01.png"
+			8 => "assets/images/L1_GROUND_01.png",
+			33 => LevelState.createImageString("L1_LAVAROCK_01"),
+			34 => LevelState.createImageString("L1_LAVAROCK_02")
 		];
 		if (ObjectId >= 9 && ObjectId <=11) {
 			var bug:CollectableBug.Bug = null;
@@ -536,6 +545,7 @@ class LevelState extends GameState {
 	}
 
 	function showGameOverMenu(_) {
+		FlxG.sound.music.pause();
 		var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
 		openSubState(_pauseMenu);
 	}
@@ -610,6 +620,7 @@ class LevelState extends GameState {
 
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
+			FlxG.sound.music.pause();
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
 			openSubState(_pauseMenu);
 		}

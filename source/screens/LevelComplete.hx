@@ -39,7 +39,7 @@ class LevelComplete extends FlxSubState {
     _gameSave = GameSave;
 
     _levelTotals = [
-      "Level-4-0" => [74, 9] // [74, 10]
+      "Level-4-0" => [74, 10]
     ];
 
     _levelNames = [
