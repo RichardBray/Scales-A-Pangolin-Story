@@ -66,7 +66,7 @@ class LevelState extends GameState {
 
 		// Continue music if it's already playing
 		if (FlxG.sound.music == null) {
-			playMusic("assets/music/jungle-sound.mp3");
+			playMusic("assets/music/jungle-sound.ogg");
 		}
 
 		/**

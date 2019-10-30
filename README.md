@@ -33,7 +33,7 @@ npm start
 
 ## Build for production
 ```
-lime build mac
+lime build mac -release
 ```
 
 ## Notes

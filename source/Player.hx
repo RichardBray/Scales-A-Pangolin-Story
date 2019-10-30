@@ -41,7 +41,7 @@ class Player extends FlxSprite {
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
 
 		// Sounds
-		_sndJump = FlxG.sound.load("assets/sounds/jump.mp3");
+		_sndJump = FlxG.sound.load("assets/sounds/jump.ogg");
 
 		// Intialise controls
 		_controls = new Controls();
