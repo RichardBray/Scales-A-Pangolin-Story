@@ -8,31 +8,35 @@ import states.LevelState;
 
 class Constants {
 	// general
-	public static var projectVersion:String = "v0.8.0";
-	public static var worldGravity:Int = 1500;
-	public static var squareFont:String = "assets/fonts/Square.ttf";
+	public static final projectVersion:String = "v0.8.0";
+	public static final worldGravity:Int = 1500;
+	public static final squareFont:String = "assets/fonts/Square.ttf";
 
 	// Fonts
-	public static var smlFont:Int = 20;
-	public static var hudFont:Int = 26;
-	public static var medFont:Int = 33;
-	public static var lrgFont:Int = 48;
+	public static final smlFont:Int = 20;
+	public static final hudFont:Int = 26;
+	public static final medFont:Int = 33;
+	public static final lrgFont:Int = 48;
 
 	// Colours
-	public static var primaryColor:FlxColor = 0xff0F272C; // Dark background green
-	public static var primaryColorLight:FlxColor = 0xff29706F; // Muted primary colour
-	public static var secondaryColor:FlxColor = 0xffF73156; // Hot pink
-	public static var slimeGreenColor:FlxColor = 0xff77AD0D; // Slime green
+	public static final primaryColor:FlxColor = 0xff0F272C; // Dark background green
+	public static final primaryColorLight:FlxColor = 0xff29706F; // Muted primary colour
+	public static final secondaryColor:FlxColor = 0xffF73156; // Hot pink
+	public static final slimeGreenColor:FlxColor = 0xff77AD0D; // Slime green
 
 	// Controler strings
 	// @todo different controler strings for gamepads
-	public static var start:String = "ESC";
-	public static var cross:String = "SPACE";
-	public static var triangle:String = "E";
+	public static final start:String = "ESC";
+	public static final cross:String = "SPACE";
+	public static final triangle:String = "E";
 	
+	// Sounds
+	public static final sndMenuMove:String = "assets/sounds/menu_move.wav";
+	public static final sndMenuSelect:String = "assets/sounds/menu_selected.wav";	
+	public static final sndMenuClose:String = "assets/sounds/menu_close.ogg";
 
 	// Used to load levels from saves and restart levels
-	public static var levelNames:Map<String, Class<LevelState>> = [
+	public static final levelNames:Map<String, Class<LevelState>> = [
 		"Level-1-0" => levels.LevelOne, 
 		"Level-2-0" => levels.LevelTwo,
 		"Level-3-0" => levels.LevelThree,

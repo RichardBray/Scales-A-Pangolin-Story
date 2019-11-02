@@ -8,6 +8,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
 import flixel.addons.display.shapes.FlxShapeBox;
 import substates.QuitMenu;
+import flixel.system.FlxSound;
 
 // Typedefs
 import Menu.MenuData;
@@ -23,6 +24,8 @@ class PauseMenu extends FlxSubState {
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
 	
+	// Sounds
+	var _sndClose:FlxSound;
 
 	/**
 	 * @param PlayerDied	If player died or not
@@ -61,7 +64,8 @@ class PauseMenu extends FlxSubState {
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Resume",
-				func: togglePauseMenu
+				func: togglePauseMenu,
+				soundOnSelect: false
 			},			
 			{
 				title: "Restart Section",
@@ -102,12 +106,18 @@ class PauseMenu extends FlxSubState {
 		add(_grpMenuItems);
 		add(_menu);
 
+		// Sound
+		_sndClose = FlxG.sound.load(Constants.sndMenuClose);
+	
 		// Intialise controls
 		_controls = new Controls();
+
+		FlxG.sound.music.pause();
 	}
 
 	function togglePauseMenu() {
 		FlxG.sound.music.play();
+		_sndClose.play(); 
 		close();
 	}
 

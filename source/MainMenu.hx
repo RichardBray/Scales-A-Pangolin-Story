@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxSound;
 
 // Internal
 import states.GameState;
@@ -35,6 +36,9 @@ class MainMenu extends GameState {
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _openCloseText:String = "Press SPACE to continue, E to close";
 	var _showDemoModal:Bool;
+
+	// Sound
+	var _sndSelect:FlxSound;
 
 	public function new() {
 		super();
@@ -110,6 +114,8 @@ class MainMenu extends GameState {
 		_bottomRight.alpha = 0;		
 
 		super.create();
+
+			_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 	}
 
 	override public function update(Elapsed:Float) {
@@ -126,6 +132,7 @@ class MainMenu extends GameState {
 
 		if (_controls.cross.check()) {
 			if (!_showChoices) {
+				_sndSelect.play();
 				_showChoices = true;
 				_startText.alpha = 0;
 				_menu.show();

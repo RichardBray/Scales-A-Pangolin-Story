@@ -14,6 +14,7 @@ import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import flixel.system.FlxSound;
 // - Tiled
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
@@ -54,6 +55,9 @@ class LevelState extends GameState {
 	var _levelCompleteSave:Bool = false;
 	var _gameSaveForPause:FlxSave;
 
+	// Sounds
+	var _sndSelect:FlxSound;
+
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
@@ -85,6 +89,9 @@ class LevelState extends GameState {
 		_controls = new Controls();
 
 		super.create();
+
+		// Sounds
+		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 	}
 
 	/** PUBLIC FUNCTIONS **/
@@ -545,7 +552,6 @@ class LevelState extends GameState {
 	}
 
 	function showGameOverMenu(_) {
-		FlxG.sound.music.pause();
 		var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
 		openSubState(_pauseMenu);
 	}
@@ -620,15 +626,14 @@ class LevelState extends GameState {
 
 		// Reset the game if the player goes higher/lower than the map
 		if (player.y > _map.fullHeight) {
-			FlxG.sound.music.pause();
 			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
 			openSubState(_pauseMenu);
 		}
 
 		// Paused game state
 		if (_controls.start.check()) {
+			_sndSelect.play();
 			// SubState needs to be recreated here as it will be destroyed
-			FlxG.sound.music.pause();
 			var _pauseMenu:PauseMenu = new PauseMenu(false, levelName, _gameSaveForPause);
 			openSubState(_pauseMenu);
 		}

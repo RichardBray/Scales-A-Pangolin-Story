@@ -53,12 +53,12 @@ class Player extends FlxSprite {
 	 * @param Left	If player is facing left or not
 	 */
 	public function animJump(Left:Bool = false) {
-		var xPos:Float = Left ?  this.x + 225 :  this.x - 225;
+		final xPos:Float = Left ?  this.x + 225 :  this.x - 225;
 		FlxTween.tween(this, {x: xPos, y: (this.y - 60)}, 0.1);
 	}
 
 	function playerMovement() {
-		var SPEED:Int = 1800;
+		final SPEED:Int = 1800;
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();

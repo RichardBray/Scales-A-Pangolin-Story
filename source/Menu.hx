@@ -10,7 +10,7 @@ import flixel.system.FlxSound;
 
 using Lambda;
 
-typedef MenuData = { title:String, func:Void->Void };
+typedef MenuData = { title:String, func:Void->Void, ?soundOnSelect:Bool };
 
 class Menu extends FlxSpriteGroup {
 	var _selected:Int = 0;
@@ -46,8 +46,8 @@ class Menu extends FlxSpriteGroup {
 		_yPos = YPos;
 
 		//Sounds
-		_sndMove = FlxG.sound.load("assets/sounds/menu_move.wav");
-		_sndSelect = FlxG.sound.load("assets/sounds/menu_selected.wav");
+		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
+		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 	
 		// Pointer
 		_pointer = new FlxSprite(XPos, YPos - 15);
@@ -73,8 +73,15 @@ class Menu extends FlxSpriteGroup {
 		var _lastOption:Int = _menuData.length - 1;
 		if(!_preventKeyPress) {
 			if (_controls.cross.check()) {
-				_sndSelect.play();
-				_menuData[_selected].func();
+				if (_menuData[_selected].soundOnSelect == null) {
+					_sndSelect.play(true); 
+					// So that sound plays before action happens
+					haxe.Timer.delay(() -> {
+						_menuData[_selected].func();
+					}, 350);					
+				} else {
+					_menuData[_selected].func();
+				}
 			}
 
 			if (_controls.down.check()) {

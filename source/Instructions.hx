@@ -6,6 +6,7 @@ import flixel.group.FlxSpriteGroup;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.FlxG;
+import flixel.system.FlxSound;
 
 class Instructions extends FlxSubState {
   var _gameOverlay:FlxSprite;
@@ -16,11 +17,16 @@ class Instructions extends FlxSubState {
   var _totalPages:Int;
   var _closeText:FlxText;
   var _pagePosition:FlxText;
+  var _showOverlay:Bool;
   // Page controls
   var _currentPage:Int = 1;
   var _leftArrow:FlxSprite;
   var _rightArrow:FlxSprite;
   var _exitText:FlxText;
+
+	// Sounds
+	var _sndClose:FlxSound;  
+  var _sndMenuMove:FlxSound;
   
   public var menuViewed:Bool; // Used in specific level classes to check if instructions have been viewed
 
@@ -37,9 +43,10 @@ class Instructions extends FlxSubState {
     // Assign start and end pages numbers
     _endPage = EndPage;
     _startPage = StartPage;
+    _showOverlay = ShowOverlay;
 
     // Opaque black background overlay
-    if (ShowOverlay) {
+    if (_showOverlay) {
       _gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
       _gameOverlay.scrollFactor.set(0, 0);
       add(_gameOverlay);
@@ -90,24 +97,33 @@ class Instructions extends FlxSubState {
 		// Fix all pages to a certain position on the screen
 		_grpPages.forEach((Page:FlxSprite) -> {
 			Page.scrollFactor.set(0, 0);
-		});      
+		}); 
+
+		// Sound
+		_sndClose = FlxG.sound.load(Constants.sndMenuClose);  
+		_sndMenuMove = FlxG.sound.load(Constants.sndMenuMove);       
   }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);    
 
 		// Exit instructions
-		if (_controls.start.check() || _controls.triangle.check()) closeInstructionsMenu();
+		if (_controls.start.check() || _controls.triangle.check()) {
+      _sndClose.play(); 
+      closeInstructionsMenu();
+    }
 
     // Go to previous page
     if (_controls.left.check() && _currentPage != _startPage) {
       _currentPage--;
+      _sndMenuMove.play(true);
       updateShownPage();
     } 
 
     // Go to next page
     if (_controls.right.check() && _currentPage != _endPage) {
       _currentPage++;
+      _sndMenuMove.play(true);
       updateShownPage();
     }  
 
@@ -142,7 +158,7 @@ class Instructions extends FlxSubState {
    * Close subState
    */
 	function closeInstructionsMenu() {
-		FlxG.sound.music.play();
+		if (_showOverlay) FlxG.sound.music.play();
     menuViewed = true;
     // @todo play sound
 		close();
