@@ -349,7 +349,7 @@ class LevelState extends GameState {
 			_grpEnemies.add(enemy);
 
 		} else if (ObjectId == 32) { // Lava
-			var lava:Lava = new Lava(X, newY, player); //Boomting
+			var lava:Lava = new Lava(X, newY);
 			_mapEntities.add(lava);
 
 		} else if (ObjectId == 13) { // Boar

@@ -19,6 +19,7 @@ class LevelThree extends LevelState {
 	var _monkeySprite:ZenMonkey;
 	var _monkeyNPC:NPC;
   var _bugsGoal:Int = 15; // How many bugs to collect in order to complete level  
+	var _spokentoNPC:Int = 0;
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -31,9 +32,8 @@ class LevelThree extends LevelState {
 			{
 				goal: "Talk to monkey",
 				func: (_) -> {
-					var spokentoNPC:Int = 0;
-					if (startingConvo) spokentoNPC++;
-					return spokentoNPC > 0;
+					if (startingConvo) _spokentoNPC++;
+					return _spokentoNPC > 0;
 				}
 			}            
 		]; 
@@ -47,10 +47,11 @@ class LevelThree extends LevelState {
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [
-			"Hello friend!",
-			"Wow, I've never seen a pangolin move so fast before, that's incredible.",
-			"Anyway I saw a <pt>black panther<pt> just come by here.",
-			"You might want to be carful when you're running around the jungle."
+			"Hello young pangolin!",
+			"I've never seen one of your kind move so fast before, truly remarkable.",
+			"A word of warning. I saw an angry <pt>large boar<pt> just come by here.",
+			"I have a feeling it's very happy with it's kind being jumped on.",
+			"You would be wise to take care when running around."
 		];
 
 		// Add NPC

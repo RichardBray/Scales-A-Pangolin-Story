@@ -7,6 +7,7 @@ import flixel.util.FlxSave;
 
 // Internal
 import states.LevelState;
+import characters.PinkPango;
 
 // Typedefs
 import HUD.GoalData;
@@ -17,6 +18,7 @@ class LevelFour extends LevelState {
   var _gameSave:FlxSave;
   var _pangoSprite:FlxSprite;
   var _pangoNPC:NPC;
+	var _spokentoNPC:Int = 0;
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -29,9 +31,8 @@ class LevelFour extends LevelState {
 			{
 				goal: "Talk to pangolin",
 				func: (_) -> {
-					var spokentoNPC:Int = 0;
-					if (startingConvo) spokentoNPC++;
-					return spokentoNPC > 0;
+					if (startingConvo) _spokentoNPC++;
+					return _spokentoNPC > 0;
 				}
 			}                 
 		]; 
@@ -55,7 +56,7 @@ class LevelFour extends LevelState {
 		var npcXPos:Int = 2307;
 		var npcYPos:Int = 1018;
 
-		_pangoSprite = new FlxSprite(npcXPos, npcYPos).makeGraphic(176, 168, 0xff205ab7);
+		_pangoSprite = new PinkPango(npcXPos, npcYPos);
 		_pangoNPC = new NPC(npcXPos, npcYPos, pangoText, _pangoSprite, this, [5, 2.5]);
 		add(_pangoNPC);	       
 
