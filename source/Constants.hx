@@ -8,7 +8,7 @@ import states.LevelState;
 
 class Constants {
 	// general
-	public static final projectVersion:String = "v0.8.0";
+	public static final projectVersion:String = "v0.9.0";
 	public static final worldGravity:Int = 1500;
 	public static final squareFont:String = "assets/fonts/Square.ttf";
 
