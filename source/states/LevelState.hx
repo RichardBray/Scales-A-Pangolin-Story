@@ -37,7 +37,7 @@ class LevelState extends GameState {
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
-	var _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
+	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
@@ -349,7 +349,7 @@ class LevelState extends GameState {
 			_grpEnemies.add(enemy);
 
 		} else if (ObjectId == 32) { // Lava
-			var lava:Lava = new Lava(X, newY);
+			var lava:Lava = new Lava(X, newY, player); //Boomting
 			_mapEntities.add(lava);
 
 		} else if (ObjectId == 13) { // Boar

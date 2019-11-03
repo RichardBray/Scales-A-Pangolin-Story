@@ -4,6 +4,7 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import flixel.FlxG;
+import characters.ZenMonkey;
 
 // Internal
 import states.LevelState;
@@ -15,7 +16,7 @@ import HUD.GoalData;
 class LevelThree extends LevelState {
   var _goalData:Array<GoalData>;
 	var _gameSave:FlxSave;
-	var _monkeySprite:FlxSprite;
+	var _monkeySprite:ZenMonkey;
 	var _monkeyNPC:NPC;
   var _bugsGoal:Int = 15; // How many bugs to collect in order to complete level  
 
@@ -53,10 +54,10 @@ class LevelThree extends LevelState {
 		];
 
 		// Add NPC
-		var npcXPos:Int = 11315;
-		var npcYPos:Int = 775;
-
-		_monkeySprite = new FlxSprite(npcXPos, npcYPos).makeGraphic(176, 168, 0xff205ab7);
+		var npcXPos:Int = 11255; // 11265
+		var npcYPos:Int = 790;
+	
+		_monkeySprite = new ZenMonkey(npcXPos, npcYPos);
 		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this, [3, 3]);
 		add(_monkeyNPC);		
 
@@ -80,6 +81,11 @@ class LevelThree extends LevelState {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
 		FlxG.switchState(new LevelFour(_gameSave));
 	}	
+
+	function monkeyTalking(Player:Player, Friend:FlxSprite) {
+		_monkeySprite.toggleTalkingAnim(startingConvo);
+		_monkeyNPC.initConvo(Player, Friend);
+	}
   
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
@@ -89,8 +95,8 @@ class LevelThree extends LevelState {
 			? FlxG.overlap(levelExit, player, fadeOut)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);
 
-		FlxG.overlap(player, _monkeyNPC.npcSprite.npcBoundary, _monkeyNPC.initConvo);
-		if (!FlxG.overlap(player, _monkeyNPC.npcSprite.npcBoundary, _monkeyNPC.initConvo)) {
+		FlxG.overlap(player, _monkeyNPC.npcSprite.npcBoundary, monkeyTalking);
+		if (!FlxG.overlap(player, _monkeyNPC.npcSprite.npcBoundary, monkeyTalking)) {
 			_monkeyNPC.dialoguePrompt.hidePrompt();
 		};				    
   }
