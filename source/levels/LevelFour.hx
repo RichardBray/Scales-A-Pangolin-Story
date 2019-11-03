@@ -16,7 +16,7 @@ import HUD.GoalData;
 class LevelFour extends LevelState {
   var _goalData:Array<GoalData>;
   var _gameSave:FlxSave;
-  var _pangoSprite:FlxSprite;
+  var _pangoSprite:PinkPango;
   var _pangoNPC:NPC;
 	var _spokentoNPC:Int = 0;
 
@@ -53,11 +53,11 @@ class LevelFour extends LevelState {
 		]; 
 
 		// Add NPC
-		var npcXPos:Int = 2307;
-		var npcYPos:Int = 1018;
+		var npcXPos:Int = 2327;
+		var npcYPos:Int = 1111;
 
 		_pangoSprite = new PinkPango(npcXPos, npcYPos);
-		_pangoNPC = new NPC(npcXPos, npcYPos, pangoText, _pangoSprite, this, [5, 2.5]);
+		_pangoNPC = new NPC(npcXPos, npcYPos, pangoText, _pangoSprite, this, [5, 1]);
 		add(_pangoNPC);	       
 
 		// Add player
@@ -78,6 +78,13 @@ class LevelFour extends LevelState {
 		openSubState(_levelCompleteState);			
 	}
 
+	function pinkPangoUnwravel(Player:Player, Friend:FlxSprite) {
+		haxe.Timer.delay(() -> {
+			_pangoSprite.unwravel();
+			_pangoNPC.initConvo(Player, Friend);
+		}, 2000);	
+	}
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
 
@@ -87,8 +94,8 @@ class LevelFour extends LevelState {
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);  
 
 		if (killedEmenies > 0) { // Only talk when leopard has been defeated
-			FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, _pangoNPC.initConvo);
-			if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, _pangoNPC.initConvo)) {
+			FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, pinkPangoUnwravel);
+			if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, pinkPangoUnwravel)) {
 				_pangoNPC.dialoguePrompt.hidePrompt();
 			};
 		}

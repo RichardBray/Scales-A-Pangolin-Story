@@ -20,7 +20,7 @@ class Leopard extends Enemy {
 
   public function new(X:Float, Y:Float) {
     super(X, Y + 55);
-    health = 25;
+    health = 1;
     hasCollisions = true;
     
     loadGraphic("assets/images/leopard.png", true, 338, 170);
