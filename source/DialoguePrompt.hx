@@ -13,7 +13,6 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	var _dialogueText:FlxText;
 	var _dialogueXPos:Float;
 	var _dialogueYPos:Float;
-	var _dialogueYPosLow:Float;
 	var _dialogueTextYPos:Float;
 	var _vertices:Array<FlxPoint>;
 	var _w:Float;
@@ -30,17 +29,19 @@ class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	public function new(?DialogueWidth:Null<Float> = 120, ?X:Float = 0, ?Y:Float = 0, DialogueText:String) {
 		super();
 
+		// Center dialogue bubble if larger than 145
+		final centerPadding = DialogueWidth >= 145 ? ((DialogueWidth - 145) / 2) : 0;
+
 		_dialogueXPos = X + (DialogueWidth / 2);
 		_dialogueYPos = Y;
-		_dialogueYPosLow = Y - 10;
 		_dialogueTextYPos = Y + 22;
 
 		// Create the speech bubble
-		_dialogueBubble = new FlxSprite(_dialogueXPos, Y);
+		_dialogueBubble = new FlxSprite((_dialogueXPos + centerPadding), Y);
 		_dialogueBubble.makeGraphic(Std.int(DialogueWidth), Std.int(DialogueWidth / 4 * 3), FlxColor.TRANSPARENT);
 
-		_w = _dialogueBubble.width;
-		_h = _dialogueBubble.height;
+		_w = 145; //  _dialogueBubble.width
+		_h = Std.int(_w / 4 * 3); // _dialogueBubble.height
 
 		_vertices = new Array<FlxPoint>();
 		_vertices = [
