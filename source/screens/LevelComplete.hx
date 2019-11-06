@@ -117,6 +117,9 @@ class LevelComplete extends FlxSubState {
     _menu.scrollFactor.set(0, 0);
     _menu.alpha = 0;
     add(_menu);
+
+    // Stop level music
+    FlxG.sound.music.stop();
   }
 
   function incrementNumbers(TotalBugs:Int, TotalEnemies:Int) {

@@ -140,7 +140,7 @@ class BossBoar extends Enemy {
     // Make boar stop more when health is low
     if (health <= 5) {
       _randomNumberRange = Std.int(_randomNumberRange / 2);
-      _movementDistance = _movementDistance + 200;
+      _movementDistance = _movementDistance + 7;
     }
 
     // Play attack anim when player gets hit.

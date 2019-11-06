@@ -25,7 +25,7 @@ class LevelFour extends LevelState {
     _gameSave = GameSave;
   	_goalData = [
 			{
-				goal: "Defeat the Large Boar",
+				goal: "Defeat the Big Boar",
 				func: (_) -> killedEmenies > 0
 			},
 			{
