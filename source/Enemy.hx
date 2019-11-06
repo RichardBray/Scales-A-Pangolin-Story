@@ -18,7 +18,7 @@ class Enemy extends FlxSprite {
 	// For boss enemies
   public var boundaryLeft:FlxPoint;
   public var boundaryRight:FlxPoint;	
-	public var hasCollisions:Bool = false;
+	public var hasCollisions:Bool = false; // Collides with level like Player
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);
@@ -118,7 +118,7 @@ class Boar extends Enemy {
 	}
 
 	function boarPacing() { 
-		if (!_enemyHit) {
+		if (!_enemyHit) { 
 			if (_seconds < 5) {
 				boarMovement(_facingDirection);
 			} else if (_seconds < (5 * 2)) {

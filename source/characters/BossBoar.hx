@@ -1,41 +1,39 @@
-package;
+package characters;
 
-import flixel.tweens.FlxTween;
 import flixel.FlxObject;
 import flixel.util.FlxTimer;
 
 
-class Leopard extends Enemy {
+class BossBoar extends Enemy {
   var _seconds:Float = 0;
   var _enemyDying:Bool = false;
-  var _leopardRoared:Bool = false;
-  var _leopardAttacked:Bool = false;
   var _hitLeftBoundary:Bool = false;
-  var _attackMode:Bool = false; // When leapord has seen player for first time
-  var _randomJumpNumber:Int = 0;
-  var _jumpNmber:Int = 100;
+  var _boarAttacked:Bool = false;
+  var _boarCharged:Bool = false;
+  var _randomStopNumber:Int; // Randomly generated number to decidee when boar stops running
+  var _randomNumberRange:Int = 100;
+  var _attackMode:Bool = false; // When Boar has seen player for first time  
 
-  static var runningSpeed:Int = 800;
-  static var _movementDistance:Int = 1000;
+  var _movementDistance:Int = 800;
 
   public function new(X:Float, Y:Float) {
-    super(X, Y + 55);
-    health = 1;
-    hasCollisions = true; // Collides with level like Player
-    
-    loadGraphic("assets/images/leopard.png", true, 338, 170);
-    updateSpriteHitbox(78, 55, this);
-		setFacingFlip(FlxObject.LEFT, true, false);
-		setFacingFlip(FlxObject.RIGHT, false, false);  
+    super(X, Y);
+    health = 10;
+    hasCollisions = true; 
 
-		// Animations
-		animation.add("walking", [for (i in 0...5) i], 6, true);
-    animation.add("running", [for (i in 6...11) i], 10, true); 
-    animation.add("dying", [for (i in 12...17) i], 6, true);   
-    animation.add("roaring", [0], 6, true);
-    animation.add("attacked", [1], 6, true);
+    loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);
+    updateSpriteHitbox(80, 55, this);
+		setFacingFlip(FlxObject.LEFT, false, false);
+		setFacingFlip(FlxObject.RIGHT, true, false);   
 
-    // Leopard gravity   
+    // Animations    
+    animation.add("walking", [for (i in 0...6) i], 8, true); 
+    animation.add("charging", [for (i in 32...48) i], 8, true); 
+    animation.add("running", [for (i in 64...68) i], 8, true);  
+    animation.add("attacked", [for (i in 69...70) i], 6, true);
+    animation.add("dying", [for (i in 71...75) i], 6, true);
+
+    // Needed for movement (for some reason)
     acceleration.y = Constants.worldGravity;
   }
 
@@ -43,8 +41,9 @@ class Leopard extends Enemy {
    * Pacing before seeing player. 
    */
   function pacing() {
+    final walkingTime:Int = 3;
+
     animation.play("walking");
-    var walkingTime:Int = 3;
     if (_seconds < walkingTime) {
       movingLeft(true);
     } else if (_seconds < (walkingTime * 2)) {
@@ -52,20 +51,24 @@ class Leopard extends Enemy {
     } else if (Math.round(_seconds) == (walkingTime * 2)) {
       _seconds = 0;
     }
-  }
+  }  
 
+  /**
+   * Flip sprite based on if they are pacing left or right
+   *
+   * @param FaceLeft If sprite is facing left or not
+   */
   function movingLeft(FaceLeft:Bool = true) {
     var walkingDistance:Int = 200;
 		velocity.x = FaceLeft ? -walkingDistance: walkingDistance;
 		facing = FaceLeft ? FlxObject.LEFT : FlxObject.RIGHT;
-  }
+  }  
 
   /**
    * Place running animation, start jumping and cause leopard to go back and forth 
    * based on the boundaries.
    */
   function running() {  
-     _randomJumpNumber = Std.random(_jumpNmber);
     animation.play("running");
 
     if (!_hitLeftBoundary) {
@@ -77,33 +80,31 @@ class Leopard extends Enemy {
       if (Std.int(this.getPosition().x) > (Std.int(boundaryRight.x) - this.width)) _hitLeftBoundary = false;
       velocity.x = _movementDistance;
     }
+  }  
+
+  function midRunPace() {
+    if (_randomStopNumber == 5) {
+      trace("stop running!!");
+    }     
   }
 
   /**
-   * Causes player to jump only when leopard is on the ground 
-   * and random number is hit. `5` in this case.
-   */
-  function jumping() {
-    if (_randomJumpNumber == 5 && velocity.y == 25) {
-      FlxTween.tween(velocity, {y: -400}, 0.2); 
-    }   
-  }
-
-  /**
-   * Leopart has spotted player, so it roars and starts attacking.
+   * Boar has spotted player, so it roars and starts attacking.
    */
   function inAttackMode() {
-    if (attacking && facing == FlxObject.LEFT) _attackMode = true;
+    if (attacking && facing == FlxObject.LEFT && isOnScreen()) {
+      haxe.Timer.delay( () -> _attackMode = true, 500);
+    } 
     if (_attackMode) {
-      if (_leopardRoared) {
-        jumping();
+      if (_boarCharged) {
+        midRunPace();
         running();
       } else {
-        // Leopard roars
-        var _roarTimer:FlxTimer = new FlxTimer();
-        animation.play("roaring");
+        // Boar roars
+        var _chargeTimer:FlxTimer = new FlxTimer();
+        animation.play("charging");
         velocity.x = 0; // Stop moving
-        _roarTimer.start(1.5, (_) -> {_leopardRoared = true;}, 1);	
+        _chargeTimer.start(2, (_) -> {_boarCharged = true;}, 1);	
       }
     } else {
       pacing();
@@ -114,10 +115,10 @@ class Leopard extends Enemy {
    * Trigger enemy attacked animation and kill enemy if health is 0 or below.
    */
   override public function hurt(Damage:Float) {
-    _leopardAttacked = true;
+    _boarAttacked = true;
 		health = health - Damage;
 		if (health <= 0) kill();   
-  }
+  } 
 
   /**
    * Play death animation when player dies.
@@ -125,25 +126,29 @@ class Leopard extends Enemy {
 	override public function kill() {
     _enemyDying = true;
 		dieSlowly();
-  }
+  }  
 
   override public function update(Elapsed:Float) {
+    // _randomStopNumber = Std.random(_randomNumberRange); 
     super.update(Elapsed);
     _seconds += Elapsed;
     _enemyDying ? {
-      // Make sure leopard is on the ground before playing dying anim
-      if (velocity.y <= 25) animation.play("dying");
+      animation.play("dying");
       velocity.x = 0;
     } : inAttackMode();
 
-    // Make leopard jump more when health is low
-    if (health <= 10) _jumpNmber = Std.int(_jumpNmber / 2);
+    // Make boar stop more when health is low
+    if (health <= 5) {
+      _randomNumberRange = Std.int(_randomNumberRange / 2);
+      _movementDistance = _movementDistance + 200;
+    }
 
     // Play attack anim when player gets hit.
-    if (_leopardAttacked) {
+    if (_boarAttacked) {
       var _attackedTimer:FlxTimer = new FlxTimer();
       animation.play("attacked");
-      _attackedTimer.start(0.25, (_) -> {_leopardAttacked = false;}, 1);      
+      velocity.x = 0;
+      _attackedTimer.start(0.25, (_) -> {_boarAttacked = false;}, 1);      
     }
-  }
+  }     
 }

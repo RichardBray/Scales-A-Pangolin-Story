@@ -43,7 +43,7 @@ class LevelThree extends LevelState {
   override public function create() {
     levelName = "Level-3-0";
 
-    createLevel("level-3-0", "jungle.jpg");
+    createLevel("level-3-0", "SCALES_BACKGROUND-01.png");
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [

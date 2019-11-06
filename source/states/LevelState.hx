@@ -374,18 +374,18 @@ class LevelState extends GameState {
 			_grpEnemies.add(snakeAttackBox);
 			_grpEnemyAttackBoundaries.add(snakeAttackBoundary);
 		
-		} else if (ObjectId == 30) { // Leopard
-			var leopard:Enemy;
-			var leopardAttackBoundary:Enemy.Boundaries;
+		} else if (ObjectId == 35) { // BossBoar
+			var bossBoar:Enemy;
+			var bossBoarAttackBoundary:Enemy.Boundaries;
 
-			leopard = new Leopard(X, newY);
-			leopardAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, leopard);
+			bossBoar = new characters.BossBoar(X, newY);
+			bossBoarAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, bossBoar);
 
-			leopard.boundaryLeft = new FlxPoint((676 + leopard.width), 1545);
-			leopard.boundaryRight = new FlxPoint(((676 + FlxG.width) + leopard.width), 1545);
+			bossBoar.boundaryLeft = new FlxPoint((676 + bossBoar.width), 1545);
+			bossBoar.boundaryRight = new FlxPoint(((676 + FlxG.width) + bossBoar.width), 1545);
 
-			_grpKillableEnemies.add(leopard);
-			_grpEnemyAttackBoundaries.add(leopardAttackBoundary);
+			_grpKillableEnemies.add(bossBoar);
+			_grpEnemyAttackBoundaries.add(bossBoarAttackBoundary);
 
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);

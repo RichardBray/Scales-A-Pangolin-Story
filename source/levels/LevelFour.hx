@@ -25,7 +25,7 @@ class LevelFour extends LevelState {
     _gameSave = GameSave;
   	_goalData = [
 			{
-				goal: "Defeat the Panther",
+				goal: "Defeat the Large Boar",
 				func: (_) -> killedEmenies > 0
 			},
 			{
@@ -41,14 +41,14 @@ class LevelFour extends LevelState {
   override public function create() {
     levelName = "Level-4-0";
 
-    createLevel("level-4-0", "jungle.jpg");
+    createLevel("level-4-0", "SCALES_BACKGROUND-01.png");
 
 		// Add NPC Text
 		var pangoText:Array<String> = [
 			"Oh man you saved my life. Thank you so much.",
 			"So swift, so agile, you have to be the fastest pangolin I've ever seen.",
 			"There are <pt>three<pt> other pangolins around that could use your help.",
-			"Not just from panthers but <pt>human traps<pt> and <pt>other predators<pt>",
+			"Not just from large boars but <pt>human traps<pt> and <pt>other predators<pt>",
       "Please do what you can to help them."
 		]; 
 
@@ -93,7 +93,7 @@ class LevelFour extends LevelState {
 			? FlxG.overlap(levelExit, player, levelComplete)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);  
 
-		if (killedEmenies > 0) { // Only talk when leopard has been defeated
+		if (killedEmenies > 0) { // Only talk when boss has been defeated
 			FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, pinkPangoUnwravel);
 			if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, pinkPangoUnwravel)) {
 				_pangoNPC.dialoguePrompt.hidePrompt();
