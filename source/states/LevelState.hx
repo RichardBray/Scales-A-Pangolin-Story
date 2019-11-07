@@ -47,6 +47,7 @@ class LevelState extends GameState {
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
 	var _playerJustHitEnemy:Bool = false; // Used to check if player just hit the enemy for jumpPoof
+	var _enemyJustHit:Bool = false; // To pervent enemy from being hit multiple times per second
 	// HUD
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 	// Enemies
@@ -462,8 +463,11 @@ class LevelState extends GameState {
 					Player.velocity.y = Enemy.push;					
 					Enemy.sndEnemyKill.play();
 					_playerJustHitEnemy = true; // false when touching ground
-					Enemy.hurt(1);
-					// Enemy.kill();
+					// Prevent multiple hits per second
+					if (!_enemyJustHit) {
+						Enemy.hurt(1); // Boomting
+						_enemyJustHit = true;
+					}
 					FlxG.camera.shake(0.00150, 0.25);
 					if (Enemy.health < 1) incrementDeathCount();
 				} else { // when rolling animation is NOT playing
@@ -623,6 +627,12 @@ class LevelState extends GameState {
 		// Hacky way to prevent player for losing two lives on one hit
 		if (_playerTouchMovingEnemy) {
 			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
+		}
+
+		// Hacky way to prevent enemy being hit multiple times per second
+		if (_enemyJustHit) {
+			var timer:FlxTimer = new FlxTimer();
+			timer.start(1, (_) -> _enemyJustHit = false, 1);
 		}
 
 		// Reset the game if the player goes higher/lower than the map

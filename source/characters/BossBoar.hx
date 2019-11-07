@@ -20,11 +20,11 @@ class BossBoar extends Enemy {
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
-    health = 10;
+    health = 7;
     hasCollisions = true; 
 
     loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);
-    updateSpriteHitbox(80, 55, this);
+    updateSpriteHitbox(50, 55, this);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);   
 
@@ -158,5 +158,12 @@ class BossBoar extends Enemy {
       velocity.x = 0;
       _attackedTimer.start(0.25, (_) -> {_boarAttacked = false;}, 1);      
     }
+
+    // Offset to prevent accidental player attacks
+    if (facing == FlxObject.LEFT ) {
+      offset.x = 50;
+    } else {
+      offset.x = 0;
+    }    
   }     
 }
