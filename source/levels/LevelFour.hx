@@ -19,6 +19,7 @@ class LevelFour extends LevelState {
   var _pangoSprite:PinkPango;
   var _pangoNPC:NPC;
 	var _spokentoNPC:Int = 0;
+	var _pangoDialogueImage:FlxSprite;
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -56,8 +57,10 @@ class LevelFour extends LevelState {
 		var npcXPos:Int = 2327;
 		var npcYPos:Int = 1111;
 
+		_pangoDialogueImage = new FlxSprite(0, 0);
+		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/PANGO.png", false, 415, 254);
 		_pangoSprite = new PinkPango(npcXPos, npcYPos);
-		_pangoNPC = new NPC(npcXPos, npcYPos, pangoText, _pangoSprite, this, [5, 1]);
+		_pangoNPC = new NPC(npcXPos, npcYPos, pangoText, _pangoSprite, this, [5, 1], _pangoDialogueImage);
 		add(_pangoNPC);	       
 
 		// Add player

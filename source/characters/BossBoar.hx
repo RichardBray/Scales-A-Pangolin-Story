@@ -1,5 +1,7 @@
 package characters;
 
+import flixel.util.FlxColor;
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.util.FlxTimer;
 
@@ -18,7 +20,7 @@ class BossBoar extends Enemy {
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
-    health = 10;
+    health = 1;
     hasCollisions = true; 
 
     loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);
@@ -125,8 +127,14 @@ class BossBoar extends Enemy {
    */
 	override public function kill() {
     _enemyDying = true;
+    FlxG.camera.flash(FlxColor.WHITE, 0.5, turnOffSlowMo);
+    FlxG.timeScale = 0.35;
 		dieSlowly();
   }  
+
+	function turnOffSlowMo() {
+		FlxG.timeScale = 1.0;
+	}  
 
   override public function update(Elapsed:Float) {
     // _randomStopNumber = Std.random(_randomNumberRange); 
@@ -140,7 +148,7 @@ class BossBoar extends Enemy {
     // Make boar stop more when health is low
     if (health <= 5) {
       _randomNumberRange = Std.int(_randomNumberRange / 2);
-      _movementDistance = _movementDistance + 7;
+      _movementDistance = _movementDistance + 2;
     }
 
     // Play attack anim when player gets hit.

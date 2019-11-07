@@ -113,9 +113,10 @@ class MainMenu extends GameState {
 		add(_bottomRight);
 		_bottomRight.alpha = 0;		
 
-		super.create();
+		// Sounds
+		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 
-			_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
+		super.create();		
 	}
 
 	override public function update(Elapsed:Float) {
@@ -237,7 +238,7 @@ class SaveWarning extends GameState {
 	var _gameSaveText:FlxText;
 	var _timer:FlxTimer;
 	var _spinner:FlxSprite;
-	var _controls:Controls;
+	var _controls:Controls; 
 
 	override public function create() {
 		super.create();
@@ -257,7 +258,7 @@ class SaveWarning extends GameState {
 			This game saves automatically at certain points. \n
 			Please do not switch off power when the above icon is displayed.");
 		_gameSaveText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, CENTER);
-		add(_gameSaveText);
+		add(_gameSaveText);	
 	}
 
 	function goToMainMenu() {

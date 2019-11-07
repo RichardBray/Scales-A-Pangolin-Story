@@ -10,7 +10,7 @@ cecho() {
     curl -d "credentials=D1LZeKlNxeCZGRBPLcOLQrUoG" \
     -d "title=HaxeFlixel" \
     -d "message=🎉 Build finished!!!" \
-    -d "image=https://notifi.it/images/logo.png" \
+    -d "image=http://haxeflixel.com/images/haxeflixel.svg" \
     https://notifi.it/api    
     printf "${!1}${2} ${NC}\n"
 }

@@ -111,6 +111,6 @@ class Intro extends IntroState {
 	}
 
 	override public function startLevel() {
-		FlxG.switchState(new LevelOne(_gameSave, true));
+		FlxG.switchState(new LevelOne(_gameSave, false));
 	}
 }

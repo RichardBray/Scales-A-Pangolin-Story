@@ -8,6 +8,7 @@ import flixel.system.FlxSound;
 
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
+	var _sndRun:FlxSound;
 	var _controls:Controls;
 
 	static var GRAVITY:Float = Constants.worldGravity;
@@ -41,7 +42,8 @@ class Player extends FlxSprite {
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
 
 		// Sounds
-		_sndJump = FlxG.sound.load("assets/sounds/jump.ogg");
+		_sndJump = FlxG.sound.load("assets/sounds/jump.ogg", .75);
+		_sndRun = FlxG.sound.load("assets/sounds/footsteps.ogg", .75);
 
 		// Intialise controls
 		_controls = new Controls();
@@ -74,6 +76,7 @@ class Player extends FlxSprite {
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 				if (isTouching(FlxObject.FLOOR)) {
 					animation.play("run");
+					_sndRun.play(false, 0.4);
 					offset.x = _left ? 12 : 165;
 				}
 			} else if (isTouching(FlxObject.FLOOR)) {

@@ -18,7 +18,8 @@ class LevelThree extends LevelState {
 	var _gameSave:FlxSave;
 	var _monkeySprite:ZenMonkey;
 	var _monkeyNPC:NPC;
-  var _bugsGoal:Int = 15; // How many bugs to collect in order to complete level  
+	var _monkeyDialogueImage:FlxSprite;
+  final _bugsGoal:Int = 15; // How many bugs to collect in order to complete level  
 	var _spokentoNPC:Int = 0;
 
   public function new(?GameSave:Null<FlxSave>) {
@@ -50,7 +51,7 @@ class LevelThree extends LevelState {
 			"Hello young pangolin!",
 			"I've never seen one of your kind move so fast before, truly remarkable.",
 			"A word of warning. I saw an angry <pt>large boar<pt> just come by here.",
-			"I have a feeling it's very happy with it's kind being jumped on.",
+			"I have a feeling she isn't very happy with her children being jumped on.",
 			"You would be wise to take care when running around."
 		];
 
@@ -58,8 +59,11 @@ class LevelThree extends LevelState {
 		var npcXPos:Int = 11255; // 11265
 		var npcYPos:Int = 790;
 	
+		_monkeyDialogueImage = new FlxSprite(0, 0);
+		_monkeyDialogueImage.loadGraphic("assets/images/characters/dialogue/MONKEY.png", false, 486, 432);
+		_monkeyDialogueImage.offset.set(-40, 4);
 		_monkeySprite = new ZenMonkey(npcXPos, npcYPos);
-		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this, [3, 3]);
+		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this, [3, 3], _monkeyDialogueImage);
 		add(_monkeyNPC);		
 
 		// Add player

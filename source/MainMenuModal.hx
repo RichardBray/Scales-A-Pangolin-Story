@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
@@ -15,6 +16,8 @@ class MainMenuModal extends FlxSubState {
 	var _optionsText:FlxText;
 	var _confirmCallback:Void->Void;
 	var _controls:Controls;
+
+	var _sndClose:FlxSound; 
 
 	/**
 	 * @param Text						Text that goes in modal
@@ -57,13 +60,16 @@ class MainMenuModal extends FlxSubState {
 		}
 
 		// Intialise controls
-		_controls = new Controls();		
+		_controls = new Controls();	
+
+		_sndClose = FlxG.sound.load(Constants.sndMenuClose);				
 	}
 
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 
 		if (_controls.triangle.check()) {
+			_sndClose.play();
 			close();
 		}
 

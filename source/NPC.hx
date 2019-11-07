@@ -36,7 +36,8 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 			?DialogueText:Null<Array<String>>, 
 			SpriteData:FlxSprite, 
 			ParentState:LevelState,
-			BoundaryDimensions:Array<Float>
+			BoundaryDimensions:Array<Float>,
+			?DialogueImage:Null<FlxSprite>
 	) {
 		super();
 		_parentState = ParentState;
@@ -54,7 +55,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 		add(dialoguePrompt);
 
-		_dialogueBox = new DialogueBox(DialogueText, ParentState);
+		_dialogueBox = new DialogueBox(DialogueText, ParentState, DialogueImage);
 		add(_dialogueBox);
 
 		// Intialise controls

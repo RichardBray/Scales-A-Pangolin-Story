@@ -14,14 +14,15 @@ import states.LevelState;
 class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _dialogueBox:FlxShapeBox;
 	var _dialogueBoxText:FlxText;
-	var _pressDown:FlxText;
+	var _continueText:FlxText;
 	var _dialogueArray:Array<String>;
 	var _arrTextNum:Int = 0;
 	var _parentState:LevelState;
 	var _primaryText:FlxTextFormat;
 	var _controls:Controls;
+	var _dialogueImage:FlxSprite;
 
-	static var _heightFromBase:Int = 340;
+	final _heightFromBase:Int = 340;
 
 	/**
 	 * Dialogue Box constructor
@@ -29,19 +30,20 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	 * @param Dialogue 		Text that the NPC/Player will give.
 	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
 	 */
-	public function new(Dialogue:Array<String>, ParentState:LevelState) {
+	public function new(Dialogue:Array<String>, ParentState:LevelState, ?DialogueImage:Null<FlxSprite>) {
 		super();
 
 		// Assign these to variables to use in other methods
 		_dialogueArray = Dialogue;
 		_parentState = ParentState;
+		_dialogueImage = DialogueImage;
 
 		// Markup styles for text
 		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false, null);
 
 		// Create the box
-		var spacingWidth:Int = 150;
-		var spacingHeight:Int = 55;
+		final spacingWidth:Int = 150;
+		final spacingHeight:Int = 55;
 
 		_dialogueBox = new FlxShapeBox(
 			spacingWidth,
@@ -66,14 +68,17 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 		// Space to continue text
 		var cross:String = Constants.cross;
-		_pressDown = new FlxText(
-			FlxG.width - 370, 
+		_continueText = new FlxText(
+			spacingWidth + 20, 
 			FlxG.height - 150, 
 			FlxG.width - 400, 
 			'Press $cross to skip'
 		);
-		_pressDown.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
-		add(_pressDown);
+		_continueText.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
+		add(_continueText);
+
+		_dialogueImage.setPosition((FlxG.width - 154) - _dialogueImage.width, (FlxG.height - 110) - _dialogueImage.height);
+		add(_dialogueImage);
 
 		// Hide and fix the members to the screen
 		this.forEach((_member:FlxSprite) -> {
