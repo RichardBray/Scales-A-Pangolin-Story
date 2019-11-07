@@ -16,11 +16,11 @@ class BossBoar extends Enemy {
   var _randomNumberRange:Int = 100;
   var _attackMode:Bool = false; // When Boar has seen player for first time  
 
-  var _movementDistance:Int = 800;
+  var _movementDistance:Int = 550;
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
-    health = 1;
+    health = 10;
     hasCollisions = true; 
 
     loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);
@@ -146,9 +146,9 @@ class BossBoar extends Enemy {
     } : inAttackMode();
 
     // Make boar stop more when health is low
-    if (health <= 5) {
+    if (health == 5) {
       _randomNumberRange = Std.int(_randomNumberRange / 2);
-      _movementDistance = _movementDistance + 2;
+      // _movementDistance = _movementDistance + 10;
     }
 
     // Play attack anim when player gets hit.

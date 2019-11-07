@@ -57,15 +57,16 @@ class MainMenu extends GameState {
 		add(_bgImg);
 
 		_gameTitle = new FlxSprite((FlxG.width / 2) - (_titleWidth / 2), (FlxG.height / 2) - 350);
+		_gameTitle.offset.set(25, 0);
 		_gameTitle.loadGraphic("assets/images/main_menu/scales_logo.png", false, 848, 347);
 		add(_gameTitle);
 
-		_gameSubTitle = new FlxText(0, _gameTitle.y + 365, 0, "A Pangolin Story");
+		_gameSubTitle = new FlxText(0, _gameTitle.y + 395, 0, "A Pangolin Story");
 		_gameSubTitle.setFormat(Constants.squareFont, 75, Constants.slimeGreenColor);
 		_gameSubTitle.screenCenter(X);
 		add(_gameSubTitle);
 
-		_startText = new FlxText(0, _gameTitle.y + 500, 0, "Press SPACE to start");
+		_startText = new FlxText(0, _gameTitle.y + 520, 0, "Press SPACE to start");
 		_startText.setFormat(Constants.squareFont, Constants.medFont);
 		_startText.screenCenter(X);
 		_startText.alpha = 1;
@@ -82,7 +83,7 @@ class MainMenu extends GameState {
 			}
 		];
 
-		_menu = new Menu(_gameTitle.x, _gameTitle.y + 500, _titleWidth, _menuData, true);
+		_menu = new Menu(_gameTitle.x, _gameTitle.y + 520, _titleWidth, _menuData, true);
 		_menu.hide();
 		add(_menu);
 

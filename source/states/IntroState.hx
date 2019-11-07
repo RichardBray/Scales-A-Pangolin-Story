@@ -1,5 +1,6 @@
 package states;
 
+import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;
@@ -14,6 +15,8 @@ class IntroState extends GameState {
 	var _controls:Controls;
 	var _textWidth:Int = 600;
 	var _skipText:FlxText;
+	var _sndGong:FlxSound;
+	var _sndClose:FlxSound;
 
 	public var facts:Array<String>;
 
@@ -46,6 +49,10 @@ class IntroState extends GameState {
 		_skipText.setFormat(Constants.squareFont, Constants.hudFont);
 		_skipText.alpha = 0;
 		add(_skipText);
+
+		_sndGong = FlxG.sound.load("assets/sounds/fact_gong.ogg");
+		_sndClose = FlxG.sound.load(Constants.sndMenuClose);
+		_sndGong.play();
 	}	
 
 	override public function update(Elapsed:Float) {
@@ -59,7 +66,10 @@ class IntroState extends GameState {
 		haxe.Timer.delay(() -> FlxTween.tween(_skipText, {alpha: 1}, .5), 3000);
 
 		// Start level if player presses start
-		if ( _controls.start.check()) startLevel();
+		if ( _controls.start.check()) {
+			_sndClose.play(); 
+			haxe.Timer.delay(startLevel, 200);
+		}
 	}
 
 	function showFacts() {
@@ -73,6 +83,7 @@ class IntroState extends GameState {
 		} else if (Math.round(_seconds) == (showFor + 3)) {
 			_seconds = 0;
 			_factNumber++;
+			_sndGong.play();
 		}				
 	}
 
