@@ -9,6 +9,7 @@ import flixel.system.FlxSound;
 class Player extends FlxSprite {
 	var _sndJump:FlxSound;
 	var _sndRun:FlxSound;
+	var _sndJumpDown:FlxSound;
 	var _controls:Controls;
 
 	static var GRAVITY:Float = Constants.worldGravity;
@@ -42,8 +43,9 @@ class Player extends FlxSprite {
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
 
 		// Sounds
-		_sndJump = FlxG.sound.load("assets/sounds/jump.ogg", .75);
-		_sndRun = FlxG.sound.load("assets/sounds/footsteps.ogg", .75);
+		_sndJump = FlxG.sound.load("assets/sounds/player/jump.ogg", .7);
+		_sndJumpDown = FlxG.sound.load("assets/sounds/player/jump_down.ogg", .7);
+		_sndRun = FlxG.sound.load("assets/sounds/player/footsteps.ogg", .65);
 
 		// Intialise controls
 		_controls = new Controls();
@@ -57,6 +59,10 @@ class Player extends FlxSprite {
 	public function animJump(Left:Bool = false) {
 		final xPos:Float = Left ?  this.x + 225 :  this.x - 225;
 		FlxTween.tween(this, {x: xPos, y: (this.y - 60)}, 0.1);
+	}
+
+	public function playGoingDownSound() {
+		_sndJumpDown.play();
 	}
 
 	function playerMovement() {

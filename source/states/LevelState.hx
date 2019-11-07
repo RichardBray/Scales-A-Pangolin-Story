@@ -404,6 +404,7 @@ class LevelState extends GameState {
 	function fallInClouds(FallThroughTile:FlxObject, Player:FlxObject) {
 		if (!player.preventMovement) {
 			if (_controls.down.check()) {
+				player.playGoingDownSound();
 				var timer = new FlxTimer();
 				FallThroughTile.allowCollisions = FlxObject.NONE;
 				timer.start(.1, (_) -> player.isGoindDown = true);	
