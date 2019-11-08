@@ -116,7 +116,7 @@ class Player extends FlxSprite {
 	function detectPlayerAscending():Bool {
 		return velocity.y == 0 
 			? false 
-			: !(velocity.y > 0);
+			: (velocity.y < 0);
 	}
 
 	override public function update(Elapsed:Float) {
