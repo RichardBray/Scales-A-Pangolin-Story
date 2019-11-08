@@ -72,18 +72,21 @@ class MainMenu extends GameState {
 		_startText.alpha = 1;
 		add(_startText);
 
-		var _menuData:Array<MenuData> = [
+		var _continueOption:Array<MenuData> = [
 			{
 				title: "Continue",
 				func: selectContinue
 			},
+		];
+	
+		var _otherOptions:Array<MenuData> = [
 			{
 				title: "Start Demo", // New Game
 				func: selectNewGame
 			}
 		];
 
-		_menu = new Menu(_gameTitle.x, _gameTitle.y + 520, _titleWidth, _menuData, true);
+		_menu = new Menu(_gameTitle.x, _gameTitle.y + 520, _titleWidth, menuData(_continueOption, _otherOptions), true);
 		_menu.hide();
 		add(_menu);
 
@@ -118,6 +121,18 @@ class MainMenu extends GameState {
 		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 
 		super.create();		
+	}
+
+	/**
+	 * This method checks if there is any saved data and displays the continue option if there is.
+	 *
+	 * @param ContinueOption	Menu option for continue only
+	 * @param	OtherOptions	Other menu options, start game, instuctions...
+	 */
+	function menuData(ContinueOption:Array<MenuData>, OtherOptions:Array<MenuData>):Array<MenuData> {
+		return _gameSave.data.levelName == null
+			? OtherOptions
+			: ContinueOption.concat(OtherOptions);		
 	}
 
 	override public function update(Elapsed:Float) {

@@ -13,10 +13,10 @@ class BossBoar extends Enemy {
   var _boarAttacked:Bool = false;
   var _boarCharged:Bool = false;
   var _randomStopNumber:Int; // Randomly generated number to decidee when boar stops running
-  var _randomNumberRange:Int = 100;
   var _attackMode:Bool = false; // When Boar has seen player for first time  
 
-  var _movementDistance:Int = 550;
+  var _movementDistance:Int = 530;
+  final _movementDistanceFast:Int = 700;
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
@@ -24,7 +24,7 @@ class BossBoar extends Enemy {
     hasCollisions = true; 
 
     loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);
-    updateSpriteHitbox(50, 55, this);
+    updateSpriteHitbox(160, 55, this);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);   
 
@@ -94,9 +94,8 @@ class BossBoar extends Enemy {
    * Boar has spotted player, so it roars and starts attacking.
    */
   function inAttackMode() {
-    if (attacking && facing == FlxObject.LEFT && isOnScreen()) {
-      haxe.Timer.delay( () -> _attackMode = true, 500);
-    } 
+    if (attacking && facing == FlxObject.LEFT && isOnScreen()) _attackMode = true;
+
     if (_attackMode) {
       if (_boarCharged) {
         midRunPace();
@@ -137,7 +136,6 @@ class BossBoar extends Enemy {
 	}  
 
   override public function update(Elapsed:Float) {
-    // _randomStopNumber = Std.random(_randomNumberRange); 
     super.update(Elapsed);
     _seconds += Elapsed;
     _enemyDying ? {
@@ -146,9 +144,8 @@ class BossBoar extends Enemy {
     } : inAttackMode();
 
     // Make boar stop more when health is low
-    if (health == 5) {
-      _randomNumberRange = Std.int(_randomNumberRange / 2);
-      // _movementDistance = _movementDistance + 10;
+    if (health <= 3) {
+      _movementDistance = _movementDistanceFast;
     }
 
     // Play attack anim when player gets hit.
@@ -161,9 +158,9 @@ class BossBoar extends Enemy {
 
     // Offset to prevent accidental player attacks
     if (facing == FlxObject.LEFT ) {
-      offset.x = 50;
+      offset.x = 90;
     } else {
-      offset.x = 0;
+      offset.x = 60;
     }    
   }     
 }

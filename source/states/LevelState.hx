@@ -429,9 +429,8 @@ class LevelState extends GameState {
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		var playerAttacking:Bool = 
-			Player.animation.name == "jumpLoop" && (!Player.isAscending || _playerJustHitEnemy);
+			Player.animation.name == "jumpLoop" && !Player.isAscending;
 
-		
 		/**
 		 * Things to do when player get's hurt.
 		 * Sets `_playerTouchMovingEnemy` true if player gets hurt. Prevents loosing two hearts on one hit.
@@ -445,7 +444,7 @@ class LevelState extends GameState {
 			}
 			Enemy.sndHit.play(true);
 			FlxSpriteUtil.flicker(Player);
-		}
+		}	
 
 		/**
 		* Animations and positions for when player hits enemy
@@ -454,40 +453,40 @@ class LevelState extends GameState {
 		*/	
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
-			trace(!Player.isAscending, _playerJustHitEnemy);
 			if (Player.isTouching(FlxObject.FLOOR)) {
 				playerHurt(LastLife);
 				Player.animJump(Player.flipX); 
+
 			} else { // Player is in the air
-				// when rolling animation is playing
-				if (playerAttacking) {
-					// Player bounce
-					Player.velocity.y = Enemy.push;					
-					Enemy.sndEnemyKill.play();
-					_playerJustHitEnemy = true; // false when touching ground
-					// Prevent multiple hits per second
-					if (!_enemyJustHit) {
+				if (!_enemyJustHit) {
+					// when rolling animation is playing
+					if (playerAttacking) {
+						// Player bounce
+						Player.velocity.y = Enemy.push;										
+						_playerJustHitEnemy = true; // prevents smoke poof
+						FlxG.camera.shake(0.00150, 0.25);
+						Enemy.sndEnemyKill.play();
 						Enemy.hurt(1);
-						_enemyJustHit = true;
-					}
-					FlxG.camera.shake(0.00150, 0.25);
-					if (Enemy.health < 1) incrementDeathCount();
-				} else { // when rolling animation is NOT playing
-					if (Player.animation.name == "jumpLoop") {
-						Player.animJump(Player.flipX);
+						if (Enemy.health < 1) incrementDeathCount();							
 					} else {
-						Player.velocity.y = (Enemy.push / 3) * 2;
+						// when rolling animation is NOT playing
+						(Player.animation.name == "jumpLoop") 
+							? Player.animJump(Player.flipX)
+							: Player.velocity.y = (Enemy.push / 3) * 2;
+						playerHurt(LastLife);
 					}
-					playerHurt(LastLife);
+					_enemyJustHit = true; // Prevent multiple hits per second					
 				}
 			}	
 			grpHud.decrementHealth(LastLife ? 0 : Player.health);	
-		}
+		}	
 
-		// Fix player dying on last life when they attack
-		(Player.health == 1 && !playerAttacking && !_playerTouchMovingEnemy) 
-			? playerDeathASequence(Player, playerAttackedAnims)
-			: playerAttackedAnims();
+		if (!_enemyJustHit) {
+			// Fix player dying on last life when they attack
+			(Player.health == 1 && !playerAttacking && !_playerTouchMovingEnemy) 
+				? playerDeathASequence(Player, playerAttackedAnims)
+				: playerAttackedAnims();
+		}
 	}	
 
 	/**
@@ -634,7 +633,7 @@ class LevelState extends GameState {
 		// Hacky way to prevent enemy being hit multiple times per second
 		if (_enemyJustHit) {
 			var timer:FlxTimer = new FlxTimer();
-			timer.start(1, (_) -> _enemyJustHit = false, 1);
+			timer.start(.4, (_) -> _enemyJustHit = false, 1);
 		}
 
 		// Reset the game if the player goes higher/lower than the map
