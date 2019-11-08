@@ -29,6 +29,8 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		 * @param SpriteData		Sprite image unique to this NPC.
 		 * @param ParentState		Used to adjust vieport and stop player when dialogue starts.
 		 * @param BoundaryDimensions	Width and height boundary should be more than the sprite
+		 * @param DialogueImage	NPC image for doalopgue box
+		 * @param DialogueSound	Sound to play when dialogue box is up
      */
     public function new(
 			X:Int, 
@@ -37,7 +39,8 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 			SpriteData:FlxSprite, 
 			ParentState:LevelState,
 			BoundaryDimensions:Array<Float>,
-			?DialogueImage:Null<FlxSprite>
+			?DialogueImage:Null<FlxSprite>,
+			?DialogueSound:Null<String>
 	) {
 		super();
 		_parentState = ParentState;
@@ -55,7 +58,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 		add(dialoguePrompt);
 
-		_dialogueBox = new DialogueBox(DialogueText, ParentState, DialogueImage);
+		_dialogueBox = new DialogueBox(DialogueText, ParentState, DialogueImage, DialogueSound);
 		add(_dialogueBox);
 
 		// Intialise controls

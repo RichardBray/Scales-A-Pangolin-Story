@@ -2,7 +2,6 @@ package characters;
 
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
-import flixel.FlxG;
 
 class ZenMonkey extends FlxSprite {
   var _isTalking:Bool = false;

@@ -42,16 +42,17 @@ class LevelFour extends LevelState {
   override public function create() {
     levelName = "Level-4-0";
 
-    createLevel("level-4-0", "SCALES_BACKGROUND-01.png");
+    createLevel("level-4-0", "SCALES_BACKGROUND-01.png", "level_four");
 
 		// Add NPC Text
 		var pangoText:Array<String> = [
-			"Oh man you saved my life. Thank you so much.",
-			"So swift, so agile, you have to be the fastest pangolin I've ever seen.",
-			"There are <pt>three<pt> other pangolins around that could use your help.",
-			"Not just from large boars but <pt>human traps<pt> and <pt>other predators<pt>",
-      "Please do what you can to help them."
+			"You saved my life!!",
+			"You are the fastest, strongest pangolin I have ever seen... \nplease, you have to help me!",
+			"I have lost my <pt>four<pt> babies. Sob Sob",
+			"Some have been trapped by <pt>animal preditors<pt> and \nothers have been caught by <pt>poachers<pt>",
+      "I need to see my babies again, please do everything \nyou can to bring them back to me!."
 		]; 
+
 
 		// Add NPC
 		var npcXPos:Int = 2327;
@@ -60,7 +61,15 @@ class LevelFour extends LevelState {
 		_pangoDialogueImage = new FlxSprite(0, 0);
 		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/PANGO.png", false, 415, 254);
 		_pangoSprite = new PinkPango(npcXPos, npcYPos);
-		_pangoNPC = new NPC(npcXPos, npcYPos, pangoText, _pangoSprite, this, [5, 1], _pangoDialogueImage);
+		_pangoNPC = new NPC(
+			npcXPos, 
+			npcYPos, 
+			pangoText, 
+			_pangoSprite, 
+			this, [5, 1], 
+			_pangoDialogueImage,
+			"mama_dialogue"
+		);
 		add(_pangoNPC);	       
 
 		// Add player

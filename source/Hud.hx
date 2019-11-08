@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
@@ -28,6 +29,10 @@ class HUD extends FlxSpriteGroup {
 	var _goalsNotCompleted:FlxText;
 	var _goalsNotCompletedBox:FlxShapeBox;
 	
+	// Sounds
+	var _sndGoalComplete:FlxSound;
+	var _soundVal:Int = 0;
+
 	public var gameScore:Int; // Send game score to level end menu
 	public var goalsCompleted:Bool = false; // Tells level class i.e. LevelOne when to allow exit
 
@@ -92,6 +97,8 @@ class HUD extends FlxSpriteGroup {
 		add(_goalsNotCompleted);
 
 		this.forEach((_member:FlxSprite) -> _member.scrollFactor.set(0, 0));
+
+		_sndGoalComplete = FlxG.sound.load("assets/sounds/goal_complete.ogg", .65);
 	}
 
 	/**
@@ -190,7 +197,9 @@ class HUD extends FlxSpriteGroup {
 	function updateGoals() {
 		var index:Int = 0;
 		_goals.forEach((goal:FlxSprite) -> {
-			if (_goalsArr[index] == true) goal.alpha = 0.2;
+			if (_goalsArr[index] == true) {
+				goal.alpha = 0.2;
+			}
 			index++;
 		});		
 	}
@@ -238,5 +247,10 @@ class HUD extends FlxSpriteGroup {
 		// This compares the oringinal plan array of falses to the goals array and if anything has changed 
 		// it will run `updateGoals()`
 		if (!compareGoalArrays(_comparisonGoalArray, _goalsArr)) updateGoals();
+
+		if (_soundVal != _goalsArr.length) {
+			_sndGoalComplete.play();
+			_soundVal = _goalsArr.length;
+		}
 	}	
 }

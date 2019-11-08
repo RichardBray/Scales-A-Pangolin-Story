@@ -58,6 +58,7 @@ class LevelState extends GameState {
 
 	// Sounds
 	var _sndSelect:FlxSound;
+	var _sndLevelIntro:FlxSound;
 
 	public var grpHud:HUD;
 	public var player:Player; // used by HUD for health
@@ -104,7 +105,7 @@ class LevelState extends GameState {
 	 * @param 	Background 		Parallax background image name.
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
-	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap) {
+	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap, ?IntroMusic:Null<String>) {
 		// Tiles for collisions
 		_collisionImg = "assets/images/collisions.png";
 
@@ -209,6 +210,11 @@ class LevelState extends GameState {
 		levelExit = new FlxSprite((_map.fullWidth - 20), 0).makeGraphic(20, _map.fullHeight, FlxColor.TRANSPARENT);
 		levelExit.immovable = true;
 		add(levelExit);
+
+		if (IntroMusic != null) {
+			_sndLevelIntro = FlxG.sound.load('assets/sounds/intros/$IntroMusic.ogg', .65);
+			_sndLevelIntro.play();			
+		}
 	}
 
 	/**
@@ -442,7 +448,7 @@ class LevelState extends GameState {
 				Player.hurt(1);
 				_playerTouchMovingEnemy = true;
 			}
-			Enemy.sndHit.play(true);
+			Player.playHurtSound();
 			FlxSpriteUtil.flicker(Player);
 		}	
 
@@ -519,7 +525,7 @@ class LevelState extends GameState {
 		 */
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			Enemy.kill(); // Change enemy alive variable temporarily
-			Enemy.sndHit.play(true); // Play sound for when player is hurt
+			Player.playHurtSound();
 
 			// Reduce player health
 			if (!LastLife) Player.hurt(1);

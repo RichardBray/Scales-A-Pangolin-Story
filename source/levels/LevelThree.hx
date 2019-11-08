@@ -44,7 +44,7 @@ class LevelThree extends LevelState {
   override public function create() {
     levelName = "Level-3-0";
 
-    createLevel("level-3-0", "SCALES_BACKGROUND-01.png");
+    createLevel("level-3-0", "SCALES_BACKGROUND-01.png", "level_three");
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [
@@ -63,7 +63,14 @@ class LevelThree extends LevelState {
 		_monkeyDialogueImage.loadGraphic("assets/images/characters/dialogue/MONKEY.png", false, 486, 432);
 		_monkeyDialogueImage.offset.set(-40, 4);
 		_monkeySprite = new ZenMonkey(npcXPos, npcYPos);
-		_monkeyNPC = new NPC(npcXPos, npcYPos, monkeyText, _monkeySprite, this, [3, 3], _monkeyDialogueImage);
+		_monkeyNPC = new NPC(
+			npcXPos, 
+			npcYPos, 
+			monkeyText, 
+			_monkeySprite, this, [3, 3], 
+			_monkeyDialogueImage, 
+			"monkey_dialogue"
+		);
 		add(_monkeyNPC);		
 
 		// Add player

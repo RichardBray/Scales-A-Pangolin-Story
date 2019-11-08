@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -21,6 +22,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _primaryText:FlxTextFormat;
 	var _controls:Controls;
 	var _dialogueImage:FlxSprite;
+	var _sndDialogue:FlxSound;
 
 	final _heightFromBase:Int = 340;
 
@@ -29,14 +31,23 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	 *
 	 * @param Dialogue 		Text that the NPC/Player will give.
 	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
+	 * @param DialogueImage NPC image for doalopgue box
+	 * @param DialogueSound Sound to play when dialogue box is up
 	 */
-	public function new(Dialogue:Array<String>, ParentState:LevelState, ?DialogueImage:Null<FlxSprite>) {
+	public function new(
+		Dialogue:Array<String>, 
+		ParentState:LevelState, 
+		?DialogueImage:Null<FlxSprite>, 
+		?DialogueSound:Null<String>
+	) {
 		super();
 
 		// Assign these to variables to use in other methods
 		_dialogueArray = Dialogue;
 		_parentState = ParentState;
 		_dialogueImage = DialogueImage;
+
+		if (DialogueSound != null) _sndDialogue = FlxG.sound.load('assets/sounds/$DialogueSound.ogg', .8, true);
 
 		// Markup styles for text
 		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false, null);
@@ -96,6 +107,8 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		this.forEach((_member:FlxSprite) -> {
 			FlxTween.tween(_member, {alpha: 1}, .1);
 		});
+
+		if (_sndDialogue != null) _sndDialogue.play();
 	}
 
 	public function hideBox() {
@@ -103,6 +116,8 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		this.forEach((_member:FlxSprite) -> {
 			_member.alpha = 0;
 		});
+
+		if (_sndDialogue != null) _sndDialogue.stop();
 	}
 
 	function revertUI() {
