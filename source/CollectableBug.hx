@@ -21,7 +21,7 @@ class Bug extends FlxSprite {
 	 */
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);	
-		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav");
+		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav", 0.55);
 	}
 
 	override public function kill() {

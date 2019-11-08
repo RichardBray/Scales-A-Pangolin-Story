@@ -104,8 +104,8 @@ class Intro extends IntroState {
 		super();
 		_gameSave = GameSave;
 		facts = [
-			"Pangolins are the most trafficked mammal in the world, between 2011 and 2013 around 117 million of them were killed.",
-			"They're in high demand from places like China and Vietnam for their meat and scales.",
+			"Pangolins are the most trafficked mammal in the world.",
+			"Tens of thousands of them are poached and killed every year for their meat and scales.",
 			"They love to eat bugs and are often called, 'the scaly anteater'. We join our hero doing – just that..."
 		];		
 	}
