@@ -14,7 +14,7 @@ using Lambda;
 
 typedef GoalData = { goal:String, func:Null<Dynamic>->Bool };
 
-class HUD extends FlxSpriteGroup {
+class Hud extends FlxSpriteGroup {
 	var _hearts:FlxSpriteGroup;
 	var _scoreTxt:FlxText;
 	var _health:FlxSprite;

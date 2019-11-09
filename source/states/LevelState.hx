@@ -20,7 +20,7 @@ import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledTileLayer;
 import flixel.addons.editors.tiled.TiledObjectLayer;
 
-import HUD.GoalData;
+import Hud.GoalData;
 // - Components
 import components.Lava;
 
@@ -60,7 +60,7 @@ class LevelState extends GameState {
 	var _sndSelect:FlxSound;
 	var _sndLevelIntro:FlxSound;
 
-	public var grpHud:HUD;
+	public var grpHud:Hud;
 	public var player:Player; // used by HUD for health
 	public var levelExit:FlxSprite; // used by LevelOne
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
@@ -225,7 +225,7 @@ class LevelState extends GameState {
 	 */
 
 	public function createHUD(Score:Int, Health:Float, Goals:Array<GoalData>) {
-		grpHud = new HUD(Score, Health, Goals);
+		grpHud = new Hud(Score, Health, Goals);
 		add(grpHud);
 	}
 

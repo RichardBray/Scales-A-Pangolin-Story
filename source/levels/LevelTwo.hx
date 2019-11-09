@@ -10,7 +10,7 @@ import states.LevelState;
 import states.IntroState;
 
 // Typedefs
-import HUD.GoalData;
+import Hud.GoalData;
 
 class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;

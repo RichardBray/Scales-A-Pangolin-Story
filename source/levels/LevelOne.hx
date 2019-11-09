@@ -9,7 +9,7 @@ import flixel.util.FlxColor;
 import states.LevelState;
 import states.IntroState;
 // Typedefs
-import HUD.GoalData;
+import Hud.GoalData;
 
 
 class LevelOne extends LevelState {

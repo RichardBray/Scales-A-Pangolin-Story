@@ -10,7 +10,7 @@ import characters.ZenMonkey;
 import states.LevelState;
 
 // Typedefs
-import HUD.GoalData;
+import Hud.GoalData;
 
 
 class LevelThree extends LevelState {

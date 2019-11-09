@@ -10,7 +10,7 @@ import states.LevelState;
 import characters.PinkPango;
 
 // Typedefs
-import HUD.GoalData;
+import Hud.GoalData;
 
 
 class LevelFour extends LevelState {
