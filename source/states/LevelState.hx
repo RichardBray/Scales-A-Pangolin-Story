@@ -344,10 +344,14 @@ class LevelState extends GameState {
 			34 => LevelState.createImageString("L1_LAVAROCK_02")
 		];
 		if (ObjectId >= 9 && ObjectId <=11) {
-			var bug:CollectableBug.Bug = null;
-			if (ObjectId == 9) bug = new CollectableBug.StagBeetle(X, newY, Name, Otype);
-			if (ObjectId == 10) bug = new CollectableBug.Beetle(X, newY, Name, Otype);
-			if (ObjectId == 11) bug = new CollectableBug.Caterpillar(X, newY, Name, Otype);
+			var bug:CollectableBug.Bug;
+			if (ObjectId == 9) {
+				bug = new CollectableBug.StagBeetle(X, newY, Name, Otype);
+			} else if (ObjectId == 10) {
+				bug = new CollectableBug.Beetle(X, newY, Name, Otype);
+			} else { // (ObjectId == 11)
+				bug = new CollectableBug.Caterpillar(X, newY, Name, Otype);
+			}
 			_grpCollectables.add(bug);
 
 		} else if (ObjectId == 12) { // Fire

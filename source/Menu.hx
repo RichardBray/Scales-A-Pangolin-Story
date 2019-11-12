@@ -10,7 +10,7 @@ import flixel.system.FlxSound;
 
 using Lambda;
 
-typedef MenuData = { title:String, func:Void->Void, ?soundOnSelect:Bool };
+typedef MenuData = { title:String, func:Void->Void, ?soundOnSelect:Null<Bool> };
 
 class Menu extends FlxSpriteGroup {
 	var _selected:Int = 0;

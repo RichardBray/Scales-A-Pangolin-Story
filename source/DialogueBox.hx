@@ -22,7 +22,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _primaryText:FlxTextFormat;
 	var _controls:Controls;
 	var _dialogueImage:FlxSprite;
-	var _sndDialogue:FlxSound;
+	var _sndDialogue:Null<FlxSound>;
 
 	final _heightFromBase:Int = 340;
 
@@ -50,7 +50,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		if (DialogueSound != null) _sndDialogue = FlxG.sound.load('assets/sounds/$DialogueSound.ogg', .8, true);
 
 		// Markup styles for text
-		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false, null);
+		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false);
 
 		// Create the box
 		final spacingWidth:Int = 150;

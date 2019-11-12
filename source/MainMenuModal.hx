@@ -14,7 +14,7 @@ class MainMenuModal extends FlxSubState {
 	var _menuWidth:Int = 800;
 	var _menuHeight:Int = 450;
 	var _optionsText:FlxText;
-	var _confirmCallback:Void->Void;
+	var _confirmCallback:Null<Void->Void>;
 	var _controls:Controls;
 
 	var _sndClose:FlxSound; 
