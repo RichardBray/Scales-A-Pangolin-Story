@@ -9,7 +9,8 @@ import flixel.addons.display.shapes.FlxShapeCircle;
 typedef LevelData = {
   x:Int,
   y:Int,
-  locked:Bool
+  locked:Bool,
+  ?onSelect:Void -> Void
 };
 
 class LevelSelect extends GameState {
@@ -38,8 +39,6 @@ class LevelSelect extends GameState {
   var _grpLevelIndicators:FlxSpriteGroup;
   var _controls:Controls;
   var _levelPointer:FlxSprite;
-  var _anyKeyPressed:Bool = false;
-  var _seconds:Float = 0;
 
   // Remove after save game is added
   var _lastCompletedLevel:Int = 1;
@@ -72,34 +71,19 @@ class LevelSelect extends GameState {
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
-    _seconds = _seconds + Elapsed;
     // Initial level pointer position
     _levelPointer.setPosition(_levelPos[_lastCompletedLevel].x, _levelPos[_lastCompletedLevel].y);
-    var roundedSeconds = Std.int((_seconds * 10));
-    trace(roundedSeconds);
-    if (roundedSeconds % 10 == 0) {
-      _anyKeyPressed = false;
-      trace(_lastCompletedLevel);
+
+    if (_controls.right.check()) {
+      (_lastCompletedLevel == (_levelPos.length -1))
+        ? _lastCompletedLevel = 0
+        : _lastCompletedLevel++;
     }
 
-    if (!_anyKeyPressed) {
-      if (_controls.right.check()) {
-        if (_lastCompletedLevel == (_levelPos.length -1)) {
-          _lastCompletedLevel = 0;
-        } else {
-          _lastCompletedLevel = _lastCompletedLevel+1;
-        }
-        _anyKeyPressed = true;
-      }
-
-      if (_controls.left.check()) {
-        if (_lastCompletedLevel == 0) {
-          _lastCompletedLevel = (_levelPos.length - 1);
-        } else {
-          _lastCompletedLevel--;
-        }
-        _anyKeyPressed = true;
-      }   
-    } 
+    if (_controls.left.check()) {
+      (_lastCompletedLevel == 0) 
+        ? _lastCompletedLevel = (_levelPos.length - 1)
+        : _lastCompletedLevel--;
+    }    
   }
 }

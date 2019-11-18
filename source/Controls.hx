@@ -40,17 +40,17 @@ class Controls {
   
     triangle.addKey(E, JUST_PRESSED); 
 
-    left.addKey(LEFT, PRESSED);
-    left.addKey(A, PRESSED);
+    left.addKey(LEFT, JUST_PRESSED);
+    left.addKey(A, JUST_PRESSED);
 
-    right.addKey(RIGHT, PRESSED);
-    right.addKey(D, PRESSED); 
+    right.addKey(RIGHT, JUST_PRESSED);
+    right.addKey(D, JUST_PRESSED); 
 
-    up.addKey(UP, PRESSED);
-    up.addKey(W, PRESSED); 
+    up.addKey(UP, JUST_PRESSED);
+    up.addKey(W, JUST_PRESSED); 
 
-    down.addKey(DOWN, PRESSED);
-    down.addKey(S, PRESSED);    
+    down.addKey(DOWN, JUST_PRESSED);
+    down.addKey(S, JUST_PRESSED);    
   
     start.addKey(ESCAPE, JUST_PRESSED);  
   }
@@ -59,17 +59,17 @@ class Controls {
     cross.addGamepad(A, JUST_PRESSED);
     triangle.addGamepad(Y, JUST_PRESSED);
 
-    left.addGamepad(DPAD_LEFT, PRESSED);
-    left.addGamepad(LEFT_STICK_DIGITAL_LEFT, PRESSED);
+    left.addGamepad(DPAD_LEFT, JUST_PRESSED);
+    left.addGamepad(LEFT_STICK_DIGITAL_LEFT, JUST_PRESSED);
 
-    right.addGamepad(DPAD_RIGHT, PRESSED);
-    right.addGamepad(LEFT_STICK_DIGITAL_RIGHT, PRESSED);  
+    right.addGamepad(DPAD_RIGHT, JUST_PRESSED);
+    right.addGamepad(LEFT_STICK_DIGITAL_RIGHT, JUST_PRESSED);  
 
-    up.addGamepad(DPAD_UP, PRESSED);
-    up.addGamepad(LEFT_STICK_DIGITAL_UP, PRESSED);  
+    up.addGamepad(DPAD_UP, JUST_PRESSED);
+    up.addGamepad(LEFT_STICK_DIGITAL_UP, JUST_PRESSED);  
 
-    down.addGamepad(DPAD_DOWN, PRESSED);
-    down.addGamepad(LEFT_STICK_DIGITAL_DOWN, PRESSED);          
+    down.addGamepad(DPAD_DOWN, JUST_PRESSED);
+    down.addGamepad(LEFT_STICK_DIGITAL_DOWN, JUST_PRESSED);          
 
     start.addGamepad(START, JUST_PRESSED);
   }
