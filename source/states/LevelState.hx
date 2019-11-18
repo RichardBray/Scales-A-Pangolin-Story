@@ -24,7 +24,6 @@ import Hud.GoalData;
 // - Components
 import components.Lava;
 
-typedef CollMap = Map<String, Array<Int>>;
 
 class LevelState extends GameState {
 	var _levelBgs:FlxTypedGroup<FlxSprite>;
@@ -33,7 +32,7 @@ class LevelState extends GameState {
 	var _grpEnemies:FlxTypedGroup<Enemy>;
 	var _grpKillableEnemies:FlxTypedGroup<Enemy>;
 	var _levelCollisions:FlxTilemapExt;
-	var _map:TiledMap;
+	var _map:Null<TiledMap>;
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
@@ -75,17 +74,19 @@ class LevelState extends GameState {
 			playMusic("assets/music/jungle-sound.ogg");
 		}
 
-		/**
-		 * By default flixel only processes what it initally sees, so collisions won't
-		 * work until can process the whole level.
-		 */
-		FlxG.worldBounds.set(0, 0, _map.fullWidth, _map.fullHeight);
-	
-		FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
-		FlxG.camera.antialiasing = false;
+		if (_map != null) {
+			/**
+			* By default flixel only processes what it initally sees, so collisions won't
+			* work until can process the whole level.
+			*/
+			FlxG.worldBounds.set(0, 0, _map.fullWidth, _map.fullHeight);
+		
+			FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
+			FlxG.camera.antialiasing = false;
 
-		// Camera follows Player
-		FlxG.camera.follow(player, PLATFORMER, 1);
+			// Camera follows Player
+			FlxG.camera.follow(player, PLATFORMER, 1);
+		}
 
 		// Intialise controls
 		_controls = new Controls();
@@ -105,7 +106,7 @@ class LevelState extends GameState {
 	 * @param 	Background 		Parallax background image name.
 	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
 	 */
-	public function createLevel(MapFile:String, Background:String, ?CollectablesMap:CollMap, ?IntroMusic:Null<String>) {
+	public function createLevel(MapFile:String, Background:String, ?IntroMusic:Null<String>) {
 		// Tiles for collisions
 		_collisionImg = "assets/images/collisions.png";
 

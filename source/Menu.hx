@@ -68,6 +68,24 @@ class Menu extends FlxSpriteGroup {
 		_controls = new Controls();	
 	}
 
+	public function hide() {
+		_preventKeyPress = true;
+		this.forEach((Item:FlxSprite) -> {
+			Item.alpha = 0;
+		});
+	}
+
+	public function show() {
+		_preventKeyPress = false;
+		this.forEach((Item:FlxSprite) -> {
+			Item.alpha = 1;
+		});
+	}
+
+	public function fadeIn() {
+		FlxTween.tween(this, {alpha: 1}, 1, {ease: FlxEase.backOut});
+	}	
+
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 		var _lastOption:Int = _menuData.length - 1;
@@ -108,24 +126,6 @@ class Menu extends FlxSpriteGroup {
 				_sndMove.play(true);
 			}
 		}
-	}
-
-	public function hide() {
-		_preventKeyPress = true;
-		this.forEach((Item:FlxSprite) -> {
-			Item.alpha = 0;
-		});
-	}
-
-	public function show() {
-		_preventKeyPress = false;
-		this.forEach((Item:FlxSprite) -> {
-			Item.alpha = 1;
-		});
-	}
-
-	public function fadeIn() {
-		FlxTween.tween(this, {alpha: 1}, 1, {ease: FlxEase.backOut});
 	}	
 }
 

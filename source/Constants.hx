@@ -12,7 +12,7 @@ class Constants {
 	public static final worldGravity:Int = 1500;
 	public static final squareFont:String = "assets/fonts/Square.ttf";
 
-	// Fonts
+	// Fontse
 	public static final smlFont:Int = 20;
 	public static final hudFont:Int = 26;
 	public static final medFont:Int = 33;

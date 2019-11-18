@@ -26,7 +26,7 @@
   <image width="974" height="258" source="../images/L1_GROUND_01.png"/>
  </tile>
  <tile id="8">
-  <image width="42" height="39" source="../images/purp-bug.png"/>
+  <image width="42" height="39" source="../../../Dropbox/pangolin/purp-bug.png"/>
  </tile>
  <tile id="9">
   <image width="47" height="39" source="../../../Dropbox/pangolin/blue-bug.png"/>

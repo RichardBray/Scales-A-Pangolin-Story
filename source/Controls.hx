@@ -46,11 +46,11 @@ class Controls {
     right.addKey(RIGHT, PRESSED);
     right.addKey(D, PRESSED); 
 
-    up.addKey(UP, JUST_PRESSED);
-    up.addKey(W, JUST_PRESSED); 
+    up.addKey(UP, PRESSED);
+    up.addKey(W, PRESSED); 
 
-    down.addKey(DOWN, JUST_PRESSED);
-    down.addKey(S, JUST_PRESSED);    
+    down.addKey(DOWN, PRESSED);
+    down.addKey(S, PRESSED);    
   
     start.addKey(ESCAPE, JUST_PRESSED);  
   }
@@ -65,11 +65,11 @@ class Controls {
     right.addGamepad(DPAD_RIGHT, PRESSED);
     right.addGamepad(LEFT_STICK_DIGITAL_RIGHT, PRESSED);  
 
-    up.addGamepad(DPAD_UP, JUST_PRESSED);
-    up.addGamepad(LEFT_STICK_DIGITAL_UP, JUST_PRESSED);  
+    up.addGamepad(DPAD_UP, PRESSED);
+    up.addGamepad(LEFT_STICK_DIGITAL_UP, PRESSED);  
 
-    down.addGamepad(DPAD_DOWN, JUST_PRESSED);
-    down.addGamepad(LEFT_STICK_DIGITAL_DOWN, JUST_PRESSED);          
+    down.addGamepad(DPAD_DOWN, PRESSED);
+    down.addGamepad(LEFT_STICK_DIGITAL_DOWN, PRESSED);          
 
     start.addGamepad(START, JUST_PRESSED);
   }

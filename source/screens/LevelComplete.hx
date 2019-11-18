@@ -116,6 +116,7 @@ class LevelComplete extends FlxSubState {
     _menu = new Menu(100, FlxG.height - 250, 350, _menuData, false);
     _menu.scrollFactor.set(0, 0);
     _menu.alpha = 0;
+    _menu.exists = false;
     add(_menu);
 
     // Stop level music
@@ -147,6 +148,9 @@ class LevelComplete extends FlxSubState {
     }, 2000);
 
     // Show menu after a few seconds
-      haxe.Timer.delay(() -> { _menu.fadeIn();}, 3200);
+      haxe.Timer.delay(() -> { 
+        _menu.exists = true;
+        _menu.fadeIn();
+      }, 3200);
   }
 }
