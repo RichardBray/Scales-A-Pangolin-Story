@@ -31,7 +31,7 @@ class PauseMenu extends FlxSubState {
 	 * @param PlayerDied	If player died or not
 	 * @param LevelString	Name of the level
 	 */
-	public function new(PlayerDied:Bool = false, LevelString:String, ?GameSave:Null<FlxSave>) {
+	public function new(PlayerDied:Bool = false, ?LevelString:String, ?GameSave:Null<FlxSave>) {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
@@ -58,22 +58,26 @@ class PauseMenu extends FlxSubState {
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
 
-		// Maps string to class from `levelNames` in constants
-		var sectionToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
+		// null means it's the level select screen
+		if (LevelString != null) {
+			// Maps string to class from `levelNames` in constants
+			var sectionToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
+
+			var restartMenuOption:MenuData = {
+				title: "Restart Section",
+				func: () -> {
+					FlxG.sound.music = null;
+					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
+				}
+			}
+		}
 
 		var _menuData:Array<MenuData> = [
 			{
 				title: "Resume",
 				func: togglePauseMenu,
 				soundOnSelect: false
-			},			
-			{
-				title: "Restart Section",
-				func: () -> {
-					FlxG.sound.music = null;
-					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
-				}
-			},			
+			},						
 			{
 				title: "Instructions",
 				func: () -> {
@@ -112,11 +116,11 @@ class PauseMenu extends FlxSubState {
 		// Intialise controls
 		_controls = new Controls();
 
-		FlxG.sound.music.pause();
+		if (FlxG.sound.music != null) FlxG.sound.music.pause();
 	}
 
 	function togglePauseMenu() {
-		FlxG.sound.music.play();
+		if (FlxG.sound.music != null) FlxG.sound.music.play();
 		_sndClose.play(); 
 		close();
 	}
