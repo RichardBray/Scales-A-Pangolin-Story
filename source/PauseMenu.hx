@@ -68,7 +68,8 @@ class PauseMenu extends FlxSubState {
 				func: () -> {
 					FlxG.sound.music = null;
 					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
-				}
+				},
+				itemPos: 2
 			}
 		}
 
@@ -76,21 +77,24 @@ class PauseMenu extends FlxSubState {
 			{
 				title: "Resume",
 				func: togglePauseMenu,
-				soundOnSelect: false
+				soundOnSelect: false,
+				itemPos: 1,
 			},						
 			{
 				title: "Instructions",
 				func: () -> {
 					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
 					openSubState(_instructions);
-				}
+				},
+				itemPos: 3
 			},
 			{
 				title: "Quit",
 				func: () -> {
 					var quitMenu:QuitMenu = new QuitMenu();
 					openSubState(quitMenu);
-				}
+				},
+				itemPos: 4
 			}
 		];
 

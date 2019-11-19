@@ -10,7 +10,12 @@ import flixel.system.FlxSound;
 
 using Lambda;
 
-typedef MenuData = { title:String, func:Void->Void, ?soundOnSelect:Null<Bool> };
+typedef MenuData = { 
+	title:String, 
+	func:Void->Void, 
+	?soundOnSelect:Null<Bool>, 
+	?itemPos:Int // Needed to reorder Pause menu to include certain pause options
+};
 
 class Menu extends FlxSpriteGroup {
 	var _selected:Int = 0;
