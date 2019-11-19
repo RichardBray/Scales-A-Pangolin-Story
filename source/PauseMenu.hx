@@ -58,22 +58,23 @@ class PauseMenu extends FlxSubState {
 		_menuTitle.screenCenter(X);
 		_grpMenuItems.add(_menuTitle);
 
+		var restartMenuOption:Array<MenuData>;
 		// null means it's the level select screen
 		if (LevelString != null) {
 			// Maps string to class from `levelNames` in constants
 			var sectionToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
 
-			var restartMenuOption:MenuData = {
+			restartMenuOption = [{
 				title: "Restart Section",
 				func: () -> {
 					FlxG.sound.music = null;
 					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
 				},
 				itemPos: 2
-			}
+			}];
 		}
 
-		var _menuData:Array<MenuData> = [
+		var _standardMenuItems:Array<MenuData> = [
 			{
 				title: "Resume",
 				func: togglePauseMenu,
@@ -98,7 +99,17 @@ class PauseMenu extends FlxSubState {
 			}
 		];
 
+		// 
+		var _menuData:Array<MenuData> = (LevelString != null)
+			? _standardMenuItems.concat(restartMenuOption)
+			: _standardMenuItems;
+
 		if (PlayerDied) _menuData.shift(); // Remove `RESUME` options if player died
+
+		// Reorder menu items mainly post concatination
+		_menuData.sort((a:MenuData, b:MenuData) -> {
+			return a.itemPos - b.itemPos;
+		});
 
 		_menu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, _menuData, true);
 

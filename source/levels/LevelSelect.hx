@@ -70,6 +70,8 @@ class LevelSelect extends GameState {
   override public function create() {
     super.create();
     bgColor = 0xffBDEDE1;
+
+    FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
   
     _grpLevelIndicators = new FlxSpriteGroup();
 
@@ -107,13 +109,13 @@ class LevelSelect extends GameState {
       }, 350);	      
     }
   
-    if (_controls.right.check()) {
+    if (_controls.right_jp.check()) {
       (_lastCompletedLevel == (_levelPos.length -1))
         ? _lastCompletedLevel = 0
         : _lastCompletedLevel++;
     }
 
-    if (_controls.left.check()) {
+    if (_controls.left_jp.check()) {
       (_lastCompletedLevel == 0) 
         ? _lastCompletedLevel = (_levelPos.length - 1)
         : _lastCompletedLevel--;
