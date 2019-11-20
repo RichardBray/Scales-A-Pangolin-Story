@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.util.FlxSave;
@@ -20,33 +21,45 @@ typedef LevelData = {
 class LevelSelect extends GameState {
   var _levelPos:Array<LevelData> = [
     {
-      x: 50,
-      y: 200,
+      x: 230,
+      y: 544,
       locked:true,
       onSelect:() -> trace("level one")
     },
     {
-      x: 400,
-      y: 150,
+      x: 118,
+      y: 114,
       locked:true,
       onSelect:() -> trace("level two")
     },
     {
-      x: 680,
-      y: 230,
+      x: 594,
+      y: 207,
       locked:true,
       onSelect:() -> trace("level three")
     },
     {
-      x: 980,
-      y: 200,
+      x: 1251,
+      y: 567,
       locked:true,
       onSelect:() -> trace("level four")
-    }             
+    },
+    {
+      x: 1561,
+      y: 307,
+      locked:true,
+      onSelect:() -> trace("level five")
+    },
+    {
+      x: 1610,
+      y: 778,
+      locked:true,
+      onSelect:() -> trace("level six")
+    }                     
   ];
   var _grpLevelIndicators:FlxSpriteGroup;
   var _controls:Controls;
-  var _levelPointer:FlxSprite;
+  var _levelPointer:FlxShapeCircle; //FlxSprite;
   var _gameSave:FlxSave;
   var _mapBg:FlxSprite;
 
@@ -74,7 +87,7 @@ class LevelSelect extends GameState {
 
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
   
-    _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/background/test-map.jpg", false, 1920, 1080);
+    _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/backgrounds/test_map.jpg", false, 1920, 1080);
     add(_mapBg);
 
     _grpLevelIndicators = new FlxSpriteGroup();
@@ -83,8 +96,8 @@ class LevelSelect extends GameState {
       var levelIndicator:FlxShapeCircle = new FlxShapeCircle(
         level.x, 
         level.y, 
-        60, 			
-        { thickness:6, color:Constants.primaryColorLight }, 
+        80, 			
+        { thickness:6, color:FlxColor.WHITE }, 
 			  Constants.primaryColor);
       levelIndicator.scrollFactor.set(0, 0);
       _grpLevelIndicators.add(levelIndicator);        
@@ -92,7 +105,12 @@ class LevelSelect extends GameState {
 
     add(_grpLevelIndicators);
 
-    _levelPointer = new FlxSprite(0, 0);
+    _levelPointer = new FlxShapeCircle(
+        0, 
+        0, 
+        80, 			
+        { thickness:10, color:Constants.secondaryColor }, 
+			  FlxColor.TRANSPARENT);
     add(_levelPointer);
 
     // Intialise controls
@@ -105,7 +123,7 @@ class LevelSelect extends GameState {
     _levelPointer.setPosition(_levelPos[_lastCompletedLevel].x, _levelPos[_lastCompletedLevel].y);
 
     if (_controls.cross.check()) {
-      _sndSelect.play(true); 
+      _sndSelect.play(); 
 
       // So that sound plays before action happens
       haxe.Timer.delay(() -> {
