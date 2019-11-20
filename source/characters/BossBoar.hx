@@ -20,7 +20,7 @@ class BossBoar extends Enemy {
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
-    health = 7;
+    health = 1;
     hasCollisions = true; 
 
     loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);

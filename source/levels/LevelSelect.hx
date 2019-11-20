@@ -48,6 +48,7 @@ class LevelSelect extends GameState {
   var _controls:Controls;
   var _levelPointer:FlxSprite;
   var _gameSave:FlxSave;
+  var _mapBg:FlxSprite;
 
 	// Sounds
 	var _sndMove:FlxSound;
@@ -73,6 +74,9 @@ class LevelSelect extends GameState {
 
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
   
+    _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/background/test-map.jpg", false, 1920, 1080);
+    add(_mapBg);
+
     _grpLevelIndicators = new FlxSpriteGroup();
 
     _levelPos.mapi((idx:Int, level:LevelData) -> {
@@ -82,7 +86,7 @@ class LevelSelect extends GameState {
         60, 			
         { thickness:6, color:Constants.primaryColorLight }, 
 			  Constants.primaryColor);
-    levelIndicator.scrollFactor.set(0, 0);
+      levelIndicator.scrollFactor.set(0, 0);
       _grpLevelIndicators.add(levelIndicator);        
     });
 
@@ -121,9 +125,7 @@ class LevelSelect extends GameState {
         : _lastCompletedLevel--;
     }   
 
-    if (_controls.left.check() || _controls.right.check()) {
-      _sndMove.play(true);
-    } 
+    if (_controls.left_jp.check() || _controls.right_jp.check()) _sndMove.play(true);
 
 		// Paused game state
 		if (_controls.start.check()) {
