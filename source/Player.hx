@@ -21,6 +21,7 @@ class Player extends FlxSprite {
 	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds
 	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx
 	public var isAscending:Bool = false; // Indicates is player ascending or descending in jump
+	public var facingTermiteHill:Bool = true;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -29,7 +30,7 @@ class Player extends FlxSprite {
 		isGoindDown = false; // If down button is pressed
 		health = 3; // Health player starts off with
 	
-		loadGraphic("assets/images/pangolin_sprites.png", true, 300, 127);
+		loadGraphic("assets/images/characters/pangolin_sprites.png", true, 300, 127);
 		setGraphicSize(121, 92);
 		updateHitbox();
 
@@ -39,10 +40,11 @@ class Player extends FlxSprite {
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
 		// Animations
-		animation.add("idle", [for (i in 24...29) i], 8, true);
+		animation.add("idle", [for (i in 24...30) i], 8, true);
 		animation.add("run", [for (i in 0...5) i], 12, false);
 		animation.add("jump", [for (i in 11...23) i], 12, false);
 		animation.add("jumpLoop", [16, 17, 18], 12, true);
+		animation.add("digging", [for (i in 36...40) i], 8, true);
 
 		// Sounds
 		_sndJump = FlxG.sound.load("assets/sounds/player/jump.ogg", .7);
@@ -129,6 +131,12 @@ class Player extends FlxSprite {
 	override public function update(Elapsed:Float) {
 		playerMovement();
 		isAscending = detectPlayerAscending();
+
+		if (facingTermiteHill && _controls.triangle.check()) {
+			preventMovement = true;
+			animation.play("digging");
+		}
+
 		super.update(Elapsed);
 	}	
 }

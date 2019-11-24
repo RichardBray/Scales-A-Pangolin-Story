@@ -1,6 +1,7 @@
 package states;
 
 // - Flixel
+import components.TermiteHill;
 import flixel.util.FlxTimer;
 import flixel.util.FlxSave;
 import flixel.FlxG;
@@ -103,8 +104,8 @@ class LevelState extends GameState {
 	 * Method for creating a level
 	 *
 	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
-	 * @param 	Background 		Parallax background image name.
-	 * @param 	CollectablesMap	List of already collected collectables if revisiting a level.
+	 * @param 	Background 	Parallax background image name.
+	 * @param 	IntroMusic	What music to play for the into.
 	 */
 	public function createLevel(MapFile:String, Background:String, ?IntroMusic:Null<String>) {
 		// Tiles for collisions
@@ -341,6 +342,8 @@ class LevelState extends GameState {
 			6 => "assets/images/L1_TREE_02.png",
 			7 => "assets/images/L1_TREE_03.png",
 			8 => "assets/images/L1_GROUND_01.png",
+			35 => "assets/images/environments/L2_GROUND.png",
+			36 => "assets/images/environments/L2_GROUND_TUNNEL.png",
 			33 => LevelState.createImageString("L1_LAVAROCK_01"),
 			34 => LevelState.createImageString("L1_LAVAROCK_02")
 		];
@@ -369,6 +372,15 @@ class LevelState extends GameState {
 			boar = new Enemy.Boar(X, newY, Name, Otype);
 			_grpKillableEnemies.add(boar);
 
+		} else if (ObjectId == 37) { // Termite hill
+			var TermiteHill:TermiteHill = new TermiteHill(X, newY);
+			_mapEntities.add(TermiteHill);
+
+		} else if (ObjectId == 39) { // Toucan
+			var toucan:Enemy;
+			toucan = new Enemy.Toucan(X, newY, Name, Otype);			
+			_grpKillableEnemies.add(toucan);
+
 		} else if (ObjectId == 29) { // Snake
 			var snake:Enemy;
 			var snakeAttackBox:Enemy;
@@ -386,7 +398,7 @@ class LevelState extends GameState {
 			_grpEnemies.add(snakeAttackBox);
 			_grpEnemyAttackBoundaries.add(snakeAttackBoundary);
 		
-		} else if (ObjectId == 35) { // BossBoar
+		} else if (ObjectId == 40) { // BossBoar
 			var bossBoar:Enemy;
 			var bossBoarAttackBoundary:Enemy.Boundaries;
 

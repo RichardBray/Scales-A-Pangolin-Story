@@ -19,44 +19,6 @@ typedef LevelData = {
 };
 
 class LevelSelect extends GameState {
-  var _levelPos:Array<LevelData> = [
-    {
-      x: 230,
-      y: 544,
-      locked:true,
-      onSelect:() -> trace("level one")
-    },
-    {
-      x: 118,
-      y: 114,
-      locked:true,
-      onSelect:() -> trace("level two")
-    },
-    {
-      x: 594,
-      y: 207,
-      locked:true,
-      onSelect:() -> trace("level three")
-    },
-    {
-      x: 1251,
-      y: 567,
-      locked:true,
-      onSelect:() -> trace("level four")
-    },
-    {
-      x: 1561,
-      y: 307,
-      locked:true,
-      onSelect:() -> trace("level five")
-    },
-    {
-      x: 1610,
-      y: 778,
-      locked:true,
-      onSelect:() -> trace("level six")
-    }                     
-  ];
   var _grpLevelIndicators:FlxSpriteGroup;
   var _controls:Controls;
   var _levelPointer:FlxShapeCircle; //FlxSprite;
@@ -67,10 +29,22 @@ class LevelSelect extends GameState {
 	var _sndMove:FlxSound;
 	var _sndSelect:FlxSound;
 
-  // Remove after save game is added
+  // Remove after save game is added START
   var _lastCompletedLevel:Int = 1;
-  var _savedLevelData:Dynamic;  
+  var _savedLevelData:Dynamic = [
+    {
+      locked: false,
+      stars: 3
+    }
+  ];  
+  var _levelSelect:Map<String, Bool> = [
+    "firstTime" => true,
+    "hasPangolin" => false,
+    "allLevelsFinished" => false
+  ];
 
+  var _levelPos:Array<LevelData>;
+  // Remove after save game is added END
 
   public function new(?GameSave:FlxSave) {
     super();
@@ -84,7 +58,7 @@ class LevelSelect extends GameState {
   override public function create() {
     super.create();
     bgColor = 0xffBDEDE1;
-
+    FlxG.sound.music.play();
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
   
     _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/backgrounds/test_map.jpg", false, 1920, 1080);
@@ -100,6 +74,7 @@ class LevelSelect extends GameState {
         { thickness:6, color:FlxColor.WHITE }, 
 			  Constants.primaryColor);
       levelIndicator.scrollFactor.set(0, 0);
+      // Add data from save
       _grpLevelIndicators.add(levelIndicator);        
     });
 
@@ -113,9 +88,72 @@ class LevelSelect extends GameState {
 			  FlxColor.TRANSPARENT);
     add(_levelPointer);
 
+    _levelPos = [
+      {
+        x: 230,
+        y: 544,
+        locked:true,
+        onSelect:() -> FlxG.switchState(new LevelOne(_gameSave))
+      },
+      {
+        x: 118,
+        y: 114,
+        locked:true,
+        onSelect:() -> FlxG.switchState(new LevelFive(_gameSave))
+      },
+      {
+        x: 594,
+        y: 207,
+        locked:true,
+        onSelect:() -> trace("level three")
+      },
+      {
+        x: 1251,
+        y: 567,
+        locked:true,
+        onSelect:() -> trace("level four")
+      },
+      {
+        x: 1561,
+        y: 307,
+        locked:true,
+        onSelect:() -> trace("level five")
+      },
+      {
+        x: 1610,
+        y: 778,
+        locked:true,
+        onSelect:() -> trace("level six")
+      }                     
+    ];      
+
     // Intialise controls
     _controls = new Controls();
+
+    // Start modals
+    startModal();
   }
+
+  function startModal() {
+    var trueValue:Null<Int> = 0;
+
+    for (levelBool in _levelSelect) {
+      if (!levelBool) {
+        trueValue++;
+      }
+    }    
+
+    if (trueValue != null) {
+      var modalTest:Array<String> = [
+        "Welcome to the level select screen",
+        "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
+        "Congratulations! You've completed all the levels"
+      ];      
+      var _modal:MainMenuModal = new MainMenuModal(modalTest[trueValue], null, true, "Press E to close");
+      openSubState(_modal);      
+    }
+  }
+
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
