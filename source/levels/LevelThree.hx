@@ -19,7 +19,7 @@ class LevelThree extends LevelState {
 	var _monkeySprite:ZenMonkey;
 	var _monkeyNPC:NPC;
 	var _monkeyDialogueImage:FlxSprite;
-  final _bugsGoal:Int = 15; // How many bugs to collect in order to complete level  
+  final _bugsGoal:Int = 14; // How many bugs to collect in order to complete level  
 	var _spokentoNPC:Int = 0;
 
   public function new(?GameSave:Null<FlxSave>) {

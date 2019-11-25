@@ -15,7 +15,7 @@ import Hud.GoalData;
 class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;
 	var _gameSave:FlxSave;
-  var _bugsGoal:Int = 15; // How many bugs to collect in order to complete level
+  var _bugsGoal:Int = 14; // How many bugs to collect in order to complete level
   /**
   * Level 2-0
   *

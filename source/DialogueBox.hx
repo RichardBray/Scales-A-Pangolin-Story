@@ -83,7 +83,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 			spacingWidth + 20, 
 			FlxG.height - 150, 
 			FlxG.width - 400, 
-			'Press $cross to skip'
+			'Press $cross to continue'
 		);
 		_continueText.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
 		add(_continueText);
