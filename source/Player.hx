@@ -21,7 +21,8 @@ class Player extends FlxSprite {
 	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds
 	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx
 	public var isAscending:Bool = false; // Indicates is player ascending or descending in jump
-	public var facingTermiteHill:Bool = true;
+	public var facingTermiteHill:Bool = false; // When player is colliding with termite hill
+	public var playerIsDigging:Bool = false; // When player is digging termite hill
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -134,7 +135,14 @@ class Player extends FlxSprite {
 
 		if (facingTermiteHill && _controls.triangle.check()) {
 			preventMovement = true;
+			playerIsDigging = true;
 			animation.play("digging");
+
+			// Allow movement after one second
+			haxe.Timer.delay(() -> {
+				facingTermiteHill = false;
+				preventMovement = false;
+			}, 1200);
 		}
 
 		super.update(Elapsed);

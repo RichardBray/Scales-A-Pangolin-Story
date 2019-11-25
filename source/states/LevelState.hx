@@ -29,6 +29,7 @@ import components.Lava;
 class LevelState extends GameState {
 	var _levelBgs:FlxTypedGroup<FlxSprite>;
 	var _mapEntities:FlxSpriteGroup;
+	var _termiteHills:FlxSpriteGroup;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _grpEnemies:FlxTypedGroup<Enemy>;
 	var _grpKillableEnemies:FlxTypedGroup<Enemy>;
@@ -36,6 +37,8 @@ class LevelState extends GameState {
 	var _map:Null<TiledMap>;
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
+	var _curTermiteHill:Null<TermiteHill>;
+	var _curTunnel:Null<FlxSprite>;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
@@ -144,6 +147,7 @@ class LevelState extends GameState {
 
 		// Map objects initiated here.
 		_mapEntities = new FlxSpriteGroup();
+		_termiteHills = new FlxSpriteGroup();
 
 		// Add bugs group
 		_grpCollectables = new FlxTypedGroup<CollectableBug.Bug>();
@@ -178,6 +182,7 @@ class LevelState extends GameState {
 
 		// Map objects added here
 		add(_mapEntities);
+		add(_termiteHills);
 		add(_grpCollectables);
 		add(_grpEnemies);	
 		add(_grpKillableEnemies);	
@@ -373,8 +378,9 @@ class LevelState extends GameState {
 			_grpKillableEnemies.add(boar);
 
 		} else if (ObjectId == 37) { // Termite hill
-			var TermiteHill:TermiteHill = new TermiteHill(X, newY);
-			_mapEntities.add(TermiteHill);
+			var termiteHill:TermiteHill = new TermiteHill(X, newY);
+			termiteHill.immovable = true;
+			_termiteHills.add(termiteHill);
 
 		} else if (ObjectId == 39) { // Toucan
 			var toucan:Enemy;
@@ -415,6 +421,10 @@ class LevelState extends GameState {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
 			_mapEntities.add(_object);
+			if (ObjectId == 36) { // Termite hill tunnel
+				_object.alpha = 0;
+				_curTunnel = _object;
+			}			
 		}
 	}
 
@@ -641,6 +651,11 @@ class LevelState extends GameState {
 		}
 	}
 
+	function digTermiteHill(Player:Player, TermiteHill:TermiteHill) {
+		player.facingTermiteHill = TermiteHill.exists;
+		_curTermiteHill = TermiteHill;
+	}
+
 	override public function update(Elapsed:Float) {
 		_secondsOnGround += Elapsed;
 		updateFeetCollisions();
@@ -673,8 +688,17 @@ class LevelState extends GameState {
 			openSubState(_pauseMenu);
 		}
 
+		// Termite hill statements
+		if (player.playerIsDigging == true) {
+			_curTermiteHill.playerDigging = true;
+			haxe.Timer.delay(() -> {
+				_curTunnel.alpha = 1;
+			}, 1200);
+		}
+
 		// Collisions
 		FlxG.collide(player, _levelCollisions);
+		FlxG.collide(player, _termiteHills, digTermiteHill);
 		FlxG.collide(_playerFeetCollision, _levelCollisions);
 
 		// Only add level collisions to specific enemies

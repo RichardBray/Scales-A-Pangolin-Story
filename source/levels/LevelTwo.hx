@@ -77,20 +77,3 @@ class LevelTwo extends LevelState {
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);		
   }
 }
-
-class IntroTwo extends IntroState {
-  
-  public function new(GameSave:FlxSave) {
-    super();
-    _gameSave = GameSave;
-		facts = [
-			"Pangolin's are covered with hard, brown scales made of keratin the same substance as human nails.",
-			"Their scales cover their whole body except their forehead, belly and the inner side of their legs.",
-			"Curling into a ball exposing a pangolin's sharp scales defending it against predators."
-		];
-  }
-
-	override public function startLevel() {
-		FlxG.switchState(new LevelTwo(_gameSave, true));
-	}  
-}
