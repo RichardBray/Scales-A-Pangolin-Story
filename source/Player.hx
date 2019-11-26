@@ -142,7 +142,7 @@ class Player extends FlxSprite {
 			haxe.Timer.delay(() -> {
 				facingTermiteHill = false;
 				preventMovement = false;
-			}, 1200);
+			}, 2000);
 		}
 
 		super.update(Elapsed);

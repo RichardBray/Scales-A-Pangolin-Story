@@ -38,7 +38,6 @@ class LevelState extends GameState {
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _curTermiteHill:Null<TermiteHill>;
-	var _curTunnel:Null<FlxSprite>;
 	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	var _controls:Controls;
@@ -420,11 +419,7 @@ class LevelState extends GameState {
 		} else {
 			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
 			_object.immovable = true;
-			_mapEntities.add(_object);
-			if (ObjectId == 36) { // Termite hill tunnel
-				_object.alpha = 0;
-				_curTunnel = _object;
-			}			
+			_mapEntities.add(_object);			
 		}
 	}
 
@@ -691,9 +686,6 @@ class LevelState extends GameState {
 		// Termite hill statements
 		if (player.playerIsDigging == true) {
 			_curTermiteHill.playerDigging = true;
-			haxe.Timer.delay(() -> {
-				_curTunnel.alpha = 1;
-			}, 1200);
 		}
 
 		// Collisions
