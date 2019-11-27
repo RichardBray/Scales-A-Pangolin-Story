@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.4" name="level-1-objs" tilewidth="1137" tileheight="1494" tilecount="13" columns="0">
+<tileset version="1.2" tiledversion="2019.11.12" name="level-1-objs" tilewidth="1137" tileheight="1494" tilecount="13" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="367" height="266" source="../images/L1_ROCK_01.png"/>
  </tile>
  <tile id="1">
-  <image width="260" height="230" source="../images/L1_ROCK_02.png"/>
+  <image width="260" height="230" source="../../../Dropbox/pangolin/L1_ROCK_02.png"/>
  </tile>
  <tile id="2">
   <image width="361" height="123" source="../images/L1_ROCK_03.png"/>

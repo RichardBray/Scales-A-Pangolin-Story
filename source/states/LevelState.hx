@@ -10,7 +10,6 @@ import flixel.tile.FlxBaseTilemap;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.addons.tile.FlxTilemapExt;
-import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
@@ -27,20 +26,15 @@ import components.Lava;
 
 
 class LevelState extends GameState {
+	// Level
 	var _levelBgs:FlxTypedGroup<FlxSprite>;
 	var _mapEntities:FlxSpriteGroup;
 	var _termiteHills:FlxSpriteGroup;
-	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
-	var _grpEnemies:FlxTypedGroup<Enemy>;
-	var _grpKillableEnemies:FlxTypedGroup<Enemy>;
-	var _levelCollisions:FlxTilemapExt;
 	var _map:Null<TiledMap>;
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _curTermiteHill:Null<TermiteHill>;
-	var _mapObjectId:Int = 0; // Unique ID added for loading level and hiding collected collectable
 	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
-	var _controls:Controls;
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
 	var _playerJumpPoof:Player.JumpPoof; 
@@ -54,13 +48,18 @@ class LevelState extends GameState {
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 	// Enemies
 	var _grpEnemyAttackBoundaries:FlxTypedGroup<FlxObject>;
+	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
+	var _grpEnemies:FlxTypedGroup<Enemy>;
+	var _grpKillableEnemies:FlxTypedGroup<Enemy>;
+	var _levelCollisions:FlxTilemapExt;	
 	// Game saving
 	var _levelCompleteSave:Bool = false;
 	var _gameSaveForPause:FlxSave;
-
 	// Sounds
 	var _sndSelect:FlxSound;
 	var _sndLevelIntro:FlxSound;
+	//Controls
+	var _controls:Controls;
 
 	public var grpHud:Hud;
 	public var player:Player; // used by HUD for health
@@ -82,8 +81,8 @@ class LevelState extends GameState {
 			* By default flixel only processes what it initally sees, so collisions won't
 			* work until can process the whole level.
 			*/
+	
 			FlxG.worldBounds.set(0, 0, _map.fullWidth, _map.fullHeight);
-		
 			FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
 			FlxG.camera.antialiasing = false;
 
@@ -108,8 +107,13 @@ class LevelState extends GameState {
 	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
 	 * @param 	Background 	Parallax background image name.
 	 * @param 	IntroMusic	What music to play for the into.
+	 * @param 	HiddenSections	How much extra the level has to hide
 	 */
-	public function createLevel(MapFile:String, Background:String, ?IntroMusic:Null<String>) {
+	public function createLevel(
+		MapFile:String, 
+		Background:String, 
+		?IntroMusic:Null<String>
+	) {
 		// Tiles for collisions
 		_collisionImg = "assets/images/collisions.png";
 
@@ -158,25 +162,11 @@ class LevelState extends GameState {
 		_grpKillableEnemies = new FlxTypedGroup<Enemy>();
 		_grpEnemyAttackBoundaries = new FlxTypedGroup<FlxObject>();
 
-		// Tile tearing problem fix on Mac (part 1)
-		// @see http://forum.haxeflixel.com/topic/39/tilemap-tearing-desktop-targets/5
-		var _mapSize:FlxPoint = FlxPoint.get(_map.tileWidth, _map.tileHeight);
-		var _tilesetTileFrames:Array<FlxTileFrames> = new Array<FlxTileFrames>();
-		for (_tileset in _map.tilesetArray) {
-			_tilesetTileFrames.push(FlxTileFrames.fromRectangle(_collisionImg, _mapSize));
-		}
-		var _tileSpacing:FlxPoint = FlxPoint.get(0, 0);
-		var _tileBorder:FlxPoint = FlxPoint.get(2, 2);
-
-		_mapSize.put();
-		_tileSpacing.put();
-		_tileBorder.put();
-
 
 		// Looping over `objects` layer
 		_mapObjects = cast(_map.getLayer("objects"));
 		for (e in _mapObjects.objects) {
-			placeEntities(e.xmlData.x, e.gid, _mapObjectId++);
+			placeEntities(e.xmlData.x, e.gid);
 		}
 
 		// Map objects added here
@@ -202,10 +192,6 @@ class LevelState extends GameState {
 		);
 
 		_levelCollisions.follow(); // lock camera to map's edges
-
-		// set slopes
-		_levelCollisions.setSlopes([_firstTile + 7, _firstTile + 8]);
-		_levelCollisions.setGentle([_firstTile + 8], [_firstTile + 7]);
 
 		// set cloud/special tiles
 		_levelCollisions.setTileProperties(_firstTile + 2, FlxObject.NONE, fallInClouds);
@@ -305,14 +291,27 @@ class LevelState extends GameState {
 	 * Place entities from Tilemap.
 	 * This method just converts strings to integers.
 	 */
-	function placeEntities(EntityData:Xml, ObjectId:Int, MapObjId:Int) {
+	function placeEntities(EntityData:Xml, ObjectId:Int) {
 		var x:Int = Std.parseInt(EntityData.get("x")); // Parse string to int
 		var y:Int = Std.parseInt(EntityData.get("y"));
 		var width:Int = Std.parseInt(EntityData.get("width"));
 		var height:Int = Std.parseInt(EntityData.get("height"));
 		var name:String = EntityData.get("name");
 		var type:String = EntityData.get("type");
-		createEntity(x, y, width, height, name, type, ObjectId, MapObjId);
+		createEntity(x, y, width, height, name, type, ObjectId);
+	}
+
+	/**
+	 * Update map dimentions and level exit. Useful for bonuse levels.
+	 * @param Width	Width amount to reduce from original width
+	 * @param Height Height to reduce from original hegight
+	 */
+	function updateMapDimentions(Width:Float, Height:Float) {
+		var newWidth:Float = _map.fullWidth - Width;
+		var newHeight:Float = _map.fullHeight - Height;
+		levelExit.x = newWidth - 20;
+		FlxG.worldBounds.set(0, 0, newWidth, newHeight);
+		FlxG.camera.setScrollBoundsRect(0, 0, newWidth, newHeight);
 	}
 
 	/**
@@ -332,8 +331,7 @@ class LevelState extends GameState {
 		Height:Int, 
 		Name:String,
 		Otype:String, // Object type
-		ObjectId:Int, 
-		MapObjId:Int
+		ObjectId:Int
 	) {
 		var newY:Int = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
