@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import states.LevelState;
+import characters.CagedPangolin;
 
 import Hud.GoalData;
 
@@ -13,6 +14,7 @@ class LevelFive extends LevelState {
   var _goalData:Array<GoalData>;
   var _teleport:FlxObject;
   var _bonusLevel:FlxObject;
+  var _cagedPangolin:characters.CagedPangolin;
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -42,6 +44,9 @@ class LevelFive extends LevelState {
 
     _bonusLevel = new FlxObject(14174, (1920 - 718), 1920, 1080);
     add(_bonusLevel);
+
+    _cagedPangolin = new CagedPangolin(12517, 840);
+    add(_cagedPangolin);
 
     // Save game on load
     // if (_gameSave != null) _gameSave = saveGame(_gameSave);

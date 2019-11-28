@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="1073" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="170">
+<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="1073" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="172">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -19,10 +19,15 @@
   <object id="136" gid="6" x="1842.01" y="1642.43" width="850" height="1101"/>
   <object id="137" gid="37" x="3338.46" y="1577.64" width="271" height="346"/>
   <object id="139" name="left" type="12" gid="2147483661" x="4321.38" y="1575.88" width="139" height="88"/>
+  <object id="160" gid="7" x="11884.3" y="1613.21" width="1137" height="1494"/>
+  <object id="158" gid="6" x="10606.3" y="1448.98" width="850" height="1101"/>
+  <object id="163" gid="5" x="13176.1" y="1597.95" width="889" height="1184"/>
   <object id="115" gid="32" x="6111.86" y="1805.72" width="325" height="124"/>
   <object id="116" gid="32" x="6426.86" y="1805.72" width="325" height="124"/>
   <object id="117" gid="32" x="6741.86" y="1805.72" width="325" height="124"/>
   <object id="118" gid="32" x="7056.86" y="1805.72" width="325" height="124"/>
+  <object id="123" gid="8" x="10214.8" y="1627.5" width="974" height="247"/>
+  <object id="124" gid="8" x="9254.81" y="1627.5" width="974" height="247"/>
   <object id="107" gid="8" x="-5.1664" y="1808.5" width="974" height="247"/>
   <object id="108" gid="8" x="967.834" y="1808.5" width="974" height="247"/>
   <object id="109" gid="8" x="1940.83" y="1808.5" width="974" height="247"/>
@@ -33,20 +38,14 @@
   <object id="120" gid="8" x="8341.83" y="1808.5" width="974" height="247"/>
   <object id="121" gid="8" x="9314.83" y="1808.5" width="974" height="247"/>
   <object id="122" gid="8" x="10274.8" y="1808.5" width="974" height="247"/>
-  <object id="123" gid="8" x="10214.8" y="1627.5" width="974" height="247"/>
-  <object id="124" gid="8" x="9254.81" y="1627.5" width="974" height="247"/>
   <object id="138" gid="36" x="3359.61" y="1904.11" width="198" height="329"/>
   <object id="148" gid="5" x="9335.45" y="1418.74" width="889" height="1184"/>
   <object id="149" gid="8" x="11247.8" y="1808.5" width="974" height="247"/>
   <object id="150" gid="8" x="12221.8" y="1808.5" width="974" height="247"/>
   <object id="151" gid="8" x="13194.8" y="1808.5" width="974" height="247"/>
-  <object id="158" gid="6" x="10606.3" y="1448.98" width="850" height="1101"/>
   <object id="159" name="right" type="12" gid="13" x="10015.4" y="1395.04" width="139" height="88"/>
-  <object id="160" gid="7" x="11884.3" y="1613.21" width="1137" height="1494"/>
   <object id="162" gid="12" x="11401.2" y="1574.89" width="178" height="206"/>
-  <object id="163" gid="5" x="13176.1" y="1597.95" width="889" height="1184"/>
-  <object id="164" gid="38" x="12510.5" y="1360.45" width="315" height="523"/>
-  <object id="165" gid="41" x="8242.49" y="1211.79" width="313" height="331"/>
+  <object id="165" type="14" gid="41" x="8271.49" y="1280.79" width="313" height="331"/>
   <object id="168" name="left" type="10" gid="13" x="2025.49" y="1575.14" width="139" height="88"/>
  </objectgroup>
  <layer id="1" name="collisions" width="1073" height="132">
@@ -56,7 +55,7 @@
  </layer>
  <objectgroup id="3" name="helpers">
   <object id="8" name="Player start" x="172.377" y="1439.66" width="300" height="135"/>
-  <object id="141" x="14174.8" y="718.284" width="1920" height="1080"/>
+  <object id="141" name="Bonus level" x="14174.8" y="718.284" width="1920" height="1080"/>
   <object id="152" name="Player start" x="14974" y="842.463" width="300" height="135"/>
   <object id="166" x="3362.31" y="1674.57" width="193.618" height="227.567"/>
   <object id="167" x="3732.87" y="2097.23" width="1.29299"/>
