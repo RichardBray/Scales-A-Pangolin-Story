@@ -318,7 +318,7 @@ class LevelState extends GameState {
 	 * Utiolity function for returning image strings for level assets.
 	 */
 	static function createImageString(Image:String):String {
-		return 'assets/images/components/$Image.png';
+		return 'assets/images/environments/$Image.png';
 	}
 
 	/**
@@ -344,8 +344,8 @@ class LevelState extends GameState {
 			6 => "assets/images/L1_TREE_02.png",
 			7 => "assets/images/L1_TREE_03.png",
 			8 => "assets/images/L1_GROUND_01.png",
-			35 => "assets/images/environments/L2_GROUND.png",
-			36 => "assets/images/environments/L2_GROUND_TUNNEL.png",
+			35 => LevelState.createImageString("L2_GROUND"),
+			36 => LevelState.createImageString("L2_GROUND_TUNNEL"),
 			33 => LevelState.createImageString("L1_LAVAROCK_01"),
 			34 => LevelState.createImageString("L1_LAVAROCK_02")
 		];
@@ -401,6 +401,11 @@ class LevelState extends GameState {
 			_grpEnemies.add(snakeAttackBox);
 			_grpEnemyAttackBoundaries.add(snakeAttackBoundary);
 		
+		} else if (ObjectId == 41) { // Moving cage
+			var movingCage:Enemy;
+			movingCage = new Enemy.MovingCage(X, newY, Name, Otype);
+			_grpKillableEnemies.add(movingCage);
+
 		} else if (ObjectId == 40) { // BossBoar
 			var bossBoar:Enemy;
 			var bossBoarAttackBoundary:Enemy.Boundaries;

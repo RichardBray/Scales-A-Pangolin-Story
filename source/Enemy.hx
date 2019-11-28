@@ -165,7 +165,7 @@ class Boar extends PacingEnemey {
 class Toucan extends PacingEnemey {
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
-		super(X, Y + 200);
+		super(X, Y + 220);
 		loadGraphic("assets/images/characters/Toucan.png", true, 192, 242);
 		updateSpriteHitbox(0, 220, this, [0, 110]);
 		updateValues(Name, Otype);	
@@ -178,6 +178,20 @@ class Toucan extends PacingEnemey {
 
 	override public function update(Elapsed:Float) {
 		animation.play("flying");
+		super.update(Elapsed);
+	}		
+}
+
+class MovingCage extends Enemy {
+	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
+		super(X, Y);
+		loadGraphic("assets/images/environments/moving_cage.png", true, 315, 331);
+		updateSpriteHitbox(100, 100, this);
+
+		animation.add("breakUp", [for (i in 0...5) i], 8, true);
+	}
+
+	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 	}		
 }
