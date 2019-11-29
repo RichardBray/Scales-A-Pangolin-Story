@@ -7,7 +7,7 @@ class CagedPangolin extends FlxSprite {
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
-    loadGraphic("assets/images/charaters/scales_cage.png", true, 315, 523);
+    loadGraphic("assets/images/characters/caged_pango.png", true, 315, 523);
 
     animation.add("crying", [for (i in 0...4) i], 8, true);
     animation.add("breakUp", [for (i in 5...9) i], 8, false);

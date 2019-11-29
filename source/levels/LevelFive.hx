@@ -1,6 +1,7 @@
 package levels;
 
 
+import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.util.FlxSave;
 import flixel.FlxG;
@@ -14,7 +15,11 @@ class LevelFive extends LevelState {
   var _goalData:Array<GoalData>;
   var _teleport:FlxObject;
   var _bonusLevel:FlxObject;
+
+  // Caged Pango
   var _cagedPangolin:characters.CagedPangolin;
+  var _cagedPangoCollision:FlxObject;
+  var _freedPangolin:FlxSprite;
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -45,13 +50,21 @@ class LevelFive extends LevelState {
     _bonusLevel = new FlxObject(14174, (1920 - 718), 1920, 1080);
     add(_bonusLevel);
 
+    _cagedPangoCollision = new FlxObject(12517, 1321, 315, 20);
+    add(_cagedPangoCollision);
+
     _cagedPangolin = new CagedPangolin(12517, 840);
     add(_cagedPangolin);
 
+    _freedPangolin = new FlxSprite(0, 0);
+    _freedPangolin.alpha = 0;
+    add(_freedPangolin);
+  
     // Save game on load
     // if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();
 
+    // Restrict level width to hide bonus level on load
     updateMapDimentions(FlxG.width + 10, 0);
   }
 
@@ -74,5 +87,6 @@ class LevelFive extends LevelState {
     super.update(Elapsed);
 
     FlxG.overlap(player, _teleport, moveToBonus);
+    FlxG.collide(player, _cagedPangoCollision, (_, _) -> _cagedPangolin.kill());
   }
 }
