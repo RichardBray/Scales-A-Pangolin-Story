@@ -66,7 +66,8 @@ class LevelFour extends LevelState {
 			npcYPos, 
 			pangoText, 
 			_pangoSprite, 
-			this, [5, 1], 
+			this, 
+			[5, 1], 
 			_pangoDialogueImage,
 			"mama_dialogue"
 		);

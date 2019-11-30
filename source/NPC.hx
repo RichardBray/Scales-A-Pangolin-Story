@@ -31,6 +31,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 		 * @param BoundaryDimensions	Width and height boundary should be more than the sprite
 		 * @param DialogueImage	NPC image for doalopgue box
 		 * @param DialogueSound	Sound to play when dialogue box is up
+		 * @param DialogueBoxScreenTop If the daolog
      */
     public function new(
 			X:Int, 
@@ -40,7 +41,8 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 			ParentState:LevelState,
 			BoundaryDimensions:Array<Float>,
 			?DialogueImage:Null<FlxSprite>,
-			?DialogueSound:Null<String>
+			?DialogueSound:Null<String>,
+			DialogueBoxScreenTop:Bool = false
 	) {
 		super();
 		_parentState = ParentState;
@@ -58,7 +60,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 		add(dialoguePrompt);
 
-		_dialogueBox = new DialogueBox(DialogueText, ParentState, DialogueImage, DialogueSound);
+		_dialogueBox = new DialogueBox(DialogueText, ParentState, DialogueImage, DialogueSound, DialogueBoxScreenTop);
 		add(_dialogueBox);
 
 		// Intialise controls

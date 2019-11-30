@@ -1,7 +1,6 @@
 package characters;
 
 import flixel.FlxSprite;
-import flixel.FlxG;
 
 class PinkPango extends FlxSprite {
   var _unwravelPango:Bool = false;

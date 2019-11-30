@@ -14,7 +14,7 @@ class Player extends FlxSprite {
 	var _sndJumpDown:FlxSound;
 	var _sndHurt:FlxSound;	
 
-	static var GRAVITY:Float = Constants.worldGravity;
+	final GRAVITY:Float = Constants.worldGravity;
 
 	public var jumpPosition:Array<Float>; // Saves player jump position for poof
 	public var preventMovement:Bool;

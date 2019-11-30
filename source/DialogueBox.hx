@@ -29,21 +29,22 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	/**
 	 * Dialogue Box constructor
 	 *
-	 * @param Dialogue 		Text that the NPC/Player will give.
+	 * @param DialogueText 		Text that the NPC/Player will give.
 	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
 	 * @param DialogueImage NPC image for doalopgue box
 	 * @param DialogueSound Sound to play when dialogue box is up
 	 */
 	public function new(
-		Dialogue:Array<String>, 
+		DialogueText:Array<String>, 
 		ParentState:LevelState, 
 		?DialogueImage:Null<FlxSprite>, 
-		?DialogueSound:Null<String>
+		?DialogueSound:Null<String>,
+		DialogueBoxScreenTop
 	) {
 		super();
 
 		// Assign these to variables to use in other methods
-		_dialogueArray = Dialogue;
+		_dialogueArray = DialogueText;
 		_parentState = ParentState;
 		_dialogueImage = DialogueImage;
 
@@ -56,9 +57,13 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		final spacingWidth:Int = 150;
 		final spacingHeight:Int = 55;
 
+		final dialogueBoxYPos:Float = DialogueBoxScreenTop 
+			? 0 + (spacingHeight * 2)
+			: FlxG.height - (_heightFromBase + spacingHeight);
+	 
 		_dialogueBox = new FlxShapeBox(
 			spacingWidth,
-			FlxG.height - (_heightFromBase + spacingHeight),
+			dialogueBoxYPos,
 			FlxG.width - (spacingWidth * 2),
 			_heightFromBase - spacingHeight,
 			{ thickness:8, color:Constants.primaryColorLight }, 
@@ -66,29 +71,40 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		);		
 		add(_dialogueBox);
 
+		final distanceFromTop:Int = 30;
+		final dialogeBoxTextYPos:Float = DialogueBoxScreenTop
+			? 0 + (distanceFromTop * 2)
+			: FlxG.height - (_heightFromBase + distanceFromTop);
 		// Create the text
-		var distanceFromTop:Int = 30;
 		_dialogueBoxText = new FlxText(
 			spacingWidth + 20, 
-			FlxG.height - (_heightFromBase + distanceFromTop), 
+			dialogeBoxTextYPos, 
 			FlxG.width - (spacingWidth * 2), 
 			_dialogueArray[_arrTextNum]
 		);
 		_dialogueBoxText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, LEFT);
 		add(_dialogueBoxText);
 
+		final continueTextYPos:Float = DialogueBoxScreenTop ? 150 : FlxG.height - 150;
 		// Space to continue text
 		var cross:String = Constants.cross;
 		_continueText = new FlxText(
 			spacingWidth + 20, 
-			FlxG.height - 150, 
+			continueTextYPos, 
 			FlxG.width - 400, 
 			'Press $cross to continue'
 		);
 		_continueText.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
 		add(_continueText);
 
-		_dialogueImage.setPosition((FlxG.width - 154) - _dialogueImage.width, (FlxG.height - 110) - _dialogueImage.height);
+		final dialougeImageYPos:Float = DialogueBoxScreenTop 
+			? _dialogueImage.height 
+			: (FlxG.height - 110) - _dialogueImage.height;
+
+		_dialogueImage.setPosition(
+			(FlxG.width - 154) - _dialogueImage.width, 
+			dialougeImageYPos
+		);
 		add(_dialogueImage);
 
 		// Hide and fix the members to the screen

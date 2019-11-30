@@ -11,7 +11,6 @@ class CagedPangolin extends FlxSprite {
 
     animation.add("crying", [for (i in 0...4) i], 8, true);
     animation.add("breakUp", [for (i in 5...9) i], 8, false);
-    // animation.play("crying");
   }
 
   override public function kill() {
@@ -19,7 +18,7 @@ class CagedPangolin extends FlxSprite {
 		alive = false;
     haxe.Timer.delay(() -> {
       exists = false;
-    }, 1000);
+    }, 500);
   }
 
   override public function update(Elapsed:Float) {
