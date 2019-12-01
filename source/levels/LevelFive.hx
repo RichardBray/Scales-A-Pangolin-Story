@@ -1,6 +1,7 @@
 package levels;
 
 
+import states.IntroState;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxObject;
@@ -33,8 +34,12 @@ class LevelFive extends LevelState {
 		_goalData = [
 			{
 				goal: "Save the pangolin",
+				func: (_) -> player.pangoAttached
+      },
+			{
+				goal: "Wait for the next part of the level",
 				func: (_) -> false
-      }
+      }      
 		];    
   }
 
@@ -128,12 +133,26 @@ class LevelFive extends LevelState {
         _purplePango.enableGravity = true;
       }, 200);
 
-      haxe.Timer.delay(() -> _pangoFreed = true, 500);
+      haxe.Timer.delay(() -> _pangoFreed = true, 300);
     }
   }
 
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
+
+	function changeState() {
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
+		FlxG.switchState(new LevelFour(_gameSave));
+	}	
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+
+		// Overlaps
+		grpHud.goalsCompleted
+			? FlxG.overlap(levelExit, player, fadeOut)
+			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);  
 
     FlxG.overlap(player, _teleport, moveToBonus);
     FlxG.overlap(player, _cagedPangoCollision, killCageAndCollision);
@@ -144,6 +163,42 @@ class LevelFive extends LevelState {
       if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary)) {
         _pangoNPC.dialoguePrompt.hidePrompt();
       };	 
+    }
+
+    if (_pangoNPC.finishedConvo) {
+      _purplePango.jumpToPlayer(player.facing);
+      haxe.Timer.delay(() -> {
+        _pangoNPC.kill();
+        player.pangoAttached = true;
+      }, 500);
+    }
+
+    if (startingConvo) {
+      // Face opposite direction to player
+      _purplePango.facing = player.facing == FlxObject.LEFT
+        ? FlxObject.RIGHT
+        : FlxObject.LEFT;
     }   
   }
+}
+
+class IntroFive extends IntroState {
+
+	/**
+	 * Runs the intro sequence for the first level.
+	 *
+	 * @param GameSave Game save from `MainMenu.hx`
+	 */
+	public function new(GameSave:FlxSave) {
+		super();
+		_gameSave = GameSave;
+		facts = [
+			"So our hero continued to travel through the jungle.",
+			"Avoiding predetars and obstacles in search of captured pangolins to save."
+		];		
+	}
+
+	override public function startLevel() {
+		FlxG.switchState(new LevelFive(_gameSave));
+	}
 }

@@ -1,12 +1,12 @@
 package;
 
-import Controls;
 import flixel.FlxG;
+import flixel.tweens.FlxTween;
+import flixel.FlxObject;
+import flixel.util.FlxColor;
+import Controls;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import flixel.FlxObject;
 
 // Internal
 import states.LevelState;
@@ -19,6 +19,7 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 	public var dialoguePrompt:DialoguePrompt; // Used to hide and show prompt in levels.
 	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
+	public var finishedConvo:Bool = false;
 
     /**
      * Create an NPC
@@ -97,6 +98,11 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 
 		if (_parentState.startingConvo) dialoguePrompt.hidePrompt(); // hide dialogue bubble
 	}  
+
+	override public function update(Elapsed:Float) {
+		super.update(Elapsed);
+		if (_dialogueBox.finishedConvo) finishedConvo = true;
+	}	
 }
 
 class NpcSprite extends FlxTypedGroup<FlxSprite> {

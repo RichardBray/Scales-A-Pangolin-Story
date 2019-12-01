@@ -167,7 +167,7 @@ class Toucan extends PacingEnemey {
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 220);
 		loadGraphic("assets/images/characters/Toucan.png", true, 192, 242);
-		updateSpriteHitbox(0, 220, this, [0, 110]);
+		updateSpriteHitbox(80, 230, this, [40, 130]);
 		updateValues(Name, Otype);	
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);			

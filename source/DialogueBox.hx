@@ -1,12 +1,12 @@
 package;
 
-import flixel.system.FlxSound;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 import flixel.FlxG;
+import flixel.system.FlxSound;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.tweens.FlxTween;
 import flixel.addons.display.shapes.FlxShapeBox;
 
 // Internal
@@ -24,7 +24,14 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	var _dialogueImage:FlxSprite;
 	var _sndDialogue:Null<FlxSound>;
 
+	public var finishedConvo:Bool = false;
+
 	final _heightFromBase:Int = 340;
+
+	// vars for spacing
+	final _spacingWidth:Int = 150;
+	final _spacingHeight:Int = 55;
+	final _distanceFromTop:Int = 30;	
 
 	/**
 	 * Dialogue Box constructor
@@ -54,56 +61,41 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false);
 
 		// Create the box
-		final spacingWidth:Int = 150;
-		final spacingHeight:Int = 55;
-
-		final dialogueBoxYPos:Float = DialogueBoxScreenTop 
-			? 0 + (spacingHeight * 2)
-			: FlxG.height - (_heightFromBase + spacingHeight);
 	 
 		_dialogueBox = new FlxShapeBox(
-			spacingWidth,
-			dialogueBoxYPos,
-			FlxG.width - (spacingWidth * 2),
-			_heightFromBase - spacingHeight,
+			_spacingWidth,
+			dialogueHeights(DialogueBoxScreenTop).dialogueBoxYPos,
+			FlxG.width - (_spacingWidth * 2),
+			_heightFromBase - _spacingHeight,
 			{ thickness:8, color:Constants.primaryColorLight }, 
 			Constants.primaryColor			
 		);		
 		add(_dialogueBox);
 
-		final distanceFromTop:Int = 30;
-		final dialogeBoxTextYPos:Float = DialogueBoxScreenTop
-			? 0 + (distanceFromTop * 2)
-			: FlxG.height - (_heightFromBase + distanceFromTop);
 		// Create the text
 		_dialogueBoxText = new FlxText(
-			spacingWidth + 20, 
-			dialogeBoxTextYPos, 
-			FlxG.width - (spacingWidth * 2), 
+			_spacingWidth + 20, 
+			dialogueHeights(DialogueBoxScreenTop).dialogeBoxTextYPos, 
+			FlxG.width - (_spacingWidth * 2), 
 			_dialogueArray[_arrTextNum]
 		);
 		_dialogueBoxText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, LEFT);
 		add(_dialogueBoxText);
 
-		final continueTextYPos:Float = DialogueBoxScreenTop ? 150 : FlxG.height - 150;
 		// Space to continue text
-		var cross:String = Constants.cross;
+		final cross:String = Constants.cross;
 		_continueText = new FlxText(
-			spacingWidth + 20, 
-			continueTextYPos, 
+			_spacingWidth + 20, 
+			dialogueHeights(DialogueBoxScreenTop).continueTextYPos, 
 			FlxG.width - 400, 
 			'Press $cross to continue'
 		);
 		_continueText.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, LEFT);
 		add(_continueText);
 
-		final dialougeImageYPos:Float = DialogueBoxScreenTop 
-			? _dialogueImage.height 
-			: (FlxG.height - 110) - _dialogueImage.height;
-
 		_dialogueImage.setPosition(
 			(FlxG.width - 154) - _dialogueImage.width, 
-			dialougeImageYPos
+			dialogueHeights(DialogueBoxScreenTop).dialougeImageYPos
 		);
 		add(_dialogueImage);
 
@@ -116,6 +108,24 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 		// Intialise controls
 		_controls = new Controls();		
+	}
+
+	function dialogueHeights(BoxAtTop:Bool) {
+		final boxAtTop = {
+			dialogueBoxYPos: 0 + (_spacingHeight * 2),
+			dialogeBoxTextYPos: 20 + (_spacingHeight * 2),
+			continueTextYPos: (_spacingWidth * 2) + 50,
+			dialougeImageYPos: 10 + (_dialogueImage.height / 2)  
+		}
+
+		var boxAtBottom = {
+			dialogueBoxYPos: FlxG.height - (_heightFromBase + _spacingHeight),
+			dialogeBoxTextYPos: FlxG.height - (_heightFromBase + _distanceFromTop),
+			continueTextYPos: FlxG.height - 150,
+			dialougeImageYPos: (FlxG.height - 110) - _dialogueImage.height
+		}
+
+		return BoxAtTop ? boxAtTop : boxAtBottom;
 	}
 
 	public function showBox() {
@@ -155,6 +165,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 			if (_arrTextNum == _dialogueArray.length) {
 				this.revertUI();
+				finishedConvo = true;
 			} else {
 				_dialogueBoxText.text = _dialogueArray[_arrTextNum];
 				_dialogueBoxText.applyMarkup(_dialogueArray[_arrTextNum], [new FlxTextFormatMarkerPair(_primaryText, "<pt>")]);

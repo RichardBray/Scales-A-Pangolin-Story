@@ -23,6 +23,7 @@ class Player extends FlxSprite {
 	public var isAscending:Bool = false; // Indicates is player ascending or descending in jump
 	public var facingTermiteHill:Bool = false; // When player is colliding with termite hill
 	public var playerIsDigging:Bool = false; // When player is digging termite hill
+	public var pangoAttached:Bool = false;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -41,11 +42,16 @@ class Player extends FlxSprite {
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
 		// Animations
-		animation.add("idle", [for (i in 24...30) i], 8, true);
-		animation.add("run", [for (i in 0...5) i], 12, false);
-		animation.add("jump", [for (i in 11...23) i], 12, false);
-		animation.add("jumpLoop", [16, 17, 18], 12, true);
-		animation.add("digging", [for (i in 36...40) i], 8, true);
+		animation.add("run", [for (i in 0...5) i], 12);		
+		animation.add("idle", [for (i in 24...30) i], 8);
+		animation.add("jumpLoop", [17, 18, 19], 12);
+		animation.add("digging", [for (i in 36...40) i], 8);
+
+		// Anims with purple pango - pp
+		animation.add("run_pp", [for (i in 60...65) i], 12);
+		animation.add("idle_pp", [for (i in 84...90) i], 8);		
+		animation.add("jumpLoop_pp", [77, 78, 79], 12);
+		animation.add("digging_pp", [for (i in 96...100) i], 8);
 
 		// Sounds
 		_sndJump = FlxG.sound.load("assets/sounds/player/jump.ogg", .7);
@@ -75,6 +81,12 @@ class Player extends FlxSprite {
 		_sndHurt.play();
 	}
 
+	function animationName(Name:String):String {
+		var suffix:String = "";
+		if (pangoAttached) suffix = "_pp";
+		return '$Name$suffix';
+	}
+
 	function playerMovement() {
 		final SPEED:Int = 1800;
 		var _left = _controls.left.check();
@@ -91,12 +103,12 @@ class Player extends FlxSprite {
 				acceleration.x = _left ? -SPEED : SPEED;
 				facing = _left ? FlxObject.LEFT : FlxObject.RIGHT; // facing = variable from FlxSprite
 				if (isTouching(FlxObject.FLOOR)) {
-					animation.play("run");
+					animation.play(animationName("run"));
 					_sndRun.play(false, 0.4);
 					offset.x = _left ? 12 : 165;
 				}
 			} else if (isTouching(FlxObject.FLOOR)) {
-				animation.play("idle");
+				animation.play(animationName("idle"));
 				offset.x = facing == FlxObject.LEFT ? 12 : 165;
 			}
 			if (_left && _right) {
@@ -108,10 +120,10 @@ class Player extends FlxSprite {
 				offset.x = 80;
 				isJumping = true;
 				velocity.y = -800; // 1100
-				animation.play("jumpLoop");
+				animation.play(animationName("jumpLoop"));
 			}
 			if (isGoindDown) {
-				animation.play("jumpLoop");
+				animation.play(animationName("jumpLoop"));
 				isJumping = true;
 			}
 		}
@@ -136,7 +148,7 @@ class Player extends FlxSprite {
 		if (facingTermiteHill && _controls.triangle.check()) {
 			preventMovement = true;
 			playerIsDigging = true;
-			animation.play("digging");
+			animation.play(animationName("digging"));
 
 			// Allow movement after one second
 			haxe.Timer.delay(() -> {

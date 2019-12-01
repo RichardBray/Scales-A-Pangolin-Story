@@ -17,10 +17,12 @@ class PurplePango extends FlxSprite {
     animation.add("idle", [for (i in 0...4) i], 8, true);
   }
 
-  function jumpToPlayer(PlayerDirection:Int) {
-    velocity.y = -400;
-    velocity.x = (PlayerDirection == FlxObject.RIGHT) ? 400 : -400;
-    haxe.Timer.delay(() -> kill(), 1000);
+  public function jumpToPlayer(PlayerDirection:Int) {
+    final jumpHeight:Int = 700;
+    velocity.y = -jumpHeight;
+    haxe.Timer.delay(() -> velocity.y = jumpHeight + 100, 200);
+    velocity.x = (PlayerDirection == FlxObject.RIGHT) ? -jumpHeight : jumpHeight;
+    haxe.Timer.delay(() -> kill(), 400);
   }
 
   override public function update(Elapsed:Float) {
