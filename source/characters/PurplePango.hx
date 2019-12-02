@@ -5,7 +5,7 @@ import flixel.FlxSprite;
 
 class PurplePango extends FlxSprite {
   public var enableGravity:Bool = false;
-  final GRAVITY:Float = Constants.worldGravity;
+  final GRAVITY:Float = Constants.worldGravity - 500;
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
@@ -18,7 +18,7 @@ class PurplePango extends FlxSprite {
   }
 
   public function jumpToPlayer(PlayerDirection:Int) {
-    final jumpHeight:Int = 700;
+    final jumpHeight:Int = 800;
     velocity.y = -jumpHeight;
     haxe.Timer.delay(() -> velocity.y = jumpHeight + 100, 200);
     velocity.x = (PlayerDirection == FlxObject.RIGHT) ? -jumpHeight : jumpHeight;

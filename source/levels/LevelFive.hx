@@ -19,6 +19,10 @@ class LevelFive extends LevelState {
   var _teleport:FlxObject;
   var _bonusLevel:FlxObject;
 
+  // Cave
+  var _caveForeground:FlxSprite;
+  var _caveBackground:FlxSprite;
+
   // Caged Pango
   var _cagedPangolin:CagedPangolin;
   var _cagedPangoCollision:FlxObject;
@@ -49,23 +53,30 @@ class LevelFive extends LevelState {
     // TODO: Make music for level five
     createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one");
 
+    _caveBackground = new FlxSprite(14174, 718).loadGraphic(
+      "assets/images/environments/L2_Cave-01.png", false, 1920, 1080);
+    add(_caveBackground);
+
+    _caveForeground = new FlxSprite(14176, 720).loadGraphic(
+      "assets/images/environments/L2_Cave-02.png", false, 1920, 1080);
+
     _teleport = new FlxObject(3362, 1674, 193, 227);
     add(_teleport);
 
     _bonusLevel = new FlxObject(14174, (1920 - 718), 1920, 1080);
-    add(_bonusLevel);
+    add(_bonusLevel); 
 
-    _cagedPangoCollision = new FlxSprite(12612, 1086).makeGraphic(115, 20, FlxColor.TRANSPARENT);
+    _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 20, FlxColor.TRANSPARENT);
     _cagedPangoCollision.immovable = true;
     add(_cagedPangoCollision);
 
-    _cagedPangolin = new CagedPangolin(12517, 840);
+    _cagedPangolin = new CagedPangolin(12145, (1415 - 416));
     add(_cagedPangolin);
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
-		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/PANGO.png", false, 415, 254);
+		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/purple_pango.png", false, 415, 254);
 
-    _purplePango = new PurplePango(12651, 1214);
+    _purplePango = new PurplePango(12270, 1250);
     _purplePango.alpha = 0;
 
 		// Add NPC Text
@@ -78,21 +89,24 @@ class LevelFive extends LevelState {
 		]; 
 
 		_pangoNPC = new NPC(
-			12651, 
+			12300, 
 			1500, 
 			pangoText, 
 			_purplePango, 
 			this, 
-      [3, 1],
+      [2, 1],
 			_pangoDialogueImage,
 			"mama_dialogue",
       true      
 		);
 		add(_pangoNPC);	    
   
-  		// Add player
-		// createPlayer(172, 1439);  
-    createPlayer(12042, 1369);
+  	// Add player
+		createPlayer(172, 1439);  
+    // createPlayer(12042, 1369);
+    add(_caveForeground);
+
+    // Add HUD
     createHUD(0, player.health, _goalData);  
   
     // Save game on load
@@ -118,8 +132,8 @@ class LevelFive extends LevelState {
   }
 
   function exitBouns() {
-    // Put level dimentions back
-    // Follow the player
+    updateMapDimentions(FlxG.width + 10, 0);
+    FlxG.camera.follow(player, PLATFORMER, 1);
   }
 
   function killCageAndCollision(_, _) {
@@ -127,11 +141,11 @@ class LevelFive extends LevelState {
       player.velocity.y = 450; // Bounce player
       _cagedPangolin.kill();
       _cagedPangoCollision.kill();
-
+      _purplePango.enableGravity = true;
       haxe.Timer.delay(() -> {
         _purplePango.alpha = 1;
-        _purplePango.enableGravity = true;
-      }, 200);
+
+      }, 150);
 
       haxe.Timer.delay(() -> _pangoFreed = true, 300);
     }
@@ -170,7 +184,7 @@ class LevelFive extends LevelState {
       haxe.Timer.delay(() -> {
         _pangoNPC.kill();
         player.pangoAttached = true;
-      }, 500);
+      }, 400);
     }
 
     if (startingConvo) {
@@ -193,7 +207,7 @@ class IntroFive extends IntroState {
 		super();
 		_gameSave = GameSave;
 		facts = [
-			"So our hero continued to travel through the jungle.",
+			"So our hero continues to travel through the jungle.",
 			"Avoiding predetars and obstacles in search of captured pangolins to save."
 		];		
 	}
