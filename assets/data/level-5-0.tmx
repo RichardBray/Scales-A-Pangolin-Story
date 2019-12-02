@@ -48,7 +48,6 @@
   <object id="150" gid="8" x="12221.8" y="1808.5" width="974" height="247"/>
   <object id="151" gid="8" x="13193.8" y="1808.5" width="974" height="247"/>
   <object id="159" name="right" type="12" gid="13" x="10015.4" y="1395.04" width="139" height="88"/>
-  <object id="165" type="14" gid="41" x="8271.49" y="1280.79" width="313" height="331"/>
   <object id="168" name="left" type="10" gid="13" x="3105.49" y="1575.14" width="139" height="88"/>
   <object id="178" name="right" type="4" gid="10" x="879.633" y="1575.91" width="47" height="39"/>
   <object id="179" name="right" type="5" gid="11" x="1390.17" y="1201.05" width="36" height="15"/>

@@ -18,6 +18,7 @@ class LevelFive extends LevelState {
   var _goalData:Array<GoalData>;
   var _teleport:FlxObject;
   var _bonusLevel:FlxObject;
+  var _bonusLevelExit:FlxObject;
 
   // Cave
   var _caveForeground:FlxSprite;
@@ -65,6 +66,9 @@ class LevelFive extends LevelState {
 
     _bonusLevel = new FlxObject(14174, (1920 - 718), 1920, 1080);
     add(_bonusLevel); 
+
+    _bonusLevelExit = new FlxObject(15934, 1060, 146, 183);
+    add(_bonusLevelExit);
 
     _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 20, FlxColor.TRANSPARENT);
     _cagedPangoCollision.immovable = true;
@@ -131,7 +135,7 @@ class LevelFive extends LevelState {
     _pangoNPC.initConvo(Player, Pango);
   }
 
-  function exitBouns() {
+  function exitBouns(_, _) {
     updateMapDimentions(FlxG.width + 10, 0);
     FlxG.camera.follow(player, PLATFORMER, 1);
   }
@@ -169,6 +173,7 @@ class LevelFive extends LevelState {
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);  
 
     FlxG.overlap(player, _teleport, moveToBonus);
+    FlxG.overlap(player, _bonusLevelExit, exitBouns);
     FlxG.overlap(player, _cagedPangoCollision, killCageAndCollision);
 
     if (_pangoFreed) {
