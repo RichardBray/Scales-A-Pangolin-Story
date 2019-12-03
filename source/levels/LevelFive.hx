@@ -51,23 +51,23 @@ class LevelFive extends LevelState {
   override public function create() {
     levelName = "Level-5-0";
 
-    // TODO: Make music for level five
-    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one");
-
     _caveBackground = new FlxSprite(14174, 718).loadGraphic(
       "assets/images/environments/L2_Cave-01.png", false, 1920, 1080);
     add(_caveBackground);
+  
+    // TODO: Make music for level five
+    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one", 1);
 
     _caveForeground = new FlxSprite(14176, 720).loadGraphic(
       "assets/images/environments/L2_Cave-02.png", false, 1920, 1080);
 
-    _teleport = new FlxObject(3362, 1674, 193, 227);
+    _teleport = new FlxObject(3362, 1718, 193, 184);
     add(_teleport);
 
     _bonusLevel = new FlxObject(14174, (1920 - 718), 1920, 1080);
     add(_bonusLevel); 
 
-    _bonusLevelExit = new FlxObject(15934, 1060, 146, 183);
+    _bonusLevelExit = new FlxObject(16066, 1065, 27, 183);
     add(_bonusLevelExit);
 
     _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 20, FlxColor.TRANSPARENT);
@@ -106,7 +106,7 @@ class LevelFive extends LevelState {
 		add(_pangoNPC);	    
   
   	// Add player
-		createPlayer(172, 1439);  
+		createPlayer(368, 1470);  
     // createPlayer(12042, 1369);
     add(_caveForeground);
 
@@ -129,6 +129,8 @@ class LevelFive extends LevelState {
     player.setPosition(14974, 842);
     player.animation.play("jumpLoop");
     FlxG.camera.follow(_bonusLevel, PLATFORMER, 1);
+    // Hide all background images
+    levelBgs.forEach((Member:FlxSprite) -> Member.alpha = 0);
   }
 
   function pangoTalking(Player:Player, Pango:PurplePango) {
@@ -137,7 +139,12 @@ class LevelFive extends LevelState {
 
   function exitBouns(_, _) {
     updateMapDimentions(FlxG.width + 10, 0);
+    player.setPosition(3362, 1525);
+    player.animation.play("jumpLoop");
+    player.velocity.y = -800;
     FlxG.camera.follow(player, PLATFORMER, 1);
+    // Show all background images
+    levelBgs.forEach((Member:FlxSprite) -> Member.alpha = 1);
   }
 
   function killCageAndCollision(_, _) {
@@ -146,10 +153,7 @@ class LevelFive extends LevelState {
       _cagedPangolin.kill();
       _cagedPangoCollision.kill();
       _purplePango.enableGravity = true;
-      haxe.Timer.delay(() -> {
-        _purplePango.alpha = 1;
-
-      }, 150);
+      haxe.Timer.delay(() -> _purplePango.alpha = 1, 150);
 
       haxe.Timer.delay(() -> _pangoFreed = true, 300);
     }

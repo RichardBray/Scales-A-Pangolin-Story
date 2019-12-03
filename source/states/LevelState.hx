@@ -27,7 +27,6 @@ import components.Lava;
 
 class LevelState extends GameState {
 	// Level
-	var _levelBgs:FlxTypedGroup<FlxSprite>;
 	var _mapEntities:FlxSpriteGroup;
 	var _termiteHills:FlxSpriteGroup;
 	var _map:Null<TiledMap>;
@@ -67,6 +66,7 @@ class LevelState extends GameState {
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
 	public var levelName:String; // Give level unique name
 	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
+	public var levelBgs:FlxTypedGroup<FlxSprite>; // Hide background on bonus levels
 
 	override public function create() {
 		bgColor = 0xffBDEDE1; // Game background color
@@ -107,12 +107,13 @@ class LevelState extends GameState {
 	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
 	 * @param 	Background 	Parallax background image name.
 	 * @param 	IntroMusic	What music to play for the into.
-	 * @param 	HiddenSections	How much extra the level has to hide
+	 * @param 	TrimmBgSprite	How many bg sprites to remove from level for bonus.
 	 */
 	public function createLevel(
 		MapFile:String, 
 		Background:String, 
-		?IntroMusic:Null<String>
+		?IntroMusic:Null<String>,
+		?TrimmBgSprite:Int
 	) {
 		// Tiles for collisions
 		_collisionImg = "assets/images/collisions.png";
@@ -131,19 +132,18 @@ class LevelState extends GameState {
 			var bgWidth:Float = new FlxSprite(0, 0, bgPath).width;
 			var bgScale:Float = 1;
 			var bgSpritesNeeded:Int = Std.int(_map.fullWidth / (bgWidth * bgScale));
-
-			_levelBgs = new FlxTypedGroup<FlxSprite>();
+			
+			levelBgs = new FlxTypedGroup<FlxSprite>();
 			// Fix for if level width is smaller than the bg width
 			if (bgSpritesNeeded == 0) bgSpritesNeeded = 1;
 
 			for (i in 0...bgSpritesNeeded) {
 				var _levelBg:FlxSprite = new FlxSprite(((bgWidth * bgScale) * i), 400, bgPath);
 				_levelBg.scale.set(bgScale, bgScale);
-				_levelBg.alpha = 0.75;
 				_levelBg.scrollFactor.set(0.3, 1);
-				_levelBgs.add(_levelBg);
+				levelBgs.add(_levelBg);
 			}
-			return _levelBgs;
+			return levelBgs;
 		}
 
 		add(renderBgSprites());
