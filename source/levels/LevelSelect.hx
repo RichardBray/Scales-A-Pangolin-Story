@@ -1,5 +1,6 @@
 package levels;
 
+import levels.LevelFive.IntroFive;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.system.FlxSound;
@@ -57,7 +58,6 @@ class LevelSelect extends GameState {
 
   override public function create() {
     super.create();
-    bgColor = 0xffBDEDE1;
     FlxG.sound.music.play();
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
   
@@ -99,7 +99,7 @@ class LevelSelect extends GameState {
         x: 118,
         y: 114,
         locked:true,
-        onSelect:() -> FlxG.switchState(new LevelFive(_gameSave))
+        onSelect:() -> FlxG.switchState(new LevelFive.IntroFive(_gameSave))
       },
       {
         x: 594,

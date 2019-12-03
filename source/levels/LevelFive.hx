@@ -114,7 +114,7 @@ class LevelFive extends LevelState {
     createHUD(0, player.health, _goalData);  
   
     // Save game on load
-    // if (_gameSave != null) _gameSave = saveGame(_gameSave);
+    if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();
 
     // Restrict level width to hide bonus level on load
@@ -126,8 +126,10 @@ class LevelFive extends LevelState {
    */
   function moveToBonus(Player:Player, Teleport:FlxObject) {
     updateMapDimentions(0, 0);
+    // Player jumps down hole
     player.setPosition(14974, 842);
     player.animation.play("jumpLoop");
+    // Follow level not plauer
     FlxG.camera.follow(_bonusLevel, PLATFORMER, 1);
     // Hide all background images
     levelBgs.forEach((Member:FlxSprite) -> Member.alpha = 0);
