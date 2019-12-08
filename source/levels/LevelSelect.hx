@@ -87,7 +87,7 @@ class LevelSelect extends GameState {
         0, 
         80, 			
         { thickness:10, color:Constants.secondaryColor }, 
-			  FlxColor.TRANSPARENT);
+			  Constants.primaryColor);
     add(_levelPointer);
 
     _levelPos = [

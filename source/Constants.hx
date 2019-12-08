@@ -37,6 +37,7 @@ class Constants {
 
 	// Music lengths
 	public static final levelSelectMusic:Int = 61902;
+	public static final titleMusic:Int = 40137;
 
 	// Used to load levels from saves and restart levels
 	public static final levelNames:Map<String, Class<LevelState>> = [

@@ -72,7 +72,11 @@ class LevelState extends GameState {
 		bgColor = 0xffBDEDE1; // Game background color
 
 		// Continue music if it's already playing
-		if (FlxG.sound.music == null || FlxG.sound.music.length == Constants.levelSelectMusic) {
+		if (
+			FlxG.sound.music == null || 
+			FlxG.sound.music.length == Constants.levelSelectMusic ||
+			FlxG.sound.music.length == Constants.titleMusic
+		) {
 			playMusic("assets/music/jungle-sound.ogg");
 		}
 

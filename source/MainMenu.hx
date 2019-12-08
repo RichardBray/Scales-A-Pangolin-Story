@@ -40,10 +40,6 @@ class MainMenu extends GameState {
 	// Sound
 	var _sndSelect:FlxSound;
 
-	public function new() {
-		super();
-	}
-
 	override public function create() {
 		// Save data
 		_gameSave = new FlxSave(); // initialize
@@ -120,7 +116,9 @@ class MainMenu extends GameState {
 		// Sounds
 		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 
-		super.create();		
+		super.create();	
+
+		FlxG.sound.playMusic("assets/music/title_music.ogg", 0.9, false);	
 	}
 
 	/**
@@ -231,7 +229,8 @@ class HLScreen extends GameState {
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
 		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
 		add(_logo);
-		FlxG.camera.antialiasing = true;
+
+		// FlxG.camera.antialiasing = true;
 	}
 
 	function finishTimer(_) { 
