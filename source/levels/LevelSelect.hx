@@ -33,6 +33,7 @@ class LevelSelect extends GameState {
   var _grpLevelNames:FlxTypedGroup<FlxText>;
   var _grpLevelPadlocks:FlxSpriteGroup;
 	var _bottomLeft:FlxText;  
+  var _modalNum:Int;
 
 	// Sounds
 	var _sndMove:FlxSound;
@@ -55,12 +56,15 @@ class LevelSelect extends GameState {
   var _levelPos:Array<LevelData>;
   // Remove after save game is added END
 
-  public function new(?GameSave:FlxSave) {
+  public function new(?GameSave:FlxSave, ?ModalNum:Int) {
     super();
     if (GameSave != null) {
       _gameSave = GameSave;
-      if (_gameSave.data.enableLevelSelect == null) _gameSave.data.enableLevelSelect = true;
+      _gameSave.data.enableLevelSelect = true;
+      _gameSave.flush();
     }
+
+    if (ModalNum != null) _modalNum = ModalNum;
 
 		//Sounds
 		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
@@ -69,7 +73,6 @@ class LevelSelect extends GameState {
 
   override public function create() {
     super.create();
-    FlxG.sound.music.play();
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
   
     _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/backgrounds/test_map.jpg", false, 1920, 1080);
@@ -143,7 +146,7 @@ class LevelSelect extends GameState {
         level.y, 
         80, 			
         { thickness:6, color:FlxColor.WHITE }, 
-			  Constants.primaryColor);
+			  FlxColor.TRANSPARENT);
       levelIndicator.scrollFactor.set(0, 0);
       // Add data from save
       _grpLevelIndicators.add(levelIndicator); 
@@ -161,10 +164,11 @@ class LevelSelect extends GameState {
       // Level padlocks
       // once saved data is in ternary line will be _savedLevelData[idx].locked
       final padImgWidth:Int = 30;
-      final oadImgHeight:Int = 42; 
+      final padImgHeight:Int = 42; 
       var levelPadlock:FlxSprite = new FlxSprite(
-        level.x + (_levelPointer.width / 2) - 15, 
-        level.y + (_levelPointer.height / 2) - 21).loadGraphic("assets/images/icons/padlock.png", false, 30, 42);
+        level.x + (_levelPointer.width / 2) - (padImgWidth / 2), 
+        level.y + (_levelPointer.height / 2) - (padImgHeight / 2)).loadGraphic(
+          "assets/images/icons/padlock.png", false, padImgWidth, padImgHeight);
       levelPadlock.alpha = level.locked ? 1 : 0;
       _grpLevelPadlocks.add(levelPadlock);
     });        
@@ -179,21 +183,15 @@ class LevelSelect extends GameState {
   }
 
   function startModal() {
-    var trueValue:Null<Int> = 0;
-
-    for (levelBool in _levelSelect) {
-      if (levelBool) trueValue++;
-    }    
-
-    if (trueValue != null) {
+    if (_modalNum != null) {
       var modalText:Array<String> = [
         "Welcome to the level select screen. Here you will be able to freely roam the jungle and pick whatever level you want.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
         "Congratulations! You've completed all the levels"
       ];      
-      var _modal:MainMenuModal = new MainMenuModal(modalText[trueValue - 1], null, true, "Press E to close");
-      openSubState(_modal);      
-    }
+      var _modal:MainMenuModal = new MainMenuModal(modalText[_modalNum], null, true, "Press E to close");
+      openSubState(_modal);   
+    }   
   }
 
 

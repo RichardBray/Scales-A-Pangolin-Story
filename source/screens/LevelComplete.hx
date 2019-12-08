@@ -33,10 +33,12 @@ class LevelComplete extends FlxSubState {
   var _levelNames:Map<String, String>;
   var _totalBugsCollected:Int;
   var _totalEnemiesKilled:Int;
+  var _levelSelectModalNum:Int;
 
-  public function new(?GameSave:FlxSave) {
+  public function new(?GameSave:FlxSave, ?LevelSelectModalNum:Int) {
     super();
     _gameSave = GameSave;
+    _levelSelectModalNum = LevelSelectModalNum;
 
     _levelTotals = [
       "Level-4-0" => [74, 10]
@@ -56,13 +58,14 @@ class LevelComplete extends FlxSubState {
 
     return Std.int(value / total * 100);
   }
+
   override public function create() {
     var levelToRestart:Class<states.LevelState> = Helpers.restartLevel(_gameSave.data.levelName);
     // Spaces before menu items is for menu pointer spacing
     var _menuData:Array<MenuData> = [
       {
         title: "  Continue",
-        func: () -> FlxG.switchState(new levels.LevelSelect(_gameSave))
+        func: () -> FlxG.switchState(new levels.LevelSelect(_gameSave, _levelSelectModalNum))
       },
       {
         title: "  Restart Level",

@@ -23,6 +23,7 @@ class PauseMenu extends FlxSubState {
 	var _menu:Menu;
 	var _grpMenuItems:FlxSpriteGroup;
 	var _controls:Controls;
+	var _gameSave:FlxSave;
 	
 	// Sounds
 	var _sndClose:FlxSound;
@@ -35,6 +36,7 @@ class PauseMenu extends FlxSubState {
 		super();
 		var _boxXPos:Float = (FlxG.width / 2) - (_menuWidth / 2);
 		_grpMenuItems = new FlxSpriteGroup();
+		_gameSave = GameSave;
 
 		// Opaque black background overlay
 		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x9c000000);
@@ -59,6 +61,7 @@ class PauseMenu extends FlxSubState {
 		_grpMenuItems.add(_menuTitle);
 
 		var restartMenuOption:Array<MenuData>;
+		var levelSelectMenuOption:Array<MenuData>;
 		// null means it's the level select screen
 		if (LevelString != null) {
 			// Maps string to class from `levelNames` in constants
@@ -71,6 +74,14 @@ class PauseMenu extends FlxSubState {
 					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
 				},
 				itemPos: 2
+			}];
+			// TODO Finish this
+			levelSelectMenuOption = [{
+				title: "Level Select",
+				func: () -> {
+					FlxG.switchState(new levels.LevelSelect(_gameSave));
+				},
+				itemPos: 3				
 			}];
 		}
 
@@ -87,7 +98,7 @@ class PauseMenu extends FlxSubState {
 					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
 					openSubState(_instructions);
 				},
-				itemPos: 3
+				itemPos: 4
 			},
 			{
 				title: "Quit",
@@ -95,7 +106,7 @@ class PauseMenu extends FlxSubState {
 					var quitMenu:QuitMenu = new QuitMenu();
 					openSubState(quitMenu);
 				},
-				itemPos: 4
+				itemPos: 5
 			}
 		];
 
@@ -104,6 +115,8 @@ class PauseMenu extends FlxSubState {
 			? _standardMenuItems.concat(restartMenuOption)
 			: _standardMenuItems;
 
+		if (_gameSave.data.enableLevelSelect && LevelString != null) _menuData = _menuData.concat(levelSelectMenuOption);
+
 		if (PlayerDied) _menuData.shift(); // Remove `RESUME` options if player died
 
 		// Reorder menu items mainly post concatination
@@ -111,7 +124,7 @@ class PauseMenu extends FlxSubState {
 			return a.itemPos - b.itemPos;
 		});
 
-		_menu = new Menu(_boxXPos, _menuTitle.y + 150, _menuWidth, _menuData, true);
+		_menu = new Menu(_boxXPos, _menuTitle.y + 120, _menuWidth, _menuData, true);
 
 		// Fix members to the screen
 		_grpMenuItems.forEach((_member:FlxSprite) -> {

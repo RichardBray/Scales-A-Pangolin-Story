@@ -90,7 +90,7 @@ class LevelFour extends LevelState {
 
 	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave, 0);
 		openSubState(_levelCompleteState);			
 	}
 
