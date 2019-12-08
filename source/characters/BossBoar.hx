@@ -84,11 +84,6 @@ class BossBoar extends Enemy {
     }
   }  
 
-  function midRunPace() {
-    if (_randomStopNumber == 5) {
-      trace("stop running!!");
-    }     
-  }
 
   /**
    * Boar has spotted player, so it roars and starts attacking.
@@ -98,7 +93,6 @@ class BossBoar extends Enemy {
 
     if (_attackMode) {
       if (_boarCharged) {
-        midRunPace();
         running();
       } else {
         // Boar roars
