@@ -81,12 +81,15 @@ class LevelFour extends LevelState {
 
 		// Save game on load
 		// _gameSave = saveGame(_gameSave);
-
-    super.create();        
+		_gameSave = new FlxSave();
+		_gameSave.bind("AutoSave");
+		_gameSave = saveGame(_gameSave, [0, 0]);  
+    super.create();  
+		    
   }
 
 	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
-		_gameSave = endOfLevelSave(_gameSave, 20, 20);
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
 		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
 		openSubState(_levelCompleteState);			
 	}

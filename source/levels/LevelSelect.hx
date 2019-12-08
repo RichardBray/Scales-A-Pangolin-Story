@@ -1,20 +1,25 @@
 package levels;
 
-import levels.LevelFive.IntroFive;
+import flixel.text.FlxText;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.system.FlxSound;
 import flixel.util.FlxSave;
-import states.GameState;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.addons.display.shapes.FlxShapeCircle;
+
+import levels.LevelFive.IntroFive;
+import states.GameState;
+
 
 using Lambda;
 
 typedef LevelData = {
   x:Int,
   y:Int,
+  name:String,
   locked:Bool,
   ?onSelect:Void -> Void
 };
@@ -25,13 +30,16 @@ class LevelSelect extends GameState {
   var _levelPointer:FlxShapeCircle; //FlxSprite;
   var _gameSave:FlxSave;
   var _mapBg:FlxSprite;
+  var _grpLevelNames:FlxTypedGroup<FlxText>;
+  var _grpLevelPadlocks:FlxSpriteGroup;
+	var _bottomLeft:FlxText;  
 
 	// Sounds
 	var _sndMove:FlxSound;
 	var _sndSelect:FlxSound;
 
   // Remove after save game is added START
-  var _lastCompletedLevel:Int = 1;
+  var _lastCompletedLevel:Int = 0;
   var _savedLevelData:Dynamic = [
     {
       locked: false,
@@ -49,7 +57,10 @@ class LevelSelect extends GameState {
 
   public function new(?GameSave:FlxSave) {
     super();
-    if (GameSave != null) _gameSave = GameSave;
+    if (GameSave != null) {
+      _gameSave = GameSave;
+      if (_gameSave.data.enableLevelSelect == null) _gameSave.data.enableLevelSelect = true;
+    }
 
 		//Sounds
 		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
@@ -65,20 +76,12 @@ class LevelSelect extends GameState {
     add(_mapBg);
 
     _grpLevelIndicators = new FlxSpriteGroup();
-
-    _levelPos.mapi((idx:Int, level:LevelData) -> {
-      var levelIndicator:FlxShapeCircle = new FlxShapeCircle(
-        level.x, 
-        level.y, 
-        80, 			
-        { thickness:6, color:FlxColor.WHITE }, 
-			  Constants.primaryColor);
-      levelIndicator.scrollFactor.set(0, 0);
-      // Add data from save
-      _grpLevelIndicators.add(levelIndicator);        
-    });
+    _grpLevelPadlocks = new FlxSpriteGroup();
+    _grpLevelNames = new FlxTypedGroup<FlxText>();    
 
     add(_grpLevelIndicators);
+    add(_grpLevelPadlocks);
+    add(_grpLevelNames);
 
     _levelPointer = new FlxShapeCircle(
         0, 
@@ -92,41 +95,82 @@ class LevelSelect extends GameState {
       {
         x: 230,
         y: 544,
-        locked:true,
+        name: "Level 1",
+        locked:false,
         onSelect:() -> FlxG.switchState(new LevelOne(_gameSave))
       },
       {
         x: 118,
         y: 114,
-        locked:true,
+        name: "Level 2",
+        locked:false,
         onSelect:() -> FlxG.switchState(new LevelFive.IntroFive(_gameSave))
       },
       {
         x: 594,
         y: 207,
+        name: "Level 3",
         locked:true,
         onSelect:() -> trace("level three")
       },
       {
         x: 1251,
         y: 567,
+        name: "Level 4",
         locked:true,
         onSelect:() -> trace("level four")
       },
       {
         x: 1561,
         y: 307,
+        name: "Level 5",
         locked:true,
         onSelect:() -> trace("level five")
       },
       {
         x: 1610,
         y: 778,
+        name: "Home",
         locked:true,
         onSelect:() -> trace("level six")
       }                     
-    ];      
+    ];  
 
+    _levelPos.mapi((idx:Int, level:LevelData) -> {
+      // Level circle shape
+      var levelIndicator:FlxShapeCircle = new FlxShapeCircle(
+        level.x, 
+        level.y, 
+        80, 			
+        { thickness:6, color:FlxColor.WHITE }, 
+			  Constants.primaryColor);
+      levelIndicator.scrollFactor.set(0, 0);
+      // Add data from save
+      _grpLevelIndicators.add(levelIndicator); 
+
+      // Level text 
+      var levelName:FlxText = new FlxText(
+        level.x, 
+        (level.y - 50), 
+        150, 
+        level.name
+      );
+      levelName.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, CENTER);
+      _grpLevelNames.add(levelName); 
+
+      // Level padlocks
+      // once saved data is in ternary line will be _savedLevelData[idx].locked
+      final padImgWidth:Int = 30;
+      final oadImgHeight:Int = 42; 
+      var levelPadlock:FlxSprite = new FlxSprite(
+        level.x + (_levelPointer.width / 2) - 15, 
+        level.y + (_levelPointer.height / 2) - 21).loadGraphic("assets/images/icons/padlock.png", false, 30, 42);
+      levelPadlock.alpha = level.locked ? 1 : 0;
+      _grpLevelPadlocks.add(levelPadlock);
+    });        
+
+		_bottomLeft = new Menu.BottomLeft();
+		add(_bottomLeft);
     // Intialise controls
     _controls = new Controls();
 
@@ -138,18 +182,16 @@ class LevelSelect extends GameState {
     var trueValue:Null<Int> = 0;
 
     for (levelBool in _levelSelect) {
-      if (!levelBool) {
-        trueValue++;
-      }
+      if (levelBool) trueValue++;
     }    
 
     if (trueValue != null) {
-      var modalTest:Array<String> = [
-        "Welcome to the level select screen",
+      var modalText:Array<String> = [
+        "Welcome to the level select screen. Here you will be able to freely roam the jungle and pick whatever level you want.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
         "Congratulations! You've completed all the levels"
       ];      
-      var _modal:MainMenuModal = new MainMenuModal(modalTest[trueValue], null, true, "Press E to close");
+      var _modal:MainMenuModal = new MainMenuModal(modalText[trueValue - 1], null, true, "Press E to close");
       openSubState(_modal);      
     }
   }
