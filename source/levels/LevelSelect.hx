@@ -33,7 +33,7 @@ class LevelSelect extends GameState {
   var _grpLevelNames:FlxTypedGroup<FlxText>;
   var _grpLevelPadlocks:FlxSpriteGroup;
 	var _bottomLeft:FlxText;  
-  var _modalNum:Int;
+  var _modalNum:Null<Int>;
 
 	// Sounds
 	var _sndMove:FlxSound;
