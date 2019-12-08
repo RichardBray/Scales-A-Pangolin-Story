@@ -9,7 +9,7 @@ import flixel.tweens.FlxTween;
 
 class Bug extends FlxSprite {
 	var _seconds:Float = 0;
-	var _randomSeconds = Std.random(3) + 3; // Random seconds between 3-5 for bug movement time
+	final _randomSeconds = Std.random(3) + 3; // Random seconds between 3-5 for bug movement time
 	var _distance:Int;
 	var _facingDirection:Bool;
 

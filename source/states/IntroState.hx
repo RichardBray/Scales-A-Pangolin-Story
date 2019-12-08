@@ -25,8 +25,8 @@ class IntroState extends GameState {
 		super.create();
 		bgColor = 0xff04090C; // 04090C
 
-		FlxG.sound.music.stop();
-		
+		if (FlxG.sound.music != null) FlxG.sound.music.stop();
+
 		_factText = new FlxText(
 			(FlxG.width / 2) - (_textWidth / 2), 
 			(FlxG.height / 2) - 100, 

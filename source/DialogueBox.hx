@@ -112,16 +112,16 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 
 	function dialogueHeights(BoxAtTop:Bool) {
 		final boxAtTop = {
-			dialogueBoxYPos: 0 + (_spacingHeight * 2),
-			dialogeBoxTextYPos: 20 + (_spacingHeight * 2),
 			continueTextYPos: (_spacingWidth * 2) + 50,
-			dialougeImageYPos: 10 + (_dialogueImage.height / 2)  
+			dialogeBoxTextYPos: 20 + (_spacingHeight * 2),
+			dialogueBoxYPos: 0 + (_spacingHeight * 2),
+			dialougeImageYPos: 8 + (_dialogueImage.height / 2)  
 		}
 
-		var boxAtBottom = {
-			dialogueBoxYPos: FlxG.height - (_heightFromBase + _spacingHeight),
-			dialogeBoxTextYPos: FlxG.height - (_heightFromBase + _distanceFromTop),
+		final boxAtBottom = {
 			continueTextYPos: FlxG.height - 150,
+			dialogeBoxTextYPos: FlxG.height - (_heightFromBase + _distanceFromTop),
+			dialogueBoxYPos: FlxG.height - (_heightFromBase + _spacingHeight),
 			dialougeImageYPos: (FlxG.height - 110) - _dialogueImage.height
 		}
 

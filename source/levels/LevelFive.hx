@@ -70,7 +70,7 @@ class LevelFive extends LevelState {
     _bonusLevelExit = new FlxObject(16066, 1065, 27, 183);
     add(_bonusLevelExit);
 
-    _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 20, FlxColor.TRANSPARENT);
+    _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 180, FlxColor.TRANSPARENT);
     _cagedPangoCollision.immovable = true;
     add(_cagedPangoCollision);
 
@@ -121,6 +121,12 @@ class LevelFive extends LevelState {
     updateMapDimentions(FlxG.width + 10, 0);
   }
 
+  function playerJumpAnim():String {
+    return player.pangoAttached
+      ? "jumpLoop_pp"
+      : "jumpLoop";
+  }
+
   /**
    * Teleport to the bonus part of the level
    */
@@ -128,7 +134,7 @@ class LevelFive extends LevelState {
     updateMapDimentions(0, 0);
     // Player jumps down hole
     player.setPosition(14974, 842);
-    player.animation.play("jumpLoop");
+    player.animation.play(playerJumpAnim());
     // Follow level not plauer
     FlxG.camera.follow(_bonusLevel, PLATFORMER, 1);
     // Hide all background images
@@ -142,15 +148,15 @@ class LevelFive extends LevelState {
   function exitBouns(_, _) {
     updateMapDimentions(FlxG.width + 10, 0);
     player.setPosition(3362, 1525);
-    player.animation.play("jumpLoop");
+    player.animation.play(playerJumpAnim());
     player.velocity.y = -800;
     FlxG.camera.follow(player, PLATFORMER, 1);
     // Show all background images
-    levelBgs.forEach((Member:FlxSprite) -> Member.alpha = 1);
+    levelBgs.forEach((Member:FlxSprite) ->  Member.alpha = 1);
   }
 
   function killCageAndCollision(_, _) {
-    if (!player.isAscending) {
+    if (!player.isAscending && player.animation.name == "jumpLoop") {
       player.velocity.y = 450; // Bounce player
       _cagedPangolin.kill();
       _cagedPangoCollision.kill();

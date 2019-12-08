@@ -64,11 +64,7 @@ class LevelSelect extends GameState {
       _gameSave.flush();
     }
 
-    if (ModalNum != null) _modalNum = ModalNum;
-
-		//Sounds
-		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
-		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);    
+    if (ModalNum != null) _modalNum = ModalNum; 
   }
 
   override public function create() {
@@ -175,6 +171,11 @@ class LevelSelect extends GameState {
 
 		_bottomLeft = new Menu.BottomLeft();
 		add(_bottomLeft);
+
+		//Sounds
+		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
+		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);   
+    
     // Intialise controls
     _controls = new Controls();
 
