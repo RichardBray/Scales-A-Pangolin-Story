@@ -56,13 +56,13 @@ haxelib install hscript
 
 ### Git Tagging commans
 add tag
-`git tag -a v0.6.0 -m "new version 0.6.0"`
+`git tag -a v0.10.0 -m "new version 0.10.0"`
 
 show tag
 `git show v0.1.0`
 
 push tag
-`git push origin v0.6.0`
+`git push origin v0.10.0`
 
 Scales of Life: A Pangolin's story
 
