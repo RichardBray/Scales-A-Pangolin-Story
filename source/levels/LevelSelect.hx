@@ -70,6 +70,7 @@ class LevelSelect extends GameState {
   override public function create() {
     super.create();
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
+    FlxG.sound.music.persist = false;
   
     _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/backgrounds/test_map.jpg", false, 1920, 1080);
     add(_mapBg);

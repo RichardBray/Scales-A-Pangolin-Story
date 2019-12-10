@@ -289,6 +289,7 @@ class LevelState extends GameState {
 	 */
 	public function playMusic(LevelMusic:String) {
 		FlxG.sound.playMusic(LevelMusic, 0.4, true); // .4
+		FlxG.sound.music.persist = true;
 	}
 
 	/**

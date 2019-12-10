@@ -119,6 +119,7 @@ class MainMenu extends GameState {
 		super.create();	
 
 		FlxG.sound.playMusic("assets/music/title_music.ogg", 0.9, false);	
+		FlxG.sound.music.persist = false;
 	}
 
 	/**
@@ -230,7 +231,7 @@ class HLScreen extends GameState {
 		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
 		add(_logo);
 
-		// FlxG.camera.antialiasing = true;
+		FlxG.camera.antialiasing = true;
 	}
 
 	function finishTimer(_) { 
