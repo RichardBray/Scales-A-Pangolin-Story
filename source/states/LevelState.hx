@@ -105,13 +105,11 @@ class LevelState extends GameState {
 	 * @param 	MapFile 		Comtains the name of the tmx data file used for the map.
 	 * @param 	Background 	Parallax background image name.
 	 * @param 	IntroMusic	What music to play for the into.
-	 * @param 	TrimmBgSprite	How many bg sprites to remove from level for bonus.
 	 */
 	public function createLevel(
 		MapFile:String, 
 		Background:String, 
-		?IntroMusic:Null<String>,
-		?TrimmBgSprite:Int
+		?IntroMusic:Null<String>
 	) {
 		// Tiles for collisions
 		_collisionImg = "assets/images/collisions.png";
@@ -343,7 +341,7 @@ class LevelState extends GameState {
 			6 => "assets/images/L1_TREE_02.png",
 			7 => "assets/images/L1_TREE_03.png",
 			8 => "assets/images/L1_GROUND_01.png",
-			35 => LevelState.createImageString("L2_GROUND"),
+			20 => LevelState.createImageString("L2_GROUND"),
 			36 => LevelState.createImageString("L2_GROUND_TUNNEL"),
 			33 => LevelState.createImageString("L1_LAVAROCK_01"),
 			34 => LevelState.createImageString("L1_LAVAROCK_02")

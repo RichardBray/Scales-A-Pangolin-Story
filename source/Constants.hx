@@ -35,12 +35,13 @@ class Constants {
 	public static final sndMenuSelect:String = "assets/sounds/menu_selected.wav";	
 	public static final sndMenuClose:String = "assets/sounds/menu_close.ogg";
 
-	// Used to load levels from saves and restart levels
+	/** Used to load levels from saves and restart levels */
 	public static final levelNames:Map<String, Class<LevelState>> = [
 		"Level-1-0" => levels.LevelOne, 
 		"Level-2-0" => levels.LevelTwo,
 		"Level-3-0" => levels.LevelThree,
 		"Level-4-0" => levels.LevelFour,
-		"Level-5-0" => levels.LevelFive
+		"Level-5-0" => levels.LevelFive,
+		"Level-6-0" => levels.LevelSix		
 	];
 }

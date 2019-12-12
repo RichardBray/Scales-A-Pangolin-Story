@@ -56,7 +56,7 @@ class LevelFive extends LevelState {
     add(_caveBackground);
   
     // TODO: Make music for level five
-    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one", 1);
+    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one");
 
     _caveForeground = new FlxSprite(14176, 720).loadGraphic(
       "assets/images/environments/L2_Cave-02.png", false, 1920, 1080);
@@ -173,7 +173,7 @@ class LevelFive extends LevelState {
 
 	function changeState() {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		FlxG.switchState(new LevelFour(_gameSave));
+		FlxG.switchState(new LevelSix(_gameSave));
 	}	
 
   override public function update(Elapsed:Float) {
