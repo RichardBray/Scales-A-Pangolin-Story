@@ -30,18 +30,18 @@ class LevelSix extends LevelState {
     // Add player
     createPlayer(465, 1447);
 
+    // Pango should be attached by this level
+    player.pangoAttached = true;  
+
     // Add HUD
     createHUD(0, player.health, _goalData);  
 
     // Save game on load
 		_gameSave = new FlxSave(); // initialize
 		_gameSave.bind("AutoSave"); // bind to the named save slot  
-    if (_gameSave != null) _gameSave = saveGame(_gameSave);  
+    _gameSave = saveGame(_gameSave);  
 
-    super.create();  
-
-    // Pango should be attached by this level
-    player.pangoAttached = true;       
+    super.create();       
  }  
 
   override public function update(Elapsed:Float) {
