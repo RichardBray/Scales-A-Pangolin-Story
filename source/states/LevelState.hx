@@ -341,7 +341,7 @@ class LevelState extends GameState {
 			6 => "assets/images/L1_TREE_02.png",
 			7 => "assets/images/L1_TREE_03.png",
 			8 => "assets/images/L1_GROUND_01.png",
-			20 => LevelState.createImageString("L2_GROUND"),
+			35 => LevelState.createImageString("L2_GROUND"),
 			36 => LevelState.createImageString("L2_GROUND_TUNNEL"),
 			33 => LevelState.createImageString("L1_LAVAROCK_01"),
 			34 => LevelState.createImageString("L1_LAVAROCK_02")
