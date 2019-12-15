@@ -182,55 +182,6 @@ class Toucan extends PacingEnemey {
 	}		
 }
 
-class MovingCage extends Enemy {
-	var _seconds:Float = 0;
-	var _enemyHit:Bool = false;	
-	var _distance:Int;
-	final movementSpeed:Int = 4;	
-
-	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
-		super(X, Y);
-		loadGraphic("assets/images/environments/moving_cage.png", true, 315, 331);
-		updateSpriteHitbox(100, 100, this);
-		animation.add("breakUp", [for (i in 0...5) i], 8, true);
-		_distance = Std.parseInt(Otype) * 10;
-	}
-
-	function cageMovement() {
-		if (!_enemyHit) {
-			if (_seconds < movementSpeed) {
-				velocity.y = _distance;
-			} else if (_seconds < (movementSpeed * 2)) {
-				velocity.y = -_distance;
-			} else if (Math.round(_seconds) == (movementSpeed * 2)) {
-				_seconds = 0;
-			}
-		} else {
-			velocity.y = 0;
-		}
-	}
-
-	override public function update(Elapsed:Float) {
-		_seconds += Elapsed;
-		cageMovement();
-		super.update(Elapsed);
-	}		
-}
-
-// class MovingCageString extends FlxSprite {
-// 	public function new() {
-// 		super(X, Y);
-// 		makeGraphic(10, 20, FlxColor.WHITE);
-// 	}
-
-// 	override public function update(Elapsed:Float) {
-// 		_seconds += Elapsed;
-// 		cageMovement();
-// 		super.update(Elapsed);
-// 	}	
-		
-// }
-
 class Snake extends Enemy {
 	var _enemyHit:Bool = false;
 
