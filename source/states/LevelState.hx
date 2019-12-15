@@ -37,7 +37,6 @@ class LevelState extends GameState {
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
 	var _playerJumpPoof:Player.JumpPoof; 
-	var _playerFeetCollision:FlxObject;
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
@@ -62,6 +61,7 @@ class LevelState extends GameState {
 
 	public var grpHud:Hud;
 	public var player:Player; // used by HUD for health
+	public var playerFeetCollision:FlxObject;
 	public var levelExit:FlxSprite; // used by LevelOne
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
 	public var levelName:String; // Give level unique name
@@ -227,13 +227,13 @@ class LevelState extends GameState {
 	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
 		player = new Player(X, Y);
 		_playerJumpPoof = new Player.JumpPoof(X, Y);
-		_playerFeetCollision = new FlxObject(X, Y, 10, 72);
-		_playerFeetCollision.acceleration.y = Constants.worldGravity;
+		playerFeetCollision = new FlxObject(X, Y, 10, 72);
+		playerFeetCollision.acceleration.y = Constants.worldGravity;
 	
 		if (FacingLeft) player.facing = FlxObject.LEFT;
 		add(player);
 		add(_playerJumpPoof);
-		add(_playerFeetCollision);
+		add(playerFeetCollision);
 	}
 
 	/**
@@ -398,11 +398,6 @@ class LevelState extends GameState {
 			_grpEnemies.add(snakeAttackBox);
 			_grpEnemyAttackBoundaries.add(snakeAttackBoundary);
 		
-		} else if (ObjectId == 41) { // Moving cage
-			var movingCage:Enemy;
-			movingCage = new Enemy.MovingCage(X, newY, Name, Otype);
-			_grpKillableEnemies.add(movingCage);
-
 		} else if (ObjectId == 40) { // BossBoar
 			var bossBoar:Enemy;
 			var bossBoarAttackBoundary:Enemy.Boundaries;
@@ -596,7 +591,7 @@ class LevelState extends GameState {
 	function updateFeetCollisions() {
 		var xOffset:Int = player.facing == FlxObject.LEFT ? 80 : 25;
 		var playerIsOnGround:Bool = player.isTouching(FlxObject.FLOOR);
-		var feetCollisionIsOnGround:Bool = _playerFeetCollision.isTouching(FlxObject.FLOOR);
+		var feetCollisionIsOnGround:Bool = playerFeetCollision.isTouching(FlxObject.FLOOR);
 
 		// Conditions
 		var playerTouchingButNotFeet:Bool = playerIsOnGround && _secondsOnGround > 0.2;
@@ -621,7 +616,7 @@ class LevelState extends GameState {
 		}
 
 		// Update feet coliison position at bottom 
-		_playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);	
+		playerFeetCollision.setPosition(player.x + xOffset, player.y + yOffset);	
 	}
 
 	/**
@@ -691,7 +686,7 @@ class LevelState extends GameState {
 		// Collisions
 		FlxG.collide(player, _levelCollisions);
 		FlxG.collide(player, _termiteHills, digTermiteHill);
-		FlxG.collide(_playerFeetCollision, _levelCollisions);
+		FlxG.collide(playerFeetCollision, _levelCollisions);
 
 		// Only add level collisions to specific enemies
 		_grpKillableEnemies.forEach((member:Enemy) -> {

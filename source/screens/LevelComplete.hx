@@ -139,7 +139,7 @@ class LevelComplete extends FlxSubState {
     incrementNumbers(_gameSave.data.totalBugs, _gameSave.data.totalEnemies);
     _levelData.text = '
     Bugs collected: $_bugsCollected/$_totalBugsCollected \n
-    Enemies killed: $_enemiesKilled/$_totalEnemiesKilled';
+    Enemies defeated: $_enemiesKilled/$_totalEnemiesKilled';
 
     // Animate sides
     FlxTween.tween(_grpLeftSide, {y: 0, alpha: 1}, 1, {ease: FlxEase.backOut});

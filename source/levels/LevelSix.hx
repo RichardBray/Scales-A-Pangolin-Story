@@ -3,11 +3,15 @@ package levels;
 import states.LevelState;
 import flixel.util.FlxSave;
 
+import components.MovingCage;
+
 import Hud.GoalData;
 
 class LevelSix extends LevelState {
   var _gameSave:FlxSave;
   var _goalData:Array<GoalData>;
+  var _movingCage1:MovingCage;
+
 
 	public function new(?GameSave:Null<FlxSave>) {
 		super();
@@ -31,8 +35,18 @@ class LevelSix extends LevelState {
     createPlayer(465, 1447);
 
     // Pango should be attached by this level
-    player.pangoAttached = true;  
+    player.pangoAttached = true;
 
+    // Reset after falling through level or getting caught in cage  
+    player.resetPosition = [465, 1447];
+
+    _movingCage1 = new MovingCage(
+      3993, 
+      1368, 
+      null, 
+      player, 
+      playerFeetCollision);
+    add(_movingCage1);
     // Add HUD
     createHUD(0, player.health, _goalData);  
 
