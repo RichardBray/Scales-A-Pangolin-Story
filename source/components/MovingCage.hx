@@ -46,7 +46,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     _actualCage.alpha = 0.2;
     add(_actualCage);
 
-    _cageTopCollision = new FlxObject(X, Y, CAGE_WIDTH, 40);
+    _cageTopCollision = new FlxObject(X, Y, CAGE_WIDTH, 20);
     _cageTopCollision.immovable = true;
     add(_cageTopCollision);
 

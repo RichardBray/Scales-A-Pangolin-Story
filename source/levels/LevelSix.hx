@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.group.FlxGroup.FlxTypedGroup;
 import states.LevelState;
 import flixel.util.FlxSave;
 
@@ -10,7 +11,14 @@ import Hud.GoalData;
 class LevelSix extends LevelState {
   var _gameSave:FlxSave;
   var _goalData:Array<GoalData>;
-  var _movingCage1:MovingCage;
+  var _allCages:FlxTypedGroup<MovingCage>;
+
+  final _allMovingCages:Array<Array<Dynamic>> = [
+    [3993, 1368, false],
+    [8106, 1369, false],
+    [9773, 887, true],
+    [10559, 1292, false]
+  ];
 
 
 	public function new(?GameSave:Null<FlxSave>) {
@@ -40,13 +48,21 @@ class LevelSix extends LevelState {
     // Reset after falling through level or getting caught in cage  
     player.resetPosition = [465, 1447];
 
-    _movingCage1 = new MovingCage(
-      3993, 
-      1368, 
-      null, 
-      player, 
-      playerFeetCollision);
-    add(_movingCage1);
+    _allCages = new FlxTypedGroup<MovingCage>();
+    
+    add(_allCages);
+
+    _allMovingCages.map((movingCage:Array<Dynamic>) -> {
+      var _movingCage:MovingCage = new MovingCage(
+        movingCage[0], 
+        movingCage[1], 
+        movingCage[2], 
+        player, 
+        playerFeetCollision);
+  
+      _allCages.add(_movingCage);
+    });
+
     // Add HUD
     createHUD(0, player.health, _goalData);  
 
