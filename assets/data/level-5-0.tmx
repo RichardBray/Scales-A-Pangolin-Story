@@ -95,6 +95,6 @@
   <object id="208" name="bouns exit" x="16066.4" y="1065.87" width="27.3298" height="178.359"/>
   <object id="224" name="player reapear" x="3309.02" y="1525.69" width="300" height="127"/>
   <object id="228" x="368.893" y="1447.29" width="300" height="127"/>
-  <object id="232" name="mini-checkpoint-1" x="5622.99" y="1291.94" width="149.731" height="147.417"/>
+  <object id="232" name="mini-checkpoint-1" x="5327.93" y="1426.64" width="149.731" height="147.417"/>
  </objectgroup>
 </map>

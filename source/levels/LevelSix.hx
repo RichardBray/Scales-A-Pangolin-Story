@@ -1,8 +1,12 @@
 package levels;
 
+import flixel.FlxG;
+import flixel.util.FlxColor;
+import screens.LevelComplete;
 import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSave;
+import flixel.FlxSprite;
 
 import states.LevelState;
 import components.MovingCage;
@@ -71,14 +75,28 @@ class LevelSix extends LevelState {
     createHUD(0, player.health, _goalData);  
 
     // Save game on load
-		_gameSave = new FlxSave(); // initialize
-		_gameSave.bind("AutoSave"); // bind to the named save slot  
     _gameSave = saveGame(_gameSave);  
 
     super.create();       
  }  
 
+	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	
+
+	function changeState() {
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
+		openSubState(_levelCompleteState);	
+	}	
+ 
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+
+		// Overlaps
+		grpHud.goalsCompleted
+			? FlxG.overlap(levelExit, player, fadeOut)
+			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);      
   } 
 }

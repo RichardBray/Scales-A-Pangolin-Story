@@ -1,6 +1,7 @@
 package screens;
 
 
+import flixel.system.frontEnds.SoundFrontEnd;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -32,28 +33,49 @@ class LevelComplete extends FlxSubState {
   var _levelTotals:Map<String, Array<Int>>; 
   var _levelNames:Map<String, String>;
   var _totalBugsCollected:Int;
-  var _totalEnemiesKilled:Int;
+  var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
 
+  /**
+   * @param GameSave saved game data
+   * @param LevelSelectModalNum modal to have selected on the level complete page
+   */
   public function new(?GameSave:FlxSave, ?LevelSelectModalNum:Int) {
     super();
     _gameSave = GameSave;
     _levelSelectModalNum = LevelSelectModalNum;
 
     _levelTotals = [
-      "Level-4-0" => [74, 10]
+      "Level-4-0" => [74, 10],
+      "Level-6-0" => [42, 10]
     ];
 
     _levelNames = [
-      "Level-4-0" => "One"
+      "Level-4-0" => "One",
+      "Level-6-0" => "Two"
     ];
 
-    _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
-    _totalEnemiesKilled = _levelTotals[_gameSave.data.levelName][1];
+    _totalBugsCollected = showTotalIfCollectedsHigher(
+      _levelTotals[_gameSave.data.levelName][0], 
+      _gameSave.data.totalBugs
+    );
+    _totalEnemiesDefeated = showTotalIfCollectedsHigher(
+      _levelTotals[_gameSave.data.levelName][1],
+      _gameSave.data.totalEnemies
+    );
+  }
+
+  /**
+   * Sort of hacky way to fix a bug where the collected number is over the total
+   */
+  function showTotalIfCollectedsHigher(Total:Int, Collected:Int):Int {
+    return Collected > Total
+      ? Total
+      : Collected;
   }
 
   function calculatePercentge():Int {
-    var total = _totalBugsCollected + _totalEnemiesKilled;
+    var total = _totalBugsCollected + _totalEnemiesDefeated;
     var value = _gameSave.data.totalBugs + _gameSave.data.totalEnemies;
 
     return Std.int(value / total * 100);
@@ -139,7 +161,7 @@ class LevelComplete extends FlxSubState {
     incrementNumbers(_gameSave.data.totalBugs, _gameSave.data.totalEnemies);
     _levelData.text = '
     Bugs collected: $_bugsCollected/$_totalBugsCollected \n
-    Enemies defeated: $_enemiesKilled/$_totalEnemiesKilled';
+    Enemies defeated: $_enemiesKilled/$_totalEnemiesDefeated';
 
     // Animate sides
     FlxTween.tween(_grpLeftSide, {y: 0, alpha: 1}, 1, {ease: FlxEase.backOut});

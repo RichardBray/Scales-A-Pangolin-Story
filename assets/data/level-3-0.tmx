@@ -88,6 +88,6 @@
  <objectgroup id="4" name="helpers">
   <object id="39" name="friend npc" x="11315" y="775" width="176" height="168"/>
   <object id="90" x="11996.6" y="994.637" height="2.43784"/>
-  <object id="113" name="mini-checkpoint-1" x="1843.25" y="1422.1" width="149.731" height="147.417"/>
+  <object id="113" name="mini-checkpoint-1" x="1822.46" y="1110.25" width="149.731" height="147.417"/>
  </objectgroup>
 </map>
