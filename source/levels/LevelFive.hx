@@ -33,7 +33,7 @@ class LevelFive extends LevelState {
   var _pangoDialogueImage:FlxSprite;
   var _pangoFreed:Bool = false; //Var to pause collision so pango can roll through branch
 
-  final _bugsGoal:Int = 14; 
+  final _bugsGoal:Int = 7; 
   final _allMidCheckpoints:Array<Array<Float>> = [
     [5327.93, 1426.64]
   ];

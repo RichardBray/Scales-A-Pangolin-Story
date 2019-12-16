@@ -18,6 +18,8 @@ class LevelSix extends LevelState {
   var _goalData:Array<GoalData>;
   var _allCages:FlxTypedGroup<MovingCage>;
 
+  final _bugsGoal:Int = 7; 
+
   final _allMovingCages:Array<Array<Dynamic>> = [
     [3993, 1368, false],
     [8106, 1369, false],
@@ -37,8 +39,8 @@ class LevelSix extends LevelState {
 
 		_goalData = [
 			{
-				goal: "Collect 7 bugs",
-				func: (_) -> false
+				goal: 'Collect over $_bugsGoal bugs',
+				func: (GameScore:Int) -> GameScore > _bugsGoal
 			}
 		];
 	}
@@ -80,15 +82,11 @@ class LevelSix extends LevelState {
     super.create();       
  }  
 
-	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {
-		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
-	}	
-
-	function changeState() {
+	function levelComplete(Exit:FlxSprite, Player:FlxSprite) {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
 		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
-		openSubState(_levelCompleteState);	
-	}	
+		openSubState(_levelCompleteState);			
+	}
  
 
   override public function update(Elapsed:Float) {
@@ -96,7 +94,7 @@ class LevelSix extends LevelState {
 
 		// Overlaps
 		grpHud.goalsCompleted
-			? FlxG.overlap(levelExit, player, fadeOut)
+			? FlxG.overlap(levelExit, player, levelComplete)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);      
   } 
 }
