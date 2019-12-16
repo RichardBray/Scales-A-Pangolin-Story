@@ -33,6 +33,7 @@ class LevelState extends GameState {
 	var _mapObjects:TiledObjectLayer;
 	var _collisionImg:String;
 	var _curTermiteHill:Null<TermiteHill>;
+	var _grpMidCheckpoints:FlxTypedGroup<FlxObject>;
 	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	// Player
 	var _secondsOnGround:Float; // Used for feet collisions to tell how
@@ -285,6 +286,22 @@ class LevelState extends GameState {
 	}
 
 	/**
+	 * Create all the mid checkpoint in levels
+	 *
+	 * @param MidCheckpoints coordinates from the levels 
+	 */
+  public function createMidCheckpoints(MidCheckpoints:Array<Array<Float>>) {
+		_grpMidCheckpoints = new FlxTypedGroup<FlxObject>();
+	
+    MidCheckpoints.map((MidCheckpoint:Array<Float>) -> {
+      final checkPoint:FlxObject = new FlxObject(MidCheckpoint[0], MidCheckpoint[1], 150, 150); 
+      _grpMidCheckpoints.add(checkPoint);
+    });
+
+		add(_grpMidCheckpoints);
+  }	
+
+	/**
 	 * Place entities from Tilemap.
 	 * This method just converts strings to integers.
 	 */
@@ -444,6 +461,13 @@ class LevelState extends GameState {
 			grpHud.incrementScore();
 			Collectable.kill();
 		}
+	}
+
+	/**
+	 * Update player reset position when they OVERLAP a mid level checkpoint.
+	 */
+	function updatePlayerResetPos(MidLevelCheck:FlxObject, Player:Player) {
+		Player.resetPosition = [MidLevelCheck.x, MidLevelCheck.y];
 	}
 
 
@@ -668,11 +692,8 @@ class LevelState extends GameState {
 			timer.start(.4, (_) -> _enemyJustHit = false, 1);
 		}
 
-		// Reset the game if the player goes higher/lower than the map
-		if (player.y > _map.fullHeight) {
-			var _pauseMenu:PauseMenu = new PauseMenu(true, levelName, _gameSaveForPause);
-			openSubState(_pauseMenu);
-		}
+		// Reset player pos to last mid checkpoint
+		if (player.y > _map.fullHeight) player.resetPlayer();
 
 		// Paused game state
 		if (_controls.start.check()) {
@@ -701,6 +722,7 @@ class LevelState extends GameState {
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
 		FlxG.overlap(_grpKillableEnemies, player, hitEnemy);
 		FlxG.overlap(_grpCollectables, player, getCollectable);
+		FlxG.overlap(_grpMidCheckpoints, player, updatePlayerResetPos);
 		FlxG.overlap(_grpEnemyAttackBoundaries, player, initEnemyAttack);
 
 		if (!FlxG.overlap(_grpEnemyAttackBoundaries, player, initEnemyAttack)) {

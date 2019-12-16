@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSave;
 
@@ -20,6 +21,11 @@ class LevelSix extends LevelState {
     [10559, 1292, false]
   ];
 
+  final _allMidCheckpoints:Array<Array<Float>> = [
+    [3479.92, 1424.54],
+    [6990.96, 1421.96]
+  ];
+
 
 	public function new(?GameSave:Null<FlxSave>) {
 		super();
@@ -37,16 +43,14 @@ class LevelSix extends LevelState {
     levelName = "Level-6-0";
 
     // TODO: Make music for level six
-    createLevel("level-6-0", "SCALES_BACKGROUND-01.png", "level_one");   
+    createLevel("level-6-0", "SCALES_BACKGROUND-01.png", "level_one");
+    createMidCheckpoints(_allMidCheckpoints);   
 
     // Add player
     createPlayer(465, 1447);
 
     // Pango should be attached by this level
     player.pangoAttached = true;
-
-    // Reset after falling through level or getting caught in cage  
-    player.resetPosition = [465, 1447];
 
     _allCages = new FlxTypedGroup<MovingCage>();
     

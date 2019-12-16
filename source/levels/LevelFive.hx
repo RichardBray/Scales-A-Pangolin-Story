@@ -33,6 +33,11 @@ class LevelFive extends LevelState {
   var _pangoDialogueImage:FlxSprite;
   var _pangoFreed:Bool = false; //Var to pause collision so pango can roll through branch
 
+  final _bugsGoal:Int = 14; 
+  final _allMidCheckpoints:Array<Array<Float>> = [
+    [5327.93, 1426.64]
+  ];
+
   public function new(?GameSave:Null<FlxSave>) {
     super();
     _gameSave = GameSave;
@@ -43,8 +48,8 @@ class LevelFive extends LevelState {
 				func: (_) -> player.pangoAttached
       },
 			{
-				goal: "Wait for the next part of the level",
-				func: (_) -> false
+				goal: 'Collect over $_bugsGoal bugs',
+				func: (GameScore:Int) -> GameScore > _bugsGoal
       }      
 		];    
   }
@@ -58,6 +63,7 @@ class LevelFive extends LevelState {
   
     // TODO: Make music for level five
     createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one");
+    createMidCheckpoints(_allMidCheckpoints);
 
     _caveForeground = new FlxSprite(14176, 720).loadGraphic(
       "assets/images/environments/L2_Cave-02.png", false, 1920, 1080);

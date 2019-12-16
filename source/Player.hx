@@ -24,7 +24,7 @@ class Player extends FlxSprite {
 	public var facingTermiteHill:Bool = false; // When player is colliding with termite hill
 	public var playerIsDigging:Bool = false; // When player is digging termite hill
 	public var pangoAttached:Bool = false;
-	public var resetPosition:Array<Int>;
+	public var resetPosition:Array<Float>;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite

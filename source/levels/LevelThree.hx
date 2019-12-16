@@ -19,8 +19,13 @@ class LevelThree extends LevelState {
 	var _monkeySprite:ZenMonkey;
 	var _monkeyNPC:NPC;
 	var _monkeyDialogueImage:FlxSprite;
-  final _bugsGoal:Int = 14; // How many bugs to collect in order to complete level  
 	var _spokentoNPC:Int = 0;
+
+  final _bugsGoal:Int = 14;
+  final _allMidCheckpoints:Array<Array<Float>> = [
+    [1822.46, 1110.25],
+		[6117.78, 1425.01]
+  ];	
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -45,6 +50,7 @@ class LevelThree extends LevelState {
     levelName = "Level-3-0";
 
     createLevel("level-3-0", "SCALES_BACKGROUND-01.png", "level_three");
+		createMidCheckpoints(_allMidCheckpoints);
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [
