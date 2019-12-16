@@ -452,7 +452,7 @@ class LevelState extends GameState {
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		var playerAttacking:Bool = 
-			Player.animation.name == "jumpLoop" && !Player.isAscending;
+			Player.animation.name == Player.animationName("jumpLoop") && !Player.isAscending;
 
 		/**
 		 * Things to do when player get's hurt.
@@ -493,7 +493,7 @@ class LevelState extends GameState {
 						if (Enemy.health < 1) incrementDeathCount();							
 					} else {
 						// when rolling animation is NOT playing
-						(Player.animation.name == "jumpLoop") 
+						(Player.animation.name == Player.animationName("jumpLoop")) 
 							? Player.animJump(Player.flipX)
 							: Player.velocity.y = (Enemy.push / 3) * 2;
 						playerHurt(LastLife);
@@ -631,7 +631,11 @@ class LevelState extends GameState {
 		}
 
 		// Show jump poof when player jumps from the ground and not from an enemy jump
-		if (player.animation.name == "jumpLoop" && playerGoingUp && !_playerJustHitEnemy) {
+		if (
+				(player.animation.name == player.animationName("jumpLoop"))
+				&& playerGoingUp 
+				&& !_playerJustHitEnemy
+			) {
 			_playerJumpPoof.show(
 				player.jumpPosition[0], 
 				player.jumpPosition[1] + player.height // Move lower than player

@@ -1,12 +1,13 @@
 package levels;
 
 
-import states.IntroState;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.util.FlxSave;
 import flixel.FlxG;
+
+import states.IntroState;
 import states.LevelState;
 import characters.CagedPangolin;
 import characters.PurplePango;

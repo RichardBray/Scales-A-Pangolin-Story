@@ -86,7 +86,7 @@ class Player extends FlxSprite {
 		setPosition(resetPosition[0], resetPosition[1]);
 	}
 
-	function animationName(Name:String):String {
+	public function animationName(Name:String):String {
 		var suffix:String = "";
 		if (pangoAttached) suffix = "_pp";
 		return '$Name$suffix';

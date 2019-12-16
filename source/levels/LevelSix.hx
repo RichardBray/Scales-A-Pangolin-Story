@@ -1,9 +1,9 @@
 package levels;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
-import states.LevelState;
 import flixel.util.FlxSave;
 
+import states.LevelState;
 import components.MovingCage;
 
 import Hud.GoalData;

@@ -43,7 +43,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     _startFromTop = StartFromTop;
 
     _actualCage = new FlxSprite(X, Y).makeGraphic(CAGE_WIDTH, CAGE_HEIGHT, FlxColor.BLUE);
-    _actualCage.alpha = 0.2;
+    _actualCage.alpha = 1;
     add(_actualCage);
 
     _cageTopCollision = new FlxObject(X, Y, CAGE_WIDTH, 20);
@@ -70,6 +70,10 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     }
   } 
 
+  function stickyPlatorm(Player:Player, Platform:FlxObject) {
+    Player.velocity.y = _actualCage.velocity.y;
+  }
+
   override public function update(Elapsed:Float) {
     _seconds += Elapsed;
     super.update(Elapsed);
@@ -78,8 +82,8 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     _cageTopCollision.y = _actualCage.y;
     cageCatchCollision.y = _actualCage.y + 20;
 
-    FlxG.collide(_player, _cageTopCollision);
-    FlxG.collide(_playerFeetCollision, _cageTopCollision);
+    FlxG.collide(_player, _cageTopCollision, stickyPlatorm);
+    FlxG.collide(_playerFeetCollision, _cageTopCollision, stickyPlatorm);
 
     FlxG.overlap(_player, cageCatchCollision, (_, _) -> _player.resetPlayer());
   }
