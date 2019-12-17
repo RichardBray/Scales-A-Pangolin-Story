@@ -181,7 +181,7 @@ class LevelFive extends LevelState {
 	}	
 
 	function changeState() {
-		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
+		_gameSave = saveGame(_gameSave, [grpHud.gameScore, 0]);
 		FlxG.switchState(new LevelSix(_gameSave));
 	}	
 
@@ -205,7 +205,7 @@ class LevelFive extends LevelState {
       };	 
     }
 
-    if (_pangoNPC.finishedConvo) {
+    if (_pangoNPC.finishedConvo && _pangoNPC.alive) {
       _purplePango.jumpToPlayer(player.facing);
       haxe.Timer.delay(() -> {
         _pangoNPC.kill();
