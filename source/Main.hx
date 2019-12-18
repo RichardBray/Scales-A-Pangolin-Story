@@ -14,6 +14,6 @@ class Main extends Sprite {
 		#else 
 		addChild(new FlxGame(1920, 1080, levels.LevelFive, 1, 60, 60, true));
 		#end
-		FlxG.game.stage.quality = StageQuality.LOW;					
+		FlxG.game.stage.quality = StageQuality.LOW;
 	}
 }

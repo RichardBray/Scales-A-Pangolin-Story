@@ -294,7 +294,7 @@ class LevelState extends GameState {
 		_grpMidCheckpoints = new FlxTypedGroup<FlxObject>();
 	
     MidCheckpoints.map((MidCheckpoint:Array<Float>) -> {
-      final checkPoint:FlxObject = new FlxObject(MidCheckpoint[0], MidCheckpoint[1], 150, 150); 
+      final checkPoint:FlxObject = new FlxObject(MidCheckpoint[0], MidCheckpoint[1], 150, 600); 
       _grpMidCheckpoints.add(checkPoint);
     });
 

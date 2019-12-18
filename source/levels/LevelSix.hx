@@ -77,7 +77,7 @@ class LevelSix extends LevelState {
     createHUD(0, player.health, _goalData);  
 
     // Save game on load
-    _gameSave = saveGame(_gameSave);  
+    if (_gameSave != null) _gameSave = saveGame(_gameSave); 
 
     super.create();       
  }  
