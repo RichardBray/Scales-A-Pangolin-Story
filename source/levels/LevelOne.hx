@@ -72,7 +72,7 @@ class LevelOne extends LevelState {
 	 * Show instructions specific to this level unless they have already been viewed
 	 */
 	function showInstructions() {
-		var _instructions:Instructions = new Instructions(1, 2);
+		var _instructions:Instructions = new Instructions(1, 2, true, false);
 		if (!_instructions.menuViewed) openSubState(_instructions);
 		_instructionsViewed = true;
 	}	
@@ -111,6 +111,6 @@ class Intro extends IntroState {
 	}
 
 	override public function startLevel() {
-		FlxG.switchState(new LevelOne(_gameSave, false));
+		FlxG.switchState(new LevelOne(_gameSave, true));
 	}
 }

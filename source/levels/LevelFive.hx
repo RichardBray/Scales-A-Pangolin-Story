@@ -120,7 +120,7 @@ class LevelFive extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData);  
   
-    // Save game on load    
+    // Save game on load      
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();
 

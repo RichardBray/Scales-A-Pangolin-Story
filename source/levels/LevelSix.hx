@@ -3,7 +3,6 @@ package levels;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import screens.LevelComplete;
-import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxSave;
 import flixel.FlxSprite;
@@ -49,7 +48,7 @@ class LevelSix extends LevelState {
     levelName = "Level-6-0";
 
     // TODO: Make music for level six
-    createLevel("level-6-0", "SCALES_BACKGROUND-01.png", "level_one");
+    createLevel("level-6-0", "dessert-bg.jpg", "level_one");
     createMidCheckpoints(_allMidCheckpoints);   
 
     // Add player
@@ -79,7 +78,9 @@ class LevelSix extends LevelState {
     // Save game on load
     if (_gameSave != null) _gameSave = saveGame(_gameSave); 
 
-    super.create();       
+    super.create();   
+
+    bgColor = 0xffF2E1BF;    
  }  
 
 	function levelComplete(Exit:FlxSprite, Player:FlxSprite) {

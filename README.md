@@ -86,3 +86,12 @@ Scales of Life: A Pangolin's story
 
 
 http://www.softschools.com/facts/animals/pangolin_facts/108/
+
+
+### Testings code
+
+```hx
+_gameSave = new FlxSave(); // initialize
+_gameSave.bind("AutoSave"); // bind to the named save slot    
+_gameSave = saveGame(_gameSave, [0, 0]);  
+```

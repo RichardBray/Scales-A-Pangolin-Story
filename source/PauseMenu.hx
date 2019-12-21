@@ -68,7 +68,7 @@ class PauseMenu extends FlxSubState {
 			var sectionToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
 
 			restartMenuOption = [{
-				title: "Restart Section",
+				title: "Restart Checkpoint",
 				func: () -> {
 					FlxG.sound.music = null;
 					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
