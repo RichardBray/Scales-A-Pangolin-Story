@@ -598,7 +598,6 @@ class LevelState extends GameState {
 	 * Sequence of events that need to happen when player dies.
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
-		js.Browser.console.warn("death sequence");
 		var timer = new FlxTimer();
 		Player.preventMovement = true;
 		AttackAnims(true);
@@ -687,8 +686,7 @@ class LevelState extends GameState {
 			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
 		}
 
-		// Reset player invincibility if it is true
-		js.Browser.console.log(_playerInvincible, "update");				
+		// Reset player invincibility if it is true			
 		if (_playerInvincible) {
 			haxe.Timer.delay(() -> _playerInvincible = false, 1000);
 		}

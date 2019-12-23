@@ -86,6 +86,9 @@ class LevelThree extends LevelState {
     createHUD(0, player.health, _goalData); 
 
 		// Save game on load	
+		_gameSave = new FlxSave(); // initialize
+		_gameSave.bind("AutoSave"); // bind to the named save slot    
+		// _gameSave = saveGame(_gameSave, [0, 0]); 		
 		_gameSave = saveGame(_gameSave);
 
     super.create(); 

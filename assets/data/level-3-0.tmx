@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="115">
+<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="117">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -78,7 +78,6 @@
   <object id="79" name="left" type="1" gid="9" x="13223.4" y="1042.13" width="42" height="39"/>
   <object id="80" name="left" type="5" gid="10" x="14037.4" y="646.199" width="47" height="39"/>
   <object id="81" name="right" type="1" gid="9" x="9787.66" y="953.075" width="42" height="39"/>
-  <object id="114" name="mini-checkpoint-2" x="6117.78" y="1425.01" width="149.731" height="147.417"/>
  </objectgroup>
  <layer id="1" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
@@ -89,5 +88,6 @@
   <object id="39" name="friend npc" x="11315" y="775" width="176" height="168"/>
   <object id="90" x="11996.6" y="994.637" height="2.43784"/>
   <object id="113" name="mini-checkpoint-1" x="1822.46" y="1110.25" width="149.731" height="147.417"/>
+  <object id="116" name="mini-checkpoint-2" x="6077.53" y="1424.11" width="149.731" height="147.417"/>
  </objectgroup>
 </map>

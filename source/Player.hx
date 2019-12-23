@@ -12,7 +12,8 @@ class Player extends FlxSprite {
 
 	var _sndRun:FlxSound;
 	var _sndJumpDown:FlxSound;
-	var _sndHurt:FlxSound;	
+	var _sndHurt:FlxSound;
+	var _offFloorCount:Float;	
 
 	final GRAVITY:Float = Constants.worldGravity;
 
@@ -86,6 +87,13 @@ class Player extends FlxSprite {
 		setPosition(resetPosition[0], resetPosition[1]);
 	}
 
+	/**
+	 * Allows player to jump just off edge of an object to reduce frustration.
+	 */
+	function floorTouchWithinTime():Bool {
+		return isTouching(FlxObject.FLOOR) || _offFloorCount < 0.2;
+	}
+
 	public function animationName(Name:String):String {
 		var suffix:String = "";
 		if (pangoAttached) suffix = "_pp";
@@ -119,7 +127,7 @@ class Player extends FlxSprite {
 			if (_left && _right) {
 				acceleration.x = 0;
 			}
-			if (_jump && isTouching(FlxObject.FLOOR)) {
+			if (_jump && floorTouchWithinTime()) {
 				jumpPosition = [this.x, this.y];
 				_sndJump.play();
 				offset.x = 80;
@@ -149,6 +157,10 @@ class Player extends FlxSprite {
 	override public function update(Elapsed:Float) {
 		playerMovement();
 		isAscending = detectPlayerAscending();
+		// Allows player to jump just off the edge
+		(isTouching(FlxObject.FLOOR)) 
+			? _offFloorCount = 0
+			: _offFloorCount += Elapsed;
 
 		if (facingTermiteHill && _controls.triangle.check()) {
 			preventMovement = true;
