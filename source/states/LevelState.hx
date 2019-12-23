@@ -43,6 +43,7 @@ class LevelState extends GameState {
 	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
 	var _playerJustHitEnemy:Bool = false; // Used to check if player just hit the enemy for jumpPoof
 	var _enemyJustHit:Bool = false; // To pervent enemy from being hit multiple times per second
+	var _playerInvincible:Bool = false; // Make player invincible after they've just been hit
 	// HUD
 	var _enemyDeathCounterExecuted:Bool = false; // Used to count enemy detahs for goals
 	// Enemies
@@ -472,7 +473,7 @@ class LevelState extends GameState {
 
 
 	/**
-	 * What happens when the player and the enemy collide
+	 * What happens when the player collides with moving enemy.
 	 */
 	function hitEnemy(Enemy:Enemy, Player:Player) {
 		var playerAttacking:Bool = 
@@ -491,6 +492,8 @@ class LevelState extends GameState {
 			}
 			Player.playHurtSound();
 			FlxSpriteUtil.flicker(Player);
+			_playerInvincible = true;
+			// Make player invincible for one second
 		}	
 
 		/**
@@ -501,9 +504,8 @@ class LevelState extends GameState {
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
 			// Player is on the ground
 			if (Player.isTouching(FlxObject.FLOOR)) {
-				playerHurt(LastLife);
+				if (!_playerInvincible) playerHurt(LastLife);
 				Player.animJump(Player.flipX); 
-
 			} else { // Player is in the air
 				if (!_enemyJustHit) {
 					// when rolling animation is playing
@@ -520,7 +522,7 @@ class LevelState extends GameState {
 						(Player.animation.name == Player.animationName("jumpLoop")) 
 							? Player.animJump(Player.flipX)
 							: Player.velocity.y = (Enemy.push / 3) * 2;
-						playerHurt(LastLife);
+						if (!_playerInvincible) playerHurt(LastLife);
 					}
 					_enemyJustHit = true; // Prevent multiple hits per second					
 				}
@@ -530,7 +532,7 @@ class LevelState extends GameState {
 
 		if (!_enemyJustHit) {
 			// Fix player dying on last life when they attack
-			(Player.health == 1 && !playerAttacking && !_playerTouchMovingEnemy) 
+			(Player.health == 1 && !playerAttacking && !_playerTouchMovingEnemy && !_playerInvincible) 
 				? playerDeathASequence(Player, playerAttackedAnims)
 				: playerAttackedAnims();
 		}
@@ -558,30 +560,29 @@ class LevelState extends GameState {
 	 * @param Player	Player Sprite
 	 */
 	function hitStandingEnemy(Enemy:Enemy, Player:Player) {
-
 		/**
 		 * Player animations in separate function.
 		 *
 		 * @param LastLife Used to prolongue death of character.
 		 */
 		function playerAttackedAnims(?LastLife:Null<Bool> = false) {
-			Enemy.kill(); // Change enemy alive variable temporarily
-			Player.playHurtSound();
-
-			// Reduce player health
-			if (!LastLife) Player.hurt(1);
-			grpHud.decrementHealth((LastLife) ? 0 : Player.health);
-			FlxSpriteUtil.flicker(Player); // Turn on flicker animation
-
+			if (!_playerInvincible) {
+				_playerInvincible = true;
+				Enemy.kill(); // Change enemy alive variable temporarily
+				Player.playHurtSound();
+				if (!LastLife) Player.hurt(1);
+				grpHud.decrementHealth((LastLife) ? 0 : Player.health);
+				FlxSpriteUtil.flicker(Player); // Turn on flicker animation
+			}
 			Player.isTouching(FlxObject.FLOOR)
 				? Player.animJump(Player.flipX)
 				:	Player.velocity.y = Enemy.push;
 		}
 
 		if (Enemy.alive) { // Prevents enemy from dying
-			(Player.health > 1) 
-				? playerAttackedAnims() 
-				: playerDeathASequence(Player, playerAttackedAnims);
+			(Player.health == 1 && !_playerInvincible) 
+				? playerDeathASequence(Player, playerAttackedAnims)
+				: playerAttackedAnims(); 
 		} 
 	}
 
@@ -597,8 +598,8 @@ class LevelState extends GameState {
 	 * Sequence of events that need to happen when player dies.
 	 */
 	function playerDeathASequence(Player:Player, AttackAnims:Bool->Void) {
+		js.Browser.console.warn("death sequence");
 		var timer = new FlxTimer();
-		// @todo play death animation
 		Player.preventMovement = true;
 		AttackAnims(true);
 		timer.start(0.4, showGameOverMenu, 1);
@@ -684,6 +685,12 @@ class LevelState extends GameState {
 		// Hacky way to prevent player for losing two lives on one hit
 		if (_playerTouchMovingEnemy) {
 			haxe.Timer.delay(() -> _playerTouchMovingEnemy = false, 250);
+		}
+
+		// Reset player invincibility if it is true
+		js.Browser.console.log(_playerInvincible, "update");				
+		if (_playerInvincible) {
+			haxe.Timer.delay(() -> _playerInvincible = false, 1000);
 		}
 
 		// Hacky way to prevent enemy being hit multiple times per second
