@@ -149,6 +149,11 @@ class LevelComplete extends FlxSubState {
 
     // Stop level music
     FlxG.sound.music.stop();
+
+    // Play level complete music
+    final levelNameLowercase:String = _levelNames[_gameSave.data.levelName].toLowerCase();
+    final introMusic:String = 'assets/music/level-$levelNameLowercase-complete.ogg';
+    FlxG.sound.playMusic(introMusic, 1, false);		
   }
 
   /**
