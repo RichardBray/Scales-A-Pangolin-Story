@@ -72,7 +72,8 @@ class LevelState extends GameState {
 
 	override public function create() {
 		bgColor = 0xffBDEDE1; // Game background color
-
+		super.create();
+	
 		// Continue music if it's already playing
 		if (FlxG.sound.music == null) playMusic("assets/music/jungle-sound.ogg");
 
@@ -92,8 +93,6 @@ class LevelState extends GameState {
 
 		// Intialise controls
 		_controls = new Controls();
-
-		super.create();
 
 		// Sounds
 		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
@@ -281,8 +280,8 @@ class LevelState extends GameState {
 	 *
 	 * @param LevelMusic	String of music location
 	 */
-	public function playMusic(LevelMusic:String) {
-		FlxG.sound.playMusic(LevelMusic, 0.4, true); // .4
+	public function playMusic(LevelMusic:String, Volume:Float = 0.4) {
+		FlxG.sound.playMusic(LevelMusic, Volume, true); // .4
 		FlxG.sound.music.persist = true;
 	}
 
@@ -420,7 +419,7 @@ class LevelState extends GameState {
 			var bossBoar:Enemy;
 			var bossBoarAttackBoundary:Enemy.Boundaries;
 
-			bossBoar = new characters.BossBoar(X, newY);
+			bossBoar = new characters.BossBoar(X, newY, this);
 			bossBoarAttackBoundary = new Enemy.Boundaries(676, 1140, FlxG.width, 430, bossBoar);
 
 			bossBoar.boundaryLeft = new FlxPoint((676 + bossBoar.width), 1545);

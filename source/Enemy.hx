@@ -9,7 +9,6 @@ import flixel.FlxObject;
 import flixel.math.FlxPoint;
 
 class Enemy extends FlxSprite {
-	public var sndHit:FlxSound;
 	public var sndEnemyKill:FlxSound;
 	public var timer:FlxTimer;
 	public var push:Int = -900; // How much to push the player up by when they jump on enemy
@@ -24,8 +23,7 @@ class Enemy extends FlxSprite {
 		super(X, Y);
 		health = 1;
 		timer = new FlxTimer();
-		sndHit = FlxG.sound.load("assets/sounds/hurt.ogg", .65);
-		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
+		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav", 0.5);		
 	}
 
 	/**
@@ -144,6 +142,8 @@ class Fire extends Enemy {
 
 class Boar extends PacingEnemey {
 
+	var _hurtSnd:FlxSound;
+ 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 40);
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
@@ -153,12 +153,19 @@ class Boar extends PacingEnemey {
 		setFacingFlip(FlxObject.RIGHT, false, false);			
 
 		animation.add("walking", [for (i in 0...7) i], 8, true);
-		animation.add("dying", [for (i in 7...13) i], 8, false);			
+		animation.add("dying", [for (i in 7...13) i], 8, false);	
+
+		_hurtSnd = FlxG.sound.load("assests/sounds/enemies/boar-hit.ogg");		
 	}
 
 	override public function update(Elapsed:Float) {
 		_enemyHit ? animation.play("dying") : animation.play("walking");
 		super.update(Elapsed);
+	}
+
+	override public function hurt(Damage:Float) {
+		super.hurt(Damage);
+		_hurtSnd.play();
 	}		
 }
 

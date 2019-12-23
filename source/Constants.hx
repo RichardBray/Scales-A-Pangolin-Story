@@ -32,7 +32,7 @@ class Constants {
 	
 	// Sounds
 	public static final sndMenuMove:String = "assets/sounds/menu_move.wav";
-	public static final sndMenuSelect:String = "assets/sounds/menu_selected.wav";	
+	public static final sndMenuSelect:String = "assets/sounds/menu_selected.ogg";	
 	public static final sndMenuClose:String = "assets/sounds/menu_close.ogg";
 
 	/** Used to load levels from saves and restart levels */
