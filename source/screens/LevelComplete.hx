@@ -1,7 +1,6 @@
 package screens;
 
 
-import flixel.system.frontEnds.SoundFrontEnd;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
