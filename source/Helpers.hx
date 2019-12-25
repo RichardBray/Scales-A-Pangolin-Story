@@ -34,8 +34,12 @@ class Helpers {
 		YPos: Float, 
 		Player: Player,
 		Volume:Float = 0.8,		
-		Radius:Int = 2400
+		Radius:Int = 2000
 	) {
-		FlxG.sound.load('assets/sounds/environment/$SoundFile.ogg', Volume, true).proximity(XPos, YPos, Player, Radius, false).play();			
+		FlxG.sound.load(
+			'assets/sounds/environment/$SoundFile.ogg', 
+			Volume, 
+			true
+		).proximity(XPos, YPos, Player, Radius, false).play();			
 	} 
 }

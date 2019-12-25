@@ -194,9 +194,8 @@ class Snake extends Enemy {
 
 	// Sounds
 	var _sndHit:FlxSound;
-	var _sndOnScreen:FlxSound;
+	var _snakeHitPlayed:Bool = false; // Hacky way to prevent snake death sound form being played twice
 	var _sndAttack:FlxSound;
-	var _onScreenSoundPlayed:Bool;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X + 100, Y);
@@ -214,9 +213,8 @@ class Snake extends Enemy {
 		animation.add("dying", [for (i in 10...14) i], 8, false);	
 
 		// Sounds		
-		_sndHit = FlxG.sound.load("assets/sounds/enemies/snake-hit.ogg");	
-		_sndOnScreen = FlxG.sound.load("assets/sounds/enemies/snake-intro.ogg");
-		_sndAttack = FlxG.sound.load("assets/sounds/enemies/snake-attack.ogg");		
+		_sndHit = FlxG.sound.load("assets/sounds/enemies/snake-hit.ogg", 0.6);	
+		_sndAttack = FlxG.sound.load("assets/sounds/enemies/snake-attack.ogg", 0.6);		
 	}
 
 	override public function kill() {
@@ -227,18 +225,16 @@ class Snake extends Enemy {
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 
-		if (this.isOnScreen() && !_onScreenSoundPlayed) {
-			_sndOnScreen.play();
-			_onScreenSoundPlayed = true;
-		}
-
 		if (attacking) {
 			animation.play("attacking");
 			_sndAttack.play(true);
 		} else {
 			_enemyHit ? {
 				animation.play("dying");
-				_sndHit.play();
+				if (!_snakeHitPlayed) {
+					_sndHit.play();
+					_snakeHitPlayed = true;
+				}
 			} : animation.play("idle");
 		}
 	}		

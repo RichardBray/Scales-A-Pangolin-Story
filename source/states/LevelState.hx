@@ -248,6 +248,7 @@ class LevelState extends GameState {
 			final x:Float = Std.parseFloat(data.get("x"));
 			final y:Float = Std.parseFloat(data.get("y"));
 			final name:String = data.get("name");
+
 			Helpers.playProximitySound(name, x, y, player);
 		}			
 	}
@@ -321,8 +322,8 @@ class LevelState extends GameState {
 	 * This method just converts strings to integers.
 	 */
 	function placeEntities(EntityData:Xml, ObjectId:Int) {
-		final x:Int = Std.parseInt(EntityData.get("x"));
-		final y:Int = Std.parseInt(EntityData.get("y"));
+		final x:Float = Std.parseFloat(EntityData.get("x"));
+		final y:Float = Std.parseFloat(EntityData.get("y"));
 		final width:Int = Std.parseInt(EntityData.get("width"));
 		final height:Int = Std.parseInt(EntityData.get("height"));
 		final name:String = EntityData.get("name");
@@ -354,15 +355,15 @@ class LevelState extends GameState {
 	 * Makes object to colider with `Player` in level.
 	 */
 	function createEntity(
-		X:Int, 
-		Y:Int, 
+		X:Float, 
+		Y:Float, 
 		Width:Int, 
 		Height:Int, 
 		Name:String,
 		Otype:String, // Object type
 		ObjectId:Int
 	) {
-		var newY:Int = (Y - Height);
+		var newY:Float = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage:Map<Int, String> = [
 			1 => "assets/images/L1_ROCK_01.png",
