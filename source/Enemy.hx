@@ -127,7 +127,7 @@ class Fire extends Enemy {
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
 		updateSpriteHitbox(70, 50, this);
 
-		animation.add("burning", [for (i in 0...8) i], 12, true);		
+		animation.add("burning", [for (i in 0...8) i], 12, true);
 	}
 
 	override public function update(Elapsed:Float) {
@@ -155,7 +155,7 @@ class Boar extends PacingEnemey {
 		animation.add("walking", [for (i in 0...7) i], 8, true);
 		animation.add("dying", [for (i in 7...13) i], 8, false);	
 
-		_hurtSnd = FlxG.sound.load("assests/sounds/enemies/boar-hit.ogg");		
+		_hurtSnd = FlxG.sound.load("assets/sounds/enemies/boar-hit.ogg");		
 	}
 
 	override public function update(Elapsed:Float) {
@@ -192,6 +192,11 @@ class Toucan extends PacingEnemey {
 class Snake extends Enemy {
 	var _enemyHit:Bool = false;
 
+	// Sounds
+	var _sndHit:FlxSound;
+	var _sndOnScreen:FlxSound;
+	var _sndAttack:FlxSound;
+	var _onScreenSoundPlayed:Bool;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X + 100, Y);
@@ -206,7 +211,12 @@ class Snake extends Enemy {
 
 		animation.add("idle", [for (i in 0...4) i], 6, true);
 		animation.add("attacking", [for (i in 5...9) i], 8, false);		
-		animation.add("dying", [for (i in 10...14) i], 8, false);				
+		animation.add("dying", [for (i in 10...14) i], 8, false);	
+
+		// Sounds		
+		_sndHit = FlxG.sound.load("assets/sounds/enemies/snake-hit.ogg");	
+		_sndOnScreen = FlxG.sound.load("assets/sounds/enemies/snake-intro.ogg");
+		_sndAttack = FlxG.sound.load("assets/sounds/enemies/snake-attack.ogg");		
 	}
 
 	override public function kill() {
@@ -216,10 +226,20 @@ class Snake extends Enemy {
 
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
+
+		if (this.isOnScreen() && !_onScreenSoundPlayed) {
+			_sndOnScreen.play();
+			_onScreenSoundPlayed = true;
+		}
+
 		if (attacking) {
 			animation.play("attacking");
+			_sndAttack.play(true);
 		} else {
-			_enemyHit ? animation.play("dying") : animation.play("idle");
+			_enemyHit ? {
+				animation.play("dying");
+				_sndHit.play();
+			} : animation.play("idle");
 		}
 	}		
 }

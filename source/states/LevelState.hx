@@ -31,6 +31,7 @@ class LevelState extends GameState {
 	var _termiteHills:FlxSpriteGroup;
 	var _map:Null<TiledMap>;
 	var _mapObjects:TiledObjectLayer;
+	var _mapProximitySounds:TiledObjectLayer;
 	var _collisionImg:String;
 	var _curTermiteHill:Null<TermiteHill>;
 	var _grpMidCheckpoints:FlxTypedGroup<FlxObject>;
@@ -56,7 +57,6 @@ class LevelState extends GameState {
 	var _levelCompleteSave:Bool = false;
 	var _gameSaveForPause:FlxSave;
 	// Sounds
-	var _sndSelect:FlxSound;
 	var _sndLevelIntro:FlxSound;
 	//Controls
 	var _controls:Controls;
@@ -93,9 +93,6 @@ class LevelState extends GameState {
 
 		// Intialise controls
 		_controls = new Controls();
-
-		// Sounds
-		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);
 	}
 
 	/** PUBLIC FUNCTIONS **/
@@ -116,7 +113,9 @@ class LevelState extends GameState {
 		_collisionImg = "assets/images/collisions.png";
 
 		// Load custom tilemap (up here because of background)
-		_map = new TiledMap('assets/data/$MapFile.tmx');
+		if (_map == null) {
+			_map = new TiledMap('assets/data/$MapFile.tmx');
+		}
 
 		// Code for parallax background
 
@@ -158,7 +157,6 @@ class LevelState extends GameState {
 		// Add killable enemies
 		_grpKillableEnemies = new FlxTypedGroup<Enemy>();
 		_grpEnemyAttackBoundaries = new FlxTypedGroup<FlxObject>();
-
 
 		// Looping over `objects` layer
 		_mapObjects = cast(_map.getLayer("objects"));
@@ -237,6 +235,23 @@ class LevelState extends GameState {
 		add(playerFeetCollision);
 	}
 
+
+	public function createProximitySounds(MapFile:String) {
+		// Load custom tilemap (up here because of background)
+		if (_map == null) {
+			_map = new TiledMap('assets/data/$MapFile.tmx');
+		}	
+		_mapProximitySounds = cast(_map.getLayer("sounds"));
+
+		for (e in _mapProximitySounds.objects) {
+			final data:Xml = e.xmlData.x;
+			final x:Float = Std.parseFloat(data.get("x"));
+			final y:Float = Std.parseFloat(data.get("y"));
+			final name:String = data.get("name");
+			Helpers.playProximitySound(name, x, y, player);
+		}			
+	}
+
 	/**
 	 * Saves the game.
 	 *
@@ -306,12 +321,12 @@ class LevelState extends GameState {
 	 * This method just converts strings to integers.
 	 */
 	function placeEntities(EntityData:Xml, ObjectId:Int) {
-		var x:Int = Std.parseInt(EntityData.get("x")); // Parse string to int
-		var y:Int = Std.parseInt(EntityData.get("y"));
-		var width:Int = Std.parseInt(EntityData.get("width"));
-		var height:Int = Std.parseInt(EntityData.get("height"));
-		var name:String = EntityData.get("name");
-		var type:String = EntityData.get("type");
+		final x:Int = Std.parseInt(EntityData.get("x"));
+		final y:Int = Std.parseInt(EntityData.get("y"));
+		final width:Int = Std.parseInt(EntityData.get("width"));
+		final height:Int = Std.parseInt(EntityData.get("height"));
+		final name:String = EntityData.get("name");
+		final type:String = EntityData.get("type");
 		createEntity(x, y, width, height, name, type, ObjectId);
 	}
 
@@ -321,8 +336,8 @@ class LevelState extends GameState {
 	 * @param Height Height to reduce from original hegight
 	 */
 	function updateMapDimentions(Width:Float, Height:Float) {
-		var newWidth:Float = _map.fullWidth - Width;
-		var newHeight:Float = _map.fullHeight - Height;
+		final newWidth:Float = _map.fullWidth - Width;
+		final newHeight:Float = _map.fullHeight - Height;
 		levelExit.x = newWidth - 20;
 		FlxG.worldBounds.set(0, 0, newWidth, newHeight);
 		FlxG.camera.setScrollBoundsRect(0, 0, newWidth, newHeight);
@@ -701,7 +716,6 @@ class LevelState extends GameState {
 
 		// Paused game state
 		if (_controls.start.check()) {
-			_sndSelect.play();
 			// SubState needs to be recreated here as it will be destroyed
 			var _pauseMenu:PauseMenu = new PauseMenu(false, levelName, _gameSaveForPause);
 			openSubState(_pauseMenu);

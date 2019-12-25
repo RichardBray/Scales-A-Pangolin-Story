@@ -79,9 +79,7 @@ class LevelFour extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData); 
 
-		// Save game on load 	
-		_gameSave = new FlxSave(); // initialize
-		_gameSave.bind("AutoSave"); // bind to the named save slot  						
+		// Save game on load 							
 		_gameSave = saveGame(_gameSave);
     super.create();  
 		    
