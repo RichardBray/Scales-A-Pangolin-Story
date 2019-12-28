@@ -53,6 +53,9 @@ class LevelOne extends LevelState {
 		// If no socre has been bassed then pass 0
 		createHUD(0, player.health, _goalData);
 
+		// Proximity sounds
+		createProximitySounds(); 		
+
 		// Save game on load
 		_gameSave = saveGame(_gameSave);
 

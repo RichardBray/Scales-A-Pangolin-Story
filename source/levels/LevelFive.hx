@@ -114,7 +114,10 @@ class LevelFive extends LevelState {
   
   	// Add player
 		createPlayer(368, 1470);  
-    // createPlayer(12042, 1369);
+
+		// Proximity sounds
+		createProximitySounds(); 
+
     add(_caveForeground);
 
     // Add HUD

@@ -57,6 +57,9 @@ class LevelSix extends LevelState {
     // Pango should be attached by this level
     player.pangoAttached = true;
 
+		// Proximity sounds
+		createProximitySounds();     
+
     _allCages = new FlxTypedGroup<MovingCage>();
     
     add(_allCages);

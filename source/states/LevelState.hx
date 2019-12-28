@@ -236,10 +236,11 @@ class LevelState extends GameState {
 	}
 
 
-	public function createProximitySounds(MapFile:String) {
-		// Load custom tilemap (up here because of background)
+	public function createProximitySounds() {
+		final mapFile:String = levelName.toLowerCase();
+
 		if (_map == null) {
-			_map = new TiledMap('assets/data/$MapFile.tmx');
+			_map = new TiledMap('assets/data/$mapFile.tmx');
 		}	
 		_mapProximitySounds = cast(_map.getLayer("sounds"));
 

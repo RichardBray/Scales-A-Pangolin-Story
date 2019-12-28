@@ -55,9 +55,14 @@ class LevelTwo extends LevelState {
 		createPlayer(180, 1470);
 
     // Add HUD
-    createHUD(0, player.health, _goalData);   
+    createHUD(0, player.health, _goalData);  
+
+		// Proximity sounds
+		createProximitySounds(); 
 
 		// Save game on load
+		_gameSave = new FlxSave(); // initialize
+		_gameSave.bind("AutoSave"); // bind to the named save slot  		
 		_gameSave = saveGame(_gameSave);
 
 		super.create(); 

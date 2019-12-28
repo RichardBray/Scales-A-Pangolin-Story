@@ -91,7 +91,7 @@
   <object id="116" name="mini-checkpoint-2" x="6077.53" y="1424.11" width="149.731" height="147.417"/>
  </objectgroup>
  <objectgroup id="5" name="sounds">
-  <object id="117" name="fire" x="1486.77" y="1287.41">
+  <object id="117" name="fire" type="0.6" x="1486.77" y="1287.41">
    <point/>
   </object>
   <object id="118" name="lava" x="3461.31" y="1744.19">

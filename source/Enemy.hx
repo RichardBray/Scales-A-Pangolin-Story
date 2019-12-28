@@ -170,6 +170,8 @@ class Boar extends PacingEnemey {
 }
 
 class Toucan extends PacingEnemey {
+	// Sounds
+	var _sndHit:FlxSound;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 220);
@@ -180,12 +182,25 @@ class Toucan extends PacingEnemey {
 		setFacingFlip(FlxObject.RIGHT, true, false);			
 
 		animation.add("flying", [for (i in 0...10) i], 8, true);
-		// animation.add("dying", [for (i in 7...12) i], 8, false);			
+		// animation.add("dying", [for (i in 7...12) i], 8, false);		
+
+		// Sounds
+		_sndHit = FlxG.sound.load("assets/sounds/enemies/toucan.ogg", 0.6);		
 	}	
+
+	override public function kill() {
+		_enemyHit = true;
+		_sndHit.play();
+		dieSlowly();
+  }
 
 	override public function update(Elapsed:Float) {
 		animation.play("flying");
 		super.update(Elapsed);
+
+		if (_enemyHit) {
+			velocity.y = 800;
+		}
 	}		
 }
 
@@ -194,7 +209,6 @@ class Snake extends Enemy {
 
 	// Sounds
 	var _sndHit:FlxSound;
-	var _snakeHitPlayed:Bool = false; // Hacky way to prevent snake death sound form being played twice
 	var _sndAttack:FlxSound;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
@@ -219,6 +233,7 @@ class Snake extends Enemy {
 
 	override public function kill() {
 		_enemyHit = true;
+		_sndHit.play();
 		dieSlowly();
   }
 
@@ -229,13 +244,7 @@ class Snake extends Enemy {
 			animation.play("attacking");
 			_sndAttack.play(true);
 		} else {
-			_enemyHit ? {
-				animation.play("dying");
-				if (!_snakeHitPlayed) {
-					_sndHit.play();
-					_snakeHitPlayed = true;
-				}
-			} : animation.play("idle");
+			_enemyHit ? animation.play("dying") : animation.play("idle");
 		}
 	}		
 }
