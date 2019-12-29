@@ -19,11 +19,11 @@ class LevelSix extends LevelState {
 
   final _bugsGoal:Int = 7; 
 
-  final _allMovingCages:Array<Array<Dynamic>> = [
-    [3993, 1368, false],
-    [8106, 1369, false],
-    [9773, 887, true],
-    [10559, 1292, false]
+  final _allMovingCages:Array<Array<Int>> = [
+    [3993, 1368, 0],
+    [8106, 1369, 0],
+    [9773, 887, 1],
+    [10559, 1292, 0]
   ];
 
   final _allMidCheckpoints:Array<Array<Float>> = [
@@ -64,11 +64,11 @@ class LevelSix extends LevelState {
     
     add(_allCages);
 
-    _allMovingCages.map((movingCage:Array<Dynamic>) -> {
+    _allMovingCages.map((movingCage:Array<Int>) -> {
       var _movingCage:MovingCage = new MovingCage(
         movingCage[0], 
         movingCage[1], 
-        movingCage[2], 
+        movingCage[2] == 1, 
         player, 
         playerFeetCollision);
   

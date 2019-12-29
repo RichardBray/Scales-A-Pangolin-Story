@@ -13,6 +13,7 @@ class Player extends FlxSprite {
 	var _sndRun:FlxSound;
 	var _sndJumpDown:FlxSound;
 	var _sndHurt:FlxSound;
+	var _sndDigging:FlxSound;
 	var _offFloorCount:Float;	
 
 	final GRAVITY:Float = Constants.worldGravity;
@@ -60,6 +61,7 @@ class Player extends FlxSprite {
 		_sndJumpDown = FlxG.sound.load("assets/sounds/player/jump_down.ogg", .7);
 		_sndRun = FlxG.sound.load("assets/sounds/player/footsteps.ogg", .65);
 		_sndHurt = FlxG.sound.load("assets/sounds/player/hurt.ogg", .7);
+		_sndDigging = FlxG.sound.load("assets/sounds/player/digging.ogg", .7);
 
 		// Intialise controls
 		_controls = new Controls();
@@ -172,6 +174,12 @@ class Player extends FlxSprite {
 				facingTermiteHill = false;
 				preventMovement = false;
 			}, 2000);
+		}
+
+		if (facingTermiteHill && playerIsDigging) {
+			_sndDigging.play();
+		} else {
+			_sndDigging.stop();
 		}
 
 		super.update(Elapsed);

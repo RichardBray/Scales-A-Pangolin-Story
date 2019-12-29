@@ -199,7 +199,7 @@ class Toucan extends PacingEnemey {
 		super.update(Elapsed);
 
 		if (_enemyHit) {
-			velocity.y = 800;
+			velocity.y = 400;
 		}
 	}		
 }

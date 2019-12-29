@@ -35,7 +35,7 @@ class BossBoar extends Enemy {
     _endSnd = FlxG.sound.load("assets/sounds/boar-boss/end.ogg");
     _hurtSnd = FlxG.sound.load("assets/sounds/boar-boss/hit.ogg");
 
-    health = 3;
+    health = 7;
     hasCollisions = true; 
     _levelState = Parent;
 

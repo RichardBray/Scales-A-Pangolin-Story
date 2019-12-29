@@ -11,11 +11,7 @@ class Lava extends FlxSprite {
   public function new(X:Float = 0, Y:Float = 0) {
     super(X, Y);
     loadGraphic("assets/images/environments/SCALES_L1_LAVA.png", true, 358, 124);
-    animation.add("flow", [for (i in 0...11) i], 8, true);
-
-    // _sndLava = FlxG.sound.load("assets/sounds/lava_loop.ogg", 0, true, null, false);
-    // _sndLava.proximity(x, y, FlxG.camera.target, FlxG.width *.1);
-    // _sndLava.play().fadeIn(0.1, 0, 1);    
+    animation.add("flow", [for (i in 0...11) i], 8, true); 
   }
 
   override public function update(Elapsed:Float) {

@@ -87,7 +87,7 @@ class Controls {
     down.addGamepad(DPAD_DOWN, JUST_PRESSED);
     down.addGamepad(LEFT_STICK_DIGITAL_DOWN, JUST_PRESSED);          
 
-    start.addGamepad(START, JUST_PRESSED);
+    start.addGamepad(START, JUST_RELEASED);
   }
 }
 
