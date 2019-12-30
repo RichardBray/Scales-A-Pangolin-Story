@@ -91,7 +91,9 @@ http://www.softschools.com/facts/animals/pangolin_facts/108/
 ### Testings code
 
 ```hx
+#if debug
 _gameSave = new FlxSave(); // initialize
-_gameSave.bind("AutoSave"); // bind to the named save slot    
+_gameSave.bind("AutoSave"); // bind to the named save slot 
+#end   
 _gameSave = saveGame(_gameSave, [0, 0]);  
 ```

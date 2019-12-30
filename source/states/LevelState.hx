@@ -460,13 +460,13 @@ class LevelState extends GameState {
 	 * @param	Player					Player sprite (I'm not 100% sure if this is true)
 	 */
 	function fallInClouds(FallThroughTile:FlxObject, Player:FlxObject) {
+		final EXTRA_HEIGHT:Int = 25; // Increse player y so that height is always higher than special tile height
 		if (!player.preventMovement) {
 			if (_controls.down.check()) {
 				player.playGoingDownSound();
-				var timer = new FlxTimer();
-				FallThroughTile.allowCollisions = FlxObject.NONE;
-				timer.start(.1, (_) -> player.isGoindDown = true);	
-			} else if (Player.y >= FallThroughTile.y) {
+				FallThroughTile.allowCollisions = FlxObject.NONE;	
+				player.isGoindDown = true;
+			} else if ((player.y + EXTRA_HEIGHT) > FallThroughTile.y) {
 				FallThroughTile.allowCollisions = FlxObject.CEILING;
 				player.isGoindDown = false;
 			}
