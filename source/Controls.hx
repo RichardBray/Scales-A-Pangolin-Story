@@ -66,8 +66,8 @@ class Controls {
   }
 
   function addGamepad() {
-    cross.addGamepad(A, JUST_PRESSED);
-    triangle.addGamepad(Y, JUST_PRESSED);
+    cross.addGamepad(A, JUST_RELEASED);
+    triangle.addGamepad(Y, JUST_RELEASED);
 
     left.addGamepad(DPAD_LEFT, PRESSED);
     left.addGamepad(LEFT_STICK_DIGITAL_LEFT, PRESSED);
