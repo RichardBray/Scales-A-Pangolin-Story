@@ -123,7 +123,9 @@ class LevelFive extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData);  
   
-    // Save game on load      
+    // Save game on load    
+_gameSave = new FlxSave(); // initialize
+_gameSave.bind("AutoSave"); // bind to the named save slot        
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();
 
@@ -145,6 +147,7 @@ class LevelFive extends LevelState {
     // Player jumps down hole
     player.setPosition(14974, 842);
     player.animation.play(playerJumpAnim());
+    playMusic(Constants.caveMusic);
     // Follow level not plauer
     FlxG.camera.follow(_bonusLevel, PLATFORMER, 1);
     // Hide all background images
@@ -161,6 +164,7 @@ class LevelFive extends LevelState {
     player.animation.play(playerJumpAnim());
     player.velocity.y = -800;
     FlxG.camera.follow(player, PLATFORMER, 1);
+    playMusic(Constants.jungleMusic);
     // Show all background images
     levelBgs.forEach((Member:FlxSprite) ->  Member.alpha = 1);
   }
@@ -234,7 +238,7 @@ class IntroFive extends IntroState {
 		super();
 		_gameSave = GameSave;
 		facts = [
-			"So our hero continues to travel through the jungle.",
+			"So our hero continued to travel through the jungle.",
 			"Avoiding predetars and obstacles in search of captured pangolins to save."
 		];		
 	}

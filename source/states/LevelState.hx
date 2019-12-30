@@ -1,6 +1,7 @@
 package states;
 
 // - Flixel
+import lime.ui.Haptic;
 import components.TermiteHill;
 import flixel.util.FlxTimer;
 import flixel.util.FlxSave;
@@ -75,7 +76,7 @@ class LevelState extends GameState {
 		super.create();
 	
 		// Continue music if it's already playing
-		if (FlxG.sound.music == null) playMusic("assets/music/jungle-sound.ogg");
+		if (FlxG.sound.music == null) playMusic(Constants.jungleMusic);
 
 		if (_map != null) {
 			/**
@@ -532,6 +533,7 @@ class LevelState extends GameState {
 						FlxG.camera.shake(0.00150, 0.25);
 						Enemy.sndEnemyKill.play();
 						Enemy.hurt(1);
+						Haptic.vibrate(2, 2);
 						if (Enemy.health < 1) incrementDeathCount();							
 					} else {
 						// when rolling animation is NOT playing

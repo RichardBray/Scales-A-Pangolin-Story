@@ -50,6 +50,7 @@ class LevelTwo extends LevelState {
     levelName = "Level-2-0";
 
     createLevel("level-2-0", "SCALES_BACKGROUND-01.png", "level_two");
+		createMidCheckpoints(_allMidCheckpoints);
 
 		// Add player
 		createPlayer(180, 1470);

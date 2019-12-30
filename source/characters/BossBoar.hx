@@ -149,7 +149,7 @@ class BossBoar extends Enemy {
     FlxG.camera.flash(FlxColor.WHITE, 0.5, turnOffSlowMo);
     FlxG.timeScale = 0.35;
     _endSnd.play();
-    _levelState.playMusic("assets/music/jungle-sound.ogg");
+    _levelState.playMusic(Constants.jungleMusic);
 		dieSlowly();
   }  
 

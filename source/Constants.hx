@@ -8,7 +8,7 @@ import states.LevelState;
 
 class Constants {
 	// general
-	public static final projectVersion:String = "v0.10.0";
+	public static final projectVersion:String = "v0.10.1";
 	public static final worldGravity:Int = 1500;
 	public static final squareFont:String = "assets/fonts/Square.ttf";
 
@@ -34,6 +34,10 @@ class Constants {
 	public static final sndMenuMove:String = "assets/sounds/menu_move.wav";
 	public static final sndMenuSelect:String = "assets/sounds/menu_selected.ogg";	
 	public static final sndMenuClose:String = "assets/sounds/menu_close.ogg";
+
+	// Ambient sounds
+	public static final jungleMusic:String = "assets/music/jungle-sound.ogg";
+	public static final caveMusic:String = "assets/sounds/environment/cave.ogg";
 
 	/** Used to load levels from saves and restart levels */
 	public static final levelNames:Map<String, Class<LevelState>> = [

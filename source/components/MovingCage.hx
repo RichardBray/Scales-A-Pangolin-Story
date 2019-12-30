@@ -70,7 +70,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     }
   } 
 
-  function stickyPlatorm(Player:Player, Platform:FlxObject) {
+  function stickyPlatorm(Player:FlxObject, Platform:FlxObject) {
     Player.velocity.y = _actualCage.velocity.y;
   }
 

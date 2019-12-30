@@ -182,7 +182,7 @@ class Toucan extends PacingEnemey {
 		setFacingFlip(FlxObject.RIGHT, true, false);			
 
 		animation.add("flying", [for (i in 0...10) i], 8, true);
-		// animation.add("dying", [for (i in 7...12) i], 8, false);		
+		animation.add("dying", [0], 0, false);		
 
 		// Sounds
 		_sndHit = FlxG.sound.load("assets/sounds/enemies/toucan.ogg", 0.6);		
@@ -199,7 +199,8 @@ class Toucan extends PacingEnemey {
 		super.update(Elapsed);
 
 		if (_enemyHit) {
-			velocity.y = 400;
+			velocity.y = 600;
+			animation.play("dying");
 		}
 	}		
 }
