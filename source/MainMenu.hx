@@ -1,5 +1,6 @@
 package;
 
+import openfl.system.System;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
@@ -79,7 +80,11 @@ class MainMenu extends GameState {
 			{
 				title: "Start Demo", // New Game
 				func: selectNewGame
-			}
+			},
+			{
+				title: "Quit",
+				func: () -> System.exit(0)
+			}			
 		];
 
 		_menu = new Menu(_gameTitle.x, _gameTitle.y + 520, _titleWidth, menuData(_continueOption, _otherOptions), true);

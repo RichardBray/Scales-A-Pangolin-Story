@@ -77,12 +77,13 @@ class Player extends FlxSprite {
 		FlxTween.tween(this, {x: xPos, y: (this.y - 60)}, 0.1);
 	}
 
-	public function playGoingDownSound() {
-		_sndJumpDown.play();
-	}
-
 	public function playHurtSound() {
 		_sndHurt.play();
+	}
+
+	public function playerGoingDownSound() {
+		_sndJumpDown.play();
+		
 	}
 
 	public function resetPlayer() {
@@ -134,12 +135,13 @@ class Player extends FlxSprite {
 				_sndJump.play();
 				offset.x = 80;
 				isJumping = true;
-				velocity.y = -800; // 1100
+				velocity.y = -800;
 				animation.play(animationName("jumpLoop"));
 			}
 			if (isGoindDown) {
 				animation.play(animationName("jumpLoop"));
 				isJumping = true;
+				offset.x = 80;
 			}
 		}
 

@@ -87,11 +87,7 @@ class LevelThree extends LevelState {
 
 		createProximitySounds();
 
-		// Save game on load	
-#if debug
-_gameSave = new FlxSave(); // initialize
-_gameSave.bind("AutoSave"); // bind to the named save slot 
-#end   					
+		// Save game on load	 					
 		_gameSave = saveGame(_gameSave);
 
     super.create(); 	

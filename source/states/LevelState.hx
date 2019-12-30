@@ -463,7 +463,7 @@ class LevelState extends GameState {
 		final EXTRA_HEIGHT:Int = 25; // Increse player y so that height is always higher than special tile height
 		if (!player.preventMovement) {
 			if (_controls.down.check()) {
-				player.playGoingDownSound();
+				player.playerGoingDownSound();
 				FallThroughTile.allowCollisions = FlxObject.NONE;	
 				player.isGoindDown = true;
 			} else if ((player.y + EXTRA_HEIGHT) > FallThroughTile.y) {
