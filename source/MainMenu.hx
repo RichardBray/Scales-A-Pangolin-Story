@@ -151,7 +151,7 @@ class MainMenu extends GameState {
 			_bottomRight.alpha = 1;
 		}
 
-		if (_controls.cross.check()) {
+		if (_controls.cross_jr.check()) {
 			if (!_showChoices) {
 				_sndSelect.play();
 				_showChoices = true;
