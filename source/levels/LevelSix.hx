@@ -48,7 +48,7 @@ class LevelSix extends LevelState {
     levelName = "Level-6-0";
 
     // TODO: Make music for level six
-    createLevel("level-6-0", "dessert-bg.jpg", "level_one");
+    createLevel("level-6-0", "dessert-bg.jpg", "level_six");
     createMidCheckpoints(_allMidCheckpoints);   
 
     // Add player

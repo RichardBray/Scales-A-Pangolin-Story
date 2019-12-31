@@ -82,7 +82,7 @@ class MainMenu extends GameState {
 				func: selectNewGame
 			},
 			{
-				title: "Quit",
+				title: "Exit game",
 				func: () -> System.exit(0)
 			}			
 		];

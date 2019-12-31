@@ -20,6 +20,12 @@ class LevelFive extends LevelState {
   var _teleport:FlxObject;
   var _bonusLevel:FlxObject;
   var _bonusLevelExit:FlxObject;
+	var _seconds:Float = 0;
+  var _instructionsBox:FlxObject;
+
+  // Instructions
+  var _showInstrucitons:Bool;
+  var _instructionsViewed:Bool = false;
 
   // Cave
   var _caveForeground:FlxSprite;
@@ -38,9 +44,10 @@ class LevelFive extends LevelState {
     [5327.93, 1426.64]
   ];
 
-  public function new(?GameSave:Null<FlxSave>) {
+  public function new(?GameSave:Null<FlxSave>, ShowInstructions:Bool = false) {
     super();
     _gameSave = GameSave;
+    _showInstrucitons = ShowInstructions;
 
 		_goalData = [
 			{
@@ -62,7 +69,7 @@ class LevelFive extends LevelState {
     add(_caveBackground);
   
     // TODO: Make music for level five
-    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one");
+    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_five");
     createMidCheckpoints(_allMidCheckpoints);
 
     _caveForeground = new FlxSprite(14176, 720).loadGraphic(
@@ -90,13 +97,14 @@ class LevelFive extends LevelState {
     _purplePango = new PurplePango(12270, 1250);
     _purplePango.alpha = 0;
 
+    _instructionsBox = new FlxObject(2659.82, 324.99, 104.77, 1111.82);
+
 		// Add NPC Text
 		var pangoText:Array<String> = [
-			"You saved my life!!",
-			"You are the fastest, strongest pangolin I have ever seen... \nplease, you have to help me!",
-			"I have lost my <pt>four<pt> babies. Sob Sob",
-			"Some have been trapped by <pt>predators<pt> and \nothers have been caught by <pt>poachers<pt>",
-      "I need to see my babies again, please do everything \nyou can to bring them back to me!."
+			"Thanks for freeing me from the cage. ",
+			"I was careless and got caught in this poacher's trap. ",
+			"Will you please take me to my mother? ",
+			"I hope you don't mind if I hitch a ride on your tail. "
 		]; 
 
 		_pangoNPC = new NPC(
@@ -192,8 +200,20 @@ _gameSave.bind("AutoSave"); // bind to the named save slot
 		FlxG.switchState(new LevelSix(_gameSave));
 	}	
 
+	/**
+	 * Show instructions specific to this level unless they have already been viewed
+	 */
+	function showInstructions(_, _) {
+    if (_showInstrucitons && !_instructionsViewed) {
+      var _instructions:Instructions = new Instructions(2, 2, true, false);
+      if (!_instructions.menuViewed) openSubState(_instructions);
+      _instructionsViewed = true;
+    }
+	}	
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+    _seconds += Elapsed;
 
 		// Overlaps
 		grpHud.goalsCompleted
@@ -203,6 +223,7 @@ _gameSave.bind("AutoSave"); // bind to the named save slot
     FlxG.overlap(player, _teleport, moveToBonus);
     FlxG.overlap(player, _bonusLevelExit, exitBouns);
     FlxG.overlap(player, _cagedPangoCollision, killCageAndCollision);
+    FlxG.overlap(player, _instructionsBox, showInstructions);
 
     if (_pangoFreed) {
       FlxG.collide(_purplePango, _levelCollisions);
@@ -246,6 +267,6 @@ class IntroFive extends IntroState {
 	}
 
 	override public function startLevel() {
-		FlxG.switchState(new LevelFive(_gameSave));
+		FlxG.switchState(new LevelFive(_gameSave, true));
 	}
 }

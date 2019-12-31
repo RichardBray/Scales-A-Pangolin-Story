@@ -196,12 +196,33 @@ class LevelSelect extends GameState {
     }   
   }
 
+  /**
+   * Specific controls for certain level positions.
+   */
+  function specificControls() {
+    if (_lastCompletedLevel == 0 && _controls.up.check()) {
+      _lastCompletedLevel = 1;
+    }
+
+    if (_lastCompletedLevel == 1 && _controls.down.check()) {
+      _lastCompletedLevel = 0;
+    }  
+
+    if (_lastCompletedLevel == 4 && _controls.down.check()) {
+      _lastCompletedLevel = 5;
+    }   
+  
+    if (_lastCompletedLevel == 5 && _controls.up.check()) {
+      _lastCompletedLevel = 4;
+    }   
+  }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
     // Initial level pointer position
     _levelPointer.setPosition(_levelPos[_lastCompletedLevel].x, _levelPos[_lastCompletedLevel].y);
 
+    specificControls();
     if (_controls.cross.check()) {
       _sndSelect.play(); 
 
@@ -221,9 +242,14 @@ class LevelSelect extends GameState {
       (_lastCompletedLevel == 0) 
         ? _lastCompletedLevel = (_levelPos.length - 1)
         : _lastCompletedLevel--;
-    }   
+    }
 
-    if (_controls.left_jp.check() || _controls.right_jp.check()) _sndMove.play(true);
+    if (
+      _controls.left_jp.check() || 
+      _controls.right_jp.check() ||
+      _controls.up.check() ||
+      _controls.down.check()
+    ) _sndMove.play(true);
 
 		// Paused game state
 		if (_controls.start.check()) {

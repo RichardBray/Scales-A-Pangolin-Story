@@ -714,7 +714,10 @@ class LevelState extends GameState {
 		}
 
 		// Reset player pos to last mid checkpoint
-		if (player.y > _map.fullHeight) player.resetPlayer();
+		if (player.y > _map.fullHeight) {
+			player.playHurtSound();
+			player.resetPlayer();
+		}
 
 		// Paused game state
 		if (_controls.start.check()) {
