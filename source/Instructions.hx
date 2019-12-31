@@ -63,7 +63,6 @@ class Instructions extends FlxSubState {
 
     // Create pages, hides all the pages that aren't currently selected    
     for (i in StartPage...(EndPage + 1)) {
-      js.Browser.console.log(i, "page");
       var widthApart:Int = 80; // Pixel size gap for left and right
       var heightApart:Int = 45;
       var _page = new FlxSprite(widthApart*2, heightApart*2);
