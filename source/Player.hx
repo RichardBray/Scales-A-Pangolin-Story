@@ -170,18 +170,14 @@ class Player extends FlxSprite {
 			preventMovement = true;
 			playerIsDigging = true;
 			animation.play(animationName("digging"));
+			_sndDigging.play();
 
 			// Allow movement after one second
 			haxe.Timer.delay(() -> {
 				facingTermiteHill = false;
 				preventMovement = false;
+				_sndDigging.stop();
 			}, 2000);
-		}
-
-		if (facingTermiteHill && playerIsDigging) {
-			_sndDigging.play();
-		} else {
-			_sndDigging.stop();
 		}
 
 		super.update(Elapsed);

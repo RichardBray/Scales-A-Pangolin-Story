@@ -63,7 +63,6 @@ class LevelSelect extends GameState {
       _gameSave.data.enableLevelSelect = true;
       _gameSave.flush();
     }
-
     if (ModalNum != null) _modalNum = ModalNum; 
   }
 

@@ -76,7 +76,7 @@ class PauseMenu extends FlxSubState {
 				},
 				itemPos: 2
 			}];
-			// TODO Finish this
+
 			levelSelectMenuOption = [{
 				title: "Level Select",
 				func: () -> {
