@@ -79,7 +79,7 @@ class LevelFour extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData); 
 
-		// Save game on load 									
+		// Save game on load 										
 		_gameSave = saveGame(_gameSave);
     super.create();  
 		    

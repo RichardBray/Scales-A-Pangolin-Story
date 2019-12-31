@@ -88,7 +88,7 @@ Scales of Life: A Pangolin's story
 http://www.softschools.com/facts/animals/pangolin_facts/108/
 
 
-### Testings code
+### Testing code
 
 ```hx
 #if debug
@@ -96,4 +96,18 @@ _gameSave = new FlxSave(); // initialize
 _gameSave.bind("AutoSave"); // bind to the named save slot 
 #end   
 _gameSave = saveGame(_gameSave, [0, 0]);  
+```
+
+### Save game data structure
+
+```js
+data: {
+  enableLevelSelect: false,
+  levelName: "Level-5-0",
+  totalBugs: 0,
+  totalEnemies: 0,
+  showLevelIntros: [false, false, false, false], // Not yet implemented
+  playerAbilities: [false, false, false], // Not yet implemented
+  levelStars: [1, 2, 3, 3, 2] // Not yet implemented
+}
 ```

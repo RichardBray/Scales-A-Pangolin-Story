@@ -28,6 +28,9 @@ class Player extends FlxSprite {
 	public var pangoAttached:Bool = false;
 	public var resetPosition:Array<Float>;
 
+	// Abilities
+	public var enableQuickJump:Bool = false;
+
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
 		acceleration.y = GRAVITY; // Constantly pushes the player down on Y axis
@@ -94,7 +97,9 @@ class Player extends FlxSprite {
 	 * Allows player to jump just off edge of an object to reduce frustration.
 	 */
 	function floorTouchWithinTime():Bool {
-		return isTouching(FlxObject.FLOOR) || _offFloorCount < 0.2;
+		// isAscending
+		final hasQuickJump = enableQuickJump ? enableQuickJump : !isAscending;
+		return isTouching(FlxObject.FLOOR) || (hasQuickJump && _offFloorCount < 0.2);
 	}
 
 	public function animationName(Name:String):String {

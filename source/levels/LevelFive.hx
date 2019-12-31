@@ -26,6 +26,7 @@ class LevelFive extends LevelState {
   // Instructions
   var _showInstrucitons:Bool;
   var _instructionsViewed:Bool = false;
+  var _abilityHelpViewed:Bool = false;
 
   // Cave
   var _caveForeground:FlxSprite;
@@ -47,6 +48,7 @@ class LevelFive extends LevelState {
   public function new(?GameSave:Null<FlxSave>, ShowInstructions:Bool = false) {
     super();
     _gameSave = GameSave;
+    _gameSave.data.showLevelIntros = [false];
     _showInstrucitons = ShowInstructions;
 
 		_goalData = [
@@ -121,7 +123,7 @@ class LevelFive extends LevelState {
 		add(_pangoNPC);	    
   
   	// Add player
-		createPlayer(368, 1470);  
+		createPlayer(368, 1470, _gameSave);  
 
 		// Proximity sounds
 		createProximitySounds(); 
@@ -131,7 +133,8 @@ class LevelFive extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData);  
   
-    // Save game on load              
+    // Save game on load    
+              
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();
 
@@ -162,6 +165,8 @@ class LevelFive extends LevelState {
 
   function pangoTalking(Player:Player, Pango:PurplePango) {
     _pangoNPC.initConvo(Player, Pango);
+    _gameSave.data.playerAbilities = [true];
+    Player.enableQuickJump = true;
   }
 
   function exitBouns(_, _) {
@@ -179,6 +184,7 @@ class LevelFive extends LevelState {
     if (!player.isAscending && player.animation.name == "jumpLoop") {
       player.velocity.y = 450; // Bounce player
       _cagedPangolin.kill();
+      _cagedPangolin.sndCrash.play();
       _cagedPangoCollision.kill();
       _purplePango.enableGravity = true;
       haxe.Timer.delay(() -> _purplePango.alpha = 1, 150);
@@ -207,6 +213,14 @@ class LevelFive extends LevelState {
     }
 	}	
 
+  function showAbilityHelp() {
+    if (!_abilityHelpViewed) {
+      var _instructions:Instructions = new Instructions(3, 3, true, false);
+      if (!_instructions.menuViewed) openSubState(_instructions);
+      _abilityHelpViewed = true;
+    }
+  }
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
     _seconds += Elapsed;
@@ -234,6 +248,7 @@ class LevelFive extends LevelState {
       haxe.Timer.delay(() -> {
         _pangoNPC.kill();
         player.pangoAttached = true;
+        showAbilityHelp();
       }, 400);
     }
 

@@ -103,7 +103,11 @@ class LevelSelect extends GameState {
         y: 114,
         name: "Level 2",
         locked:false,
-        onSelect:() -> FlxG.switchState(new LevelFive.IntroFive(_gameSave))
+        onSelect:() -> {
+          (_gameSave.data.showLevelIntros && !_gameSave.data.showLevelIntros[0])
+          ? FlxG.switchState(new LevelFive(_gameSave))
+          : FlxG.switchState(new LevelFive.IntroFive(_gameSave));
+        }
       },
       {
         x: 594,

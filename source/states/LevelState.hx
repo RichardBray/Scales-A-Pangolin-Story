@@ -223,13 +223,19 @@ class LevelState extends GameState {
 	 * @param Y 				Player Y position
 	 * @param FacingLeft If the player is facine left
 	 */
-	public function createPlayer(X:Int, Y:Int, FacingLeft = false) {
+	public function createPlayer(X:Int, Y:Int, ?GameSave:FlxSave) {
 		player = new Player(X, Y);
 		_playerJumpPoof = new Player.JumpPoof(X, Y);
 		playerFeetCollision = new FlxObject(X, Y, 10, 72);
 		playerFeetCollision.acceleration.y = Constants.worldGravity;
 	
-		if (FacingLeft) player.facing = FlxObject.LEFT;
+		// Set player abilities
+		if (GameSave != null) {
+			if (GameSave.data.playerAbilities && GameSave.data.playerAbilities[0]) {
+				player.enableQuickJump = true;
+			}
+		}
+	
 		add(player);
 		add(_playerJumpPoof);
 		add(playerFeetCollision);

@@ -52,7 +52,7 @@ class LevelSix extends LevelState {
     createMidCheckpoints(_allMidCheckpoints);   
 
     // Add player
-    createPlayer(465, 1447);
+    createPlayer(465, 1447, _gameSave);
 
     // Pango should be attached by this level
     player.pangoAttached = true;
