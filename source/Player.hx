@@ -159,7 +159,9 @@ class Player extends FlxSprite {
 			}
 
 			// Quick jump sound effect
-			if (_jump && !isTouching(FlxObject.FLOOR) && enableQuickJump) _sndQuickJump.play();
+			if (_jump && !isTouching(FlxObject.FLOOR) && enableQuickJump && isAscending && _offFloorCount < 0.2) {
+				_sndQuickJump.play();
+			}
 		}
 
 		// Fix bug where pressing down plays jump loop evem on ground
