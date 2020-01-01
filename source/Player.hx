@@ -7,16 +7,20 @@ import flixel.FlxObject;
 import flixel.system.FlxSound;
 
 class Player extends FlxSprite {
-	var _sndJump:FlxSound;
 	var _controls:Controls;
+	var _offFloorCount:Float;
 
+	final GRAVITY:Float = Constants.worldGravity;	
+
+	// Sounds	
 	var _sndRun:FlxSound;
 	var _sndJumpDown:FlxSound;
 	var _sndHurt:FlxSound;
-	var _sndDigging:FlxSound;
-	var _offFloorCount:Float;	
+	var _sndDigging:FlxSound;	
+	var _sndJump:FlxSound;
+	var _sndQuickJump:FlxSound;
 
-	final GRAVITY:Float = Constants.worldGravity;
+	public var sndWee:FlxSound;	
 
 	public var jumpPosition:Array<Float>; // Saves player jump position for poof
 	public var preventMovement:Bool;
@@ -61,10 +65,13 @@ class Player extends FlxSprite {
 
 		// Sounds
 		_sndJump = FlxG.sound.load("assets/sounds/player/jump.ogg", .7);
-		_sndJumpDown = FlxG.sound.load("assets/sounds/player/jump_down.ogg", .7);
-		_sndRun = FlxG.sound.load("assets/sounds/player/footsteps.ogg", .65);
+		_sndJumpDown = FlxG.sound.load("assets/sounds/player/jump-down.ogg", .7);
+		_sndRun = FlxG.sound.load("assets/sounds/player/footsteps.ogg", .7);
 		_sndHurt = FlxG.sound.load("assets/sounds/player/hurt.ogg", .7);
 		_sndDigging = FlxG.sound.load("assets/sounds/player/digging.ogg", .7);
+		_sndQuickJump = FlxG.sound.load("assets/sounds/player/quick-jump.ogg", .7);
+
+		sndWee = FlxG.sound.load("assets/sounds/player/wee.ogg", .7);
 
 		// Intialise controls
 		_controls = new Controls();
@@ -86,12 +93,20 @@ class Player extends FlxSprite {
 
 	public function playerGoingDownSound() {
 		_sndJumpDown.play();
-		
 	}
 
+	/**
+	 * Resets player position to the latest position of the mid checkpoint object they collided with.
+	 */
 	public function resetPlayer() {
 		setPosition(resetPosition[0], resetPosition[1]);
 	}
+
+	public function animationName(Name:String):String {
+		var suffix:String = "";
+		if (pangoAttached) suffix = "_pp";
+		return '$Name$suffix';
+	}	
 
 	/**
 	 * Allows player to jump just off edge of an object to reduce frustration.
@@ -100,12 +115,6 @@ class Player extends FlxSprite {
 		// isAscending
 		final hasQuickJump = enableQuickJump ? enableQuickJump : !isAscending;
 		return isTouching(FlxObject.FLOOR) || (hasQuickJump && _offFloorCount < 0.2);
-	}
-
-	public function animationName(Name:String):String {
-		var suffix:String = "";
-		if (pangoAttached) suffix = "_pp";
-		return '$Name$suffix';
 	}
 
 	function playerMovement() {
@@ -148,6 +157,9 @@ class Player extends FlxSprite {
 				isJumping = true;
 				offset.x = 80;
 			}
+
+			// Quick jump sound effect
+			if (_jump && !isTouching(FlxObject.FLOOR) && enableQuickJump) _sndQuickJump.play();
 		}
 
 		// Fix bug where pressing down plays jump loop evem on ground

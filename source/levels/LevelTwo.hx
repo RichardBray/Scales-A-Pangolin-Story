@@ -15,7 +15,7 @@ class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;
 	var _gameSave:FlxSave;
 
-  final _bugsGoal:Int = 14;
+  final _bugsGoal:Int = 11;
   final _allMidCheckpoints:Array<Array<Float>> = [
     [1569.77, 1424.09],
 		[8603.50, 1425.26]
@@ -53,7 +53,7 @@ class LevelTwo extends LevelState {
 		createMidCheckpoints(_allMidCheckpoints);
 
 		// Add player
-		createPlayer(180, 1470);
+		createPlayer(180, 1470, _gameSave);
 
     // Add HUD
     createHUD(0, player.health, _goalData);  

@@ -115,7 +115,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 			continueTextYPos: (_spacingWidth * 2) + 50,
 			dialogeBoxTextYPos: 20 + (_spacingHeight * 2),
 			dialogueBoxYPos: 0 + (_spacingHeight * 2),
-			dialougeImageYPos: 8 + (_dialogueImage.height / 2)  
+			dialougeImageYPos: -4 + (_dialogueImage.height / 2)  
 		}
 
 		final boxAtBottom = {

@@ -18,6 +18,7 @@ class LevelOne extends LevelState {
 	var _goalData:Array<GoalData>;
 	var _instructionsViewed:Bool = false;
 	var _showInstrucitons:Bool;
+  final _bugsGoal:Int = 10;
 
 	/**
 	 * Level 1-0
@@ -35,8 +36,8 @@ class LevelOne extends LevelState {
 
 		_goalData = [
 			{
-				goal: "Collect over 15 bugs",
-				func: (GameScore:Int) -> GameScore > 14
+				goal: 'Collect over $_bugsGoal bugs',
+				func: (GameScore:Int) -> GameScore > _bugsGoal
 			}
 		];
 	}
@@ -47,7 +48,7 @@ class LevelOne extends LevelState {
 		createLevel("level-1-0", "SCALES_BACKGROUND-01.png", "level_one");
 
 		// Add player
-		createPlayer(240, 1472);
+		createPlayer(240, 1472, _gameSave);
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0

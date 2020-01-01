@@ -17,7 +17,7 @@ class LevelSix extends LevelState {
   var _goalData:Array<GoalData>;
   var _allCages:FlxTypedGroup<MovingCage>;
 
-  final _bugsGoal:Int = 7; 
+  final _bugsGoal:Int = 13; 
 
   final _allMovingCages:Array<Array<Int>> = [
     [3993, 1368, 0],
@@ -28,7 +28,9 @@ class LevelSix extends LevelState {
 
   final _allMidCheckpoints:Array<Array<Float>> = [
     [3479.92, 1424.54],
-    [6990.96, 1421.96]
+    [8865.96, 1421.96],
+    [8865.96, 1421.96],
+    [8818.90, 777.24]    
   ];
 
 
@@ -88,7 +90,7 @@ class LevelSix extends LevelState {
 
 	function levelComplete(Exit:FlxSprite, Player:FlxSprite) {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave, 3);
 		openSubState(_levelCompleteState);			
 	}
  

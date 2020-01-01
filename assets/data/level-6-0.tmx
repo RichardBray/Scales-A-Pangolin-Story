@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="6" nextobjectid="89">
+<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="945" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="6" nextobjectid="95">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -38,7 +38,7 @@
   <object id="54" gid="12" x="11307" y="1575" width="178" height="206"/>
   <object id="57" name="right" type="10" gid="13" x="4643" y="1337" width="139" height="88"/>
   <object id="61" name="left" type="10" gid="13" x="12960" y="1574.65" width="139" height="88"/>
-  <object id="62" name="left" type="1" gid="9" x="8351.94" y="813.035" width="42" height="39"/>
+  <object id="62" name="left" type="1" gid="9" x="8345.44" y="709.094" width="42" height="39"/>
   <object id="63" name="right" type="1" gid="9" x="5256.94" y="652.027" width="42" height="39"/>
   <object id="64" name="left" type="1" gid="9" x="2179.54" y="835.51" width="42" height="39"/>
   <object id="65" name="right" type="4" gid="10" x="2832.05" y="885.687" width="47" height="39"/>
@@ -54,21 +54,27 @@
   <object id="76" name="right" type="6" gid="10" x="5989.48" y="1577.27" width="47" height="39"/>
   <object id="79" name="right" type="35" gid="39" x="5870.06" y="1075.19" width="192" height="243"/>
   <object id="84" name="left" gid="2147483677" x="9281.74" y="1376.6" width="238" height="120"/>
+  <object id="89" name="left" type="1" gid="9" x="9786.28" y="473.742" width="42" height="39"/>
+  <object id="90" name="right" type="1" gid="9" x="10353.6" y="513.147" width="42" height="39"/>
+  <object id="91" name="left" type="1" gid="9" x="10856" y="540.871" width="42" height="39"/>
+  <object id="92" name="right" type="4" gid="10" x="56.3905" y="1186.21" width="47" height="39"/>
  </objectgroup>
  <layer id="4" name="collisions" width="945" height="120" locked="1">
   <data encoding="base64" compression="zlib">
    eAHt3VuO2zAMBdDsoF3yLL2ZXyMpZIkUJesMkI8JbIo6zMMXTaavlx8CBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIEDgNIG/7w1n3U6ztF8CBAgQIECAAAECBAgQIECAAAECBAgQIEAgTuBPXCmVCBAgQIAAAQIECBAgQIBAqoAMm8qrOAECBAgQIECAAAECBAgECsiwgZhKESBAgAABAgT+I5D1/f3fun4IECBwioAMe8qk7ZMAAQIECBAgQIAAAQL7C8iw+8/QDggQIECAAAECBAgQIHCKgAx7yqTtkwABAgQIECBAgAABAvsLyLD7z9AO2gV8D6ndypEECBAgQIAAAQIEVhSQYVecip4IECBAgAABAgQIECBA4JOADPtJxX0ECBAgQIAAAQIECBAgsKKADLviVPREgAABAgQIzBTI/K6J//dm5iStRYDACQIy7AlTtkcC8wWyrwddE86fqRUJECBAgAABAisIyLArTEEPBAgQIECAAAECBAgQINAiIMO2KDmGAAECBAgQIECAAAECBFYQkGFXmIIesj93SpgAAQIECBAgQIAAgWcIyLDPmKNdECBAgAABAgQIECBA4AQBGXbfKWf+2+W+KjonQIDA/gKRr+/7a9gBAQInC0S+Hn6qVWn7qZ/e+yr3UbG2DFuhbk0CBAgQIECAAAECBAgQ6BGQYXvUnEOAAAECBAgQIECAAAECFQIybIW6NQkQIECAAAECBAgQIECgR0CG7VFzDgECBAgQIECAAAECBAhUCMiwFerWJECAAAECBAgQIECAAIEeARm2R805BAgQIECAAAECBAgQIFAhIMNWqFuTAIFRgd6/Pd9y3mhvzidAgAABAgQIEMgTkGHzbFUmQIAAAQIECBAgQIAAgVgBGTbWUzUCBAgQIECAAAECBAgQyBOQYfNsVSZAgAABAgQIECBAgACBWIFrhm35rljLMbFdqkaAAAECBAhEC7S8n7ccE93XCvVa9j1yzAp71AMBAmcIjLxWXc9dReyaYVfpa+c+rrOO/n1nG70TIECAAAECBAg8QyD6Gvda7xlKdpEhIMNmqKpJgAABAgQIECBAgAABAhkCMmyGqpoECBAgQIAAAQIECBAgkCEgw2aoqjkqcP0sSeTvo705nwABAgQIECBAgACBOgEZts7eygQIECBAgAABAgQIECBwT0CGveflaAIECBAgQIAAAQIECBCoE5Bh6+ytTIAAAQIECBAgQIAAAQL3BGTYe16OJkCAAAECBAgQIECAAIE6ARm2zt7KBAgQIECAAIFPApF/y/Ba69N67iNAgMBOAjLsTtPSK4FnC1yvs078/dkTtjsCBAgQIECAwLiADDtuqAIBAgQIECBAgAABAgQIzBGQYec4W4UAAQIECBAgQIAAAQIExgVk2HHD2RUyP185ey8rrsd3xanoicA5AhGvQedo2SkBAk8WiHg9/FZjBbdvvbXev8IeqnqQYavkrUuAAAECBAgQIECAAAECdwVk2LtijidAgAABAgQIECBAgACBKgEZtkreugQIECBAgAABAgQIECBwV0CGvSvmeAIECBAgQIAAAQIECBCoEpBhq+StS4AAgT6B39ftrFtfR84iQIAAAQIECMwTkGHnWVuJAAECEQJZ+dX7QcR01CBAgAABAgSyBVyzZAurT4AAgVgBGTbWUzUCBAgQIEBgLwEZdq956ZYAAQIyrMcAAQIECBAgcLKADHvy9O2dAIEdBWTYHaemZwIECBAgQCBKQIaNklSHAAECcwRk2DnOViFAgAABAgTWFJBh15yLrggQIPBNQIb9JuN+AgQIECBA4AQBGfaEKdsjAQJPEpBhnzRNeyFAgAABAgTuCmReCy1Q++fdgxsDjwGPAY8Bj4HWx8BrgfcuPbwvZsyhxuDudaTjawQ8P2qeH9zXca955lmVAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAiMCfR8V3FsRWcTIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAwMkC/wC84iuw
   </data>
  </layer>
- <objectgroup id="3" name="helpers" locked="1">
+ <objectgroup id="3" name="helpers">
   <object id="8" name="player sprite" x="465.436" y="1447.74" width="300" height="127"/>
   <object id="16" name="moving-cage-1" x="3993.43" y="1368.88" width="600" height="196.57"/>
   <object id="17" x="3621.92" y="2521.96" height="8.3647"/>
   <object id="32" name="mini-checkpoint-1" x="3479.92" y="1424.54" width="149.731" height="147.417"/>
   <object id="44" name="moving-cage-2" x="8106.05" y="1369.24" width="600" height="196.57"/>
-  <object id="45" name="mini-checkpoint-2" x="6990.96" y="1421.96" width="149.731" height="147.417"/>
+  <object id="45" name="mini-checkpoint-3" x="8868.7" y="1029.43" width="149.731" height="147.417"/>
   <object id="46" name="moving-cage-3" x="9773.04" y="887.771" width="600" height="196.57"/>
   <object id="47" name="moving-cage-4" x="10559.9" y="1292.82" width="600" height="196.57"/>
+  <object id="93" name="mini-checkpoint-2" x="8882.04" y="1419.57" width="149.731" height="147.417"/>
+  <object id="94" name="mini-checkpoint-4" x="8818.9" y="777.239" width="149.731" height="147.417"/>
  </objectgroup>
  <objectgroup id="5" name="sounds">
   <object id="85" name="fire" x="2292.09" y="1505.03">

@@ -21,7 +21,7 @@ class LevelThree extends LevelState {
 	var _monkeyDialogueImage:FlxSprite;
 	var _spokentoNPC:Int = 0;
 
-  final _bugsGoal:Int = 14;
+  final _bugsGoal:Int = 12;
   final _allMidCheckpoints:Array<Array<Float>> = [
     [1822.46, 1110.25],
 		[6117.78, 1425.01]
@@ -80,7 +80,7 @@ class LevelThree extends LevelState {
 		add(_monkeyNPC);		
 
 		// Add player
-		createPlayer(180, 1470); 
+		createPlayer(180, 1470, _gameSave); 
 		
     // Add HUD
     createHUD(0, player.health, _goalData); 

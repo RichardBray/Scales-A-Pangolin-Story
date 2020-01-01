@@ -74,13 +74,17 @@ class LevelFour extends LevelState {
 		add(_pangoNPC);	       
 
 		// Add player
-		createPlayer(180, 1044);
+		createPlayer(180, 1044, _gameSave);
 
     // Add HUD
     createHUD(0, player.health, _goalData); 
 
-		// Save game on load 										
-		_gameSave = saveGame(_gameSave);
+		// Save game on load 			
+#if debug
+_gameSave = new FlxSave(); // initialize
+_gameSave.bind("AutoSave"); // bind to the named save slot 
+#end   									
+		if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();  
 		    
   }

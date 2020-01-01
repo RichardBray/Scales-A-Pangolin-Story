@@ -47,11 +47,6 @@ class LevelSelect extends GameState {
       stars: 3
     }
   ];  
-  var _levelSelect:Map<String, Bool> = [
-    "firstTime" => true,
-    "hasPangolin" => false,
-    "allLevelsFinished" => false
-  ];
 
   var _levelPos:Array<LevelData>;
   // Remove after save game is added END
@@ -104,7 +99,7 @@ class LevelSelect extends GameState {
         name: "Level 2",
         locked:false,
         onSelect:() -> {
-          (_gameSave.data.showLevelIntros && !_gameSave.data.showLevelIntros[0])
+          (_gameSave.data.introTwoSeen)
           ? FlxG.switchState(new LevelFive(_gameSave))
           : FlxG.switchState(new LevelFive.IntroFive(_gameSave));
         }
@@ -192,7 +187,9 @@ class LevelSelect extends GameState {
       var modalText:Array<String> = [
         "Welcome to the level select screen. Here you will be able to freely roam the jungle and pick whatever level you want.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
-        "Congratulations! You've completed all the levels"
+        "Congratulations! You've completed all the levels",
+        "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
+         The full game will be out very soon."
       ];      
       var _modal:MainMenuModal = new MainMenuModal(modalText[_modalNum], null, true, "Press E to close");
       openSubState(_modal);   

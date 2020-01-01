@@ -19,6 +19,7 @@ class Instructions extends FlxSubState {
   var _pagePosition:FlxText;
   var _showOverlay:Bool;
   var _showControls:Bool;
+
   // Page controls
   var _currentPage:Int = 1;
   var _leftArrow:FlxSprite;
@@ -28,6 +29,8 @@ class Instructions extends FlxSubState {
 	// Sounds
 	var _sndClose:FlxSound;  
   var _sndMenuMove:FlxSound;
+
+  public var sndAbility:FlxSound;
   
   public var menuViewed:Bool; // Used in specific level classes to check if instructions have been viewed
 
@@ -72,8 +75,8 @@ class Instructions extends FlxSubState {
     }
 
     // Exit test
-    var start:String = Constants.start;
-    _exitText = new FlxText(1480, 120, 'Press $start to Exit');
+    var cross:String = Constants.cross;
+    _exitText = new FlxText(1480, 120, 'Press $cross to Exit');
     _exitText.setFormat(Constants.squareFont, Constants.smlFont);
     _exitText.scrollFactor.set(0, 0);
     add(_exitText);
@@ -108,35 +111,37 @@ class Instructions extends FlxSubState {
 
 		// Sound
 		_sndClose = FlxG.sound.load(Constants.sndMenuClose);  
-		_sndMenuMove = FlxG.sound.load(Constants.sndMenuMove);       
+		_sndMenuMove = FlxG.sound.load(Constants.sndMenuMove);  
+
+    sndAbility = FlxG.sound.load("assets/sounds/sfx/ability.ogg");     
   }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);    
 
 		// Exit instructions
-		if (_controls.start.check() || _controls.triangle.check()) {
+		if (_controls.cross.check() || _controls.triangle.check()) {
       _sndClose.play(); 
       closeInstructionsMenu();
     }
 
     if (_showControls) {
       // Go to previous page
-      if (_controls.left.check() && _currentPage != _startPage) {
+      if (_controls.left_jp.check() && _currentPage != _startPage) {
         _currentPage--;
         _sndMenuMove.play(true);
         updateShownPage();
       } 
 
       // Go to next page
-      if (_controls.right.check() && _currentPage != _endPage) {
+      if (_controls.right_jp.check() && _currentPage != _endPage) {
         _currentPage++;
         _sndMenuMove.play(true);
         updateShownPage();
       }  
 
       // Change opacity of arrows based on if user is on first or last page
-      if (_controls.left.check() || _controls.right.check()) {
+      if (_controls.left_jp.check() || _controls.right_jp.check()) {
         _leftArrow.alpha = 1;
         _rightArrow.alpha = 1;
 

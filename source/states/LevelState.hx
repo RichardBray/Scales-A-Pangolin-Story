@@ -221,9 +221,9 @@ class LevelState extends GameState {
 	 *
 	 * @param X 				Player X position
 	 * @param Y 				Player Y position
-	 * @param FacingLeft If the player is facine left
+	 * @param GameSave Used to add ability to player based on game progress
 	 */
-	public function createPlayer(X:Int, Y:Int, ?GameSave:FlxSave) {
+	public function createPlayer(X:Int, Y:Int, ?GameSave:Null<FlxSave>) {
 		player = new Player(X, Y);
 		_playerJumpPoof = new Player.JumpPoof(X, Y);
 		playerFeetCollision = new FlxObject(X, Y, 10, 72);
@@ -231,9 +231,7 @@ class LevelState extends GameState {
 	
 		// Set player abilities
 		if (GameSave != null) {
-			if (GameSave.data.playerAbilities && GameSave.data.playerAbilities[0]) {
-				player.enableQuickJump = true;
-			}
+			if (GameSave.data.quickJumpEnabled) player.enableQuickJump = true;
 		}
 	
 		add(player);

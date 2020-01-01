@@ -102,12 +102,17 @@ _gameSave = saveGame(_gameSave, [0, 0]);
 
 ```js
 data: {
-  enableLevelSelect: false,
-  levelName: "Level-5-0",
+  // Level specific / Resets / Changes
+  levelName: "Level-5-0",  
   totalBugs: 0,
-  totalEnemies: 0,
-  showLevelIntros: [false, false, false, false], // Not yet implemented
-  playerAbilities: [false, false, false], // Not yet implemented
+  totalEnemies: 0,  
+  // General
+  enableLevelSelect: false,
+  // Abilities
+  quickJumpEnabled: true,
+  //Intros
+  introTwoSeen: true,
+  // Stars
   levelStars: [1, 2, 3, 3, 2] // Not yet implemented
 }
 ```

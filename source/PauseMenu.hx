@@ -96,7 +96,7 @@ class PauseMenu extends FlxSubState {
 			{
 				title: "Instructions",
 				func: () -> {
-					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
+					var _instructions:Instructions = new Instructions(1, 3, false); // Should be 1, 4
 					openSubState(_instructions);
 				},
 				itemPos: 4

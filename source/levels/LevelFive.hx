@@ -21,9 +21,9 @@ class LevelFive extends LevelState {
   var _bonusLevel:FlxObject;
   var _bonusLevelExit:FlxObject;
 	var _seconds:Float = 0;
-  var _instructionsBox:FlxObject;
 
   // Instructions
+  var _instructionsBox:FlxObject;  
   var _showInstrucitons:Bool;
   var _instructionsViewed:Bool = false;
   var _abilityHelpViewed:Bool = false;
@@ -40,7 +40,7 @@ class LevelFive extends LevelState {
   var _pangoDialogueImage:FlxSprite;
   var _pangoFreed:Bool = false; //Var to pause collision so pango can roll through branch
 
-  final _bugsGoal:Int = 7; 
+  final _bugsGoal:Int = 12; 
   final _allMidCheckpoints:Array<Array<Float>> = [
     [5327.93, 1426.64]
   ];
@@ -48,7 +48,7 @@ class LevelFive extends LevelState {
   public function new(?GameSave:Null<FlxSave>, ShowInstructions:Bool = false) {
     super();
     _gameSave = GameSave;
-    _gameSave.data.showLevelIntros = [false];
+    _gameSave.data.introTwoSeen = true;
     _showInstrucitons = ShowInstructions;
 
 		_goalData = [
@@ -99,7 +99,7 @@ class LevelFive extends LevelState {
     _purplePango = new PurplePango(12270, 1250);
     _purplePango.alpha = 0;
 
-    _instructionsBox = new FlxObject(2659.82, 324.99, 104.77, 1111.82);
+    _instructionsBox = new FlxObject(2779.82, 324.99, 104.77, 1111.82);
 
 		// Add NPC Text
 		var pangoText:Array<String> = [
@@ -165,7 +165,7 @@ class LevelFive extends LevelState {
 
   function pangoTalking(Player:Player, Pango:PurplePango) {
     _pangoNPC.initConvo(Player, Pango);
-    _gameSave.data.playerAbilities = [true];
+    _gameSave.data.quickJumpEnabled = true;
     Player.enableQuickJump = true;
   }
 
@@ -174,6 +174,7 @@ class LevelFive extends LevelState {
     player.setPosition(3362, 1525);
     player.animation.play(playerJumpAnim());
     player.velocity.y = -800;
+    player.sndWee.play();
     FlxG.camera.follow(player, PLATFORMER, 1);
     playMusic(Constants.jungleMusic);
     // Show all background images
@@ -214,8 +215,9 @@ class LevelFive extends LevelState {
 	}	
 
   function showAbilityHelp() {
-    if (!_abilityHelpViewed) {
+    if (!_abilityHelpViewed && !player.enableQuickJump) {
       var _instructions:Instructions = new Instructions(3, 3, true, false);
+      _instructions.sndAbility.play();
       if (!_instructions.menuViewed) openSubState(_instructions);
       _abilityHelpViewed = true;
     }
