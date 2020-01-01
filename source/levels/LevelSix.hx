@@ -29,7 +29,6 @@ class LevelSix extends LevelState {
   final _allMidCheckpoints:Array<Array<Float>> = [
     [3479.92, 1424.54],
     [8865.96, 1421.96],
-    [8865.96, 1421.96],
     [8818.90, 777.24]    
   ];
 
