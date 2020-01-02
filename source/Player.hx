@@ -122,7 +122,8 @@ class Player extends FlxSprite {
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
-
+		var _jumpGamepad = _controls.cross.check();
+	
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
 		drag.x = SPEED; // Deceleration applied when acceleration is not affecting the sprite.
@@ -144,7 +145,7 @@ class Player extends FlxSprite {
 			if (_left && _right) {
 				acceleration.x = 0;
 			}
-			if (_jump && floorTouchWithinTime()) {
+			if ((FlxG.gamepads.lastActive != null ? _jumpGamepad : _jump) && floorTouchWithinTime()) {
 				jumpPosition = [this.x, this.y];
 				_sndJump.play();
 				offset.x = 80;
