@@ -26,7 +26,6 @@ class LevelFive extends LevelState {
   var _instructionsBox:FlxObject;  
   var _showInstrucitons:Bool;
   var _instructionsViewed:Bool = false;
-  var _abilityHelpViewed:Bool = false;
 
   // Cave
   var _caveForeground:FlxSprite;
@@ -165,8 +164,6 @@ class LevelFive extends LevelState {
 
   function pangoTalking(Player:Player, Pango:PurplePango) {
     _pangoNPC.initConvo(Player, Pango);
-    _gameSave.data.quickJumpEnabled = true;
-    Player.enableQuickJump = true;
   }
 
   function exitBouns(_, _) {
@@ -215,11 +212,15 @@ class LevelFive extends LevelState {
 	}	
 
   function showAbilityHelp() {
-    if (!_abilityHelpViewed && !player.enableQuickJump) {
+    if (
+        !player.enableQuickJump // To make sure loading a saved game with ability will prevent this prompt
+      ) {
       var _instructions:Instructions = new Instructions(3, 3, true, false);
       _instructions.sndAbility.play();
       if (!_instructions.menuViewed) openSubState(_instructions);
-      _abilityHelpViewed = true;
+      // Save ability
+      _gameSave.data.quickJumpEnabled = true;
+      player.enableQuickJump = true;      
     }
   }
 
@@ -250,8 +251,9 @@ class LevelFive extends LevelState {
       haxe.Timer.delay(() -> {
         _pangoNPC.kill();
         player.pangoAttached = true;
-        showAbilityHelp();
       }, 400);
+
+      haxe.Timer.delay(() -> showAbilityHelp(), 800);
     }
 
     if (startingConvo) {

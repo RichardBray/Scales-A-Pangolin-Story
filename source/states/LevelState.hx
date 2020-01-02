@@ -456,8 +456,8 @@ class LevelState extends GameState {
 		}
 	}
 
-	/** Special tiles **/
 	/**
+	 * Special tiles 
 	 * Method to dication what should happen when player interacts weith a special tile.
 	 * 
 	 * @param FallThroughTile	Tile that should be affected by action
@@ -490,7 +490,6 @@ class LevelState extends GameState {
 	function updatePlayerResetPos(MidLevelCheck:FlxObject, Player:Player) {
 		Player.resetPosition = [MidLevelCheck.x, MidLevelCheck.y];
 	}
-
 
 	/**
 	 * What happens when the player collides with moving enemy.
@@ -605,7 +604,6 @@ class LevelState extends GameState {
 				: playerAttackedAnims(); 
 		} 
 	}
-
 
 	/**
 	 * Cause enemy to attack when player enters their boundary
