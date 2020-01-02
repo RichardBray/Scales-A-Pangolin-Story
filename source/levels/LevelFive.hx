@@ -98,7 +98,7 @@ class LevelFive extends LevelState {
     _purplePango = new PurplePango(12270, 1250);
     _purplePango.alpha = 0;
 
-    _instructionsBox = new FlxObject(2779.82, 324.99, 104.77, 1111.82);
+    _instructionsBox = new FlxObject(3199.82, 324.99, 104.77, 1111.82);
 
 		// Add NPC Text
 		var pangoText:Array<String> = [

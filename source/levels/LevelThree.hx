@@ -24,7 +24,9 @@ class LevelThree extends LevelState {
   final _bugsGoal:Int = 12;
   final _allMidCheckpoints:Array<Array<Float>> = [
     [1822.46, 1110.25],
-		[6117.78, 1425.01]
+		[7482.25, 785.20],
+		[7543.12, 1034.93],
+		[7171.35, 1424.51]
   ];	
 
   public function new(?GameSave:Null<FlxSave>) {

@@ -18,7 +18,8 @@ class LevelTwo extends LevelState {
   final _bugsGoal:Int = 11;
   final _allMidCheckpoints:Array<Array<Float>> = [
     [1569.77, 1424.09],
-		[8603.50, 1425.26]
+		[8603.50, 1425.26],
+		[8652.00, 795.16]
   ];
 	
   /**

@@ -190,8 +190,9 @@ class LevelSelect extends GameState {
         "Congratulations! You've completed all the levels",
         "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
          The full game will be out very soon."
-      ];      
-      var _modal:MainMenuModal = new MainMenuModal(modalText[_modalNum], null, true, "Press E to close");
+      ];    
+      var jump:String = Constants.cross;  
+      var _modal:MainMenuModal = new MainMenuModal(modalText[_modalNum], null, true, 'Press $jump to close', true);
       openSubState(_modal);   
     }   
   }
@@ -223,6 +224,7 @@ class LevelSelect extends GameState {
     _levelPointer.setPosition(_levelPos[_lastCompletedLevel].x, _levelPos[_lastCompletedLevel].y);
 
     specificControls();
+
     if (_controls.cross.check()) {
       _sndSelect.play(); 
 
