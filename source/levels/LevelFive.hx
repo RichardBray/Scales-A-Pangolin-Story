@@ -1,12 +1,13 @@
 package levels;
 
 
-import states.IntroState;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.util.FlxSave;
 import flixel.FlxG;
+
+import states.IntroState;
 import states.LevelState;
 import characters.CagedPangolin;
 import characters.PurplePango;
@@ -19,6 +20,12 @@ class LevelFive extends LevelState {
   var _teleport:FlxObject;
   var _bonusLevel:FlxObject;
   var _bonusLevelExit:FlxObject;
+	var _seconds:Float = 0;
+
+  // Instructions
+  var _instructionsBox:FlxObject;  
+  var _showInstrucitons:Bool;
+  var _instructionsViewed:Bool = false;
 
   // Cave
   var _caveForeground:FlxSprite;
@@ -32,9 +39,16 @@ class LevelFive extends LevelState {
   var _pangoDialogueImage:FlxSprite;
   var _pangoFreed:Bool = false; //Var to pause collision so pango can roll through branch
 
-  public function new(?GameSave:Null<FlxSave>) {
+  final _bugsGoal:Int = 12; 
+  final _allMidCheckpoints:Array<Array<Float>> = [
+    [5327.93, 1426.64]
+  ];
+
+  public function new(?GameSave:Null<FlxSave>, ShowInstructions:Bool = false) {
     super();
     _gameSave = GameSave;
+    _gameSave.data.introTwoSeen = true;
+    _showInstrucitons = ShowInstructions;
 
 		_goalData = [
 			{
@@ -42,8 +56,8 @@ class LevelFive extends LevelState {
 				func: (_) -> player.pangoAttached
       },
 			{
-				goal: "Wait for the next part of the level",
-				func: (_) -> false
+				goal: 'Collect over $_bugsGoal bugs',
+				func: (GameScore:Int) -> GameScore > _bugsGoal
       }      
 		];    
   }
@@ -56,7 +70,8 @@ class LevelFive extends LevelState {
     add(_caveBackground);
   
     // TODO: Make music for level five
-    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_one", 1);
+    createLevel("level-5-0", "SCALES_BACKGROUND-01.png", "level_five");
+    createMidCheckpoints(_allMidCheckpoints);
 
     _caveForeground = new FlxSprite(14176, 720).loadGraphic(
       "assets/images/environments/L2_Cave-02.png", false, 1920, 1080);
@@ -83,13 +98,14 @@ class LevelFive extends LevelState {
     _purplePango = new PurplePango(12270, 1250);
     _purplePango.alpha = 0;
 
+    _instructionsBox = new FlxObject(3199.82, 324.99, 104.77, 1111.82);
+
 		// Add NPC Text
 		var pangoText:Array<String> = [
-			"You saved my life!!",
-			"You are the fastest, strongest pangolin I have ever seen... \nplease, you have to help me!",
-			"I have lost my <pt>four<pt> babies. Sob Sob",
-			"Some have been trapped by <pt>predators<pt> and \nothers have been caught by <pt>poachers<pt>",
-      "I need to see my babies again, please do everything \nyou can to bring them back to me!."
+			"Thanks for freeing me from the cage. ",
+			"I was careless and got caught in this poacher's trap. ",
+			"Will you please take me to my mother? ",
+			"I hope you don't mind if I hitch a ride on your tail. "
 		]; 
 
 		_pangoNPC = new NPC(
@@ -106,14 +122,18 @@ class LevelFive extends LevelState {
 		add(_pangoNPC);	    
   
   	// Add player
-		createPlayer(368, 1470);  
-    // createPlayer(12042, 1369);
+		createPlayer(368, 1470, _gameSave);  
+
+		// Proximity sounds
+		createProximitySounds(); 
+
     add(_caveForeground);
 
     // Add HUD
     createHUD(0, player.health, _goalData);  
   
-    // Save game on load
+    // Save game on load    
+              
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
     super.create();
 
@@ -135,6 +155,7 @@ class LevelFive extends LevelState {
     // Player jumps down hole
     player.setPosition(14974, 842);
     player.animation.play(playerJumpAnim());
+    playMusic(Constants.caveMusic);
     // Follow level not plauer
     FlxG.camera.follow(_bonusLevel, PLATFORMER, 1);
     // Hide all background images
@@ -150,7 +171,9 @@ class LevelFive extends LevelState {
     player.setPosition(3362, 1525);
     player.animation.play(playerJumpAnim());
     player.velocity.y = -800;
+    player.sndWee.play();
     FlxG.camera.follow(player, PLATFORMER, 1);
+    playMusic(Constants.jungleMusic);
     // Show all background images
     levelBgs.forEach((Member:FlxSprite) ->  Member.alpha = 1);
   }
@@ -159,6 +182,7 @@ class LevelFive extends LevelState {
     if (!player.isAscending && player.animation.name == "jumpLoop") {
       player.velocity.y = 450; // Bounce player
       _cagedPangolin.kill();
+      _cagedPangolin.sndCrash.play();
       _cagedPangoCollision.kill();
       _purplePango.enableGravity = true;
       haxe.Timer.delay(() -> _purplePango.alpha = 1, 150);
@@ -172,12 +196,37 @@ class LevelFive extends LevelState {
 	}	
 
 	function changeState() {
-		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		FlxG.switchState(new LevelFour(_gameSave));
+		_gameSave = saveGame(_gameSave, [grpHud.gameScore, 0]);
+		FlxG.switchState(new LevelSix(_gameSave));
 	}	
+
+	/**
+	 * Show instructions specific to this level unless they have already been viewed
+	 */
+	function showInstructions(_, _) {
+    if (_showInstrucitons && !_instructionsViewed) {
+      var _instructions:Instructions = new Instructions(2, 2, true, false);
+      if (!_instructions.menuViewed) openSubState(_instructions);
+      _instructionsViewed = true;
+    }
+	}	
+
+  function showAbilityHelp() {
+    if (
+        !player.enableQuickJump // To make sure loading a saved game with ability will prevent this prompt
+      ) {
+      var _instructions:Instructions = new Instructions(3, 3, true, false);
+      _instructions.sndAbility.play();
+      if (!_instructions.menuViewed) openSubState(_instructions);
+      // Save ability
+      _gameSave.data.quickJumpEnabled = true;
+      player.enableQuickJump = true;      
+    }
+  }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+    _seconds += Elapsed;
 
 		// Overlaps
 		grpHud.goalsCompleted
@@ -187,6 +236,7 @@ class LevelFive extends LevelState {
     FlxG.overlap(player, _teleport, moveToBonus);
     FlxG.overlap(player, _bonusLevelExit, exitBouns);
     FlxG.overlap(player, _cagedPangoCollision, killCageAndCollision);
+    FlxG.overlap(player, _instructionsBox, showInstructions);
 
     if (_pangoFreed) {
       FlxG.collide(_purplePango, _levelCollisions);
@@ -196,12 +246,14 @@ class LevelFive extends LevelState {
       };	 
     }
 
-    if (_pangoNPC.finishedConvo) {
+    if (_pangoNPC.finishedConvo && _pangoNPC.alive) {
       _purplePango.jumpToPlayer(player.facing);
       haxe.Timer.delay(() -> {
         _pangoNPC.kill();
         player.pangoAttached = true;
       }, 400);
+
+      haxe.Timer.delay(() -> showAbilityHelp(), 800);
     }
 
     if (startingConvo) {
@@ -224,12 +276,12 @@ class IntroFive extends IntroState {
 		super();
 		_gameSave = GameSave;
 		facts = [
-			"So our hero continues to travel through the jungle.",
+			"So our hero continued to travel through the jungle.",
 			"Avoiding predetars and obstacles in search of captured pangolins to save."
 		];		
 	}
 
 	override public function startLevel() {
-		FlxG.switchState(new LevelFive(_gameSave));
+		FlxG.switchState(new LevelFive(_gameSave, true));
 	}
 }

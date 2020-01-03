@@ -14,7 +14,14 @@ import Hud.GoalData;
 class LevelTwo extends LevelState {
   var _goalData:Array<GoalData>;
 	var _gameSave:FlxSave;
-  var _bugsGoal:Int = 14; // How many bugs to collect in order to complete level
+
+  final _bugsGoal:Int = 11;
+  final _allMidCheckpoints:Array<Array<Float>> = [
+    [1569.77, 1424.09],
+		[8603.50, 1425.26],
+		[8652.00, 795.16]
+  ];
+	
   /**
   * Level 2-0
   *
@@ -44,14 +51,20 @@ class LevelTwo extends LevelState {
     levelName = "Level-2-0";
 
     createLevel("level-2-0", "SCALES_BACKGROUND-01.png", "level_two");
+		createMidCheckpoints(_allMidCheckpoints);
 
 		// Add player
-		createPlayer(180, 1470);
+		createPlayer(180, 1470, _gameSave);
 
     // Add HUD
-    createHUD(0, player.health, _goalData);   
+    createHUD(0, player.health, _goalData);  
+
+		// Proximity sounds
+		createProximitySounds(); 
 
 		// Save game on load
+		_gameSave = new FlxSave(); // initialize
+		_gameSave.bind("AutoSave"); // bind to the named save slot  		
 		_gameSave = saveGame(_gameSave);
 
 		super.create(); 

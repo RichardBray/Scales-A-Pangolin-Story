@@ -16,6 +16,7 @@ class MainMenuModal extends FlxSubState {
 	var _optionsText:FlxText;
 	var _confirmCallback:Null<Void->Void>;
 	var _controls:Controls;
+	var _crossToClose:Bool;
 
 	var _sndClose:FlxSound; 
 
@@ -24,16 +25,19 @@ class MainMenuModal extends FlxSubState {
 	 * @param ConfirmCallback	What function to run when the player hits confirm
 	 * @param ShowOptions			Whether the modal has `press button for yes` text
 	 * @param OptionsText			Text for `press button for yes` if something different is desired
+	 * @param	CrossToClose		Using jump to close instead of action/triangle
 	 */
 	public function new(
 		Text:String, 
 		?ConfirmCallback:Void->Void, 
 		ShowOptions:Bool = false, 
-		?OptionsText:String = "Press SPACE for yes"
+		?OptionsText:String = "Press SPACE for yes",
+		?CrossToClose:Bool = false
 	):Void {
 		super();
 		_confirmCallback = ConfirmCallback;
-
+		_crossToClose = CrossToClose;
+	
 		_gameOverlay = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0x75000000);
 		add(_gameOverlay);
 
@@ -68,7 +72,7 @@ class MainMenuModal extends FlxSubState {
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
 
-		if (_controls.triangle.check()) {
+		if (_crossToClose ? _controls.cross.check() : _controls.triangle.check()) {
 			_sndClose.play();
 			close();
 		}

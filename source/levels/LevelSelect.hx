@@ -47,11 +47,6 @@ class LevelSelect extends GameState {
       stars: 3
     }
   ];  
-  var _levelSelect:Map<String, Bool> = [
-    "firstTime" => true,
-    "hasPangolin" => false,
-    "allLevelsFinished" => false
-  ];
 
   var _levelPos:Array<LevelData>;
   // Remove after save game is added END
@@ -63,7 +58,6 @@ class LevelSelect extends GameState {
       _gameSave.data.enableLevelSelect = true;
       _gameSave.flush();
     }
-
     if (ModalNum != null) _modalNum = ModalNum; 
   }
 
@@ -104,7 +98,11 @@ class LevelSelect extends GameState {
         y: 114,
         name: "Level 2",
         locked:false,
-        onSelect:() -> FlxG.switchState(new LevelFive.IntroFive(_gameSave))
+        onSelect:() -> {
+          (_gameSave.data.introTwoSeen)
+          ? FlxG.switchState(new LevelFive(_gameSave))
+          : FlxG.switchState(new LevelFive.IntroFive(_gameSave));
+        }
       },
       {
         x: 594,
@@ -189,18 +187,43 @@ class LevelSelect extends GameState {
       var modalText:Array<String> = [
         "Welcome to the level select screen. Here you will be able to freely roam the jungle and pick whatever level you want.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
-        "Congratulations! You've completed all the levels"
-      ];      
-      var _modal:MainMenuModal = new MainMenuModal(modalText[_modalNum], null, true, "Press E to close");
+        "Congratulations! You've completed all the levels",
+        "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
+         The full game will be out very soon."
+      ];    
+      var jump:String = Constants.cross;  
+      var _modal:MainMenuModal = new MainMenuModal(modalText[_modalNum], null, true, 'Press $jump to close', true);
       openSubState(_modal);   
     }   
   }
 
+  /**
+   * Specific controls for certain level positions.
+   */
+  function specificControls() {
+    if (_lastCompletedLevel == 0 && _controls.up.check()) {
+      _lastCompletedLevel = 1;
+    }
+
+    if (_lastCompletedLevel == 1 && _controls.down.check()) {
+      _lastCompletedLevel = 0;
+    }  
+
+    if (_lastCompletedLevel == 4 && _controls.down.check()) {
+      _lastCompletedLevel = 5;
+    }   
+  
+    if (_lastCompletedLevel == 5 && _controls.up.check()) {
+      _lastCompletedLevel = 4;
+    }   
+  }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
     // Initial level pointer position
     _levelPointer.setPosition(_levelPos[_lastCompletedLevel].x, _levelPos[_lastCompletedLevel].y);
+
+    specificControls();
 
     if (_controls.cross.check()) {
       _sndSelect.play(); 
@@ -221,9 +244,14 @@ class LevelSelect extends GameState {
       (_lastCompletedLevel == 0) 
         ? _lastCompletedLevel = (_levelPos.length - 1)
         : _lastCompletedLevel--;
-    }   
+    }
 
-    if (_controls.left_jp.check() || _controls.right_jp.check()) _sndMove.play(true);
+    if (
+      _controls.left_jp.check() || 
+      _controls.right_jp.check() ||
+      _controls.up.check() ||
+      _controls.down.check()
+    ) _sndMove.play(true);
 
 		// Paused game state
 		if (_controls.start.check()) {

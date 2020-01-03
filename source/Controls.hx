@@ -4,6 +4,7 @@ import flixel.input.actions.FlxAction.FlxActionDigital;
 
 class Controls {
   public var cross:FlxActionDigital;
+  public var cross_jr:FlxActionDigital; // Created to fix issue with main menu with controller
   public var triangle:FlxActionDigital;
 
   public var left:FlxActionDigital;
@@ -28,6 +29,7 @@ class Controls {
 
   function initInputs() {
     cross = new FlxActionDigital();
+    cross_jr = new FlxActionDigital();
     triangle = new FlxActionDigital();  
     left = new FlxActionDigital();
     left_jp = new FlxActionDigital();
@@ -41,6 +43,9 @@ class Controls {
   function addKeys() {
     cross.addKey(SPACE, JUST_PRESSED);
     cross.addKey(ENTER, JUST_PRESSED);
+
+    cross_jr.addKey(SPACE, JUST_RELEASED);
+    cross_jr.addKey(ENTER, JUST_RELEASED);
   
     triangle.addKey(E, JUST_PRESSED); 
 
@@ -67,6 +72,8 @@ class Controls {
 
   function addGamepad() {
     cross.addGamepad(A, JUST_PRESSED);
+    cross_jr.addGamepad(A, JUST_RELEASED);
+
     triangle.addGamepad(Y, JUST_PRESSED);
 
     left.addGamepad(DPAD_LEFT, PRESSED);
@@ -87,7 +94,7 @@ class Controls {
     down.addGamepad(DPAD_DOWN, JUST_PRESSED);
     down.addGamepad(LEFT_STICK_DIGITAL_DOWN, JUST_PRESSED);          
 
-    start.addGamepad(START, JUST_PRESSED);
+    start.addGamepad(START, JUST_RELEASED);
   }
 }
 

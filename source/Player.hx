@@ -7,14 +7,20 @@ import flixel.FlxObject;
 import flixel.system.FlxSound;
 
 class Player extends FlxSprite {
-	var _sndJump:FlxSound;
 	var _controls:Controls;
+	var _offFloorCount:Float;
 
+	final GRAVITY:Float = Constants.worldGravity;	
+
+	// Sounds	
 	var _sndRun:FlxSound;
 	var _sndJumpDown:FlxSound;
-	var _sndHurt:FlxSound;	
+	var _sndHurt:FlxSound;
+	var _sndDigging:FlxSound;	
+	var _sndJump:FlxSound;
+	var _sndQuickJump:FlxSound;
 
-	final GRAVITY:Float = Constants.worldGravity;
+	public var sndWee:FlxSound;	
 
 	public var jumpPosition:Array<Float>; // Saves player jump position for poof
 	public var preventMovement:Bool;
@@ -24,6 +30,10 @@ class Player extends FlxSprite {
 	public var facingTermiteHill:Bool = false; // When player is colliding with termite hill
 	public var playerIsDigging:Bool = false; // When player is digging termite hill
 	public var pangoAttached:Bool = false;
+	public var resetPosition:Array<Float>;
+
+	// Abilities
+	public var enableQuickJump:Bool = false;
 
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y); // Pass X and Y arguments back to FlxSprite
@@ -54,10 +64,14 @@ class Player extends FlxSprite {
 		animation.add("digging_pp", [for (i in 96...100) i], 8);
 
 		// Sounds
-		_sndJump = FlxG.sound.load("assets/sounds/player/jump.ogg", .7);
-		_sndJumpDown = FlxG.sound.load("assets/sounds/player/jump_down.ogg", .7);
-		_sndRun = FlxG.sound.load("assets/sounds/player/footsteps.ogg", .65);
-		_sndHurt = FlxG.sound.load("assets/sounds/player/hurt.ogg", .7);
+		_sndJump = loadSound("jump");
+		_sndJumpDown = loadSound("jump-down");
+		_sndRun = loadSound("footsteps");
+		_sndHurt = loadSound("hurt");
+		_sndDigging = loadSound("digging");
+		_sndQuickJump = loadSound("quick-jump");
+
+		sndWee = loadSound("wee");
 
 		// Intialise controls
 		_controls = new Controls();
@@ -73,18 +87,38 @@ class Player extends FlxSprite {
 		FlxTween.tween(this, {x: xPos, y: (this.y - 60)}, 0.1);
 	}
 
-	public function playGoingDownSound() {
-		_sndJumpDown.play();
-	}
-
 	public function playHurtSound() {
 		_sndHurt.play();
 	}
 
-	function animationName(Name:String):String {
+	public function playerGoingDownSound() {
+		_sndJumpDown.play();
+	}
+
+	/**
+	 * Resets player position to the latest position of the mid checkpoint object they collided with.
+	 */
+	public function resetPlayer() {
+		setPosition(resetPosition[0], resetPosition[1]);
+	}
+
+	public function animationName(Name:String):String {
 		var suffix:String = "";
 		if (pangoAttached) suffix = "_pp";
 		return '$Name$suffix';
+	}	
+
+	function loadSound(Name:String):FlxSound {
+		return FlxG.sound.load('assets/sounds/player/$Name.ogg', .7);
+	}
+
+	/**
+	 * Allows player to jump just off edge of an object to reduce frustration.
+	 */
+	function floorTouchWithinTime():Bool {
+		// isAscending
+		final hasQuickJump = enableQuickJump ? enableQuickJump : !isAscending;
+		return isTouching(FlxObject.FLOOR) || (hasQuickJump && _offFloorCount < 0.2);
 	}
 
 	function playerMovement() {
@@ -92,7 +126,8 @@ class Player extends FlxSprite {
 		var _left = _controls.left.check();
 		var _right = _controls.right.check();
 		var _jump = _controls.cross.check() || _controls.up.check();
-
+		var _jumpGamepad = _controls.cross.check();
+	
 		acceleration.x = 0; // No movement when no buttons are pressed
 		maxVelocity.set(SPEED / 4, GRAVITY); // Cap player speed
 		drag.x = SPEED; // Deceleration applied when acceleration is not affecting the sprite.
@@ -114,17 +149,23 @@ class Player extends FlxSprite {
 			if (_left && _right) {
 				acceleration.x = 0;
 			}
-			if (_jump && isTouching(FlxObject.FLOOR)) {
+			if ((FlxG.gamepads.lastActive != null ? _jumpGamepad : _jump) && floorTouchWithinTime()) {
 				jumpPosition = [this.x, this.y];
 				_sndJump.play();
 				offset.x = 80;
 				isJumping = true;
-				velocity.y = -800; // 1100
+				velocity.y = -800;
 				animation.play(animationName("jumpLoop"));
 			}
 			if (isGoindDown) {
 				animation.play(animationName("jumpLoop"));
 				isJumping = true;
+				offset.x = 80;
+			}
+
+			// Quick jump sound effect
+			if (_jump && !isTouching(FlxObject.FLOOR) && enableQuickJump && isAscending && _offFloorCount < 0.2) {
+				_sndQuickJump.play();
 			}
 		}
 
@@ -144,16 +185,22 @@ class Player extends FlxSprite {
 	override public function update(Elapsed:Float) {
 		playerMovement();
 		isAscending = detectPlayerAscending();
+		// Allows player to jump just off the edge
+		(isTouching(FlxObject.FLOOR)) 
+			? _offFloorCount = 0
+			: _offFloorCount += Elapsed;
 
 		if (facingTermiteHill && _controls.triangle.check()) {
 			preventMovement = true;
 			playerIsDigging = true;
 			animation.play(animationName("digging"));
+			_sndDigging.play();
 
 			// Allow movement after one second
 			haxe.Timer.delay(() -> {
 				facingTermiteHill = false;
 				preventMovement = false;
+				_sndDigging.stop();
 			}, 2000);
 		}
 

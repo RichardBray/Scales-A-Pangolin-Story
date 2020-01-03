@@ -18,6 +18,7 @@ class LevelOne extends LevelState {
 	var _goalData:Array<GoalData>;
 	var _instructionsViewed:Bool = false;
 	var _showInstrucitons:Bool;
+  final _bugsGoal:Int = 10;
 
 	/**
 	 * Level 1-0
@@ -35,8 +36,8 @@ class LevelOne extends LevelState {
 
 		_goalData = [
 			{
-				goal: "Collect over 15 bugs",
-				func: (GameScore:Int) -> GameScore > 14
+				goal: 'Collect over $_bugsGoal bugs',
+				func: (GameScore:Int) -> GameScore > _bugsGoal
 			}
 		];
 	}
@@ -47,11 +48,14 @@ class LevelOne extends LevelState {
 		createLevel("level-1-0", "SCALES_BACKGROUND-01.png", "level_one");
 
 		// Add player
-		createPlayer(240, 1472);
+		createPlayer(240, 1472, _gameSave);
 
 		// Adds Hud
 		// If no socre has been bassed then pass 0
 		createHUD(0, player.health, _goalData);
+
+		// Proximity sounds
+		createProximitySounds(); 		
 
 		// Save game on load
 		_gameSave = saveGame(_gameSave);
@@ -72,7 +76,7 @@ class LevelOne extends LevelState {
 	 * Show instructions specific to this level unless they have already been viewed
 	 */
 	function showInstructions() {
-		var _instructions:Instructions = new Instructions(1, 2);
+		var _instructions:Instructions = new Instructions(1, 2, true, false);
 		if (!_instructions.menuViewed) openSubState(_instructions);
 		_instructionsViewed = true;
 	}	
@@ -111,6 +115,6 @@ class Intro extends IntroState {
 	}
 
 	override public function startLevel() {
-		FlxG.switchState(new LevelOne(_gameSave, false));
+		FlxG.switchState(new LevelOne(_gameSave, true));
 	}
 }

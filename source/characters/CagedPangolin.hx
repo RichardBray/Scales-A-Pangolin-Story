@@ -1,9 +1,12 @@
 package characters;
 
+import flixel.FlxG;
+import flixel.system.FlxSound;
 import flixel.FlxSprite;
 
 class CagedPangolin extends FlxSprite {
   var _playerHit:Bool = false;
+  public var sndCrash:FlxSound;
 
   public function new(X:Float, Y:Float) {
     super(X, Y);
@@ -11,6 +14,8 @@ class CagedPangolin extends FlxSprite {
 
     animation.add("crying", [for (i in 0...4) i], 8, true);
     animation.add("breakUp", [for (i in 5...9) i], 8, false);
+
+    sndCrash = FlxG.sound.load("assets/sounds/environment/crash.ogg", .75);
   }
 
   override public function kill() {

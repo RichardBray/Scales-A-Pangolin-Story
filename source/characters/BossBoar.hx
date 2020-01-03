@@ -1,5 +1,7 @@
 package characters;
 
+import flixel.system.FlxSound;
+import states.LevelState;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -14,14 +16,32 @@ class BossBoar extends Enemy {
   var _boarCharged:Bool = false;
   var _randomStopNumber:Int; // Randomly generated number to decidee when boar stops running
   var _attackMode:Bool = false; // When Boar has seen player for first time  
+  var _levelState:LevelState; // Used to trigger boss music
+  var _playBossMusicOnce:Bool = false; // Hacky way to prevent music from playing multiple times  
+  // Sounds
+  var _startSnd:FlxSound;
+  var _endSnd:FlxSound;
+  var _hurtSnd:FlxSound;
+
+  var _boarStartMusicPlayed:Bool = false; // Hacky way for preventing music played twice
 
   var _movementDistance:Int = 530;
   final _movementDistanceFast:Int = 700;
 
-  public function new(X:Float, Y:Float) {
+  public function new(X:Float, Y:Float, Parent:LevelState) {
     super(X, Y);
-    health = 7;
+
+    _startSnd = FlxG.sound.load("assets/sounds/boar-boss/start.ogg");
+    _endSnd = FlxG.sound.load("assets/sounds/boar-boss/end.ogg");
+    _hurtSnd = FlxG.sound.load("assets/sounds/boar-boss/hit.ogg");
+
+    #if debug
+      health = 1;
+    #else
+      health = 7;
+    #end
     hasCollisions = true; 
+    _levelState = Parent;
 
     loadGraphic("assets/images/characters/BOARBOSS-01.png", true, 382, 154);
     updateSpriteHitbox(160, 55, this);
@@ -93,9 +113,18 @@ class BossBoar extends Enemy {
 
     if (_attackMode) {
       if (_boarCharged) {
+        // Play boar music
+        if (!_playBossMusicOnce) {
+          _levelState.playMusic("assets/music/boss-fight.ogg", 0.7);
+          _playBossMusicOnce = true;
+        }
         running();
       } else {
         // Boar roars
+        if (!_boarStartMusicPlayed) {
+          _startSnd.play();
+          _boarStartMusicPlayed = true;
+        }
         var _chargeTimer:FlxTimer = new FlxTimer();
         animation.play("charging");
         velocity.x = 0; // Stop moving
@@ -112,6 +141,7 @@ class BossBoar extends Enemy {
   override public function hurt(Damage:Float) {
     _boarAttacked = true;
 		health = health - Damage;
+    _hurtSnd.play();
 		if (health <= 0) kill();   
   } 
 
@@ -122,6 +152,8 @@ class BossBoar extends Enemy {
     _enemyDying = true;
     FlxG.camera.flash(FlxColor.WHITE, 0.5, turnOffSlowMo);
     FlxG.timeScale = 0.35;
+    _endSnd.play();
+    _levelState.playMusic(Constants.jungleMusic);
 		dieSlowly();
   }  
 

@@ -27,6 +27,7 @@ class PauseMenu extends FlxSubState {
 	
 	// Sounds
 	var _sndClose:FlxSound;
+	var _sndSelect:FlxSound;
 
 	/**
 	 * @param PlayerDied	If player died or not
@@ -68,14 +69,14 @@ class PauseMenu extends FlxSubState {
 			var sectionToRestart:Class<states.LevelState> = Constants.levelNames[LevelString];
 
 			restartMenuOption = [{
-				title: "Restart Section",
+				title: "Restart Checkpoint",
 				func: () -> {
 					FlxG.sound.music = null;
 					FlxG.switchState(Type.createInstance(sectionToRestart, [GameSave, false]));
 				},
 				itemPos: 2
 			}];
-			// TODO Finish this
+
 			levelSelectMenuOption = [{
 				title: "Level Select",
 				func: () -> {
@@ -95,7 +96,7 @@ class PauseMenu extends FlxSubState {
 			{
 				title: "Instructions",
 				func: () -> {
-					var _instructions:Instructions = new Instructions(1, 2, false); // Should be 1, 4
+					var _instructions:Instructions = new Instructions(1, 3, false); // Should be 1, 4
 					openSubState(_instructions);
 				},
 				itemPos: 4
@@ -140,16 +141,22 @@ class PauseMenu extends FlxSubState {
 
 		// Sound
 		_sndClose = FlxG.sound.load(Constants.sndMenuClose);
+		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);			
 	
 		// Intialise controls
 		_controls = new Controls();
 
-		if (FlxG.sound.music != null) FlxG.sound.music.pause();
+		_sndSelect.play();
+		haxe.Timer.delay(() -> {
+			if (FlxG.sound.music != null) FlxG.sound.music.pause();
+			FlxG.sound.pause();
+		}, 500);
 	}
 
 	function togglePauseMenu() {
 		if (FlxG.sound.music != null) FlxG.sound.music.play();
 		_sndClose.play(); 
+		FlxG.sound.resume();
 		close();
 	}
 

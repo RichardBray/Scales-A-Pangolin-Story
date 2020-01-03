@@ -9,7 +9,6 @@ import flixel.FlxObject;
 import flixel.math.FlxPoint;
 
 class Enemy extends FlxSprite {
-	public var sndHit:FlxSound;
 	public var sndEnemyKill:FlxSound;
 	public var timer:FlxTimer;
 	public var push:Int = -900; // How much to push the player up by when they jump on enemy
@@ -24,8 +23,7 @@ class Enemy extends FlxSprite {
 		super(X, Y);
 		health = 1;
 		timer = new FlxTimer();
-		sndHit = FlxG.sound.load("assets/sounds/hurt.ogg", .65);
-		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav");		
+		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav", 0.5);		
 	}
 
 	/**
@@ -129,7 +127,7 @@ class Fire extends Enemy {
 		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
 		updateSpriteHitbox(70, 50, this);
 
-		animation.add("burning", [for (i in 0...8) i], 12, true);		
+		animation.add("burning", [for (i in 0...8) i], 12, true);
 	}
 
 	override public function update(Elapsed:Float) {
@@ -144,6 +142,8 @@ class Fire extends Enemy {
 
 class Boar extends PacingEnemey {
 
+	var _hurtSnd:FlxSound;
+ 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 40);
 		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
@@ -153,16 +153,25 @@ class Boar extends PacingEnemey {
 		setFacingFlip(FlxObject.RIGHT, false, false);			
 
 		animation.add("walking", [for (i in 0...7) i], 8, true);
-		animation.add("dying", [for (i in 7...13) i], 8, false);			
+		animation.add("dying", [for (i in 7...13) i], 8, false);	
+
+		_hurtSnd = FlxG.sound.load("assets/sounds/enemies/boar-hit.ogg");		
 	}
 
 	override public function update(Elapsed:Float) {
 		_enemyHit ? animation.play("dying") : animation.play("walking");
 		super.update(Elapsed);
+	}
+
+	override public function hurt(Damage:Float) {
+		super.hurt(Damage);
+		_hurtSnd.play();
 	}		
 }
 
 class Toucan extends PacingEnemey {
+	// Sounds
+	var _sndHit:FlxSound;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 220);
@@ -173,67 +182,35 @@ class Toucan extends PacingEnemey {
 		setFacingFlip(FlxObject.RIGHT, true, false);			
 
 		animation.add("flying", [for (i in 0...10) i], 8, true);
-		// animation.add("dying", [for (i in 7...12) i], 8, false);			
+		animation.add("dying", [0], 0, false);		
+
+		// Sounds
+		_sndHit = FlxG.sound.load("assets/sounds/enemies/toucan.ogg", 0.6);		
 	}	
+
+	override public function kill() {
+		_enemyHit = true;
+		_sndHit.play();
+		dieSlowly();
+  }
 
 	override public function update(Elapsed:Float) {
 		animation.play("flying");
 		super.update(Elapsed);
-	}		
-}
 
-class MovingCage extends Enemy {
-	var _seconds:Float = 0;
-	var _enemyHit:Bool = false;	
-	var _distance:Int;
-	final movementSpeed:Int = 4;	
-
-	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
-		super(X, Y);
-		loadGraphic("assets/images/environments/moving_cage.png", true, 315, 331);
-		updateSpriteHitbox(100, 100, this);
-		animation.add("breakUp", [for (i in 0...5) i], 8, true);
-		_distance = Std.parseInt(Otype) * 10;
-	}
-
-	function cageMovement() {
-		if (!_enemyHit) {
-			if (_seconds < movementSpeed) {
-				velocity.y = _distance;
-			} else if (_seconds < (movementSpeed * 2)) {
-				velocity.y = -_distance;
-			} else if (Math.round(_seconds) == (movementSpeed * 2)) {
-				_seconds = 0;
-			}
-		} else {
-			velocity.y = 0;
+		if (_enemyHit) {
+			velocity.y = 600;
+			animation.play("dying");
 		}
-	}
-
-	override public function update(Elapsed:Float) {
-		_seconds += Elapsed;
-		cageMovement();
-		super.update(Elapsed);
 	}		
 }
-
-// class MovingCageString extends FlxSprite {
-// 	public function new() {
-// 		super(X, Y);
-// 		makeGraphic(10, 20, FlxColor.WHITE);
-// 	}
-
-// 	override public function update(Elapsed:Float) {
-// 		_seconds += Elapsed;
-// 		cageMovement();
-// 		super.update(Elapsed);
-// 	}	
-		
-// }
 
 class Snake extends Enemy {
 	var _enemyHit:Bool = false;
 
+	// Sounds
+	var _sndHit:FlxSound;
+	var _sndAttack:FlxSound;
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X + 100, Y);
@@ -248,18 +225,25 @@ class Snake extends Enemy {
 
 		animation.add("idle", [for (i in 0...4) i], 6, true);
 		animation.add("attacking", [for (i in 5...9) i], 8, false);		
-		animation.add("dying", [for (i in 10...14) i], 8, false);				
+		animation.add("dying", [for (i in 10...14) i], 8, false);	
+
+		// Sounds		
+		_sndHit = FlxG.sound.load("assets/sounds/enemies/snake-hit.ogg", 0.6);	
+		_sndAttack = FlxG.sound.load("assets/sounds/enemies/snake-attack.ogg", 0.6);		
 	}
 
 	override public function kill() {
 		_enemyHit = true;
+		_sndHit.play();
 		dieSlowly();
   }
 
 	override public function update(Elapsed:Float) {
 		super.update(Elapsed);
+
 		if (attacking) {
 			animation.play("attacking");
+			_sndAttack.play(true);
 		} else {
 			_enemyHit ? animation.play("dying") : animation.play("idle");
 		}

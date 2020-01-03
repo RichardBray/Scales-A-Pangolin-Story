@@ -21,6 +21,8 @@ class Hud extends FlxSpriteGroup {
 	var _gradientBg:FlxSprite;
 	var _spinner:FlxSprite;
 	var _leftPush:Int = 15; // Distance away from left side of the screen
+	var _playerHealth:Float; // Temporary player health storage
+
 	// Goals
 	var _goals:FlxSpriteGroup;
 	var _goalData:Null<Array<GoalData>>;
@@ -112,6 +114,8 @@ class Hud extends FlxSpriteGroup {
 		hudObjects.mapi((idx:Int, member:FlxSprite) -> {
 			member.alpha = (Alpha == 1) ? objectAlpha[idx] : 0;
 		});
+		// Replace opaque hearts in hud when opacity for each one has been made to 1
+		decrementHealth(_playerHealth);
 	}
 
 	public function incrementScore() {
@@ -121,6 +125,8 @@ class Hud extends FlxSpriteGroup {
 
 	public function decrementHealth(PlayerHealth:Float) {
 		var index:Int = 0;
+		_playerHealth = PlayerHealth;
+
 		_hearts.forEach((s:FlxSprite) -> {
 			if (index >= PlayerHealth) s.alpha = 0.2;
 			index++;

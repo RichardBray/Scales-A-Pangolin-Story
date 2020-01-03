@@ -19,8 +19,15 @@ class LevelThree extends LevelState {
 	var _monkeySprite:ZenMonkey;
 	var _monkeyNPC:NPC;
 	var _monkeyDialogueImage:FlxSprite;
-  final _bugsGoal:Int = 14; // How many bugs to collect in order to complete level  
 	var _spokentoNPC:Int = 0;
+
+  final _bugsGoal:Int = 12;
+  final _allMidCheckpoints:Array<Array<Float>> = [
+    [1822.46, 1110.25],
+		[7482.25, 785.20],
+		[7543.12, 1034.93],
+		[7171.35, 1424.51]
+  ];	
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -45,6 +52,7 @@ class LevelThree extends LevelState {
     levelName = "Level-3-0";
 
     createLevel("level-3-0", "SCALES_BACKGROUND-01.png", "level_three");
+		createMidCheckpoints(_allMidCheckpoints);
 
 		// Add NPC Text
 		var monkeyText:Array<String> = [
@@ -74,15 +82,17 @@ class LevelThree extends LevelState {
 		add(_monkeyNPC);		
 
 		// Add player
-		createPlayer(180, 1470); 
+		createPlayer(180, 1470, _gameSave); 
 		
     // Add HUD
     createHUD(0, player.health, _goalData); 
 
-		// Save game on load
+		createProximitySounds();
+
+		// Save game on load	 					
 		_gameSave = saveGame(_gameSave);
 
-    super.create(); 
+    super.create(); 	
   }
 
 	function fadeOut(Player:FlxSprite, Exit:FlxSprite) {

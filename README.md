@@ -56,13 +56,13 @@ haxelib install hscript
 
 ### Git Tagging commans
 add tag
-`git tag -a v0.6.0 -m "new version 0.6.0"`
+`git tag -a v0.10.0 -m "new version 0.10.0"`
 
 show tag
 `git show v0.1.0`
 
 push tag
-`git push origin v0.6.0`
+`git push origin v0.10.0`
 
 Scales of Life: A Pangolin's story
 
@@ -86,3 +86,34 @@ Scales of Life: A Pangolin's story
 
 
 http://www.softschools.com/facts/animals/pangolin_facts/108/
+
+
+### Testing code
+
+```hx
+#if debug
+_gameSave = new FlxSave(); // initialize
+_gameSave.bind("AutoSave"); // bind to the named save slot 
+#end   
+_gameSave = saveGame(_gameSave, [0, 0]);  
+```
+
+### Save game data structure
+
+```js
+data: {
+  // Level specific / Resets / Changes
+  levelName: "Level-5-0",  
+  totalBugs: 0,
+  totalEnemies: 0,  
+  // General
+  enableLevelSelect: false,
+  totalInstructionPage: 0,
+  // Abilities
+  quickJumpEnabled: true,
+  //Intros
+  introTwoSeen: true,
+  // Stars
+  levelStars: [1, 2, 3, 3, 2] // Not yet implemented
+}
+```

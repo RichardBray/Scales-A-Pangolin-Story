@@ -25,36 +25,61 @@ class LevelComplete extends FlxSubState {
   var _leftBg:FlxSprite;
 
   var _bugsCollected:Int = 0;
-  var _enemiesKilled:Int = 0;
+  var _enemiesDefeated:Int = 0;
 
   var _levelRating:FlxText;
 
   var _levelTotals:Map<String, Array<Int>>; 
   var _levelNames:Map<String, String>;
   var _totalBugsCollected:Int;
-  var _totalEnemiesKilled:Int;
+  var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
 
+  // Variables for showing bugs collected/enemites defeated after checking if they are more than the total
+  var _actualBugs:Int;
+  var _actualEnemies:Int;
+
+  /**
+   * @param GameSave saved game data
+   * @param LevelSelectModalNum modal to have selected on the level complete page
+   */
   public function new(?GameSave:FlxSave, ?LevelSelectModalNum:Int) {
     super();
     _gameSave = GameSave;
     _levelSelectModalNum = LevelSelectModalNum;
 
     _levelTotals = [
-      "Level-4-0" => [74, 10]
+      "Level-4-0" => [74, 10],
+      "Level-6-0" => [42, 10]
     ];
 
     _levelNames = [
-      "Level-4-0" => "One"
+      "Level-4-0" => "One",
+      "Level-6-0" => "Two"
     ];
 
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
-    _totalEnemiesKilled = _levelTotals[_gameSave.data.levelName][1];
+    _totalEnemiesDefeated = _levelTotals[_gameSave.data.levelName][1];
+
+    _actualBugs = showTotalIfCollectedIsHigher(_totalBugsCollected, _gameSave.data.totalBugs);
+    _actualEnemies = showTotalIfCollectedIsHigher(_totalEnemiesDefeated, _gameSave.data.totalEnemies);
+  }
+
+  /**
+   * Sort of hacky way to fix a bug where the collected number is over the total.
+   *
+   * @param Total level total
+   * @param Collected amount player has collected
+   */
+  function showTotalIfCollectedIsHigher(Total:Int, Collected:Int):Int {
+    return Collected > Total
+      ? Total
+      : Collected;
   }
 
   function calculatePercentge():Int {
-    var total = _totalBugsCollected + _totalEnemiesKilled;
-    var value = _gameSave.data.totalBugs + _gameSave.data.totalEnemies;
+    var total = _totalBugsCollected + _totalEnemiesDefeated;
+    var value = _actualBugs + _actualEnemies;
 
     return Std.int(value / total * 100);
   }
@@ -124,22 +149,33 @@ class LevelComplete extends FlxSubState {
 
     // Stop level music
     FlxG.sound.music.stop();
+
+    // Play level complete music
+    final levelNameLowercase:String = _levelNames[_gameSave.data.levelName].toLowerCase();
+    final introMusic:String = 'assets/music/level-$levelNameLowercase-complete.ogg';
+    FlxG.sound.playMusic(introMusic, 1, false);		
   }
 
+  /**
+   * Simply increments the numbers by one for animation reasons by a loop.
+   * Pauses for 800ms inbetween increments.
+   *
+   * @param TotalBugs number of bugs collected from saved data.
+   * @param TotalEnemies number of enemies defeated from saved data.
+   */
   function incrementNumbers(TotalBugs:Int, TotalEnemies:Int) {
-    // Increment numbers after 800ms
     haxe.Timer.delay(() -> {
       if (_bugsCollected != TotalBugs) _bugsCollected = Std.int(_bugsCollected % 360 + 1);
-      if (_enemiesKilled != TotalEnemies) _enemiesKilled = Std.int(_enemiesKilled % 360 + 1);
+      if (_enemiesDefeated != TotalEnemies) _enemiesDefeated = Std.int(_enemiesDefeated % 360 + 1);
     }, 800);
   }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
-    incrementNumbers(_gameSave.data.totalBugs, _gameSave.data.totalEnemies);
+    incrementNumbers(_actualBugs, _actualEnemies);
     _levelData.text = '
     Bugs collected: $_bugsCollected/$_totalBugsCollected \n
-    Enemies killed: $_enemiesKilled/$_totalEnemiesKilled';
+    Enemies defeated: $_enemiesDefeated/$_totalEnemiesDefeated';
 
     // Animate sides
     FlxTween.tween(_grpLeftSide, {y: 0, alpha: 1}, 1, {ease: FlxEase.backOut});
@@ -150,10 +186,10 @@ class LevelComplete extends FlxSubState {
       FlxTween.tween(_levelRating, {alpha: 1, y: 470}, 1, {ease: FlxEase.backOut});
     }, 2000);
 
-    // Show menu after a few seconds
-      haxe.Timer.delay(() -> { 
-        _menu.exists = true;
-        _menu.fadeIn();
-      }, 3200);
+  // Show menu after a few seconds
+    haxe.Timer.delay(() -> { 
+      _menu.exists = true;
+      _menu.fadeIn();
+    }, 3200);
   }
 }

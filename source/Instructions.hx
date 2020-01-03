@@ -18,6 +18,8 @@ class Instructions extends FlxSubState {
   var _closeText:FlxText;
   var _pagePosition:FlxText;
   var _showOverlay:Bool;
+  var _showControls:Bool;
+
   // Page controls
   var _currentPage:Int = 1;
   var _leftArrow:FlxSprite;
@@ -27,6 +29,8 @@ class Instructions extends FlxSubState {
 	// Sounds
 	var _sndClose:FlxSound;  
   var _sndMenuMove:FlxSound;
+
+  public var sndAbility:FlxSound;
   
   public var menuViewed:Bool; // Used in specific level classes to check if instructions have been viewed
 
@@ -36,14 +40,18 @@ class Instructions extends FlxSubState {
    * @param StartPage   Page instrcutions should start on
    * @param Endpage     Page instrcutions should end on
    * @param ShowOverlay To show background overlay or not, helpful when coming from pause menu
+   * @param ShowControls If arrows and page numbers should be shown
    */
-  public function new(StartPage:Int, EndPage:Int, ShowOverlay:Bool = true) {
+  public function new(StartPage:Int, EndPage:Int, ShowOverlay:Bool = true, ?ShowControls:Bool = true) {
     super();
 
     // Assign start and end pages numbers
     _endPage = EndPage;
     _startPage = StartPage;
     _showOverlay = ShowOverlay;
+    _showControls = ShowControls;
+
+    _currentPage = StartPage;
 
     // Opaque black background overlay
     if (_showOverlay) {
@@ -67,8 +75,8 @@ class Instructions extends FlxSubState {
     }
 
     // Exit test
-    var start:String = Constants.start;
-    _exitText = new FlxText(1480, 120, 'Press $start to Exit');
+    var cross:String = Constants.cross;
+    _exitText = new FlxText(1480, 120, 'Press $cross to Exit');
     _exitText.setFormat(Constants.squareFont, Constants.smlFont);
     _exitText.scrollFactor.set(0, 0);
     add(_exitText);
@@ -79,17 +87,19 @@ class Instructions extends FlxSubState {
     _pagePosition.setFormat(Constants.squareFont, Constants.smlFont);
     _pagePosition.scrollFactor.set(0, 0);
     _pagePosition.screenCenter(X);
-    add(_pagePosition);
 
     // Left arrow
     _leftArrow = new FlxSprite(190, 925).loadGraphic("assets/images/instructions/arrow.png", false, 18, 34);
-    _grpPages.add(_leftArrow);
 
     // Right arrow
     _rightArrow = new FlxSprite(1702, 925).loadGraphic("assets/images/instructions/arrow.png", false, 18, 34);
-    _rightArrow.flipX = true;
-    _grpPages.add(_rightArrow);    
+    _rightArrow.flipX = true; 
 
+    if (_showControls) {
+      _grpPages.add(_leftArrow);
+      _grpPages.add(_rightArrow);   
+      add(_pagePosition);
+    }
 
 		// Intialise game controls
 		_controls = new Controls();  
@@ -101,40 +111,44 @@ class Instructions extends FlxSubState {
 
 		// Sound
 		_sndClose = FlxG.sound.load(Constants.sndMenuClose);  
-		_sndMenuMove = FlxG.sound.load(Constants.sndMenuMove);       
+		_sndMenuMove = FlxG.sound.load(Constants.sndMenuMove);  
+
+    sndAbility = FlxG.sound.load("assets/sounds/sfx/ability.ogg");     
   }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);    
 
 		// Exit instructions
-		if (_controls.start.check() || _controls.triangle.check()) {
+		if (_controls.cross.check() || _controls.triangle.check()) {
       _sndClose.play(); 
       closeInstructionsMenu();
     }
 
-    // Go to previous page
-    if (_controls.left.check() && _currentPage != _startPage) {
-      _currentPage--;
-      _sndMenuMove.play(true);
-      updateShownPage();
-    } 
+    if (_showControls) {
+      // Go to previous page
+      if (_controls.left_jp.check() && _currentPage != _startPage) {
+        _currentPage--;
+        _sndMenuMove.play(true);
+        updateShownPage();
+      } 
 
-    // Go to next page
-    if (_controls.right.check() && _currentPage != _endPage) {
-      _currentPage++;
-      _sndMenuMove.play(true);
-      updateShownPage();
-    }  
+      // Go to next page
+      if (_controls.right_jp.check() && _currentPage != _endPage) {
+        _currentPage++;
+        _sndMenuMove.play(true);
+        updateShownPage();
+      }  
 
-    // Change opacity of arrows based on if user is on first or last page
-    if (_controls.left.check() || _controls.right.check()) {
-      _leftArrow.alpha = 1;
-      _rightArrow.alpha = 1;
+      // Change opacity of arrows based on if user is on first or last page
+      if (_controls.left_jp.check() || _controls.right_jp.check()) {
+        _leftArrow.alpha = 1;
+        _rightArrow.alpha = 1;
 
-      if (_currentPage == _endPage) _rightArrow.alpha = 0.2;
-      if (_currentPage == _startPage) _leftArrow.alpha = 0.2;
-    }     
+        if (_currentPage == _endPage) _rightArrow.alpha = 0.2;
+        if (_currentPage == _startPage) _leftArrow.alpha = 0.2;
+      }  
+    }   
   }
 
   /**

@@ -8,7 +8,7 @@ import states.LevelState;
 
 class Constants {
 	// general
-	public static final projectVersion:String = "v0.9.0";
+	public static final projectVersion:String = "v0.10.2";
 	public static final worldGravity:Int = 1500;
 	public static final squareFont:String = "assets/fonts/Square.ttf";
 
@@ -26,25 +26,26 @@ class Constants {
 
 	// Controler strings
 	// @todo different controler strings for gamepads
-	public static final start:String = "ESC";
-	public static final cross:String = "SPACE";
-	public static final triangle:String = "E";
+	public static final start:String = "PAUSE";
+	public static final cross:String = "JUMP";
+	public static final triangle:String = "ACTION";
 	
 	// Sounds
-	public static final sndMenuMove:String = "assets/sounds/menu_move.wav";
-	public static final sndMenuSelect:String = "assets/sounds/menu_selected.wav";	
-	public static final sndMenuClose:String = "assets/sounds/menu_close.ogg";
+	public static final sndMenuMove:String = "assets/sounds/sfx/menu_move.ogg";
+	public static final sndMenuSelect:String = "assets/sounds/sfx/menu_selected.ogg";	
+	public static final sndMenuClose:String = "assets/sounds/sfx/menu_close.ogg";
 
-	// Music lengths
-	public static final levelSelectMusic:Int = 61902;
-	public static final titleMusic:Int = 40137;
+	// Ambient sounds
+	public static final jungleMusic:String = "assets/music/jungle-sound.ogg";
+	public static final caveMusic:String = "assets/sounds/environment/cave.ogg";
 
-	// Used to load levels from saves and restart levels
+	/** Used to load levels from saves and restart levels */
 	public static final levelNames:Map<String, Class<LevelState>> = [
 		"Level-1-0" => levels.LevelOne, 
 		"Level-2-0" => levels.LevelTwo,
 		"Level-3-0" => levels.LevelThree,
 		"Level-4-0" => levels.LevelFour,
-		"Level-5-0" => levels.LevelFive
+		"Level-5-0" => levels.LevelFive,
+		"Level-6-0" => levels.LevelSix		
 	];
 }

@@ -1,8 +1,8 @@
-<?xml version="0.9.0" encoding="utf-8"?>
+<?xml version="0.10.0" encoding="utf-8"?>
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Scales: A Pangolin Story" file="Scales_0.9.0" main="Main" version="0.9.0" company="Hello Lightbulb" />
+	<app title="Scales: A Pangolin Story" file="Scales_0.10.2" main="Main" version="0.10.0" company="Hello Lightbulb" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -14,14 +14,14 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="true" />
+	<window width="1920" height="1080" fps="60" background="#000000" hardware="true" vsync="true" />
 	<!-- antialiasing="4" -->
 
 	<!--HTML5-specific-->
 	<window if="html5" resizable="true" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+	<window if="desktop" orientation="landscape" fullscreen="true" resizable="true" />
 
 	<!--Mobile-specific-->
 	<!-- <window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" /> -->
