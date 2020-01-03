@@ -59,7 +59,7 @@
   <object id="92" name="right" type="4" gid="10" x="56.3905" y="1231.21" width="47" height="39"/>
   <object id="95" name="left" type="4" gid="10" x="7550.72" y="1021.76" width="47" height="39"/>
   <object id="96" name="right" type="1" gid="9" x="6953.54" y="881.801" width="42" height="39"/>
-  <object id="97" name="right" type="5" gid="11" x="9014.56" y="929.563" width="36" height="15"/>
+  <object id="97" name="left" type="5" gid="11" x="9014.56" y="929.563" width="36" height="15"/>
  </objectgroup>
  <layer id="4" name="collisions" width="945" height="120">
   <data encoding="base64" compression="zlib">
