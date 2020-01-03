@@ -40,12 +40,13 @@ class IntroState extends GameState {
 		_factText.alpha = 0;
 		_controls = new Controls();	
 
+		final jump = Constants.cross;
 		// Skip text
 		_skipText = new FlxText(
 			FlxG.width - 300,
 			FlxG.height - 80,
 			0,
-			"Press ESC to skip"
+			'Press $jump to skip'
 		);	
 		_skipText.setFormat(Constants.squareFont, Constants.hudFont);
 		_skipText.alpha = 0;
@@ -67,7 +68,7 @@ class IntroState extends GameState {
 		haxe.Timer.delay(() -> FlxTween.tween(_skipText, {alpha: 1}, .5), 3000);
 
 		// Start level if player presses start
-		if ( _controls.start.check()) {
+		if ( _controls.cross.check()) {
 			_sndClose.play(); 
 			haxe.Timer.delay(startLevel, 200);
 		}
