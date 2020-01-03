@@ -1,6 +1,8 @@
 package screens;
 
 
+import flixel.system.FlxSound;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -23,17 +25,20 @@ class LevelComplete extends FlxSubState {
   var _grpLeftSide:FlxSpriteGroup;
   var _rightSide:FlxSprite;
   var _leftBg:FlxSprite;
+  var _grpStars:FlxTypedGroup<FlxSprite>;
 
   var _bugsCollected:Int = 0;
   var _enemiesDefeated:Int = 0;
-
-  var _levelRating:FlxText;
 
   var _levelTotals:Map<String, Array<Int>>; 
   var _levelNames:Map<String, String>;
   var _totalBugsCollected:Int;
   var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
+  // - Stars
+  var _levelStars:Int = 0;
+  var _animateStarCount:Int = 0;
+  var _starSoundPlayed:Bool = false;
 
   // Variables for showing bugs collected/enemites defeated after checking if they are more than the total
   var _actualBugs:Int;
@@ -90,7 +95,10 @@ class LevelComplete extends FlxSubState {
     var _menuData:Array<MenuData> = [
       {
         title: "  Continue",
-        func: () -> FlxG.switchState(new levels.LevelSelect(_gameSave, _levelSelectModalNum))
+        func: () -> {
+          saveLevelStars();
+          FlxG.switchState(new levels.LevelSelect(_gameSave, _levelSelectModalNum));
+        }
       },
       {
         title: "  Restart Level",
@@ -108,6 +116,8 @@ class LevelComplete extends FlxSubState {
     // Left side of level complete screen
     _grpLeftSide = new FlxSpriteGroup(0, -distanceOffScreen);
     add(_grpLeftSide);
+
+    _grpStars = new FlxTypedGroup<FlxSprite>();
 
     _leftBg = new FlxSprite(0, 0).makeGraphic(twoThirdsScreen, FlxG.height, Constants.primaryColor);
     _grpLeftSide.add(_leftBg);
@@ -128,11 +138,8 @@ class LevelComplete extends FlxSubState {
     });	 
 
     var levelPercentage:Int = calculatePercentge();
-    _levelRating = new FlxText(120, 500, FlxG.width, '$levelPercentage% Complete'); 
-    _levelRating.setFormat(Constants.squareFont, Constants.medFont * 2, FlxColor.WHITE, LEFT);
-    _levelRating.alpha = 0;  
-    _levelRating.scrollFactor.set(0, 0);
-    add(_levelRating);
+    createStars(levelPercentage);
+    add(_grpStars);
 
     // Right side of level complete screen
     _rightSide = new FlxSprite(twoThirdsScreen, distanceOffScreen);
@@ -170,6 +177,54 @@ class LevelComplete extends FlxSubState {
     }, 800);
   }
 
+  /**
+   * Render amount of stars out of three based on percentage value
+   */
+  function createStars(Percentage:Int) {
+    if (Percentage > 40 && Percentage <= 70) _levelStars = 1;
+    if (Percentage > 70 && Percentage <= 100) _levelStars = 2;
+
+    // there should ONLY be three stars
+    for (i in 0...3) {
+      final spacing:Int = (120 * i) + (10 * i);
+      var star:FlxSprite = new FlxSprite((120 + spacing), 500);
+      var starType:String = "black";
+      if (i <= _levelStars) starType = "yellow";
+      star.loadGraphic('assets/images/icons/star_$starType.png', false, 100, 95);
+      star.scrollFactor.set(0, 0);
+      star.alpha = 0;
+      // Add star to group
+      _grpStars.add(star);
+    }
+  }
+
+  /**
+   * Animate the stars coming in one by one and play the relvat sound.
+   * Tehcnically all stars play at the samd time but animate at different speeds.
+   */
+  function animateStars() {
+    _grpStars.forEach((Member:FlxSprite) -> {
+      haxe.Timer.delay(
+        () -> {
+          if (!_starSoundPlayed) {
+            final soundToPlay:Int = _levelStars + 1; 
+            final starSound:FlxSound = FlxG.sound.load('assets/sounds/sfx/stars_$soundToPlay.ogg', 0.7);
+            starSound.play();
+            _starSoundPlayed = true; // To prevent repeated play
+          }            
+          FlxTween.tween(Member, {alpha: 1, y: 470}, 1, {ease: FlxEase.backOut});       
+        }, 
+        Std.int((_animateStarCount * 0.50) * 1000));
+      if (_animateStarCount != _levelStars) _animateStarCount++;
+    }); 
+  }
+
+  function saveLevelStars() {
+    final levelName:String = _levelNames[_gameSave.data.levelName];
+    final saveName:String = 'starsLevel$levelName';
+    _gameSave.data.saveName = _levelStars;    
+  }
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
     incrementNumbers(_actualBugs, _actualEnemies);
@@ -182,9 +237,7 @@ class LevelComplete extends FlxSubState {
     FlxTween.tween(_rightSide, {y: 0, alpha: 1}, 1, {ease: FlxEase.backOut});
 
     // Show level rating
-    haxe.Timer.delay(() -> { 
-      FlxTween.tween(_levelRating, {alpha: 1, y: 470}, 1, {ease: FlxEase.backOut});
-    }, 2000);
+    haxe.Timer.delay(() -> animateStars(), 2000);
 
   // Show menu after a few seconds
     haxe.Timer.delay(() -> { 
