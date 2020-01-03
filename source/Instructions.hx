@@ -42,7 +42,7 @@ class Instructions extends FlxSubState {
    * @param ShowOverlay To show background overlay or not, helpful when coming from pause menu
    * @param ShowControls If arrows and page numbers should be shown
    */
-  public function new(StartPage:Int, EndPage:Int, ShowOverlay:Bool = true, ShowControls:Bool = true) {
+  public function new(StartPage:Int, EndPage:Int, ShowOverlay:Bool = true, ?ShowControls:Bool = true) {
     super();
 
     // Assign start and end pages numbers

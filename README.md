@@ -108,6 +108,7 @@ data: {
   totalEnemies: 0,  
   // General
   enableLevelSelect: false,
+  totalInstructionPage: 0,
   // Abilities
   quickJumpEnabled: true,
   //Intros

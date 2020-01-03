@@ -33,8 +33,8 @@ class Helpers {
 		XPos:Float, 
 		YPos: Float, 
 		Player: Player,
-		Volume:Float = 0.8,		
-		Radius:Int = 2000
+		?Volume:Float = 0.8,		
+		?Radius:Int = 2000
 	) {
 		FlxG.sound.load(
 			'assets/sounds/environment/$SoundFile.ogg', 

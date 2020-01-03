@@ -140,10 +140,6 @@ class BottomLeft extends FlxText {
 	 */
 	public function new() {
 		super(20, FlxG.height - 75);
-		// var gamepad = FlxG.gamepads.lastActive;
-		// trace(gamepad.model.getName());
-		// http://api.haxeflixel.com/flixel/input/gamepad/FlxGamepadModel.html
-
 		text = "[SPACE] SELECT \n[E] BACK or Close";
 		fieldWidth = 200;
 		scrollFactor.set(0, 0);

@@ -64,14 +64,14 @@ class Player extends FlxSprite {
 		animation.add("digging_pp", [for (i in 96...100) i], 8);
 
 		// Sounds
-		_sndJump = FlxG.sound.load("assets/sounds/player/jump.ogg", .7);
-		_sndJumpDown = FlxG.sound.load("assets/sounds/player/jump-down.ogg", .7);
-		_sndRun = FlxG.sound.load("assets/sounds/player/footsteps.ogg", .7);
-		_sndHurt = FlxG.sound.load("assets/sounds/player/hurt.ogg", .7);
-		_sndDigging = FlxG.sound.load("assets/sounds/player/digging.ogg", .7);
-		_sndQuickJump = FlxG.sound.load("assets/sounds/player/quick-jump.ogg", .7);
+		_sndJump = loadSound("jump");
+		_sndJumpDown = loadSound("jump-down");
+		_sndRun = loadSound("footsteps");
+		_sndHurt = loadSound("hurt");
+		_sndDigging = loadSound("digging");
+		_sndQuickJump = loadSound("quick-jump");
 
-		sndWee = FlxG.sound.load("assets/sounds/player/wee.ogg", .7);
+		sndWee = loadSound("wee");
 
 		// Intialise controls
 		_controls = new Controls();
@@ -107,6 +107,10 @@ class Player extends FlxSprite {
 		if (pangoAttached) suffix = "_pp";
 		return '$Name$suffix';
 	}	
+
+	function loadSound(Name:String):FlxSound {
+		return FlxG.sound.load('assets/sounds/player/$Name.ogg', .7);
+	}
 
 	/**
 	 * Allows player to jump just off edge of an object to reduce frustration.
