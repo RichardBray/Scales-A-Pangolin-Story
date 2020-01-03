@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="256" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="5" nextobjectid="15">
+ <tileset firstgid="1" source="level-1-objs.tsx"/>
+ <tileset firstgid="14" source="collisions.tsx"/>
+ <objectgroup id="2" name="objects">
+  <object id="1" gid="8" x="-26.167" y="1819.42" width="974" height="258"/>
+  <object id="2" gid="8" x="946.762" y="1819.15" width="974" height="258"/>
+  <object id="3" gid="8" x="1917.16" y="1819.23" width="974" height="258"/>
+  <object id="4" gid="8" x="2888.53" y="1819.95" width="974" height="258"/>
+  <object id="6" gid="8" x="2902.96" y="1623.35" width="974" height="258"/>
+  <object id="7" gid="8" x="1966.76" y="1624.13" width="974" height="258"/>
+  <object id="8" gid="7" x="26.7137" y="1628.16" width="1137" height="1494"/>
+  <object id="9" gid="7" x="1375.21" y="1567.82" width="1137" height="1494"/>
+  <object id="10" gid="6" x="3039.33" y="1431.97" width="850" height="1101"/>
+  <object id="11" gid="3" x="1607" y="1576.95" width="361" height="123"/>
+ </objectgroup>
+ <layer id="1" name="collisions" width="256" height="120">
+  <data encoding="base64" compression="zlib">
+   eAHt2tFO3EAMBdD8Af3/r215qIQQsDKJE8+dUwm1sBnHPt6LlFWPwx8CBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECgIvBWudi1BAhECch/1DoNQ6AkIP8lLhcTiBKQ/6h1GoZASeA9/34HlMhcTCBGQP5jVmkQAmUB+S+TOUAgRkD+Y1ZpEAJlAfkvkzlAIEZA/mNWaRACZQH5L5M5QCBGQP5jVmkQAmUB+S+TOUAgRkD+Y1ZpEAJlAfkvkzlAIEZA/mNWaRACZQH5L5M5QCBGQP5jVmkQAmUB+S+TOUAgRkD+Y1ZpEAJlAfkvkzlAIEZA/mNWaRACZQH5L5M5QCBGQP5jVmkQAmUB+S+TOUAgRkD+Y1ZpEAJlAfkvk8Uc+PNvks6vGKjgQeQ/eLlGI/BCQP5fAHmZQLCA/Acv12hxAlc/r03M/9Uzfq4X96YwEIFfCkzM/y9HcYwAgaKA/BfBXE4gSED+5y3z8/NKx/fzptbREwLy/4S6exKYISD/M/agCwJPCMj/E+ruSWCGQCX/Hc+hX9WcIaMLAvkClfzna5iQwF4C8r/Xvk1L4KOA/H/U8G8CewnI/177Nm2PwFefY135s56uj0P+u2TVJTBfQP7n70iHBLoE5L9LVl0C8wXkf/6OdEigS0D+u2TVJTBfQP7n70iHBLoE5L9LVl0C8wXkf/6OdEigS0D+u2Svq3vl/yP5rtZ13aq0koD8r7QtvRK4VkD+r/VUjcBKAvK/0rb0uqvAd89tZ39+Jv9n7/3q/K67NjeBuwTO5P+uHt2HAIEeAfnvcVWVwAoC8r/ClvRIoEdA/ntcVSWwgoD8r7ClZ3t89Tnt2defnW7vu8v/3vs3/d4C8r/3/k2/t4D8771/0+8tsHL+zz53/nR+73eF6XcRWDn/u+zInAS6BOS/S1ZdAvMF5H/+ju7s8KdnIq8dR5qB/N+ZLvciMEtA/mftQzcE7hSQ/zu13YvALAH5n7UP3RC4U0D+79S+9l5XfxZ1bXeqrSAg/ytsSY8EegTkv8dVVQIrCMj/ClvSI4EeAfnvcVWVwAoC8r/ClvRIoEdA/ntcVSWwgoD8r7AlPRLoEfiff38fBwMGO74Hen6zqEqAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAicEfgLEjMxZg==
+  </data>
+ </layer>
+ <objectgroup id="4" name="helpers">
+  <object id="12" name="mama_pango" x="2697.71" y="1203.6" width="361.032" height="170.487"/>
+  <object id="13" name="player_pango" x="152.398" y="1413.42" width="331.69" height="159.869"/>
+ </objectgroup>
+</map>

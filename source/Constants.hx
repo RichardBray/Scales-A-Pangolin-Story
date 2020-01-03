@@ -46,6 +46,7 @@ class Constants {
 		"Level-3-0" => levels.LevelThree,
 		"Level-4-0" => levels.LevelFour,
 		"Level-5-0" => levels.LevelFive,
-		"Level-6-0" => levels.LevelSix		
+		"Level-6-0" => levels.LevelSix,
+		"Level-h-0" => levels.LevelHome		
 	];
 }

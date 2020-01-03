@@ -70,6 +70,7 @@ class LevelState extends GameState {
 	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 	public var levelBgs:FlxTypedGroup<FlxSprite>; // Hide background on bonus levels
 
+
 	override public function create() {
 		bgColor = 0xffBDEDE1; // Game background color
 		super.create();
@@ -271,6 +272,7 @@ class LevelState extends GameState {
 			GameSave.data.totalBugs = EndData[0];
 			GameSave.data.totalEnemies = EndData[1];
 		}
+
 		GameSave.flush();
 		_gameSaveForPause = GameSave;
 		return GameSave;

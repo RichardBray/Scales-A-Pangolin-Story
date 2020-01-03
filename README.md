@@ -108,8 +108,8 @@ data: {
   totalEnemies: 0,  
   // General
   enableLevelSelect: false,
+  playerHasPango: false, // not yet implemented
   totalInstructionPage: 0, // not yet implemented
-  lastCompletedLevel: 1, // not yet implemented
   // Abilities
   quickJumpEnabled: true,
   //Intros

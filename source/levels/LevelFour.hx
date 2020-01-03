@@ -16,9 +16,9 @@ import Hud.GoalData;
 class LevelFour extends LevelState {
   var _goalData:Array<GoalData>;
   var _gameSave:FlxSave;
+	var _spokentoNPC:Int = 0;
   var _pangoSprite:PinkPango;
   var _pangoNPC:NPC;
-	var _spokentoNPC:Int = 0;
 	var _pangoDialogueImage:FlxSprite;
 
   public function new(?GameSave:Null<FlxSave>) {
@@ -79,14 +79,9 @@ class LevelFour extends LevelState {
     // Add HUD
     createHUD(0, player.health, _goalData); 
 
-		// Save game on load 			
-#if debug
-_gameSave = new FlxSave(); // initialize
-_gameSave.bind("AutoSave"); // bind to the named save slot 
-#end   									
+		// Save game on load 											
 		if (_gameSave != null) _gameSave = saveGame(_gameSave);
-    super.create();  
-		    
+    super.create();     
   }
 
 	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
@@ -95,7 +90,7 @@ _gameSave.bind("AutoSave"); // bind to the named save slot
 		openSubState(_levelCompleteState);			
 	}
 
-	function pinkPangoUnwravel(Player:Player, Friend:FlxSprite) {
+	function pinkPangoUnwravel(Player:Player, Friend:PinkPango) {
 		haxe.Timer.delay(() -> {
 			_pangoSprite.unwravel();
 			_pangoNPC.initConvo(Player, Friend);

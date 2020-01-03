@@ -61,7 +61,7 @@ class LevelComplete extends FlxSubState {
     _levelNames = [
       "Level-4-0" => "One",
       "Level-6-0" => "Two"
-    ];
+    ];   
 
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
     _totalEnemiesDefeated = _levelTotals[_gameSave.data.levelName][1];

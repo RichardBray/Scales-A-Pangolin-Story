@@ -34,6 +34,7 @@ class LevelSelect extends GameState {
   var _grpLevelPadlocks:FlxSpriteGroup;
 	var _bottomLeft:FlxText;  
   var _modalNum:Null<Int>;
+  var _pointerPosition:Map<String, Int>; // Where to put pointer when level loads  
 
 	// Sounds
 	var _sndMove:FlxSound;
@@ -59,6 +60,17 @@ class LevelSelect extends GameState {
       _gameSave.flush();
     }
     if (ModalNum != null) _modalNum = ModalNum; 
+
+    _pointerPosition = [
+      "Level-1-0" => 1, 
+      "Level-2-0" => 1,
+      "Level-3-0" => 1,
+      "Level-4-0" => 1,
+      "Level-5-0" => 2,
+      "Level-6-0" => 2,
+      "Level-h-0" => 5	
+    ]; 
+    
   }
 
   override public function create() {
@@ -129,8 +141,8 @@ class LevelSelect extends GameState {
         x: 1610,
         y: 778,
         name: "Home",
-        locked:true,
-        onSelect:() -> trace("level six")
+        locked:false, // lock this for demo
+        onSelect:() -> FlxG.switchState(new LevelHome(_gameSave))
       }                     
     ];  
 
@@ -180,6 +192,9 @@ class LevelSelect extends GameState {
 
     // Start modals
     startModal();
+
+    // Set pointer position
+    _lastCompletedLevel = _pointerPosition[_gameSave.data.levelName];
   }
 
   function startModal() {
