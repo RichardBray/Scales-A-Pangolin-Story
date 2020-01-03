@@ -18,8 +18,7 @@ class LevelHome extends LevelState {
     _gameSave = GameSave;
   }
 
-  override public function create() {
-    super.create();  
+  override public function create() { 
     levelName = "Level-h-0";
     createLevel("level-h-0", "SCALES_BACKGROUND-01.png", "level_four");
   
@@ -28,8 +27,8 @@ class LevelHome extends LevelState {
 		]; 
 
 		// Add NPC
-		var npcXPos:Int = 2697;
-		var npcYPos:Int = 1203;
+		var npcXPos:Int = 1599;
+		var npcYPos:Int = 1066;
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
 		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/PANGO.png", false, 415, 254);
@@ -49,12 +48,13 @@ class LevelHome extends LevelState {
     
   
 		// Add player
-		createPlayer(240, 1413, _gameSave);
+		createPlayer(153, 1413, _gameSave);
 
     // Add HUD
     createHUD(0, player.health, []); 
       
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
+    super.create(); 
   }
 
   function mamaPangoTalking(Player:Player, Friend:PinkPango) {

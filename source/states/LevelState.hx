@@ -83,7 +83,7 @@ class LevelState extends GameState {
 			* By default flixel only processes what it initally sees, so collisions won't
 			* work until can process the whole level.
 			*/
-	
+
 			FlxG.worldBounds.set(0, 0, _map.fullWidth, _map.fullHeight);
 			FlxG.camera.setScrollBoundsRect(0, 0, _map.fullWidth, _map.fullHeight);
 			FlxG.camera.antialiasing = false;

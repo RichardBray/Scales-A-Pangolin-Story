@@ -3,16 +3,16 @@
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <objectgroup id="2" name="objects">
+  <object id="8" gid="7" x="26.7137" y="1628.16" width="1137" height="1494"/> 
+  <object id="9" gid="7" x="1375.21" y="1567.82" width="1137" height="1494"/>
+  <object id="10" gid="6" x="3039.33" y="1431.97" width="850" height="1101"/>
+  <object id="6" gid="8" x="2902.96" y="1623.35" width="974" height="258"/>
+  <object id="7" gid="8" x="1966.76" y="1624.13" width="974" height="258"/>
+  <object id="11" gid="3" x="1607" y="1576.95" width="361" height="123"/>      
   <object id="1" gid="8" x="-26.167" y="1819.42" width="974" height="258"/>
   <object id="2" gid="8" x="946.762" y="1819.15" width="974" height="258"/>
   <object id="3" gid="8" x="1917.16" y="1819.23" width="974" height="258"/>
   <object id="4" gid="8" x="2888.53" y="1819.95" width="974" height="258"/>
-  <object id="6" gid="8" x="2902.96" y="1623.35" width="974" height="258"/>
-  <object id="7" gid="8" x="1966.76" y="1624.13" width="974" height="258"/>
-  <object id="8" gid="7" x="26.7137" y="1628.16" width="1137" height="1494"/>
-  <object id="9" gid="7" x="1375.21" y="1567.82" width="1137" height="1494"/>
-  <object id="10" gid="6" x="3039.33" y="1431.97" width="850" height="1101"/>
-  <object id="11" gid="3" x="1607" y="1576.95" width="361" height="123"/>
  </objectgroup>
  <layer id="1" name="collisions" width="256" height="120">
   <data encoding="base64" compression="zlib">
