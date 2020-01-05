@@ -85,8 +85,9 @@ class LevelFour extends LevelState {
   }
 
 	function levelComplete(Player:FlxSprite, Exit:FlxSprite) {
+		final showLevelSelectModal:Null<Int> = _gameSave.data.introTwoSeen ? null : 0;
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave, 0);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave, showLevelSelectModal);
 		openSubState(_levelCompleteState);			
 	}
 

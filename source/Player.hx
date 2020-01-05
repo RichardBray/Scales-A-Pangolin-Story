@@ -215,10 +215,6 @@ class JumpPoof extends FlxSprite {
 
 		// Animations
 		animation.add("disperse", [for (i in 0...7) i], 7, false);
-
-		// Flips
-		setFacingFlip(FlxObject.LEFT, true, false);
-		setFacingFlip(FlxObject.RIGHT, false, false);		
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package states;
 
 // - Flixel
+import components.LevelSprite;
 import components.TermiteHill;
 import flixel.util.FlxTimer;
 import flixel.util.FlxSave;
@@ -452,8 +453,9 @@ class LevelState extends GameState {
 			_grpEnemyAttackBoundaries.add(bossBoarAttackBoundary);
 
 		} else {
-			var _object:FlxSprite = new FlxSprite(X, newY).loadGraphic(layerImage[ObjectId], false, Width, Height);
-			_object.immovable = true;
+			var _object:LevelSprite = new LevelSprite(X, newY, Name);
+			_object.loadGraphic(layerImage[ObjectId], false, Width, Height);
+			_object.immovable = true;		
 			_mapEntities.add(_object);			
 		}
 	}

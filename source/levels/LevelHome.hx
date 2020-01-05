@@ -1,5 +1,7 @@
 package levels;
 
+import flixel.util.FlxColor;
+import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
@@ -12,6 +14,10 @@ class LevelHome extends LevelState {
   var _pangoSprite:PinkPango;
   var _pangoNPC:NPC;
 	var _pangoDialogueImage:FlxSprite;
+
+  // Exits
+  var _leftExit:FlxObject;
+  var _rightExit:FlxObject;
     
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -27,12 +33,12 @@ class LevelHome extends LevelState {
 		]; 
 
 		// Add NPC
-		var npcXPos:Int = 1599;
+		var npcXPos:Int = 1971;
 		var npcYPos:Int = 1066;
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
 		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/PANGO.png", false, 415, 254);
-		_pangoSprite = new PinkPango(npcXPos, npcYPos);
+		_pangoSprite = new PinkPango(npcXPos, npcYPos, true);
     _pangoSprite.unwravel();
 		_pangoNPC = new NPC(
 			npcXPos, 
@@ -44,11 +50,17 @@ class LevelHome extends LevelState {
 			_pangoDialogueImage,
 			"mama_dialogue"
 		);
-		add(_pangoNPC);	  
-    
+		add(_pangoNPC);	
+
+    // Exits
+    final EXIT_WIDTH:Int = 120;
+    _leftExit = new FlxObject(0, 0, EXIT_WIDTH, _map.fullHeight);  
+    _rightExit = new FlxObject(_map.fullWidth - EXIT_WIDTH, 0, EXIT_WIDTH, _map.fullHeight);  
+    add(_leftExit);
+    add(_rightExit);
   
 		// Add player
-		createPlayer(153, 1413, _gameSave);
+		createPlayer(326, 1463, _gameSave);
 
     // Add HUD
     createHUD(0, player.health, []); 
@@ -61,8 +73,19 @@ class LevelHome extends LevelState {
     _pangoNPC.initConvo(Player, Friend);
   }
 
+	function fadeOut(Player:FlxSprite, Exit:FlxObject) {
+		FlxG.cameras.fade(FlxColor.BLACK, 0.5, false, changeState);
+	}	 
+
+	function changeState() {
+		FlxG.switchState(new levels.LevelSelect(_gameSave));
+	}	   
+
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+
+    FlxG.overlap(player, _leftExit, fadeOut);
+    FlxG.overlap(player, _rightExit, fadeOut);
 
     FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, mamaPangoTalking);
     if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, mamaPangoTalking)) {
