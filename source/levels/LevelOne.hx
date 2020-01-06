@@ -4,6 +4,7 @@ import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.FlxObject;
 
 // Internal
 import states.LevelState;
@@ -18,6 +19,10 @@ class LevelOne extends LevelState {
 	var _goalData:Array<GoalData>;
 	var _instructionsViewed:Bool = false;
 	var _showInstrucitons:Bool;
+	// Level complete goal
+	var _levelComplete:FlxObject;
+	var _playerCompletedLevel:Bool = false;
+
   final _bugsGoal:Int = 10;
 
 	/**
@@ -38,7 +43,11 @@ class LevelOne extends LevelState {
 			{
 				goal: 'Collect over $_bugsGoal bugs',
 				func: (GameScore:Int) -> GameScore > _bugsGoal
-			}
+			},
+			{
+				goal: 'Keep running right',
+				func: (_) -> _playerCompletedLevel
+			}			
 		];
 	}
 
@@ -59,6 +68,9 @@ class LevelOne extends LevelState {
 
 		// Save game on load
 		_gameSave = saveGame(_gameSave);
+
+		_levelComplete = new FlxObject(11033, _map.fullHeight, 257, _map.fullHeight);
+		add(_levelComplete);
 
 		super.create();
 	}
@@ -91,6 +103,8 @@ class LevelOne extends LevelState {
 		}
 
 		// Overlaps
+		FlxG.overlap(_levelComplete, player, (_,_) -> _playerCompletedLevel = true);
+	
 		grpHud.goalsCompleted
 			? FlxG.overlap(levelExit, player, fadeOut)
 			: FlxG.collide(levelExit, player, grpHud.goalsNotComplete);

@@ -31,7 +31,7 @@ class LevelComplete extends FlxSubState {
   var _enemiesDefeated:Int = 0;
 
   var _levelTotals:Map<String, Array<Int>>; 
-  var _levelNames:Map<String, Array<String, Int>>;
+  var _levelNames:Map<String, Array<Dynamic>>;
   var _totalBugsCollected:Int;
   var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
@@ -233,7 +233,7 @@ class LevelComplete extends FlxSubState {
 
     final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
   
-    savedStars[levelNumber] = _levelStars;
+    savedStars[levelNumber] = Std.string(_levelStars);
     _gameSave.data.levelStars = savedStars.join("/");  
   }
 
