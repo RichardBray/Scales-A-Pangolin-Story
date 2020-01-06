@@ -69,7 +69,8 @@ class LevelOne extends LevelState {
 		// Save game on load
 		_gameSave = saveGame(_gameSave);
 
-		_levelComplete = new FlxObject(11033, _map.fullHeight, 257, _map.fullHeight);
+		_levelComplete = new FlxObject(11033, 721, 257, 850);
+		_levelComplete.immovable = true;
 		add(_levelComplete);
 
 		super.create();
