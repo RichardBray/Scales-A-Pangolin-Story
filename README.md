@@ -115,7 +115,7 @@ data: {
   //Intros
   introTwoSeen: true,
   // Stars
-  levelStars: [1, 2, 3, 3, 2] // Not yet implemented
+  levelStars: "0/0/0/0/0"
 }
 ```
 

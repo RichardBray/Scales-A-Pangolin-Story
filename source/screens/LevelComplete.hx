@@ -31,7 +31,7 @@ class LevelComplete extends FlxSubState {
   var _enemiesDefeated:Int = 0;
 
   var _levelTotals:Map<String, Array<Int>>; 
-  var _levelNames:Map<String, String>;
+  var _levelNames:Map<String, Array<String, Int>>;
   var _totalBugsCollected:Int;
   var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
@@ -62,8 +62,8 @@ class LevelComplete extends FlxSubState {
     ];
 
     _levelNames = [
-      levelOneEnd => "One",
-      levelTwoEnd => "Two"
+      levelOneEnd => ["One", 1],
+      levelTwoEnd => ["Two", 2]
     ];   
 
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
@@ -125,7 +125,7 @@ class LevelComplete extends FlxSubState {
     _leftBg = new FlxSprite(0, 0).makeGraphic(twoThirdsScreen, FlxG.height, Constants.primaryColor);
     _grpLeftSide.add(_leftBg);
 
-    var levelTitle:String = _levelNames[_gameSave.data.levelName];
+    var levelTitle:String = _levelNames[_gameSave.data.levelName][0];
 
     _title = new FlxText(100, 70, FlxG.width, 'Level $levelTitle Complete!!');
     _title.setFormat(Constants.squareFont, Constants.medFont * 3, FlxColor.WHITE, LEFT);
@@ -161,7 +161,7 @@ class LevelComplete extends FlxSubState {
     FlxG.sound.music.stop();
 
     // Play level complete music
-    final levelNameLowercase:String = _levelNames[_gameSave.data.levelName].toLowerCase();
+    final levelNameLowercase:String = _levelNames[_gameSave.data.levelName][0].toLowerCase();
     final introMusic:String = 'assets/music/level-$levelNameLowercase-complete.ogg';
     FlxG.sound.playMusic(introMusic, 1, false);		
   }
@@ -226,15 +226,15 @@ class LevelComplete extends FlxSubState {
    * Method used to save stars from level to game save data.
    */
   function saveLevelStars() {
-    final levelName:String = _levelNames[_gameSave.data.levelName];
-    final saveName:String = 'starsLevel$levelName';
-    // If this were js it would be done a lot easier, as well
-    switch (_gameSave.data.levelName) {
-      case levelOneEnd:  
-        _gameSave.data.levelOneStars = _levelStars; 
-      case levelTwoEnd:
-        _gameSave.data.levelTwoStars = _levelStars; 
-    }   
+    var savedGameStars:Null<String> = _gameSave.data.levelStars;
+    final levelNumber:Int = _levelNames[_gameSave.data.levelName][1];
+
+    if (savedGameStars == null) savedGameStars = "0/0/0/0/0";
+
+    final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
+  
+    savedStars[levelNumber] = _levelStars;
+    _gameSave.data.levelStars = savedStars.join("/");  
   }
 
   override public function update(Elapsed:Float) {
