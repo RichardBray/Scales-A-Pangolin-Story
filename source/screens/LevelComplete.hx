@@ -39,10 +39,13 @@ class LevelComplete extends FlxSubState {
   var _levelStars:Int = 0;
   var _animateStarCount:Int = 0;
   var _starSoundPlayed:Bool = false;
-
+  // - Level names
+  final levelOneEnd:String = "Level-4-0";
+  final levelTwoEnd:String = "Level-6-0";
   // Variables for showing bugs collected/enemites defeated after checking if they are more than the total
   var _actualBugs:Int;
   var _actualEnemies:Int;
+
 
   /**
    * @param GameSave saved game data
@@ -54,13 +57,13 @@ class LevelComplete extends FlxSubState {
     _levelSelectModalNum = LevelSelectModalNum;
 
     _levelTotals = [
-      "Level-4-0" => [74, 10],
-      "Level-6-0" => [42, 10]
+      levelOneEnd => [74, 10],
+      levelTwoEnd => [42, 10]
     ];
 
     _levelNames = [
-      "Level-4-0" => "One",
-      "Level-6-0" => "Two"
+      levelOneEnd => "One",
+      levelTwoEnd => "Two"
     ];   
 
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
@@ -219,10 +222,19 @@ class LevelComplete extends FlxSubState {
     }); 
   }
 
+  /**
+   * Method used to save stars from level to game save data.
+   */
   function saveLevelStars() {
     final levelName:String = _levelNames[_gameSave.data.levelName];
     final saveName:String = 'starsLevel$levelName';
-    _gameSave.data.saveName = _levelStars;    
+    // If this were js it would be done a lot easier, as well
+    switch (_gameSave.data.levelName) {
+      case levelOneEnd:  
+        _gameSave.data.levelOneStars = _levelStars; 
+      case levelTwoEnd:
+        _gameSave.data.levelTwoStars = _levelStars; 
+    }   
   }
 
   override public function update(Elapsed:Float) {
