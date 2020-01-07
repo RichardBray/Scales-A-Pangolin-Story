@@ -1,6 +1,7 @@
 package screens;
 
 
+import haxe.ds.Either;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
@@ -31,7 +32,7 @@ class LevelComplete extends FlxSubState {
   var _enemiesDefeated:Int = 0;
 
   var _levelTotals:Map<String, Array<Int>>; 
-  var _levelNames:Map<String, Array<Dynamic>>;
+  var _levelNames:Map<String, Array<Dynamic>>; // Array<Either<String, Int>>>
   var _totalBugsCollected:Int;
   var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
@@ -94,6 +95,12 @@ class LevelComplete extends FlxSubState {
 
   override public function create() {
     var levelToRestart:Class<states.LevelState> = Helpers.restartLevel(_gameSave.data.levelName);
+
+    // This needs to be before _menuData so that it gets the correct _levelStars value
+    _grpStars = new FlxTypedGroup<FlxSprite>();    
+    var levelPercentage:Int = calculatePercentge();
+    createStars(levelPercentage);
+
     // Spaces before menu items is for menu pointer spacing
     var _menuData:Array<MenuData> = [
       {
@@ -120,8 +127,6 @@ class LevelComplete extends FlxSubState {
     _grpLeftSide = new FlxSpriteGroup(0, -distanceOffScreen);
     add(_grpLeftSide);
 
-    _grpStars = new FlxTypedGroup<FlxSprite>();
-
     _leftBg = new FlxSprite(0, 0).makeGraphic(twoThirdsScreen, FlxG.height, Constants.primaryColor);
     _grpLeftSide.add(_leftBg);
 
@@ -140,8 +145,6 @@ class LevelComplete extends FlxSubState {
       _member.scrollFactor.set(0, 0);
     });	 
 
-    var levelPercentage:Int = calculatePercentge();
-    createStars(levelPercentage);
     add(_grpStars);
 
     // Right side of level complete screen
@@ -192,7 +195,7 @@ class LevelComplete extends FlxSubState {
       final spacing:Int = (120 * i) + (10 * i);
       var star:FlxSprite = new FlxSprite((120 + spacing), 500);
       var starType:String = "black";
-      if (i <= _levelStars) starType = "yellow";
+      if (i <= (_levelStars - 1)) starType = "yellow";
       star.loadGraphic('assets/images/icons/star_$starType.png', false, 100, 95);
       star.scrollFactor.set(0, 0);
       star.alpha = 0;
@@ -229,12 +232,12 @@ class LevelComplete extends FlxSubState {
     var savedGameStars:Null<String> = _gameSave.data.levelStars;
     final levelNumber:Int = _levelNames[_gameSave.data.levelName][1];
 
-    if (savedGameStars == null) savedGameStars = "0/0/0/0/0";
+    if (savedGameStars == null) _gameSave.data.levelStars = "0/0/0/0/0";
 
     final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
-  
-    savedStars[levelNumber] = Std.string(_levelStars);
+    savedStars[levelNumber - 1] = Std.string(_levelStars);
     _gameSave.data.levelStars = savedStars.join("/");  
+    // Remove this when testing is done
   }
 
   override public function update(Elapsed:Float) {

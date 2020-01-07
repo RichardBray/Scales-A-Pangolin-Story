@@ -23,8 +23,8 @@
   <object id="20" gid="8" x="6690" y="1819.49" width="974" height="258"/>
   <object id="21" gid="8" x="7635" y="1819.49" width="974" height="258"/>
   <object id="22" gid="8" x="8580" y="1819.49" width="974" height="258"/>
-  <object id="25" gid="8" x="9540" y="1684.49" width="974" height="258"/>  
-  <object id="24" gid="8" x="10440" y="1819.49" width="974" height="258"/>
+  <object id="24" gid="8" x="10425" y="1819.49" width="974" height="258"/>
+  <object id="25" gid="8" x="9540" y="1684.49" width="974" height="258"/>
   <object id="27" gid="12" x="2218.83" y="1575.49" width="178" height="206"/>
   <object id="42" gid="11" x="7334" y="2748.49" width="36" height="15"/>
   <object id="43" gid="11" x="13278" y="2884.49" width="36" height="15"/>
@@ -56,7 +56,7 @@
   <object id="58" name="left" type="5" gid="10" x="9331" y="810.485" width="47" height="39"/>
   <object id="61" name="right" type="5" gid="11" x="8731" y="915.485" width="36" height="15"/>
   <object id="62" name="right" type="10" gid="10" x="9481" y="1575.49" width="47" height="39"/>
-  <object id="68" gid="8" x="9521.67" y="1821" width="974" height="258"/>
+  <object id="68" gid="8" x="9536.67" y="1821" width="974" height="258"/>
   <object id="72" gid="3" x="7125" y="1578" width="361" height="123"/>
   <object id="73" gid="4" x="10680" y="1575" width="241" height="179"/>
  </objectgroup>

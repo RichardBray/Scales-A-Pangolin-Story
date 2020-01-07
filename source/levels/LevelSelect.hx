@@ -34,6 +34,7 @@ class LevelSelect extends GameState {
   var _grpLevelPadlocks:FlxSpriteGroup;
 	var _bottomLeft:FlxText;  
   var _modalNum:Null<Int>;
+  var _playerHasPango:Bool = false;
   var _pointerPosition:Map<String, Int>; // Where to put pointer when level loads  
 
 	// Sounds
@@ -58,6 +59,7 @@ class LevelSelect extends GameState {
       _gameSave = GameSave;
       _gameSave.data.enableLevelSelect = true;
       _gameSave.flush();
+      _playerHasPango = _gameSave.data.playerHasPango == true; // The value from saved game could be null
     }
     if (ModalNum != null) _modalNum = ModalNum; 
 
@@ -102,14 +104,14 @@ class LevelSelect extends GameState {
         x: 230,
         y: 544,
         name: "Level 1",
-        locked:false,
+        locked: _playerHasPango,
         onSelect:() -> FlxG.switchState(new LevelOne(_gameSave))
       },
       {
         x: 118,
         y: 114,
         name: "Level 2",
-        locked:false,
+        locked: _playerHasPango,
         onSelect:() -> {
           (_gameSave.data.introTwoSeen)
           ? FlxG.switchState(new LevelFive(_gameSave))
@@ -120,28 +122,28 @@ class LevelSelect extends GameState {
         x: 594,
         y: 207,
         name: "Level 3",
-        locked:true,
+        locked: true,
         onSelect:() -> trace("level three")
       },
       {
         x: 1251,
         y: 567,
         name: "Level 4",
-        locked:true,
+        locked: true,
         onSelect:() -> trace("level four")
       },
       {
         x: 1561,
         y: 307,
         name: "Level 5",
-        locked:true,
+        locked: true,
         onSelect:() -> trace("level five")
       },
       {
         x: 1610,
         y: 778,
         name: "Home",
-        locked:false, // lock this FORDEMO
+        locked: false, // lock this FOR DEMO
         onSelect:() -> FlxG.switchState(new LevelHome(_gameSave))
       }                     
     ];  
