@@ -59,7 +59,7 @@ class LevelFour extends LevelState {
 		var npcYPos:Int = 1111;
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
-		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/PANGO.png", false, 415, 254);
+		_pangoDialogueImage.loadGraphic(Constants.mamaPangolin, false, 415, 254);
 		_pangoSprite = new PinkPango(npcXPos, npcYPos);
 		_pangoNPC = new NPC(
 			npcXPos, 

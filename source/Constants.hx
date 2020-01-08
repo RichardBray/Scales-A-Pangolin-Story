@@ -39,6 +39,10 @@ class Constants {
 	public static final jungleMusic:String = "assets/music/jungle-sound.ogg";
 	public static final caveMusic:String = "assets/sounds/environment/cave.ogg";
 
+	// Dialogue images
+	public static final purpleBabyPango:String = "assets/images/characters/dialogue/purple_pango.png";
+	public static final mamaPangolin:String = "assets/images/characters/dialogue/PANGO.png";
+
 	/** Used to load levels from saves and restart levels */
 	public static final levelNames:Map<String, Class<LevelState>> = [
 		"Level-1-0" => levels.LevelOne, 

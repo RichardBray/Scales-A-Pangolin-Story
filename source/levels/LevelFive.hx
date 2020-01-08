@@ -93,7 +93,7 @@ class LevelFive extends LevelState {
     add(_cagedPangolin);
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
-		_pangoDialogueImage.loadGraphic("assets/images/characters/dialogue/purple_pango.png", false, 415, 254);
+		_pangoDialogueImage.loadGraphic(Constants.purpleBabyPango, false, 415, 254);
 
     _purplePango = new PurplePango(12270, 1250);
     _purplePango.alpha = 0;
@@ -251,6 +251,7 @@ class LevelFive extends LevelState {
       haxe.Timer.delay(() -> {
         _pangoNPC.kill();
         player.pangoAttached = true;
+        _gameSave.data.playerHasPango = "purple";
       }, 400);
 
       haxe.Timer.delay(() -> showAbilityHelp(), 800);

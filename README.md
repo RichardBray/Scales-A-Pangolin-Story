@@ -108,7 +108,7 @@ data: {
   totalEnemies: 0,  
   // General
   enableLevelSelect: false,
-  playerHasPango: false, // not yet implemented
+  playerHasPango: "puple", // not yet implemented
   totalInstructionPage: 0, // not yet implemented
   // Abilities
   quickJumpEnabled: true,
@@ -118,5 +118,3 @@ data: {
   levelStars: "0/0/0/0/0"
 }
 ```
-
-FORDEMO

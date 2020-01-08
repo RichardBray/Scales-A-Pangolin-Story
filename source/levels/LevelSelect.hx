@@ -59,7 +59,7 @@ class LevelSelect extends GameState {
       _gameSave = GameSave;
       _gameSave.data.enableLevelSelect = true;
       _gameSave.flush();
-      _playerHasPango = _gameSave.data.playerHasPango == true; // The value from saved game could be null
+      _playerHasPango = _gameSave.data.playerHasPango != null; // The value from saved game could be null
     }
     if (ModalNum != null) _modalNum = ModalNum; 
 

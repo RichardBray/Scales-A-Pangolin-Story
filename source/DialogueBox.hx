@@ -34,19 +34,20 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 	final _distanceFromTop:Int = 30;	
 
 	/**
-	 * Dialogue Box constructor
+	 * Dialogue Box component. Hidden when first created, sort of goes hand in hand with the NPC compoennt
 	 *
 	 * @param DialogueText 		Text that the NPC/Player will give.
 	 * @param ParentState	The parent state of the dialoge, needed to hide the HUD and prevent Player movement.
 	 * @param DialogueImage NPC image for doalopgue box
 	 * @param DialogueSound Sound to play when dialogue box is up
+	 * @param DialogueBoxScreenTop If the dialogue box should be displayed at the top or bottom of the screen.
 	 */
 	public function new(
 		DialogueText:Array<String>, 
 		ParentState:LevelState, 
 		?DialogueImage:Null<FlxSprite>, 
 		?DialogueSound:Null<String>,
-		DialogueBoxScreenTop
+		DialogueBoxScreenTop:Bool = false
 	) {
 		super();
 

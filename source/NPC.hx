@@ -21,29 +21,29 @@ class NPC extends FlxTypedGroup<FlxTypedGroup<FlxSprite>> {
 	public var npcSprite: NpcSprite; // Used to get boundaries for collision.
 	public var finishedConvo:Bool = false;
 
-    /**
-     * Create an NPC
-     * --
-     * @param X							X posiiton in the level.
-     * @param Y							Y position in the level.
-     * @param DialogueText	Text for the NPC.
-		 * @param SpriteData		Sprite image unique to this NPC.
-		 * @param ParentState		Used to adjust vieport and stop player when dialogue starts.
-		 * @param BoundaryDimensions	Width and height boundary should be more than the sprite
-		 * @param DialogueImage	NPC image for doalopgue box
-		 * @param DialogueSound	Sound to play when dialogue box is up
-		 * @param DialogueBoxScreenTop If the daolog
-     */
-    public function new(
-			X:Int, 
-			Y:Int, 
-			?DialogueText:Null<Array<String>>, 
-			SpriteData:FlxSprite, 
-			ParentState:LevelState,
-			BoundaryDimensions:Array<Float>,
-			?DialogueImage:Null<FlxSprite>,
-			?DialogueSound:Null<String>,
-			DialogueBoxScreenTop:Bool = false
+	/**
+		* Create an NPC.
+		*
+		* @param X							X posiiton in the level.
+		* @param Y							Y position in the level.
+		* @param DialogueText	Text for the NPC.
+		* @param SpriteData		Sprite image unique to this NPC.
+		* @param ParentState		Used to adjust vieport and stop player when dialogue starts.
+		* @param BoundaryDimensions	Width and height boundary should be more than the sprite
+		* @param DialogueImage	NPC image for doalopgue box
+		* @param DialogueSound	Sound to play when dialogue box is up
+		* @param DialogueBoxScreenTop If the daolog
+		*/
+	public function new(
+		X:Int, 
+		Y:Int, 
+		?DialogueText:Null<Array<String>>, 
+		SpriteData:FlxSprite, 
+		ParentState:LevelState,
+		BoundaryDimensions:Array<Float>,
+		?DialogueImage:Null<FlxSprite>,
+		?DialogueSound:Null<String>,
+		DialogueBoxScreenTop:Bool = false
 	) {
 		super();
 		_parentState = ParentState;
