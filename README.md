@@ -115,6 +115,8 @@ data: {
   //Intros
   introTwoSeen: true,
   // Stars
-  levelStars: "0/0/0/0/0"
+  levelStars: "0/0/0/0/0",
+  // - Saving pangos
+  playerHasLastPangolin: false // not yet implemented
 }
 ```

@@ -25,6 +25,8 @@ class LevelHome extends LevelState {
   // - Exits
   var _leftExit:FlxObject;
   var _rightExit:FlxObject;
+  // - Baby pangos
+  var _purplePango:FlxSprite;
     
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -34,35 +36,14 @@ class LevelHome extends LevelState {
   override public function create() { 
     levelName = "Level-h-0";
     createLevel("level-h-0", "SCALES_BACKGROUND-01.png", "level_four");
-  
-		var pangoText:Array<String> = [
-			"Please bring all my babies back to me. "
-		]; 
 
 		// Add NPC
-		var npcXPos:Int = 1971;
-    var npcYPos:Int = 1066;
+		final npcXPos:Int = 1971;
+    final npcYPos:Int = 1066;
     
     // Mama seen box
     _mamaSeen = new FlxObject(1113, 469, 212, 1103);
     add(_mamaSeen);
-
-    // Mama Pangolin
-		_pangoDialogueImage = new FlxSprite(0, 0);
-		_pangoDialogueImage.loadGraphic(Constants.mamaPangolin, false, 415, 254);
-		_pangoSprite = new PinkPango(npcXPos, npcYPos, true);
-    _pangoSprite.unwravel();
-		_pangoNPC = new NPC(
-			npcXPos, 
-			npcYPos, 
-			pangoText, 
-			_pangoSprite, 
-			this, 
-			[5, 1], 
-			_pangoDialogueImage,
-			"mama_dialogue"
-		);
-    add(_pangoNPC);	
 
     // Exits
     final EXIT_WIDTH:Int = 120;
@@ -81,7 +62,28 @@ class LevelHome extends LevelState {
     _babyDialogueImageSptite = new FlxSprite(0, 0);
     _babyDialogueImageSptite.loadGraphic(_babyDialogueImage, false, 415, 254);
     _babyDialogueBox = new DialogueBox(["Mama!"], this, _babyDialogueImageSptite, "mama_dialogue", true);
-		add(_babyDialogueBox);    
+    add(_babyDialogueBox);    
+    
+    // Mama Pangolin
+		_pangoDialogueImage = new FlxSprite(0, 0);
+		_pangoDialogueImage.loadGraphic(Constants.mamaPangolin, false, 415, 254);
+		_pangoSprite = new PinkPango(npcXPos, npcYPos, true);
+    _pangoSprite.unwravel();
+		_pangoNPC = new NPC(
+			npcXPos, 
+			npcYPos, 
+			mamaPangolinDialogue(player), 
+			_pangoSprite, 
+			this, 
+			[5, 1], 
+			_pangoDialogueImage,
+			"mama_dialogue"
+		);
+    add(_pangoNPC);	
+    
+    // Purple Pango sprite
+    _purplePango = new FlxSprite(2058, 779);
+    // _purplePango.loadGraphic()
 
     // Add HUD
     createHUD(0, player.health, []); 
@@ -110,6 +112,33 @@ class LevelHome extends LevelState {
           player.pangoAttached = false; // Maybe this should reset all pango attached settings
       }
     }
+  }
+
+  /**
+   * This method returns a piece of text to return for the mother pangolin based on the situation
+   */
+  function mamaPangolinDialogue(Player:Player):Array<String> {
+		final pangoText:Array<String> = [
+			"Please bring all my babies back to me. "
+    ]; 
+    
+    final returnedPangoText:Array<String> = [
+      "Thank you so much for bringing my baby back to me. ",
+      "You have made one step uniting a family that was forced apart. ",
+      "There are still a few of my children out there. ",
+      "Please bring all my babies back to me. "
+    ];
+    
+    final allPangosReturned:Array<String> = [
+      "Thank you for bringing ALL my babies back to me. ",
+      "You have succeeded in uniting this broken family. ",
+      "Your efforts will not go unoticed. "
+    ];
+    if (Player.pangoAttached) {
+      if (_gameSave.data.playerHasLastPangolin) return allPangosReturned;
+      return returnedPangoText;
+    }
+    return pangoText;
   }
 
   function mamaPangoTalking(Player:Player, Friend:PinkPango) {
