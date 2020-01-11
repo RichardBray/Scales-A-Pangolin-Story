@@ -237,7 +237,7 @@ class LevelComplete extends FlxSubState {
     final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
     savedStars[levelNumber - 1] = Std.string(_levelStars);
     _gameSave.data.levelStars = savedStars.join("/");  
-    // Remove this when testing is done
+    // TODO add method to count level stars
   }
 
   override public function update(Elapsed:Float) {

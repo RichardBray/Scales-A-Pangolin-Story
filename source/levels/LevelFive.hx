@@ -50,16 +50,25 @@ class LevelFive extends LevelState {
     _gameSave.data.introTwoSeen = true;
     _showInstrucitons = ShowInstructions;
 
-		_goalData = [
-			{
-				goal: "Save the pangolin",
-				func: (_) -> player.pangoAttached
-      },
+    var savePangoGoalOption:Array<GoalData>;
+    var standardGoals:Array<GoalData>;
+
+    savePangoGoalOption = [{
+      goal: "Save the pangolin",
+      func: (_) -> player.pangoAttached
+    }];
+  
+		standardGoals = [
 			{
 				goal: 'Collect over $_bugsGoal bugs',
 				func: (GameScore:Int) -> GameScore > _bugsGoal
       }      
-		];    
+    ]; 
+    
+    _goalData = (
+      _gameSave.data.pangosDelivered != null && 
+      Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")
+    ) ? standardGoals : standardGoals.concat(savePangoGoalOption);
   }
 
   override public function create() {
@@ -87,10 +96,15 @@ class LevelFive extends LevelState {
 
     _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 180, FlxColor.TRANSPARENT);
     _cagedPangoCollision.immovable = true;
-    add(_cagedPangoCollision);
 
     _cagedPangolin = new CagedPangolin(12145, (1415 - 416));
-    add(_cagedPangolin);
+  
+    if (_gameSave.data.pangosDelivered == null || 
+        !Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")
+      ) {
+      add(_cagedPangoCollision);
+      add(_cagedPangolin);
+    }    
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
 		_pangoDialogueImage.loadGraphic(Constants.purpleBabyPango, false, 415, 254);
@@ -186,7 +200,6 @@ class LevelFive extends LevelState {
       _cagedPangoCollision.kill();
       _purplePango.enableGravity = true;
       haxe.Timer.delay(() -> _purplePango.alpha = 1, 150);
-
       haxe.Timer.delay(() -> _pangoFreed = true, 300);
     }
   }

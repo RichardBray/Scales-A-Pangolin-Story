@@ -35,21 +35,12 @@ class LevelSelect extends GameState {
 	var _bottomLeft:FlxText;  
   var _modalNum:Null<Int>;
   var _playerHasPango:Bool = false;
+  var _lastSelected:Int = 0;
   var _pointerPosition:Map<String, Int>; // Where to put pointer when level loads  
 
 	// Sounds
 	var _sndMove:FlxSound;
 	var _sndSelect:FlxSound;
-
-  // Remove after save game is added START
-  var _lastCompletedLevel:Int = 0;
-  var _savedLevelData:Dynamic = [
-    {
-      locked: false,
-      stars: 3
-    }
-  ];  
-
   var _levelPos:Array<LevelData>;
   // Remove after save game is added END
 
@@ -72,7 +63,6 @@ class LevelSelect extends GameState {
       "Level-6-0" => 1,
       "Level-h-0" => 5	
     ]; 
-    
   }
 
   override public function create() {
@@ -189,6 +179,8 @@ class LevelSelect extends GameState {
 		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
 		_sndSelect = FlxG.sound.load(Constants.sndMenuSelect);   
     
+    checkPlayerWithPangoFinishedLevel();
+      
     // Intialise controls
     _controls = new Controls();
 
@@ -196,7 +188,8 @@ class LevelSelect extends GameState {
     startModal();
 
     // Set pointer position
-    _lastCompletedLevel = _pointerPosition[_gameSave.data.levelName];
+    _lastSelected = _pointerPosition[_gameSave.data.levelName];
+    js.Browser.console.log(_gameSave.data, "_gameSave");
   }
 
   function startModal() {
@@ -216,30 +209,44 @@ class LevelSelect extends GameState {
   }
 
   /**
+   * Method to make sure player that has saved a pangolin finished the level before they get to this screen.
+   */
+  function checkPlayerWithPangoFinishedLevel() {
+    if (_gameSave.data.playerHasPango != null) {
+      final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
+      switch(_gameSave.data.playerHasPango) {
+        case "purple":
+          if (savedStars[1] == "0") _gameSave.data.playerHasPango = null;
+      }
+    }
+  }
+
+  /**
    * Specific controls for certain level positions.
    */
   function specificControls() {
-    if (_lastCompletedLevel == 0 && _controls.up.check()) {
-      _lastCompletedLevel = 1;
+    if (_lastSelected == 0 && _controls.up.check()) {
+      _lastSelected = 1;
     }
 
-    if (_lastCompletedLevel == 1 && _controls.down.check()) {
-      _lastCompletedLevel = 0;
+    if (_lastSelected == 1 && _controls.down.check()) {
+      _lastSelected = 0;
     }  
 
-    if (_lastCompletedLevel == 4 && _controls.down.check()) {
-      _lastCompletedLevel = 5;
+    if (_lastSelected == 4 && _controls.down.check()) {
+      _lastSelected = 5;
     }   
   
-    if (_lastCompletedLevel == 5 && _controls.up.check()) {
-      _lastCompletedLevel = 4;
+    if (_lastSelected == 5 && _controls.up.check()) {
+      _lastSelected = 4;
     }   
   }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+    final levelPointerIsOn:LevelData = _levelPos[_lastSelected];
     // Initial level pointer position
-    _levelPointer.setPosition(_levelPos[_lastCompletedLevel].x, _levelPos[_lastCompletedLevel].y);
+    _levelPointer.setPosition(levelPointerIsOn.x, levelPointerIsOn.y);
 
     specificControls();
 
@@ -248,20 +255,20 @@ class LevelSelect extends GameState {
 
       // So that sound plays before action happens
       haxe.Timer.delay(() -> {
-        _levelPos[_lastCompletedLevel].onSelect();
+        if (!levelPointerIsOn.locked) levelPointerIsOn.onSelect();
       }, 350);	      
     }
   
     if (_controls.right_jp.check()) {
-      (_lastCompletedLevel == (_levelPos.length -1))
-        ? _lastCompletedLevel = 0
-        : _lastCompletedLevel++;
+      (_lastSelected == (_levelPos.length -1))
+        ? _lastSelected = 0
+        : _lastSelected++;
     }
 
     if (_controls.left_jp.check()) {
-      (_lastCompletedLevel == 0) 
-        ? _lastCompletedLevel = (_levelPos.length - 1)
-        : _lastCompletedLevel--;
+      (_lastSelected == 0) 
+        ? _lastSelected = (_levelPos.length - 1)
+        : _lastSelected--;
     }
 
     if (

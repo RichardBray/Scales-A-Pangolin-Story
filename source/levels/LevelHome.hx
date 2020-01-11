@@ -9,6 +9,7 @@ import flixel.util.FlxSave;
 
 import states.LevelState;
 import characters.PinkPango;
+import characters.PurplePango;
 
 class LevelHome extends LevelState {
   var _gameSave:FlxSave;
@@ -26,7 +27,7 @@ class LevelHome extends LevelState {
   var _leftExit:FlxObject;
   var _rightExit:FlxObject;
   // - Baby pangos
-  var _purplePango:FlxSprite;
+  var _purplePango:PurplePango;
     
   public function new(?GameSave:Null<FlxSave>) {
     super();
@@ -51,19 +52,31 @@ class LevelHome extends LevelState {
     _rightExit = new FlxObject(_map.fullWidth - EXIT_WIDTH, 0, EXIT_WIDTH, _map.fullHeight);  
     add(_leftExit);
     add(_rightExit);
+
+    // Purple Pango sprite
+    _purplePango = new PurplePango(2058, 809);
+    _purplePango.animation.play("idle");
+    _purplePango.keepIdle = true;
+    _purplePango.alpha = 0;
+    add(_purplePango);    
   
 		// Add player
     createPlayer(326, 1463, _gameSave);
 
+    if (_gameSave.data.pangosDelivered != null) displayDeliveredPangos();
+      
     // Needs to be after player has been created
-    checkIfPlayerHasPango(_gameSave);
+    checkIfPlayerHasPango();
 
     // Baby dialogue box
     _babyDialogueImageSptite = new FlxSprite(0, 0);
     _babyDialogueImageSptite.loadGraphic(_babyDialogueImage, false, 415, 254);
     _babyDialogueBox = new DialogueBox(["Mama!"], this, _babyDialogueImageSptite, "mama_dialogue", true);
-    add(_babyDialogueBox);    
-    
+    add(_babyDialogueBox); 
+
+    // Add HUD
+    createHUD(0, player.health, []); 
+
     // Mama Pangolin
 		_pangoDialogueImage = new FlxSprite(0, 0);
 		_pangoDialogueImage.loadGraphic(Constants.mamaPangolin, false, 415, 254);
@@ -79,14 +92,7 @@ class LevelHome extends LevelState {
 			_pangoDialogueImage,
 			"mama_dialogue"
 		);
-    add(_pangoNPC);	
-    
-    // Purple Pango sprite
-    _purplePango = new FlxSprite(2058, 779);
-    // _purplePango.loadGraphic()
-
-    // Add HUD
-    createHUD(0, player.health, []); 
+    add(_pangoNPC);	   
       
     // Whte bg above all!!!
     _whiteBg = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
@@ -95,22 +101,54 @@ class LevelHome extends LevelState {
     add(_whiteBg);
 
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
+    js.Browser.console.log(_gameSave, "_gameSave");
     super.create(); 
   }
 
   /**
-   * Checks if player has baby pangolin for encouter with mother cutscene
+   * Checks if player has baby pangolin for encouter with mother cutscene so that
+   * pango dialogue image can be set.
    */
-  function checkIfPlayerHasPango(GameSave:FlxSave) {
+  function checkIfPlayerHasPango() {
     if (_gameSave.data.playerHasPango != null) {
       final pangoColor:String = _gameSave.data.playerHasPango;
       switch(pangoColor) {
         case "purple":
           player.pangoAttached = true;
           _babyDialogueImage = Constants.purpleBabyPango;
+          saveDelieveredPango("purple", 0);
         default:
           player.pangoAttached = false; // Maybe this should reset all pango attached settings
       }
+    }
+  }
+
+  /**
+   * Method to check what pangos have been delivered already and display them.
+   */
+  function displayDeliveredPangos() {
+    final splitDeliveredPangos:Array<String> = _gameSave.data.pangosDelivered.split("/");
+    for (pango in splitDeliveredPangos) {
+      switch(pango) {
+        case "purple":
+          _purplePango.alpha = 1;
+      }
+    }
+  }
+
+  /**  
+   * Method to add newly delivered pango to save state.
+   *
+   * @param PangoColor The color of the pango to save
+   * @param SavePos The position in the save slot
+   */
+  function saveDelieveredPango(PangoColor:String, SavePos:Int) {
+    if (_gameSave.data.pangosDelivered != null) {
+      final splitDeliveredPangos:Array<String> = _gameSave.data.pangosDelivered.split("/");
+      splitDeliveredPangos[SavePos] = PangoColor;
+      _gameSave.data.pangosDelivered = splitDeliveredPangos.join("/"); 
+    } else {
+      _gameSave.data.pangosDelivered = PangoColor;
     }
   }
 
@@ -167,8 +205,10 @@ class LevelHome extends LevelState {
         FlxTween.tween(_whiteBg, {alpha: 0}, .5); 
         _babyLeftPlayer = true;
         Player.pangoAttached = false;
+        // Place baby in position on tree
+        _purplePango.alpha = 1;
+        _gameSave.data.playerHasPango = null;
       }, 2500);
-      // Place baby in position on tree
     }
   }
 

@@ -42,4 +42,21 @@ class Helpers {
 			true
 		).proximity(XPos, YPos, Player, Radius, false).play();			
 	} 
+
+	/**
+	 * Method to check which pangolin has been delivered to mother so that if player
+	 * revisits level they are not there.
+	 *
+	 * @param SavedPangoList List of delieved pangolins as string this would ususally be _gameSave.data.pangosDelivered
+	 * @param IsPangoSaved
+	 */
+	public static function checkPangoDelieverd(SavedPangoList:String, IsPangoSaved:String):Bool {
+		final splitDeliveredPangos:Array<String> = SavedPangoList.split("/");
+		var pangoHasBeenDelievered:Bool = false;
+		for (delieveredPango in splitDeliveredPangos) {
+			if (delieveredPango == IsPangoSaved) pangoHasBeenDelievered = true;
+		}
+
+		return pangoHasBeenDelievered;
+	}
 }

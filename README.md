@@ -108,7 +108,8 @@ data: {
   totalEnemies: 0,  
   // General
   enableLevelSelect: false,
-  playerHasPango: "puple", // not yet implemented
+  playerHasPango: "puple", // used on level select screen to lock and unlock levels and mama dialogue image
+  pangosDelivered: "purple/blue/red",
   totalInstructionPage: 0, // not yet implemented
   // Abilities
   quickJumpEnabled: true,
@@ -120,3 +121,9 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
+
+- level complete console bug
+- level one not saving score bug
+- move lava rock in level 3
+- lower level 6 tree
+- figre out why going home with delivered pangolin causes issues

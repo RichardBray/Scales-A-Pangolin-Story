@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 
 class PurplePango extends FlxSprite {
   public var enableGravity:Bool = false;
+  public var keepIdle:Bool = false; // Used on the home screen to prevent gravity.
   final GRAVITY:Float = Constants.worldGravity - 500;
 
   public function new(X:Float, Y:Float) {
@@ -26,9 +27,13 @@ class PurplePango extends FlxSprite {
   }
 
   override public function update(Elapsed:Float) {
-    (isTouching(FlxObject.FLOOR)) 
-    ? animation.play("idle")
-    : animation.play("roll");
+    if (!keepIdle) {
+      (isTouching(FlxObject.FLOOR)) 
+      ? animation.play("idle")
+      : animation.play("roll");
+    } else {
+      animation.play("idle");
+    }
 
     super.update(Elapsed);
   
