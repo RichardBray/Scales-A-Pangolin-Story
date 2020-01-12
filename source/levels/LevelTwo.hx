@@ -63,9 +63,7 @@ class LevelTwo extends LevelState {
 		createProximitySounds(); 
 
 		// Save game on load
-		_gameSave = new FlxSave(); // initialize
-		_gameSave.bind("AutoSave"); // bind to the named save slot  		
-		_gameSave = saveGame(_gameSave);
+		if (_gameSave != null) _gameSave = saveGame(_gameSave); 
 
 		super.create(); 
   }

@@ -20,7 +20,7 @@ class LevelHome extends LevelState {
   var _mamaSeen:FlxObject;
   var _babyDialogueBox:DialogueBox;
   var _babyDialogueImage:String;
-  var _babyDialogueImageSptite:FlxSprite;
+  var _babyDialogueImageSprite:FlxSprite;
   var _babyLeftPlayer:Bool = false;
   var _whiteBg:FlxSprite;
   // - Exits
@@ -58,7 +58,7 @@ class LevelHome extends LevelState {
     _purplePango.animation.play("idle");
     _purplePango.keepIdle = true;
     _purplePango.alpha = 0;
-    add(_purplePango);    
+    // add(_purplePango);    
   
 		// Add player
     createPlayer(326, 1463, _gameSave);
@@ -69,10 +69,12 @@ class LevelHome extends LevelState {
     checkIfPlayerHasPango();
 
     // Baby dialogue box
-    _babyDialogueImageSptite = new FlxSprite(0, 0);
-    _babyDialogueImageSptite.loadGraphic(_babyDialogueImage, false, 415, 254);
-    _babyDialogueBox = new DialogueBox(["Mama!"], this, _babyDialogueImageSptite, "mama_dialogue", true);
-    add(_babyDialogueBox); 
+    if (_gameSave.data.playerHasPango != null) {
+      _babyDialogueImageSprite = new FlxSprite(0, 0);
+      _babyDialogueImageSprite.loadGraphic(_babyDialogueImage, false, 415, 254);
+      _babyDialogueBox = new DialogueBox(["Mama!"], this, _babyDialogueImageSprite, "mama_dialogue", true);
+      add(_babyDialogueBox); 
+    }
 
     // Add HUD
     createHUD(0, player.health, []); 
@@ -101,7 +103,7 @@ class LevelHome extends LevelState {
     add(_whiteBg);
 
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
-    js.Browser.console.log(_gameSave, "_gameSave");
+
     super.create(); 
   }
 

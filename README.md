@@ -121,9 +121,5 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
-
-- level complete console bug
-- level one not saving score bug
 - move lava rock in level 3
 - lower level 6 tree
-- figre out why going home with delivered pangolin causes issues

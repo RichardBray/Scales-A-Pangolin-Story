@@ -14,7 +14,7 @@
   <object id="3" gid="8" x="1917.16" y="1819.23" width="974" height="258"/>
   <object id="4" gid="8" x="2888.53" y="1819.95" width="974" height="258"/>
  </objectgroup>
- <layer id="1" name="collisions" width="256" height="120">
+ <layer id="1" name="collisions" width="256" height="120" visible="0">
   <data encoding="base64" compression="zlib">
    eAHt2lFu2zAQBFDdIL3/aZN+6CcILK1EQtzRK1AYqUSa+6ZjQEa2zR8CBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECgIvBVudm9BAhECeh/VJyGIVAS0P8Sl5sJRAnof1SchiFQEvjff58BJTI3E4gR0P+YKA1CoCyg/2UyCwjECOh/TJQGIVAW0P8ymQUEYgT0PyZKgxAoC+h/mcwCAjEC+h8TpUEIlAX0v0xmAYEYAf2PidIgBMoC+l8ms4BAjID+x0RpEAJlAf0vk1lAIEZA/2OiNAiBsoD+l8ksIBAjoP8xURqEQFlA/8tkFhCIEdD/mCgNQqAsoP9lMgsIxAjof0yUBiFQFtD/MpkFBGIE9D8mSoMQKAvof5lsmQX/fk4y6+8yQzrIVAH9n8prcwJLC+j/0vE4HIGpAvo/ldfmBIYKjH7eW7H/o2f8vd/QQGxGoLHAiv1vzOnoBFoJ6H+ruByWwFAB/R/KGbXZ7+emGT9HgTUcRv8bhubIBAYJ6P8gSNsQaCig/w1Dc2QCgwQq/Z/x/PfXnoNGsw0BAgcClf4fbOUyAQLNBPS/WWCOS2CggP4PxLQVgWYC+t8sMMddUuCv77FG/tusofV/lqx9CawvoP/rZ+SEBGYJ6P8sWfsSWF9A/9fPyAkJzBLQ/1my9iWwvoD+r5+RExKYJaD/s2TtS2B9Af1fPyMnJDBLQP9nyfbbd+Tvq3zaq59M7on1PzdbkxE4EtD/IyHXCeQK6H9utibLEfj0PHXn2p3+33nfM2tz0jMJgTUF7vR/zYmcigCBswL6f1bKfQTyBPQ/L1MTETgroP9npdxHIE9A/9fL9Mx3o3fuWW9iJ3pKQP+fkve+BJ4X0P/nM3ACAk8J6P9T8t6XwPMCnft/5xn4aO3zyTgBgfkCnfs/X8c7EMgW0P/sfE1H4JOA/n/Sed+1o+ci17ctyUD/39dxExPYBfR/l/BK4H0C+v++zE1MYBfQ/13CK4H3Ceh/38xHfw/VV8LJrwro/1U56wj0F9D//hmagMBVAf2/Kmcdgf4C+t8/QxMQuCqg/1flrCPQX0D/+2doAgJXBfT/qpx1BPoL7P33um0MGLzx/0D/TzETECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgACBPIFvzUoxZg==
   </data>
@@ -23,6 +23,6 @@
   <object id="12" name="mama_pango" x="1971.68" y="1026.46" width="361.032" height="170.487"/>
   <object id="13" name="player_pango" x="392.398" y="1444.01" width="331.69" height="159.869"/>
   <object id="15" name="mama_seen" x="1113.56" y="469.897" width="212.922" height="1103.77"/>
-  <object id="18" x="2058.56" y="779.355" width="226.264" height="109.435"/>
+  <object id="18" name="purple_pango" x="2058.56" y="809.355" width="226.264" height="109.435"/>
  </objectgroup>
 </map>

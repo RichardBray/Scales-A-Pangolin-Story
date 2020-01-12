@@ -46,6 +46,7 @@ class LevelComplete extends FlxSubState {
   // Variables for showing bugs collected/enemites defeated after checking if they are more than the total
   var _actualBugs:Int;
   var _actualEnemies:Int;
+  var _starsShown:Int = 0; // Var to fix issue with stars being animated after scene fades to dissapear
 
 
   /**
@@ -222,6 +223,7 @@ class LevelComplete extends FlxSubState {
         }, 
         Std.int((_animateStarCount * 0.50) * 1000));
       if (_animateStarCount != _levelStars) _animateStarCount++;
+      _starsShown++;
     }); 
   }
 
@@ -252,7 +254,7 @@ class LevelComplete extends FlxSubState {
     FlxTween.tween(_rightSide, {y: 0, alpha: 1}, 1, {ease: FlxEase.backOut});
 
     // Show level rating
-    haxe.Timer.delay(() -> animateStars(), 2000);
+    if (_starsShown < 3) haxe.Timer.delay(() -> animateStars(), 2000);
 
   // Show menu after a few seconds
     haxe.Timer.delay(() -> { 
