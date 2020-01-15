@@ -37,6 +37,9 @@ class LevelSelect extends GameState {
   var _playerHasPango:Bool = false;
   var _lastSelected:Int = 0;
   var _pointerPosition:Map<String, Int>; // Where to put pointer when level loads  
+  // - Total Stars
+  var _starSprt:FlxSprite;
+  var _starsTotal:FlxText;
 
 	// Sounds
 	var _sndMove:FlxSound;
@@ -172,8 +175,20 @@ class LevelSelect extends GameState {
       _grpLevelPadlocks.add(levelPadlock);
     });        
 
+    // Stars Sprint
+		_starSprt = new FlxSprite((FlxG.width - 250), 40);
+    _starSprt.loadGraphic("assets/images/icons/star_yellow.png", false, 100, 95);
+		add(_starSprt);
+
+		// Stars Total
+    final totalStars = countStarTotal();
+		_starsTotal = new FlxText((FlxG.width - 120), 70, 'x $totalStars');
+		_starsTotal.setFormat(Constants.squareFont, Constants.lrgFont, FlxColor.WHITE);
+		_starsTotal.scrollFactor.set(0, 0);
+    add(_starsTotal);
+    
 		_bottomLeft = new Menu.BottomLeft();
-		add(_bottomLeft);
+    add(_bottomLeft);
 
 		//Sounds
 		_sndMove = FlxG.sound.load(Constants.sndMenuMove);
@@ -189,7 +204,18 @@ class LevelSelect extends GameState {
 
     // Set pointer position
     _lastSelected = _pointerPosition[_gameSave.data.levelName];
-    js.Browser.console.log(_gameSave.data, "_gameSave");
+  }
+
+  /**
+   * Count total stars.
+   */
+  function countStarTotal():Int {
+    var totalStars:Int = 0;
+    final stars:Array<String> = _gameSave.data.levelStars.split("/");
+    for (star in stars) {
+			totalStars = totalStars + Std.parseInt(star);
+    }
+		return totalStars;
   }
 
   function startModal() {
