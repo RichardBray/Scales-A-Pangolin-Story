@@ -121,5 +121,3 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
-- move lava rock in level 3
-- lower level 6 tree
