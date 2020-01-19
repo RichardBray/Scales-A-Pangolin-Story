@@ -221,10 +221,10 @@ class LevelSelect extends GameState {
   function startModal() {
     if (_modalNum != null) {
       var modalText:Array<String> = [
-        "Welcome to the level select screen. Here you will be able to freely roam the jungle and pick whatever level you want.",
+        "Welcome to the level select screen. Here you will be able select newly unlocked levels and replay completed ones.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
         "Congratulations! You've completed all the levels",
-        "You have saved a pangolin. Return it to it's mother by going to the HOME level",
+        "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level",
         "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
          The full game will be out very soon."
       ];    

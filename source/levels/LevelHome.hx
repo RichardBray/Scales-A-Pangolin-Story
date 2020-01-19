@@ -58,7 +58,7 @@ class LevelHome extends LevelState {
     _purplePango.animation.play("idle");
     _purplePango.keepIdle = true;
     _purplePango.alpha = 0;
-    // add(_purplePango);    
+    add(_purplePango);    
   
 		// Add player
     createPlayer(326, 1463, _gameSave);
@@ -105,6 +105,7 @@ class LevelHome extends LevelState {
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
 
     super.create(); 
+    js.Browser.console.log(_gameSave, "saved game");
   }
 
   /**

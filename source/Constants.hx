@@ -27,7 +27,7 @@ class Constants {
 	// Controler strings
 	// @todo different controler strings for gamepads
 	public static final start:String = "PAUSE";
-	public static final cross:String = "JUMP";
+	public static final cross:String = "SPACE";
 	public static final triangle:String = "ACTION";
 	
 	// Sounds

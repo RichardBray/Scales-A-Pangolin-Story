@@ -39,7 +39,7 @@ class LevelFive extends LevelState {
   var _pangoDialogueImage:FlxSprite;
   var _pangoFreed:Bool = false; //Var to pause collision so pango can roll through branch
 
-  final _bugsGoal:Int = 12; 
+  final _bugsGoal:Int = 20; 
   final _allMidCheckpoints:Array<Array<Float>> = [
     [5327.93, 1426.64]
   ];
@@ -97,14 +97,7 @@ class LevelFive extends LevelState {
     _cagedPangoCollision = new FlxSprite(12243, 1139).makeGraphic(115, 180, FlxColor.TRANSPARENT);
     _cagedPangoCollision.immovable = true;
 
-    _cagedPangolin = new CagedPangolin(12145, (1415 - 416));
-  
-    if (_gameSave.data.pangosDelivered == null || 
-        !Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")
-      ) {
-      add(_cagedPangoCollision);
-      add(_cagedPangolin);
-    }    
+    _cagedPangolin = new CagedPangolin(12145, (1415 - 416));   
 
 		_pangoDialogueImage = new FlxSprite(0, 0);
 		_pangoDialogueImage.loadGraphic(Constants.purpleBabyPango, false, 415, 254);
@@ -132,8 +125,15 @@ class LevelFive extends LevelState {
 			_pangoDialogueImage,
 			"mama_dialogue",
       true      
-		);
-		add(_pangoNPC);	    
+		);  
+    
+    if (_gameSave.data.pangosDelivered == null || 
+      !Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")
+    ) {
+    add(_cagedPangoCollision);
+    add(_cagedPangolin);
+    add(_pangoNPC);	
+  }     
   
   	// Add player
 		createPlayer(368, 1470, _gameSave);  

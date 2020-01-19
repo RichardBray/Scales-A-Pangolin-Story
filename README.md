@@ -121,3 +121,7 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
+- add sounds to platforms
+- sound for returning pangolin to mother
+- check percentages for stars
+- add glow to newly unlocked level

@@ -189,7 +189,8 @@ class LevelComplete extends FlxSubState {
    */
   function createStars(Percentage:Int) {
     if (Percentage > 40 && Percentage <= 70) _levelStars = 1;
-    if (Percentage > 70 && Percentage <= 100) _levelStars = 2;
+    if (Percentage > 70 && Percentage <= 90) _levelStars = 2;
+    if (Percentage > 90) _levelStars = 3;
 
     // there should ONLY be three stars
     for (i in 0...3) {
@@ -214,8 +215,8 @@ class LevelComplete extends FlxSubState {
       haxe.Timer.delay(
         () -> {
           if (!_starSoundPlayed) {
-            final soundToPlay:Int = _levelStars + 1; 
-            final starSound:FlxSound = FlxG.sound.load('assets/sounds/sfx/stars_$soundToPlay.ogg', 0.7);
+            final soundToPlay:Int = _levelStars; 
+            final starSound:FlxSound = FlxG.sound.load('assets/sounds/sfx/stars_$soundToPlay.ogg', 0.5);
             starSound.play();
             _starSoundPlayed = true; // To prevent repeated play
           }            

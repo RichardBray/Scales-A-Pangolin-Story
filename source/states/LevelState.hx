@@ -242,6 +242,10 @@ class LevelState extends GameState {
 	}
 
 
+	/**
+	 * Method to create proximity sounds if level has a sounds layer and has some sounds prperly
+	 * referenced in them.
+	 */
 	public function createProximitySounds() {
 		final mapFile:String = levelName.toLowerCase();
 
