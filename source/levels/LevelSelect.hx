@@ -136,7 +136,7 @@ class LevelSelect extends GameState {
         x: 1610,
         y: 778,
         name: "Home",
-        locked: false, // lock this FOR DEMO
+        locked: true, // unlock this for THE RELEASE / REAL GAME
         onSelect:() -> FlxG.switchState(new LevelHome(_gameSave))
       }                     
     ];  
@@ -224,7 +224,8 @@ class LevelSelect extends GameState {
         "Welcome to the level select screen. Here you will be able select newly unlocked levels and replay completed ones.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
         "Congratulations! You've completed all the levels",
-        "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level",
+        "Well done! you've completed all the demo content. Follow hello_lightbulb on twitter or join the Discord community to find out when the full game is released.",
+        // "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level",
         "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
          The full game will be out very soon."
       ];    

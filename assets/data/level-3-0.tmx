@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
- <objectgroup id="3" name="objects" locked="1">
+ <objectgroup id="3" name="objects">
   <object id="101" gid="33" x="3086.95" y="1810.13" width="219" height="343"/>
   <object id="102" gid="34" x="3644.26" y="1796.58" width="217" height="431"/>
   <object id="106" gid="34" x="8437" y="2064.17" width="217" height="431"/>
@@ -35,7 +35,7 @@
   <object id="49" name="right" type="3" gid="10" x="230.5" y="796" width="47" height="39"/>
   <object id="50" name="left" type="1" gid="9" x="1460.67" y="1053.68" width="42" height="39"/>
   <object id="52" name="right" type="5" gid="10" x="2056" y="1366" width="47" height="39"/>
-  <object id="53" name="left" type="2" gid="11" x="3739" y="1366" width="36" height="15"/>
+  <object id="53" name="left" type="2" gid="11" x="3784" y="1366" width="36" height="15"/>
   <object id="55" name="right" type="5" gid="11" x="5678.67" y="1006.33" width="36" height="15"/>
   <object id="56" name="left" type="1" gid="9" x="6087" y="829" width="42" height="39"/>
   <object id="57" name="left" type="5" gid="10" x="6890.07" y="826.067" width="47" height="39"/>
@@ -69,7 +69,7 @@
   <object id="67" name="right" type="2" gid="10" x="8460.19" y="1636.11" width="47" height="39"/>
   <object id="68" name="left" type="1" gid="9" x="9797.07" y="1290.25" width="42" height="39"/>
   <object id="71" name="left" type="10" gid="10" x="1721.79" y="1576.65" width="47" height="39"/>
-  <object id="72" name="right" type="2" gid="11" x="3163.52" y="1561.47" width="36" height="15"/>
+  <object id="72" name="right" type="2" gid="11" x="3073.52" y="1561.47" width="36" height="15"/>
   <object id="73" name="left" type="5" gid="11" x="9408.44" y="1035.28" width="36" height="15"/>
   <object id="75" name="left" type="11" gid="10" x="13900.1" y="1577.03" width="47" height="39"/>
   <object id="77" name="left" type="5" gid="11" x="13683.8" y="824.282" width="36" height="15"/>
