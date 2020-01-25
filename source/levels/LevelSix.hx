@@ -12,13 +12,20 @@ import components.MovingCage;
 
 import Hud.GoalData;
 
+using Lambda;
+
 class LevelSix extends LevelState {
   var _gameSave:FlxSave;
   var _goalData:Array<GoalData>;
   var _allCages:FlxTypedGroup<MovingCage>;
+  var _hitMovingCages:Array<Bool> = [];
+  var _movingCageIdx:Int = 0;
 
   final _bugsGoal:Int = 13; 
 
+  /**
+   * [X, Y, direcrtion]
+   */
   final _allMovingCages:Array<Array<Int>> = [
     [3993, 1368, 0],
     [8106, 1369, 0],
@@ -43,7 +50,7 @@ class LevelSix extends LevelState {
 				func: (GameScore:Int) -> GameScore > _bugsGoal
 			}, {
 				goal: 'Jump on all the cages',
-				func: (GameScore:Int) -> GameScore > _bugsGoal        
+				func: (_) -> _hitMovingCages.filter(cage -> !!cage).length >= 4        
       }
 		];
 	}
@@ -96,9 +103,18 @@ class LevelSix extends LevelState {
 		openSubState(_levelCompleteState);			
 	}
  
+  function countHitCages() {
+    _allCages.forEach((_member:MovingCage) -> {
+      _movingCageIdx++;
+      if (_movingCageIdx == 4) _movingCageIdx = 0;
+      if(_member.cageHit) _hitMovingCages[_movingCageIdx] = _member.cageHit;
+    });
+  }
 
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
+
+    countHitCages();
 
 		// Overlaps
 		grpHud.goalsCompleted

@@ -14,11 +14,12 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
   var _cageTopCollision:FlxObject;
   var _sndCageHit:FlxSound;
   var _sndPlayed:Bool = false;
-
-  public var cageCatchCollision:FlxObject;
+  var _cageCatchCollision:FlxObject;
 
   var _seconds:Float = 0;
   var _startFromTop:Bool;
+
+  public var cageHit:Bool = false;
 
   final DISTANCE = 200;
   final MOVEMENT_SPEED:Int = 2;
@@ -52,9 +53,9 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     _cageTopCollision.immovable = true;
     add(_cageTopCollision);
 
-    cageCatchCollision = new FlxSprite((X + (CAGE_WIDTH / 2)), (Y - 90)).makeGraphic(30, 180, FlxColor.RED);
-    cageCatchCollision.immovable = true;
-    add(cageCatchCollision);
+    _cageCatchCollision = new FlxSprite((X + (CAGE_WIDTH / 2)), (Y - 90)).makeGraphic(30, 180, FlxColor.TRANSPARENT);
+    _cageCatchCollision.immovable = true;
+    add(_cageCatchCollision);
 
     _sndCageHit = FlxG.sound.load("assets/sounds/environment/platform_hit.ogg", 0.6);
     _player = Player;
@@ -75,6 +76,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
 
   function stickyAndSound(Player:FlxObject, Platform:FlxObject) {
     stickyPlatorm(Player, Platform);
+    cageHit = true;
     if (!_sndPlayed && !_player.isAscending) {
       _sndCageHit.play(true);
       _sndPlayed = true;
@@ -91,7 +93,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
 
     cageMovement(_actualCage, _startFromTop);
     _cageTopCollision.y = _actualCage.y;
-    cageCatchCollision.y = _actualCage.y + 20;
+    _cageCatchCollision.y = _actualCage.y + 20;
 
     FlxG.collide(_player, _cageTopCollision, stickyAndSound);
     FlxG.collide(_playerFeetCollision, _cageTopCollision, stickyPlatorm);
@@ -101,6 +103,6 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
       _sndPlayed = false;
 		}    
 
-    FlxG.overlap(_player, cageCatchCollision, (_, _) -> _player.resetPlayer());
+    FlxG.overlap(_player, _cageCatchCollision, (_, _) -> _player.resetPlayer());
   }
 }
