@@ -1,6 +1,6 @@
 package components;
 
-
+import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxObject;
 import flixel.FlxG;
@@ -12,6 +12,8 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
   var _player:Player;
   var _playerFeetCollision:FlxObject;
   var _cageTopCollision:FlxObject;
+  var _sndCageHit:FlxSound;
+  var _sndPlayed:Bool = false;
 
   public var cageCatchCollision:FlxObject;
 
@@ -54,6 +56,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     cageCatchCollision.immovable = true;
     add(cageCatchCollision);
 
+    _sndCageHit = FlxG.sound.load("assets/sounds/environment/platform_hit.ogg", 0.6);
     _player = Player;
   }
 
@@ -70,10 +73,18 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     }
   } 
 
-  function stickyPlatorm(Player:FlxObject, Platform:FlxObject) {
-    Player.velocity.y = _actualCage.velocity.y;
+  function stickyAndSound(Player:FlxObject, Platform:FlxObject) {
+    stickyPlatorm(Player, Platform);
+    if (!_sndPlayed && !_player.isAscending) {
+      _sndCageHit.play(true);
+      _sndPlayed = true;
+    }    
   }
 
+  function stickyPlatorm(Player:FlxObject, Platform:FlxObject) {
+    Player.velocity.y = _actualCage.velocity.y;
+  } 
+ 
   override public function update(Elapsed:Float) {
     _seconds += Elapsed;
     super.update(Elapsed);
@@ -82,8 +93,13 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     _cageTopCollision.y = _actualCage.y;
     cageCatchCollision.y = _actualCage.y + 20;
 
-    FlxG.collide(_player, _cageTopCollision, stickyPlatorm);
+    FlxG.collide(_player, _cageTopCollision, stickyAndSound);
     FlxG.collide(_playerFeetCollision, _cageTopCollision, stickyPlatorm);
+
+		// Moving cage sound reset
+    if (_player.isJumping) { // Bit of a hack and might cause a bug?
+      _sndPlayed = false;
+		}    
 
     FlxG.overlap(_player, cageCatchCollision, (_, _) -> _player.resetPlayer());
   }

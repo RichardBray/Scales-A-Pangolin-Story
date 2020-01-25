@@ -750,7 +750,7 @@ class LevelState extends GameState {
 		_grpKillableEnemies.forEach((member:Enemy) -> {
 			if (member.hasCollisions) FlxG.collide(member, _levelCollisions);
 		});
-
+				
 		// Overlaps
 		FlxG.overlap(_grpEnemies, player, hitStandingEnemy);
 		FlxG.overlap(_grpKillableEnemies, player, hitEnemy);

@@ -41,7 +41,10 @@ class LevelSix extends LevelState {
 			{
 				goal: 'Collect over $_bugsGoal bugs',
 				func: (GameScore:Int) -> GameScore > _bugsGoal
-			}
+			}, {
+				goal: 'Jump on all the cages',
+				func: (GameScore:Int) -> GameScore > _bugsGoal        
+      }
 		];
 	}
 
