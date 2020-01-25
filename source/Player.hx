@@ -211,7 +211,7 @@ class Player extends FlxSprite {
 class JumpPoof extends FlxSprite {
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y);
-		loadGraphic("assets/images/player_jump_dust.png", true, 135, 29);
+		loadGraphic("assets/images/characters/player_jump_dust.png", true, 135, 29);
 
 		// Animations
 		animation.add("disperse", [for (i in 0...7) i], 7, false);

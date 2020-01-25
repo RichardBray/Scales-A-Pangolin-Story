@@ -112,7 +112,7 @@ class LevelState extends GameState {
 		?IntroMusic:Null<String>
 	) {
 		// Tiles for collisions
-		_collisionImg = "assets/images/collisions.png";
+		_collisionImg = "assets/images/misc/collisions.png";
 
 		// Load custom tilemap (up here because of background)
 		if (_map == null) {
@@ -378,14 +378,14 @@ class LevelState extends GameState {
 		var newY:Float = (Y - Height);
 		// @see https://code.haxe.org/category/beginner/maps.html
 		var layerImage:Map<Int, String> = [
-			1 => "assets/images/L1_ROCK_01.png",
+			1 => "assets/images/environments/L1_ROCK_01.png",
 			2 => "assets/images/L1_ROCK_02.png",
-			3 => "assets/images/L1_ROCK_03.png",
-			4 => "assets/images/L1_ROCK_04.png",
-			5 => "assets/images/L1_TREE_01.png",
-			6 => "assets/images/L1_TREE_02.png",
-			7 => "assets/images/L1_TREE_03.png",
-			8 => "assets/images/L1_GROUND_01.png",
+			3 => "assets/images/environments/L1_ROCK_03.png",
+			4 => "assets/images/environments/L1_ROCK_04.png",
+			5 => "assets/images/environments/L1_TREE_01.png",
+			6 => "assets/images/environments/L1_TREE_02.png",
+			7 => "assets/images/environments/L1_TREE_03.png",
+			8 => "assets/images/environments/L1_GROUND_01.png",
 			35 => LevelState.createImageString("L2_GROUND"),
 			36 => LevelState.createImageString("L2_GROUND_TUNNEL"),
 			33 => LevelState.createImageString("L1_LAVAROCK_01"),

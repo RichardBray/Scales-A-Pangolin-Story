@@ -231,7 +231,7 @@ class HLScreen extends GameState {
 		FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Level fades in
 		_controls = new Controls();
 		_logo = new FlxSprite(0, 0);
-		_logo.loadGraphic("assets/images/hl_logo.png", false, 535, 239);
+		_logo.loadGraphic("assets/images/misc/hl_logo.png", false, 535, 239);
 		_logo.x = (FlxG.width / 2) - (_logo.width / 2);
 		_logo.y = (FlxG.height / 2) - (_logo.height / 2);
 		add(_logo);

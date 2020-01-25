@@ -52,7 +52,7 @@ class IntroState extends GameState {
 		_skipText.alpha = 0;
 		add(_skipText);
 
-		_sndGong = FlxG.sound.load("assets/sounds/fact_gong.ogg");
+		_sndGong = FlxG.sound.load("assets/sounds/sfx/fact_gong.ogg");
 		_sndClose = FlxG.sound.load(Constants.sndMenuClose);
 		_sndGong.play();
 	}	

@@ -56,7 +56,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
 		_parentState = ParentState;
 		_dialogueImage = DialogueImage;
 
-		if (DialogueSound != null) _sndDialogue = FlxG.sound.load('assets/sounds/$DialogueSound.ogg', .8, true);
+		if (DialogueSound != null) _sndDialogue = FlxG.sound.load('assets/sounds/npcs/$DialogueSound.ogg', .8, true);
 
 		// Markup styles for text
 		_primaryText = new FlxTextFormat(Constants.secondaryColor, false, false);

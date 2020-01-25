@@ -100,7 +100,7 @@ class Hud extends FlxSpriteGroup {
 
 		this.forEach((_member:FlxSprite) -> _member.scrollFactor.set(0, 0));
 
-		_sndGoalComplete = FlxG.sound.load("assets/sounds/goal_complete.ogg", .65);
+		_sndGoalComplete = FlxG.sound.load("assets/sounds/sfx/goal_complete.ogg", .65);
 	}
 
 	/**
@@ -171,7 +171,7 @@ class Hud extends FlxSpriteGroup {
 	 */
 	function createHearts(PlayerHealth:Float) {
 		for (i in 0...Std.int(3)) { // 3 is maxiumum player health, this might change in the future
-			_health = new FlxSprite(((i * 60) + _leftPush), 20).loadGraphic("assets/images/heart.png", false, 40, 33);
+			_health = new FlxSprite(((i * 60) + _leftPush), 20).loadGraphic("assets/images/icons/heart.png", false, 40, 33);
 			_hearts.add(_health);
 		}
 		// For keeping health between states

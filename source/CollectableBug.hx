@@ -21,7 +21,7 @@ class Bug extends FlxSprite {
 	 */
 	public function new(X:Float = 0, Y:Float = 0, Name:String = "", Otype:String = "") {
 		super(X, Y);	
-		_sndCollect = FlxG.sound.load("assets/sounds/collect.wav", 0.55);
+		_sndCollect = FlxG.sound.load("assets/sounds/sfx/collect.ogg", 0.55);
 	}
 
 	override public function kill() {
@@ -86,7 +86,7 @@ class StagBeetle extends Bug {
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String) {
 		super(X, Y);
-		loadGraphic("assets/images/L1_Bug_02.png", true, 42, 39);
+		loadGraphic("assets/images/characters/L1_Bug_02.png", true, 42, 39);
 		animation.add("flying", [for (i in 0...7) i], 12, true);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);	
@@ -105,7 +105,7 @@ class Beetle extends Bug {
 
 	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String) {
 		super(X, Y);
-		loadGraphic("assets/images/L1_Bug_03.png", true, 47, 39);
+		loadGraphic("assets/images/characters/L1_Bug_03.png", true, 47, 39);
 		animation.add("walking", [for (i in 0...6) i], 12, true);
 		setFacingFlip(FlxObject.LEFT, true, false);
 		setFacingFlip(FlxObject.RIGHT, false, false);	
@@ -126,7 +126,7 @@ class Caterpillar extends Bug {
 	 */
 	public function new(X:Float = 0, Y:Float = 0, Name:String, Otype:String) {
 		super(X, Y);
-		loadGraphic("assets/images/L1_Bug_01.png", true, 36, 15);
+		loadGraphic("assets/images/characters/L1_Bug_01.png", true, 36, 15);
 		animation.add("walking", [for (i in 0...5) i], 12, true);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);	

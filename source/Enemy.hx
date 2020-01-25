@@ -23,7 +23,7 @@ class Enemy extends FlxSprite {
 		super(X, Y);
 		health = 1;
 		timer = new FlxTimer();
-		sndEnemyKill = FlxG.sound.load("assets/sounds/drop.wav", 0.5);		
+		sndEnemyKill = FlxG.sound.load("assets/sounds/sfx/drop.ogg", 0.5);		
 	}
 
 	/**
@@ -124,7 +124,7 @@ class Fire extends Enemy {
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y + 50); // to make up for offset
 		push = -450;
-		loadGraphic("assets/images/L1_FIRE_01.png", true, 178, 206);
+		loadGraphic("assets/images/environments/L1_FIRE_01.png", true, 178, 206);
 		updateSpriteHitbox(70, 50, this);
 
 		animation.add("burning", [for (i in 0...8) i], 12, true);
@@ -146,7 +146,7 @@ class Boar extends PacingEnemey {
  
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X, Y + 40);
-		loadGraphic("assets/images/boar_sprites.png", true, 156, 88);
+		loadGraphic("assets/images/characters/boar_sprites.png", true, 156, 88);
 		updateSpriteHitbox(40, 40, this);
 		updateValues(Name, Otype);
 		setFacingFlip(FlxObject.LEFT, true, false);
@@ -215,7 +215,7 @@ class Snake extends Enemy {
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {
 		super(X + 100, Y);
 		push = -900;
-		loadGraphic("assets/images/snake_sprites.png", true, 238, 120);
+		loadGraphic("assets/images/characters/snake_sprites.png", true, 238, 120);
 		updateSpriteHitbox(100, 0, this, [100, 0]);
 
 		setFacingFlip(FlxObject.LEFT, true, false);
