@@ -53,7 +53,8 @@ class LevelSelect extends GameState {
       _gameSave = GameSave;
       _gameSave.data.enableLevelSelect = true;
       _gameSave.flush();
-      _playerHasPango = _gameSave.data.playerHasPango != null; // The value from saved game could be null
+      // _playerHasPango = _gameSave.data.playerHasPango != null; // The value from saved game could be null FOR RELEASE
+      _playerHasPango = false;
     }
     if (ModalNum != null) _modalNum = ModalNum; 
 
@@ -225,7 +226,7 @@ class LevelSelect extends GameState {
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
         "Congratulations! You've completed all the levels",
         "Well done! you've completed all the demo content. Follow hello_lightbulb on twitter or join the Discord community to find out when the full game is released.",
-        // "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level",
+        // "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level", FOR RELEASE
         "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
          The full game will be out very soon."
       ];    
