@@ -50,7 +50,7 @@ class Helpers {
 	 * @param SavedPangoList List of delieved pangolins as string this would ususally be _gameSave.data.pangosDelivered
 	 * @param IsPangoSaved
 	 */
-	public static function checkPangoDelieverd(SavedPangoList:String, IsPangoSaved:String):Bool {
+	public static function checkPangoDelieverd(SavedPangoList:Null<String>, IsPangoSaved:String):Bool {
 		final splitDeliveredPangos:Array<String> = SavedPangoList.split("/");
 		var pangoHasBeenDelievered:Bool = false;
 		for (delieveredPango in splitDeliveredPangos) {

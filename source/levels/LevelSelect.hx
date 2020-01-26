@@ -182,8 +182,8 @@ class LevelSelect extends GameState {
 		add(_starSprt);
 
 		// Stars Total
-    final totalStars = countStarTotal();
-		_starsTotal = new FlxText((FlxG.width - 120), 70, 'x $totalStars');
+    final totalStarsCreate:Int = countStarTotal();
+		_starsTotal = new FlxText((FlxG.width - 120), 70, 'x $totalStarsCreate');
 		_starsTotal.setFormat(Constants.squareFont, Constants.lrgFont, FlxColor.WHITE);
 		_starsTotal.scrollFactor.set(0, 0);
     add(_starsTotal);

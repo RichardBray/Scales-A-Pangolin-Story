@@ -65,6 +65,7 @@ class LevelFive extends LevelState {
       }      
     ]; 
     
+    // Remove save pagolin goal if purple pango has already been saved
     _goalData = (
       _gameSave.data.pangosDelivered != null && 
       Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")

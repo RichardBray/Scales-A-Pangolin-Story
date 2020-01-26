@@ -3,7 +3,6 @@ package screens;
 
 import haxe.ds.Either;
 import flixel.system.FlxSound;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -26,13 +25,13 @@ class LevelComplete extends FlxSubState {
   var _grpLeftSide:FlxSpriteGroup;
   var _rightSide:FlxSprite;
   var _leftBg:FlxSprite;
-  var _grpStars:FlxTypedGroup<FlxSprite>;
+  var _grpStars:FlxSpriteGroup;
 
   var _bugsCollected:Int = 0;
   var _enemiesDefeated:Int = 0;
 
   var _levelTotals:Map<String, Array<Int>>; 
-  var _levelNames:Map<String, Array<Dynamic>>; // Array<Either<String, Int>>>
+  var _levelNames:Map<String, Array<String>>;
   var _totalBugsCollected:Int;
   var _totalEnemiesDefeated:Int;
   var _levelSelectModalNum:Int;
@@ -53,7 +52,7 @@ class LevelComplete extends FlxSubState {
    * @param GameSave saved game data
    * @param LevelSelectModalNum modal to have selected on the level complete page
    */
-  public function new(?GameSave:FlxSave, ?LevelSelectModalNum:Int) {
+  public function new(?GameSave:FlxSave, ?LevelSelectModalNum:Null<Int>) {
     super();
     _gameSave = GameSave;
     _levelSelectModalNum = LevelSelectModalNum;
@@ -64,8 +63,8 @@ class LevelComplete extends FlxSubState {
     ];
 
     _levelNames = [
-      levelOneEnd => ["One", 1],
-      levelTwoEnd => ["Two", 2]
+      levelOneEnd => ["One", "1"],
+      levelTwoEnd => ["Two", "2"]
     ];   
 
     _totalBugsCollected = _levelTotals[_gameSave.data.levelName][0];
@@ -88,18 +87,18 @@ class LevelComplete extends FlxSubState {
   }
 
   function calculatePercentge():Int {
-    var total = _totalBugsCollected + _totalEnemiesDefeated;
-    var value = _actualBugs + _actualEnemies;
+    final total = _totalBugsCollected + _totalEnemiesDefeated;
+    final value = _actualBugs + _actualEnemies;
 
     return Std.int(value / total * 100);
   }
 
   override public function create() {
-    var levelToRestart:Class<states.LevelState> = Helpers.restartLevel(_gameSave.data.levelName);
+    final levelToRestart:Class<states.LevelState> = Helpers.restartLevel(_gameSave.data.levelName);
 
     // This needs to be before _menuData so that it gets the correct _levelStars value
-    _grpStars = new FlxTypedGroup<FlxSprite>();    
-    var levelPercentage:Int = calculatePercentge();
+    _grpStars = new FlxSpriteGroup();    
+    final levelPercentage:Int = calculatePercentge();
     createStars(levelPercentage);
 
     // Spaces before menu items is for menu pointer spacing
@@ -232,8 +231,9 @@ class LevelComplete extends FlxSubState {
    * Method used to save stars from level to game save data.
    */
   function saveLevelStars() {
-    var savedGameStars:Null<String> = _gameSave.data.levelStars;
-    final levelNumber:Int = _levelNames[_gameSave.data.levelName][1];
+    final savedGameStars:Null<String> = _gameSave.data.levelStars;
+    final levelNumberString:String = _levelNames[_gameSave.data.levelName][1];
+    final levelNumber:Int = Std.parseInt(levelNumberString);
 
     if (savedGameStars == null) _gameSave.data.levelStars = "0/0/0/0/0";
 

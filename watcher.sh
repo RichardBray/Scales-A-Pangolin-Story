@@ -6,12 +6,12 @@ cecho() {
     YELLOW='\033[1;33m'
     NC='\033[0m' # No Color
     # https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/reference/ASLR_cmds.html#//apple_ref/doc/uid/TP40000983-CH216-SW224
-    osascript -e 'display notification "🎉 Build finished!!!" with title "HaxeFlixel" sound name "Ping"'
-    # curl -d "credentials=D1LZeKlNxeCZGRBPLcOLQrUoG" \
-    # -d "title=HaxeFlixel" \
-    # -d "message=🎉 Build finished!!!" \
-    # -d "image=http://haxeflixel.com/images/haxeflixel.svg" \
-    # https://notifi.it/api    
+    # osascript -e 'display notification "🎉 Build finished!!!" with title "HaxeFlixel" sound name "Ping"'
+    curl -d "credentials=ySWX52ka5mIxHTdWiJ8T9hyl8" \
+    -d "title=HaxeFlixel" \
+    -d "message=🎉 Build finished!!!" \
+    -d "image=http://haxeflixel.com/images/haxeflixel.svg" \
+    https://notifi.it/api    
     printf "${!1}${2} ${NC}\n"
 }
 

@@ -18,7 +18,7 @@ class LevelSix extends LevelState {
   var _gameSave:FlxSave;
   var _goalData:Array<GoalData>;
   var _allCages:FlxTypedGroup<MovingCage>;
-  var _hitMovingCages:Array<Bool> = [];
+  var _hitMovingCages:Array<Null<Bool>> = [];
   var _movingCageIdx:Int = 0;
 
   final _bugsGoal:Int = 13; 
@@ -50,7 +50,7 @@ class LevelSix extends LevelState {
 				func: (GameScore:Int) -> GameScore > _bugsGoal
 			}, {
 				goal: 'Jump on all the cages',
-				func: (_) -> _hitMovingCages.filter(cage -> !!cage).length >= 4        
+				func: (_) -> _hitMovingCages.filter(cage -> cage).length >= 4        
       }
 		];
 	}
