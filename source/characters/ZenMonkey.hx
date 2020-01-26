@@ -5,8 +5,8 @@ import flixel.FlxSprite;
 
 class ZenMonkey extends FlxSprite {
   var _isTalking:Bool = false;
-  var _downYPos:Float;
-  var _normalYPos:Float;
+  var _downYPos:Float = 0;
+  var _normalYPos:Float = 0;
 
   public function new(X:Float = 0, Y:Float = 0) {
     super(X, Y);

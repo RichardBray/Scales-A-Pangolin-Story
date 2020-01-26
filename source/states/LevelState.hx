@@ -38,7 +38,7 @@ class LevelState extends GameState {
 	var _grpMidCheckpoints:FlxTypedGroup<FlxObject>;
 	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
 	// Player
-	var _secondsOnGround:Float; // Used for feet collisions to tell how
+	var _secondsOnGround:Float = 0; // Used for feet collisions to tell how
 	var _playerJumpPoof:Player.JumpPoof; 
 	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope

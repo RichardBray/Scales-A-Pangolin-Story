@@ -76,7 +76,7 @@ class Enemy extends FlxSprite {
 class PacingEnemey extends Enemy {
 	var _facingDirection:Bool;
 	var _seconds:Float = 0;
-	var _distance:Int;	
+	var _distance:Int = 0;	
 	var _enemyHit:Bool = false;	
 
 	public function new(X:Float, Y:Float, Name:String = "", Otype:String = "") {

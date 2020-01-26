@@ -21,7 +21,7 @@ class Hud extends FlxSpriteGroup {
 	var _gradientBg:FlxSprite;
 	var _spinner:FlxSprite;
 	var _leftPush:Int = 15; // Distance away from left side of the screen
-	var _playerHealth:Float; // Temporary player health storage
+	var _playerHealth:Float = 0; // Temporary player health storage
 
 	// Goals
 	var _goals:FlxSpriteGroup;
@@ -35,7 +35,7 @@ class Hud extends FlxSpriteGroup {
 	var _sndGoalComplete:FlxSound;
 	var _soundVal:Int = 0;
 
-	public var gameScore:Int; // Send game score to level end menu
+	public var gameScore:Int = 0; // Send game score to level end menu
 	public var goalsCompleted:Bool = false; // Tells level class i.e. LevelOne when to allow exit
 
 	public function new(Score:Int, Health:Float, ?Goals:Null<Array<GoalData>>) {

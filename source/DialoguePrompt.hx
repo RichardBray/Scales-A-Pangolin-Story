@@ -11,12 +11,12 @@ import flixel.text.FlxText;
 class DialoguePrompt extends FlxTypedGroup<FlxSprite> {
 	var _dialogueBubble:FlxSprite;
 	var _dialogueText:FlxText;
-	var _dialogueXPos:Float;
-	var _dialogueYPos:Float;
-	var _dialogueTextYPos:Float;
+	var _dialogueXPos:Float = 0;
+	var _dialogueYPos:Float = 0;
+	var _dialogueTextYPos:Float = 0;
 	var _vertices:Array<FlxPoint>;
-	var _w:Float;
-	var _h:Float;
+	var _w:Float = 0;
+	var _h:Float = 0;
 
 	/**
 	 * Created the box and text elements for a dialogue prompt.

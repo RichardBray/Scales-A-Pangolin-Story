@@ -32,9 +32,9 @@ class LevelComplete extends FlxSubState {
 
   var _levelTotals:Map<String, Array<Int>>; 
   var _levelNames:Map<String, Array<String>>;
-  var _totalBugsCollected:Int;
-  var _totalEnemiesDefeated:Int;
-  var _levelSelectModalNum:Int;
+  var _totalBugsCollected:Int = 0;
+  var _totalEnemiesDefeated:Int = 0;
+  var _levelSelectModalNum:Int = 0;
   // - Stars
   var _levelStars:Int = 0;
   var _animateStarCount:Int = 0;
@@ -43,8 +43,8 @@ class LevelComplete extends FlxSubState {
   final levelOneEnd:String = "Level-4-0";
   final levelTwoEnd:String = "Level-6-0";
   // Variables for showing bugs collected/enemites defeated after checking if they are more than the total
-  var _actualBugs:Int;
-  var _actualEnemies:Int;
+  var _actualBugs:Int = 0;
+  var _actualEnemies:Int = 0;
   var _starsShown:Int = 0; // Var to fix issue with stars being animated after scene fades to dissapear
 
 

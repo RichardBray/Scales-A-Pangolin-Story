@@ -8,7 +8,7 @@ import flixel.system.FlxSound;
 
 class Player extends FlxSprite {
 	var _controls:Controls;
-	var _offFloorCount:Float;
+	var _offFloorCount:Float = 0;
 
 	final GRAVITY:Float = Constants.worldGravity;	
 

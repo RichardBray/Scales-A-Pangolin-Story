@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 
 class TermiteHill extends FlxSprite {
-  var _seconds:Float;
+  var _seconds:Float = 0;
 
   public var playerDigging:Bool = false;
 

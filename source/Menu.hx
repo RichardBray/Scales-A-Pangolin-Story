@@ -24,7 +24,7 @@ class Menu extends FlxSpriteGroup {
 	var _menuData:Array<MenuData>;
 	var _preventKeyPress:Bool = false;
 	var _controls:Controls;
-	var _yPos:Float;
+	var _yPos:Float = 0;
 
 	// Sounds
 	var _sndMove:FlxSound;

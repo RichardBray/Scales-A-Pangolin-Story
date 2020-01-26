@@ -12,9 +12,9 @@ class Instructions extends FlxSubState {
   var _gameOverlay:FlxSprite;
   var _controls:Controls;
   var _grpPages:FlxSpriteGroup;
-  var _startPage:Int;
-  var _endPage:Int;  
-  var _totalPages:Int;
+  var _startPage:Int = 0;
+  var _endPage:Int = 0;  
+  var _totalPages:Int = 0;
   var _closeText:FlxText;
   var _pagePosition:FlxText;
   var _showOverlay:Bool;
