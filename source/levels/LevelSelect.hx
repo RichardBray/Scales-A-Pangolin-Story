@@ -225,7 +225,7 @@ class LevelSelect extends GameState {
         "Welcome to the level select screen. Here you will be able select newly unlocked levels and replay completed ones.",
         "You have a pangolin. You have to deliver these to the mother to unlock the other levels",
         "Congratulations! You've completed all the levels",
-        "Well done! you've completed all the demo content. Follow hello_lightbulb on twitter or join the Discord community to find out when the full game is released.",
+        "Well done! you've completed all the demo content. \n\rFollow hello_lightbulb on twitter or join the Discord community to find out when the full game is released.\n\rUntil then, have fun replaying the levels.",
         // "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level", FOR RELEASE
         "Congratulations! you've finished the demo for Scales: A Pangolin Story \n
          The full game will be out very soon."

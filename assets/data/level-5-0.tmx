@@ -62,7 +62,7 @@
   <object id="193" name="right" type="4" gid="11" x="9480.87" y="1184.59" width="36" height="15"/>
   <object id="194" name="right" type="1" gid="9" x="10401" y="820.236" width="42" height="39"/>
   <object id="195" name="right" type="1" gid="9" x="13035.1" y="903.33" width="42" height="39"/>
-  <object id="196" name="left" type="4" gid="11" x="13931.2" y="1169.71" width="36" height="15"/>
+  <object id="196" name="left" type="4" gid="11" x="13931.2" y="1171.71" width="36" height="15"/>
   <object id="197" name="right" type="5" gid="10" x="11104.8" y="840.958" width="47" height="39"/>
   <object id="205" name="left" type="6" gid="10" x="13262.4" y="1575.82" width="47" height="39"/>
   <object id="206" name="right" type="4" gid="11" x="12168.8" y="991.19" width="36" height="15"/>

@@ -209,7 +209,7 @@ class LevelFive extends LevelState {
 	}	
 
 	function changeState() {
-		_gameSave = saveGame(_gameSave, [grpHud.gameScore, 0]);
+		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
 		FlxG.switchState(new LevelSix(_gameSave));
 	}	
 

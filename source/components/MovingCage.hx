@@ -74,7 +74,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     }
   } 
 
-  function stickyAndSound(Player:FlxObject, Platform:FlxObject) {
+  function stickyAndSound(Player:Player, Platform:FlxObject) {
     stickyPlatorm(Player, Platform);
     cageHit = true;
     if (!_sndPlayed && !_player.isAscending) {

@@ -105,7 +105,6 @@ class LevelHome extends LevelState {
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
 
     super.create(); 
-    js.Browser.console.log(_gameSave, "saved game");
   }
 
   /**
