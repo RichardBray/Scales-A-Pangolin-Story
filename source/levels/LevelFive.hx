@@ -24,7 +24,7 @@ class LevelFive extends LevelState {
 
   // Instructions
   var _instructionsBox:FlxObject;  
-  var _showInstrucitons:Bool;
+  var _showInstrucitons:Bool = false;
   var _instructionsViewed:Bool = false;
 
   // Cave

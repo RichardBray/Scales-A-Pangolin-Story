@@ -16,7 +16,7 @@ class MainMenuModal extends FlxSubState {
 	var _optionsText:FlxText;
 	var _confirmCallback:Null<Void->Void>;
 	var _controls:Controls;
-	var _crossToClose:Bool;
+	var _crossToClose:Bool = false;
 
 	var _sndClose:FlxSound; 
 

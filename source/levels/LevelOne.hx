@@ -18,7 +18,7 @@ class LevelOne extends LevelState {
 	var _seconds:Float = 0;
 	var _goalData:Array<GoalData>;
 	var _instructionsViewed:Bool = false;
-	var _showInstrucitons:Bool;
+	var _showInstrucitons:Bool = false;
 	// Level complete goal
 	var _levelComplete:FlxObject;
 	var _playerCompletedLevel:Bool = false;

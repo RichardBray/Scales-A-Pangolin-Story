@@ -17,8 +17,8 @@ class Instructions extends FlxSubState {
   var _totalPages:Int = 0;
   var _closeText:FlxText;
   var _pagePosition:FlxText;
-  var _showOverlay:Bool;
-  var _showControls:Bool;
+  var _showOverlay:Bool = false;
+  var _showControls:Bool = false;
 
   // Page controls
   var _currentPage:Int = 1;
@@ -32,7 +32,7 @@ class Instructions extends FlxSubState {
 
   public var sndAbility:FlxSound;
   
-  public var menuViewed:Bool; // Used in specific level classes to check if instructions have been viewed
+  public var menuViewed:Bool = false; // Used in specific level classes to check if instructions have been viewed
 
   /**
    * Shows game instructions at the start of a level

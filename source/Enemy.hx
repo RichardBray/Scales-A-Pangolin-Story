@@ -74,7 +74,7 @@ class Enemy extends FlxSprite {
 }
 
 class PacingEnemey extends Enemy {
-	var _facingDirection:Bool;
+	var _facingDirection:Bool = false;
 	var _seconds:Float = 0;
 	var _distance:Int = 0;	
 	var _enemyHit:Bool = false;	

@@ -23,9 +23,9 @@ class Player extends FlxSprite {
 	public var sndWee:FlxSound;	
 
 	public var jumpPosition:Array<Float>; // Saves player jump position for poof
-	public var preventMovement:Bool;
-	public var isGoindDown:Bool; // Used in LevelState.hx to animate player through clouds
-	public var isJumping:Bool; // Used for player feet collisions in LevelState.hx
+	public var preventMovement:Bool = false;
+	public var isGoindDown:Bool = false; // Used in LevelState.hx to animate player through clouds
+	public var isJumping:Bool = false; // Used for player feet collisions in LevelState.hx
 	public var isAscending:Bool = false; // Indicates is player ascending or descending in jump
 	public var facingTermiteHill:Bool = false; // When player is colliding with termite hill
 	public var playerIsDigging:Bool = false; // When player is digging termite hill

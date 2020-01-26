@@ -11,7 +11,7 @@ class Bug extends FlxSprite {
 	var _seconds:Float = 0;
 	final _randomSeconds = Std.random(3) + 3; // Random seconds between 3-5 for bug movement time
 	var _distance:Int = 0;
-	var _facingDirection:Bool;
+	var _facingDirection:Bool = false;
 
 	// Sounds
 	var _sndCollect:FlxSound;

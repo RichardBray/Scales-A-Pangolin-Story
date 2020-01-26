@@ -36,7 +36,7 @@ class MainMenu extends GameState {
 	var _bottomRight:FlxText;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _openCloseText:String = "Press SPACE to continue, E to close";
-	var _showDemoModal:Bool;
+	var _showDemoModal:Bool = false;
 
 	// Sound
 	var _sndSelect:FlxSound;

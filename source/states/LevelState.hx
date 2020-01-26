@@ -40,7 +40,7 @@ class LevelState extends GameState {
 	// Player
 	var _secondsOnGround:Float = 0; // Used for feet collisions to tell how
 	var _playerJumpPoof:Player.JumpPoof; 
-	var _playerPushedByFeet:Bool; // Checl if player collisions are off because of feet
+	var _playerPushedByFeet:Bool = false; // Checl if player collisions are off because of feet
 	var _upOnSlope:Bool = false; // Keep feet collisions up from ground when on slope
 	var _playerTouchMovingEnemy:Bool = false; // Hacky way to prevent player for losing two lives on one hit
 	var _playerJustHitEnemy:Bool = false; // Used to check if player just hit the enemy for jumpPoof
