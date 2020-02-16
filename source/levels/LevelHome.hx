@@ -19,7 +19,7 @@ class LevelHome extends LevelState {
   // - Custscene
   var _mamaSeen:FlxObject;
   var _babyDialogueBox:DialogueBox;
-  var _babyDialogueImage:String;
+  var _babyDialogueImage:String = "";
   var _babyDialogueImageSprite:FlxSprite;
   var _babyLeftPlayer:Bool = false;
   var _whiteBg:FlxSprite;

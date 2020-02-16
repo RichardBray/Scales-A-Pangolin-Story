@@ -33,7 +33,7 @@ class LevelState extends GameState {
 	var _map:Null<TiledMap>;
 	var _mapObjects:TiledObjectLayer;
 	var _mapProximitySounds:TiledObjectLayer;
-	var _collisionImg:String;
+	var _collisionImg:String = "";
 	var _curTermiteHill:Null<TermiteHill>;
 	var _grpMidCheckpoints:FlxTypedGroup<FlxObject>;
 	final _firstTile:Int = 14; // ID of first collision tile, for some reason Tiled changes this
@@ -67,7 +67,7 @@ class LevelState extends GameState {
 	public var playerFeetCollision:FlxObject;
 	public var levelExit:FlxSprite; // used by LevelOne
 	public var startingConvo:Bool = false; // Used for toggling view for convo with NPC
-	public var levelName:String; // Give level unique name
+	public var levelName:String = ""; // Give level unique name
 	public var killedEmenies:Int = 0; // Tells level how many enemies have died for goals
 	public var levelBgs:FlxTypedGroup<FlxSprite>; // Hide background on bonus levels
 
