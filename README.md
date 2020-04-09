@@ -121,7 +121,7 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
-- add sounds to platforms
-- sound for returning pangolin to mother
-- check percentages for stars
-- add glow to newly unlocked level
+- fix stars on level one and level two
+- fix bug with falling through levels
+- implement cage image
+- fix background colour on desert level when jumping too hight
