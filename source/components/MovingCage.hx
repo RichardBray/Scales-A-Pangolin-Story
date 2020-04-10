@@ -10,10 +10,11 @@ import flixel.util.FlxColor;
 class MovingCage extends FlxTypedGroup<FlxObject> {
   var _actualCage:FlxSprite;
   var _player:Player;
+  var _playerFeetCollision:FlxObject;
   var _cageTopCollision:FlxObject;
   var _sndCageHit:FlxSound;
   var _sndPlayed:Bool = false;
-  var _cageCatchCollision:FlxSprite;
+  var _cageCatchCollision:FlxSprite; // Sprite to know when player has been caught by cage
 
   var _seconds:Float = 0;
   var _startFromTop:Bool = false;
@@ -58,6 +59,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
 
     _sndCageHit = FlxG.sound.load("assets/sounds/environment/platform_hit.ogg", 0.6);
     _player = Player;
+    _playerFeetCollision = PlayerFeetCollisions;
   }
 
   function cageMovement(Object:FlxObject, StartFromTop:Bool) {
@@ -73,14 +75,17 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     }
   } 
 
-  function stickyAndSound(Player:Player, Platform:FlxObject) {
-    Player.velocity.y = _actualCage.velocity.y;
+  function stickyAndSound(Player:FlxObject, Platform:FlxObject) {
     cageHit = true;
     if (!_sndPlayed && !_player.isAscending) {
       _sndCageHit.play(true);
       _sndPlayed = true;
     }    
   }
+
+  function stickyPlatorm(Player:FlxObject, Platform:FlxObject) {
+    Player.velocity.y = _actualCage.velocity.y;
+  } 
  
   override public function update(Elapsed:Float) {
     _seconds += Elapsed;
@@ -91,6 +96,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     _cageCatchCollision.y = _actualCage.y + 20;
 
     FlxG.collide(_player, _cageTopCollision, stickyAndSound);
+    FlxG.collide(_playerFeetCollision, _cageTopCollision, stickyPlatorm);
 
 		// Moving cage sound reset
     if (_player.isJumping) _sndPlayed = false;  
