@@ -94,7 +94,7 @@ class LevelSix extends LevelState {
 
     super.create();   
 
-    bgColor = 0xffF2E1BF;    
+    bgColor = 0xffFCDAAD;    
  }  
 
 	function levelComplete(Exit:FlxSprite, Player:FlxSprite) {

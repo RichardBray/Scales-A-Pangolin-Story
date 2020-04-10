@@ -122,6 +122,4 @@ data: {
 }
 ```
 - fix stars on level one and level two
-- fix bug with falling through levels
 - implement cage image
-- fix background colour on desert level when jumping too hight
