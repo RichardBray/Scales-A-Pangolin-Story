@@ -122,4 +122,5 @@ data: {
 }
 ```
 - fix stars on level one and level two
-- implement cage image
+- remove map
+- add the end screen

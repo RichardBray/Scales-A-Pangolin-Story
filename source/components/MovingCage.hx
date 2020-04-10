@@ -21,10 +21,12 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
 
   public var cageHit:Bool = false;
 
-  final DISTANCE:Int = 200;
+  final DISTANCE:Int = 280;
   final MOVEMENT_SPEED:Int = 2;
-  final CAGE_WIDTH:Int = 600;
-  final CAGE_HEIGHT:Int = 200;
+  final CAGE_WIDTH:Int = 540;
+  final CAGE_HEIGHT:Int = 280;
+  final WIDTH_OFFSET:Int = 82;
+  final HEIGHT_OFFSET:Int = 32;
 
   /**
    * Moving drone cage to catch pangolin
@@ -45,15 +47,28 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
     super();
     _startFromTop = StartFromTop;
 
-    _actualCage = new FlxSprite(X, Y).makeGraphic(CAGE_WIDTH, CAGE_HEIGHT, FlxColor.BLUE);
+    _actualCage = new FlxSprite(X, Y);
+    _actualCage.loadGraphic("assets/images/environments/CAGE.png", true, CAGE_WIDTH, CAGE_HEIGHT);
+    // Play cage animation
+    _actualCage.animation.add("move", [for (i in 0...10) i], 32);	
+    _actualCage.animation.play("move");
+    // Update cage hitbox size
+    _actualCage.setGraphicSize(
+      Std.int(_actualCage.width - WIDTH_OFFSET),
+      Std.int(_actualCage.height - HEIGHT_OFFSET)
+    );
+    _actualCage.updateHitbox();
+    _actualCage.offset.set((WIDTH_OFFSET / 2), 33);
+    _actualCage.scale.set(1, 1);
+    // ---
     _actualCage.alpha = 1;
     add(_actualCage);
 
-    _cageTopCollision = new FlxObject(X, Y, CAGE_WIDTH, 10);
+    _cageTopCollision = new FlxObject(X , Y, (CAGE_WIDTH - WIDTH_OFFSET), 10);
     _cageTopCollision.immovable = true;
     add(_cageTopCollision);
 
-    _cageCatchCollision = new FlxSprite((X + (CAGE_WIDTH / 2)), (Y - 90)).makeGraphic(30, 180, FlxColor.TRANSPARENT);
+    _cageCatchCollision = new FlxSprite((X + ((CAGE_WIDTH / 2) - (WIDTH_OFFSET / 2))), ((Y - 90) + HEIGHT_OFFSET)).makeGraphic(30, 180, FlxColor.TRANSPARENT);
     _cageCatchCollision.immovable = true;
     add(_cageCatchCollision);
 
@@ -76,6 +91,7 @@ class MovingCage extends FlxTypedGroup<FlxObject> {
   } 
 
   function stickyAndSound(Player:FlxObject, Platform:FlxObject) {
+    stickyPlatorm(Player, Platform);
     cageHit = true;
     if (!_sndPlayed && !_player.isAscending) {
       _sndCageHit.play(true);
