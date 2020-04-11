@@ -7,6 +7,7 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.group.FlxSpriteGroup;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxSave;
@@ -25,7 +26,7 @@ class LevelComplete extends FlxSubState {
   var _grpLeftSide:FlxSpriteGroup;
   var _rightSide:FlxSprite;
   var _leftBg:FlxSprite;
-  var _grpStars:FlxSpriteGroup;
+  var _grpStars:FlxTypedGroup<FlxSprite>;
 
   var _bugsCollected:Int = 0;
   var _enemiesDefeated:Int = 0;
@@ -97,7 +98,7 @@ class LevelComplete extends FlxSubState {
     final levelToRestart:Class<states.LevelState> = Helpers.restartLevel(_gameSave.data.levelName);
 
     // This needs to be before _menuData so that it gets the correct _levelStars value
-    _grpStars = new FlxSpriteGroup();    
+    _grpStars = new FlxTypedGroup<FlxSprite>();    
     final levelPercentage:Int = calculatePercentge();
     createStars(levelPercentage);
 
@@ -107,12 +108,12 @@ class LevelComplete extends FlxSubState {
         title: "  Continue",
         func: () -> {
           saveLevelStars();
-          FlxG.switchState(new levels.LevelSelect(_gameSave, _levelSelectModalNum));
+          FlxG.switchState(new levels.LevelSelect(resetTotals(_gameSave), _levelSelectModalNum));
         }
       },
       {
         title: "  Restart Level",
-         func: () -> FlxG.switchState(Type.createInstance(levelToRestart, [_gameSave, false]))
+         func: () -> FlxG.switchState(Type.createInstance(levelToRestart, [resetTotals(_gameSave), false]))
       },    
       {
         title: "  Main Menu",
@@ -170,6 +171,17 @@ class LevelComplete extends FlxSubState {
   }
 
   /**
+   * Reset game save totals for new levels 
+   * so they don't add to the percentage on this screen.
+   */
+  function resetTotals(GameSave:FlxSave):FlxSave {
+    GameSave.data.totalBugs = 0;
+    GameSave.data.totalEnemies = 0;
+    GameSave.flush();
+    return GameSave;
+  }
+
+  /**
    * Simply increments the numbers by one for animation reasons by a loop.
    * Pauses for 800ms inbetween increments.
    *
@@ -187,7 +199,7 @@ class LevelComplete extends FlxSubState {
    * Render amount of stars out of three based on percentage value
    */
   function createStars(Percentage:Int) {
-    if (Percentage > 40 && Percentage <= 70) _levelStars = 1;
+    if (Percentage > 30 && Percentage <= 70) _levelStars = 1;
     if (Percentage > 70 && Percentage <= 90) _levelStars = 2;
     if (Percentage > 90) _levelStars = 3;
 
@@ -219,9 +231,10 @@ class LevelComplete extends FlxSubState {
             starSound.play();
             _starSoundPlayed = true; // To prevent repeated play
           }            
-          FlxTween.tween(Member, {alpha: 1, y: 470}, 1, {ease: FlxEase.backOut});       
+          FlxTween.tween(Member, {alpha: 1, y: 470}, 1);       
         }, 
         Std.int((_animateStarCount * 0.50) * 1000));
+
       if (_animateStarCount != _levelStars) _animateStarCount++;
       _starsShown++;
     }); 
@@ -240,7 +253,6 @@ class LevelComplete extends FlxSubState {
     final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
     savedStars[levelNumber - 1] = Std.string(_levelStars);
     _gameSave.data.levelStars = savedStars.join("/");  
-    // TODO add method to count level stars
   }
 
   override public function update(Elapsed:Float) {
