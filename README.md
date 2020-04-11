@@ -121,8 +121,6 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
-- fix stars on level one and level two
 - remove map
 - add the end screen
-- add resetTotals method to LebelComplte.hx for gameSave
 
