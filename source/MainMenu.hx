@@ -36,7 +36,6 @@ class MainMenu extends GameState {
 	var _bottomRight:FlxText;
 	var _grpCollectables:FlxTypedGroup<CollectableBug.Bug>;
 	var _openCloseText:String = "Press SPACE to continue, E to close";
-	var _showDemoModal:Bool = false;
 
 	// Sound
 	var _sndSelect:FlxSound;
@@ -78,7 +77,7 @@ class MainMenu extends GameState {
 	
 		var _otherOptions:Array<MenuData> = [
 			{
-				title: "Start Demo", // New Game
+				title: "New Game",
 				func: selectNewGame
 			},
 			{
@@ -179,14 +178,7 @@ class MainMenu extends GameState {
 
 	function selectNewGame() {
 		if (_gameSave.data.levelName == null) { // No saved game
-			// Below line is shown for demo only
-			showModal(
-				"Welcome to the Scales demo. There is a lot to do before this game is finished, even this demo isn't complete. We just wanted to give you a glimpse of what we've been working on.\n\rHave fun :)", 
-				() -> initNewGame(), 
-				true,
-				_openCloseText
-			);
-			// initNewGame();
+			initNewGame();
 		} else {
 			showModal('This will erase your saved games. Do you want to continue?', () -> initNewGame(true), true, _openCloseText);
 		}
