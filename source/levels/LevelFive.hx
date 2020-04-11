@@ -41,6 +41,8 @@ class LevelFive extends LevelState {
 
   final _bugsGoal:Int = 20; 
   final _allMidCheckpoints:Array<Array<Float>> = [
+    [4771.08, 856.85],
+    [4755.69, 1215.27],
     [5327.93, 1426.64]
   ];
 
@@ -150,6 +152,7 @@ class LevelFive extends LevelState {
     // Save game on load    
               
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
+    js.Browser.console.log(_gameSave, "_gameSave");
     super.create();
 
     // Restrict level width to hide bonus level on load
