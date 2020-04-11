@@ -14,7 +14,7 @@ class BossBoar extends Enemy {
   var _hitLeftBoundary:Bool = false;
   var _boarAttacked:Bool = false;
   var _boarCharged:Bool = false;
-  var _randomStopNumber:Int =0; // Randomly generated number to decidee when boar stops running
+  var _randomStopNumber:Int = 0; // Randomly generated number to decidee when boar stops running
   var _attackMode:Bool = false; // When Boar has seen player for first time  
   var _levelState:LevelState; // Used to trigger boss music
   var _playBossMusicOnce:Bool = false; // Hacky way to prevent music from playing multiple times  
