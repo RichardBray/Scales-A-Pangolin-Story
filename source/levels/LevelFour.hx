@@ -48,9 +48,9 @@ class LevelFour extends LevelState {
 		var pangoText:Array<String> = [
 			"You saved my life!!",
 			"You are the fastest, strongest pangolin I have ever seen... \nplease, you have to help me!",
-			"I have lost my <pt>four<pt> babies. Sob Sob",
-			"Some have been trapped by <pt>predators<pt> and \nothers have been caught by <pt>poachers<pt>",
-      "I need to see my babies again, please do everything \nyou can to bring them back to me!."
+			"I have lost my <pt>baby boy<pt>. Sob Sob",
+			"He may have been trapped by a <pt>predators<pt> or \ncaught in a <pt>poachers<pt> trap.",
+      "I need to see my baby again, please do everything \nyou can to bring him back to me!."
 		]; 
 
 
