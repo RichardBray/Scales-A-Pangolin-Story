@@ -21,7 +21,7 @@ class LevelSix extends LevelState {
   var _hitMovingCages:Array<Null<Bool>> = [];
   var _movingCageIdx:Int = 0;
 
-  final _bugsGoal:Int = 13; 
+  final _bugsGoal:Int = 14; 
 
   /**
    * [X, Y, direcrtion]
@@ -41,7 +41,7 @@ class LevelSix extends LevelState {
 
 
 	public function new(?GameSave:Null<FlxSave>) {
-		super();
+    super();
 		_gameSave = GameSave;
 
 		_goalData = [
