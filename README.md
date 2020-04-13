@@ -107,5 +107,3 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
-- add the end screen after saving pangolin and walking off the screen
-
