@@ -159,26 +159,15 @@ class LevelHome extends LevelState {
    */
   function mamaPangolinDialogue(Player:Player):Array<String> {
 		final pangoText:Array<String> = [
-			"Please bring all my babies back to me. "
+			"Please bring my son back to me. "
     ]; 
     
     final returnedPangoText:Array<String> = [
-      "Thank you so much for bringing my baby back to me. ",
-      "You have made one step uniting a family that was forced apart. ",
-      "There are still a few of my children out there. ",
-      "Please bring all my babies back to me. "
+      "Thank you so much for bringing my sone back to me. ",
+      "You have united a family that was once forced apart. "
     ];
-    
-    final allPangosReturned:Array<String> = [
-      "Thank you for bringing ALL my babies back to me. ",
-      "You have succeeded in uniting this broken family. ",
-      "Your efforts will not go unoticed. "
-    ];
-    if (Player.pangoAttached) {
-      if (_gameSave.data.playerHasLastPangolin) return allPangosReturned;
-      return returnedPangoText;
-    }
-    return pangoText;
+
+    return Player.pangoAttached ? returnedPangoText : pangoText;
   }
 
   function mamaPangoTalking(Player:Player, Friend:PinkPango) {
