@@ -99,7 +99,7 @@ class LevelSix extends LevelState {
 
 	function levelComplete(Exit:FlxSprite, Player:FlxSprite) {
 		_gameSave = endOfLevelSave(_gameSave, grpHud.gameScore, killedEmenies);
-		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave, 3);
+		var _levelCompleteState:LevelComplete = new LevelComplete(_gameSave, 2);
 		openSubState(_levelCompleteState);			
 	}
  

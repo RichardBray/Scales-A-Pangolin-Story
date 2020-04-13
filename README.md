@@ -84,20 +84,6 @@ Scales of Life: A Pangolin's story
 - Javascript is very forgiving
   - !!string
 
-
-http://www.softschools.com/facts/animals/pangolin_facts/108/
-
-
-### Testing code
-
-```hx
-#if debug
-_gameSave = new FlxSave(); // initialize
-_gameSave.bind("AutoSave"); // bind to the named save slot 
-#end   
-_gameSave = saveGame(_gameSave, [0, 0]);  
-```
-
 ### Save game data structure
 
 ```js
@@ -121,6 +107,5 @@ data: {
   playerHasLastPangolin: false // not yet implemented
 }
 ```
-- remove map
-- add the end screen
+- add the end screen after saving pangolin and walking off the screen
 
