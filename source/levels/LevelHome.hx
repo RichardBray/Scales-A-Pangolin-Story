@@ -1,5 +1,6 @@
 package levels;
 
+import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxObject;
@@ -7,6 +8,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxSave;
 
+// Internal
+import states.GameState;
 import states.LevelState;
 import characters.PinkPango;
 import characters.PurplePango;
@@ -179,7 +182,11 @@ class LevelHome extends LevelState {
 	}	 
 
 	function changeState() {
-		FlxG.switchState(new levels.LevelSelect(_gameSave));
+    if (_babyLeftPlayer) {
+      FlxG.switchState(new EndScreen(_gameSave));
+    } else {
+      FlxG.switchState(new levels.LevelSelect(_gameSave));
+    }
   }	 
   
   function reunitedCutscene(Player:Player, MamaSeen:FlxObject) {
@@ -215,5 +222,51 @@ class LevelHome extends LevelState {
     if (!FlxG.overlap(player, _pangoNPC.npcSprite.npcBoundary, mamaPangoTalking)) {
       _pangoNPC.dialoguePrompt.hidePrompt();
     };   
+  }
+}
+
+class EndScreen extends GameState {
+  var _controls:Controls;
+  var _gameSave:FlxSave;
+  var _titleText:FlxText;
+  var _subText:FlxText;
+  var _controlsText:FlxText;
+
+  /**
+   * End of game. Whoop Whoop!!
+   */
+  public function new(GameSave:FlxSave) {
+    super();
+    _gameSave = GameSave;
+  }
+
+  override public function create() {
+    super.create();
+    bgColor = FlxColor.BLACK;
+    _controls = new Controls();
+
+    FlxG.cameras.fade(FlxColor.BLACK, 0.5, true); // Screen fades in
+
+    _titleText = new FlxText(870, 460, 0, "The End!!!");
+    _titleText.setFormat(Constants.squareFont, Constants.lrgFont, FlxColor.WHITE, CENTER);
+    add(_titleText);	
+
+    _subText = new FlxText(800, 540, 0, "Thanks for playing :)");
+    _subText.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, CENTER);
+    add(_subText);    
+
+    final cross:String = Constants.cross;
+    _controlsText = new FlxText(835, 990, 0, 'Press $cross to continue');
+    _controlsText.setFormat(Constants.squareFont, Constants.smlFont, FlxColor.WHITE, CENTER);
+    add(_controlsText);      
+  }
+
+	function goToLevelSelect() {
+		FlxG.switchState(new levels.LevelSelect(_gameSave, 1));
+  } 
+  
+  override public function update(Elapsed:Float) {
+    super.update(Elapsed);
+    if (_controls.cross.check() || _controls.start.check()) goToLevelSelect();
   }
 }
