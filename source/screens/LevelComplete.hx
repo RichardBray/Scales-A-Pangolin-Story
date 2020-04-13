@@ -60,7 +60,7 @@ class LevelComplete extends FlxSubState {
 
     _levelTotals = [
       levelOneEnd => [74, 10],
-      levelTwoEnd => [42, 10]
+      levelTwoEnd => [48, 10]
     ];
 
     _levelNames = [
