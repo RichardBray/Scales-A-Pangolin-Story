@@ -90,7 +90,7 @@ class LevelSelect extends GameState {
         0, 
         80, 			
         { thickness:10, color:Constants.secondaryColor }, 
-			  Constants.primaryColor);
+			  Constants.slimeGreenColor);
     add(_levelPointer);
 
     _levelPos = [
@@ -201,7 +201,7 @@ class LevelSelect extends GameState {
   function startModal() {
     if (_modalNum != null) {
       var modalText:Array<String> = [
-        "Welcome to the level select screen. Here you will be able select newly unlocked levels and replay completed ones.",
+        "Welcome to the level select screen.",
         "Congratulations! You've completed the game!! \nYou're free to go back and redo any level you want.",
         "Well done you have saved a pangolin!! Return it to it's mother by going to the 'HOME' level",
       ];    
