@@ -57,6 +57,7 @@ class LevelSelect extends GameState {
     }
     if (ModalNum != null) _modalNum = ModalNum; 
 
+    // Where to put the level selction pointer after leaving a certian level
     _pointerPosition = [
       "Level-1-0" => 0, 
       "Level-2-0" => 0,
@@ -64,7 +65,7 @@ class LevelSelect extends GameState {
       "Level-4-0" => 0,
       "Level-5-0" => 1,
       "Level-6-0" => 1,
-      "Level-h-0" => 5	
+      "Level-h-0" => 2	
     ]; 
   }
 
@@ -73,7 +74,7 @@ class LevelSelect extends GameState {
     FlxG.sound.playMusic("assets/music/level_select.ogg", 0.6, true);
     FlxG.sound.music.persist = false;
   
-    _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/backgrounds/test_map.jpg", false, 1920, 1080);
+    _mapBg = new FlxSprite(0, 0).loadGraphic("assets/images/backgrounds/level_select.png", false, 1920, 1080);
     add(_mapBg);
 
     _grpLevelIndicators = new FlxSpriteGroup();
@@ -94,15 +95,15 @@ class LevelSelect extends GameState {
 
     _levelPos = [
       {
-        x: 230,
-        y: 544,
+        x: 493,
+        y: 563,
         name: "Level 1",
         locked: _playerHasPango,
         onSelect:() -> FlxG.switchState(new LevelOne(_gameSave))
       },
       {
-        x: 118,
-        y: 114,
+        x: 872,
+        y: 563,
         name: "Level 2",
         locked: _playerHasPango,
         onSelect:() -> {
@@ -112,29 +113,8 @@ class LevelSelect extends GameState {
         }
       },
       {
-        x: 594,
-        y: 207,
-        name: "Level 3",
-        locked: true,
-        onSelect:() -> trace("level three")
-      },
-      {
         x: 1251,
-        y: 567,
-        name: "Level 4",
-        locked: true,
-        onSelect:() -> trace("level four")
-      },
-      {
-        x: 1561,
-        y: 307,
-        name: "Level 5",
-        locked: true,
-        onSelect:() -> trace("level five")
-      },
-      {
-        x: 1610,
-        y: 778,
+        y: 563,
         name: "Home",
         locked: false,
         onSelect:() -> FlxG.switchState(new LevelHome(_gameSave))
@@ -247,34 +227,11 @@ class LevelSelect extends GameState {
     }
   }
 
-  /**
-   * Specific controls for certain level positions.
-   */
-  function specificControls() {
-    if (_lastSelected == 0 && _controls.up.check()) {
-      _lastSelected = 1;
-    }
-
-    if (_lastSelected == 1 && _controls.down.check()) {
-      _lastSelected = 0;
-    }  
-
-    if (_lastSelected == 4 && _controls.down.check()) {
-      _lastSelected = 5;
-    }   
-  
-    if (_lastSelected == 5 && _controls.up.check()) {
-      _lastSelected = 4;
-    }   
-  }
-
   override public function update(Elapsed:Float) {
     super.update(Elapsed);
     final levelPointerIsOn:LevelData = _levelPos[_lastSelected];
     // Initial level pointer position
     _levelPointer.setPosition(levelPointerIsOn.x, levelPointerIsOn.y);
-
-    specificControls();
 
     if (_controls.cross.check()) {
       _sndSelect.play(); 
