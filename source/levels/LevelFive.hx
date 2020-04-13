@@ -152,7 +152,6 @@ class LevelFive extends LevelState {
     // Save game on load    
               
     if (_gameSave != null) _gameSave = saveGame(_gameSave);
-    js.Browser.console.log(_gameSave, "_gameSave");
     super.create();
 
     // Restrict level width to hide bonus level on load
