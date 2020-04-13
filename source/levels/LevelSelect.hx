@@ -21,21 +21,23 @@ typedef LevelData = {
   y:Int,
   name:String,
   locked:Bool,
-  ?onSelect:Void -> Void
+  ?onSelect:Void -> Void,
+  ?stars:Int
 };
 
 class LevelSelect extends GameState {
   var _grpLevelIndicators:FlxSpriteGroup;
+	var _bottomLeft:FlxText;  
   var _controls:Controls;
-  var _levelPointer:FlxShapeCircle; //FlxSprite;
   var _gameSave:FlxSave;
-  var _mapBg:FlxSprite;
   var _grpLevelNames:FlxTypedGroup<FlxText>;
   var _grpLevelPadlocks:FlxSpriteGroup;
-	var _bottomLeft:FlxText;  
+  var _grpLevelStars:FlxTypedGroup<FlxSprite>;
+  var _lastSelected:Int = 0;
+  var _levelPointer:FlxShapeCircle; //FlxSprite;
+  var _mapBg:FlxSprite;
   var _modalNum:Null<Int>;
   var _playerHasPango:Bool = false;
-  var _lastSelected:Int = 0;
   var _pointerPosition:Map<String, Int>; // Where to put pointer when level loads  
   // - Total Stars
   var _starSprt:FlxSprite;
@@ -79,12 +81,15 @@ class LevelSelect extends GameState {
 
     _grpLevelIndicators = new FlxSpriteGroup();
     _grpLevelPadlocks = new FlxSpriteGroup();
-    _grpLevelNames = new FlxTypedGroup<FlxText>();    
+    _grpLevelNames = new FlxTypedGroup<FlxText>(); 
+    _grpLevelStars = new FlxTypedGroup<FlxSprite>();   
 
     add(_grpLevelIndicators);
     add(_grpLevelPadlocks);
     add(_grpLevelNames);
+    add(_grpLevelStars);
 
+    final savedStars:Array<String> = _gameSave.data.levelStars.split("/");
     _levelPointer = new FlxShapeCircle(
         0, 
         0, 
@@ -99,7 +104,8 @@ class LevelSelect extends GameState {
         y: 563,
         name: "Level 1",
         locked: _playerHasPango,
-        onSelect:() -> FlxG.switchState(new LevelOne(_gameSave))
+        onSelect:() -> FlxG.switchState(new LevelOne(_gameSave)),
+        stars: Std.parseInt(savedStars[0])
       },
       {
         x: 872,
@@ -110,7 +116,8 @@ class LevelSelect extends GameState {
           (_gameSave.data.introTwoSeen)
           ? FlxG.switchState(new LevelFive(_gameSave))
           : FlxG.switchState(new LevelFive.IntroFive(_gameSave));
-        }
+        },
+        stars: Std.parseInt(savedStars[1])
       },
       {
         x: 1251,
@@ -143,6 +150,14 @@ class LevelSelect extends GameState {
       levelName.setFormat(Constants.squareFont, Constants.medFont, FlxColor.WHITE, CENTER);
       _grpLevelNames.add(levelName); 
 
+      if (level.stars != null) {
+        for (i in 0...level.stars) {
+          var levelStar:FlxSprite = new FlxSprite(((level.x - 20) + i * 50), (level.y + 150));
+          levelStar.loadGraphic("assets/images/icons/star_yellow.png", false, 100, 95);
+          levelStar.scale.set(0.4, 0.4);
+          _grpLevelStars.add(levelStar);
+        }
+      }
       // Level padlocks
       // once saved data is in ternary line will be _savedLevelData[idx].locked
       final padImgWidth:Int = 30;
