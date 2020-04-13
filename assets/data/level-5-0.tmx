@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="1073" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="7" nextobjectid="244">
+<map version="1.2" tiledversion="2019.11.12" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="1073" height="120" tilewidth="15" tileheight="15" infinite="0" nextlayerid="7" nextobjectid="246">
  <tileset firstgid="1" source="level-1-objs.tsx"/>
  <tileset firstgid="14" source="collisions.tsx"/>
  <tileset firstgid="29" source="level-2-objs.tsx"/>
@@ -97,6 +97,8 @@
   <object id="228" x="368.893" y="1447.29" width="300" height="127"/>
   <object id="232" name="mini-checkpoint-1" x="5327.93" y="1426.64" width="149.731" height="147.417"/>
   <object id="240" x="3199.82" y="459.995" width="104.768" height="1111.82"/>
+  <object id="244" name="mini-checkpoint-3" x="4771.08" y="856.847" width="149.731" height="147.417"/>
+  <object id="245" name="mini-checkpoint-2" x="4755.69" y="1215.27" width="149.731" height="147.417"/>
  </objectgroup>
  <objectgroup id="6" name="sounds">
   <object id="234" name="fire" x="5092.06" y="1373.68">
