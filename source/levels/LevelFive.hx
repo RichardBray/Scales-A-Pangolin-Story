@@ -114,7 +114,7 @@ class LevelFive extends LevelState {
 		var pangoText:Array<String> = [
 			"Thanks for freeing me from the cage. ",
 			"I was careless and got caught in this poacher's trap. ",
-			"Will you please take me to my mother? ",
+			"Will you please take me to my <pt>mother<pt>? ",
 			"I hope you don't mind if I hitch a ride on your tail. "
 		]; 
 

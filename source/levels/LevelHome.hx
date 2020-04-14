@@ -166,11 +166,19 @@ class LevelHome extends LevelState {
     ]; 
     
     final returnedPangoText:Array<String> = [
-      "Thank you so much for bringing my sone back to me. ",
-      "You have united a family that was once forced apart. "
+      "Thank you so much for bringing my son back to me. ",
+      "I don't know what we would have done without you. ",
+      "We wish you luck on the rest of your travels. "
     ];
 
-    return Player.pangoAttached ? returnedPangoText : pangoText;
+    final mamaFinalText:Array<String> = [
+      "Good luck on all your travels. "
+    ];
+
+    if (Player.pangoAttached) return returnedPangoText;
+    if (_gameSave.data.pangosDelivered != null) return  mamaFinalText;
+
+    return pangoText;
   }
 
   function mamaPangoTalking(Player:Player, Friend:PinkPango) {
