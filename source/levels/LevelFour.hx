@@ -24,7 +24,6 @@ class LevelFour extends LevelState {
   public function new(?GameSave:Null<FlxSave>) {
     super();
 		_gameSave = GameSave;
-		js.Browser.console.log(_gameSave, "_gameSave");
 
 		var talkToMamaOption:Array<GoalData>;
 		var standardGoals:Array<GoalData>;
