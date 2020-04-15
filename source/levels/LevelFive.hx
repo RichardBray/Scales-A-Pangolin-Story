@@ -51,7 +51,6 @@ class LevelFive extends LevelState {
     _gameSave = GameSave;
     _gameSave.data.introTwoSeen = true;
     _showInstrucitons = ShowInstructions;
-
     var savePangoGoalOption:Array<GoalData>;
     var standardGoals:Array<GoalData>;
 
@@ -68,10 +67,7 @@ class LevelFive extends LevelState {
     ]; 
     
     // Remove save pagolin goal if purple pango has already been saved
-    _goalData = (
-      _gameSave.data.pangosDelivered != null && 
-      Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")
-    ) ? standardGoals : standardGoals.concat(savePangoGoalOption);
+    _goalData = _gameSave.data.pangosDelivered != null ? standardGoals : standardGoals.concat(savePangoGoalOption);
   }
 
   override public function create() {
@@ -130,9 +126,7 @@ class LevelFive extends LevelState {
       true      
 		);  
     
-    if (_gameSave.data.pangosDelivered == null || 
-      !Helpers.checkPangoDelieverd(_gameSave.data.pangosDelivered, "purple")
-    ) {
+    if (_gameSave.data.pangosDelivered == null) {
     add(_cagedPangoCollision);
     add(_cagedPangolin);
     add(_pangoNPC);	
