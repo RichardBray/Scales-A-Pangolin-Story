@@ -23,20 +23,26 @@ class LevelFour extends LevelState {
 
   public function new(?GameSave:Null<FlxSave>) {
     super();
-    _gameSave = GameSave;
-  	_goalData = [
-			{
-				goal: "Defeat the Big Boar",
-				func: (_) -> killedEmenies > 0
-			},
-			{
-				goal: "Talk to pangolin",
-				func: (_) -> {
-					if (startingConvo) _spokentoNPC++;
-					return _spokentoNPC > 0;
-				}
-			}                 
-		]; 
+		_gameSave = GameSave;
+		js.Browser.console.log(_gameSave, "_gameSave");
+
+		var talkToMamaOption:Array<GoalData>;
+		var standardGoals:Array<GoalData>;
+
+    talkToMamaOption = [{
+			goal: "Talk to pangolin",
+			func: (_) -> {
+				if (startingConvo) _spokentoNPC++;
+				return _spokentoNPC > 0;
+			}
+		}];
+		
+  	standardGoals = [{
+			goal: "Defeat the Big Boar",
+			func: (_) -> killedEmenies > 0
+		}]; 
+
+		_goalData = _gameSave.data.introTwoSeen ? standardGoals : standardGoals.concat(talkToMamaOption);
   }
 
   override public function create() {
@@ -71,7 +77,8 @@ class LevelFour extends LevelState {
 			_pangoDialogueImage,
 			"mama_dialogue"
 		);
-		add(_pangoNPC);	       
+			       
+		if (!_gameSave.data.introTwoSeen) add(_pangoNPC);
 
 		// Add player
 		createPlayer(180, 1044, _gameSave);
