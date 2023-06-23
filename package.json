@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/RichardBray/Pangolin#readme",
   "dependencies": {
-    "concurrently": "^4.1.1",
+    "concurrently": "^8.2.0",
     "live-server": "^1.2.1"
   }
 }
